@@ -1,0 +1,12 @@
+# compilation
+
+minishell
+obj/
+
+# CLion
+
+.idea/
+
+# Visual Studio Code
+
+.vscode/
