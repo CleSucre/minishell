@@ -24,22 +24,34 @@ HEAD		= include
 
 CFLAGS		= -g -I ${HEAD} -Wall -Wextra -Werror
 
-${OBJ_PATH}%.o : %.c
-	mkdir -p ${@D} 2> ${DIRSEP}dev${DIRSEP}null || true
-	${CC} ${CFLAGS} -o $@ -c $<
+# COLORS
+DEFCOLOR = \033[0;39m
+GREEN    = \033[1;92m
+YELLOW   = \033[0;93m
+PURPLE   = \033[0;95m
+RED		 = \033[0;91m
 
-${NAME}: ${OBJS}
-	${CC} ${CFLAGS} -o ${NAME} ${OBJS}
 
 all: ${NAME}
-	${CC} ${CFLAGS} -o ${NAME} ${OBJS}
+
+${OBJ_PATH}%.o : %.c
+	@mkdir -p ${@D} 2> ${DIRSEP}dev${DIRSEP}null || true
+	@echo "$(YELLOW)Compiling $< $(DEFCOLOR)"
+	@${CC} ${CFLAGS} -o $@ -c $<
+
+${NAME}: ${OBJS}
+	@${CC} ${CFLAGS} -o ${NAME} ${OBJS}
+	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
+
 
 clean:
-	${RM} -r ${OBJ_PATH} 2> ${DIRSEP}dev${DIRSEP}null || true
+	@${RM} -r ${OBJ_PATH} 2> ${DIRSEP}dev${DIRSEP}null || true
+	@echo "$(PURPLE)Object files have been removed.$(DEFCOLOR)"
 
 fclean:
-	${RM} -r ${OBJ_PATH} 2> ${DIRSEP}dev${DIRSEP}null || true
-	${RM} ${NAME}
+	@${RM} -r ${OBJ_PATH} 2> ${DIRSEP}dev${DIRSEP}null || true
+	@${RM} ${NAME}
+	@echo "$(RED)$(NAME) has been removed.$(DEFCOLOR)"
 
 re: fclean all
 

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   struct.h                                        :+:      :+:    :+:   	  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,22 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef STRUCT_H
+# define STRUCT_H
 
-// Others .h
-# include "struct.h"
+# include "minishell.h"
 
-// includes
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <sys/stat.h>
-# include <dirent.h>
-# include <string.h>
-# include <termios.h>
+// Binary tree
+
+//
+
 
 #endif
