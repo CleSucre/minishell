@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_charjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 17:05:49 by julthoma          #+#    #+#             */
-/*   Updated: 2023/11/02 17:05:50 by julthoma         ###   ########.fr       */
+/*   Created: 2023/11/02 17:06:24 by julthoma          #+#    #+#             */
+/*   Updated: 2023/11/02 17:06:26 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putstr_fd(char *str, int fd)
+char	*ft_charjoin(char *str, char c)
 {
-	int i;
+	char	*dst;
+	size_t		i;
+
+	dst = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
+	if (!dst)
+		return (NULL);
 	i = 0;
-	if (!str)
-		str = "(null)";
-	while(str[i])
+	while (i < ft_strlen(str))
 	{
-		write(fd, &str[i], 1);
+		dst[i] = str[i];
 		i++;
 	}
-	return (i);
+	dst[i] = c;
+	i++;
+	dst[i] = '\0';
+	if (str)
+		free(str);
+	return (dst);
 }

@@ -32,9 +32,15 @@ typedef struct s_history
 // #					MINISHELL STRUCT				  #
 // ########################################################
 
+typedef struct s_termios
+{
+	struct termios	*original_termios;
+}		t_termios;
+
 typedef struct s_minishell
 {
 	t_history	*history;
+	t_termios	*termios;
 }		t_minishell;
 
 #endif

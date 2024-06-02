@@ -49,28 +49,24 @@ char	*search_history(t_minishell *minishell, char *cmd, int index)
  */
 int	refresh_history(t_minishell *minishell)
 {
-	char	*line;
 	int		fd;
+	char	*line;
 
-	fd = get_history_file();
+	fd = open(HISTORY_FILE, O_RDONLY);
 	if (fd < 0)
+	{
+		if (DEBUG)
+			ft_fprintf(2, BOLDRED"Error: "RESET"open failed\n");
 		return (1);
+	}
 	line = get_next_line(fd);
 	while (line)
 	{
-		new = (t_history *)malloc(sizeof(t_history));
-		if (!new)
-			return ;
-		new->cmd = ft_strdup(cmd);
-		new->prev = NULL;
-		new->next = minishell->history;
-		if (minishell->history)
-			minishell->history->prev = new;
-		minishell->history = new;
-		add_to_file(cmd);
+		add_to_history(minishell, line);
 		free(line);
 		line = get_next_line(fd);
 	}
+	close(fd);
 	return (0);
 }
 

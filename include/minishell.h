@@ -17,7 +17,7 @@
 #  define DEBUG 0
 # endif
 
-# define HISTORY_FILE ".ministory"
+
 
 // ########################################################
 // #					CUSTOM INCLUDES					  #
@@ -34,6 +34,7 @@
 
 # include "struct.h"
 # include "funcs.h"
+# include "define.h"
 
 // ########################################################
 // #					DEFAULTS INCLUDES				  #

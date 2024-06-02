@@ -61,6 +61,7 @@ int		ft_isspace(int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin_list(char const **strs);
+char	*ft_charjoin(char *str, char c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *str, char const *charset);
 size_t	ft_str_count_char(char const *str, int c);
@@ -73,7 +74,7 @@ void	*ft_setdtoa(char *dst, double n, int precision);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_putchar_fd(char c, int fd);
-int		ft_putstr_fd(char *s, int fd);
+int		ft_putstr_fd(char *str, int fd);
 int		ft_putendl_fd(char *s, int fd);
 int		ft_putnbr_fd(int n, int fd);
 char	*ft_strdup(const char *s1);
@@ -85,6 +86,7 @@ int		ft_putnbr_unsigned_fd(unsigned int nb, int fd);
 int		ft_putnbr_float_fd(double n, int fd);
 int		ft_putpointer_fd(void *ptr, int fd);
 int		ft_count_words(char const *str, char const *charset);
+void	ft_trunc(char *str, size_t era);
 
 // ========LIST========
 

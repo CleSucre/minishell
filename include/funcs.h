@@ -29,23 +29,23 @@ int		get_history_file(void);
 // #						EXECOTOR					  #
 // ########################################################
 
-char	*wait_input(t_minishell *minishell, const char *prompt);
+int		wait_input(char **input, t_minishell *minishell);
 int		exec_command(t_minishell *minishell, char *input);
 
-// ########################################################
-// #						SIG_HANDLER					  #
-// ########################################################
-
-void	sig_handler(int sig, siginfo_t *info, void *context);
-void	setup(void);
 
 // ########################################################
 // #						RAW 						  #
 // ########################################################
 
-void	disable_raw_mode(const struct termios *original_termios);
-void	enable_raw_mode(struct termios *original_termios);
-int		is_raw(struct termios *original_termios);
+void	disable_raw_mode(t_termios *termios);
+void	enable_raw_mode(t_termios *termios);
+void	process_raw_arrow(t_termios *termios);
+
+// ########################################################
+// #						TERMINAL					  #
+// ########################################################
+
+void	erase_term(size_t len);
 
 // ########################################################
 // #						MAIN						  #

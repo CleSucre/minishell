@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <termios.h>
 #define FILE "raw.c"
 
 /**
@@ -19,60 +20,37 @@
  * the terminal, as canonical mode, echo and transmission speed
  */
 
-int	is_raw(struct termios *original_termios)
-{
-	char			c;
-	char			seq[3];
-
-	if (read(STDIN_FILENO, &c, 1) == -1)
-	{
-		perror("read");
-		return (1);
-	}
-	if (c == '\x1b')
-	{
-		if (read(STDIN_FILEN, &seq[0], 1) == 0
-			|| read(STDIN_FILEN, &seq[1], 1) == 0)
-			return (1);
-		if (seq[0] == '[')
-		{
-			if (seq[1] == 'A')
-				ft_fprintf(1, "fleche haut");
-			else if (seq[1] == 'B')
-				ft_fprintf(1, "fleche bas");
-		}
-		else
-			ft_fprintf(1, "Caractere lu [%c]", c);
-	}
-	return (1);
-}
-
 /**
  * @brief enable raw mode to read char, and catch exhaust sequence
  * @param original_termios
  * @return none
  */
 
-void	enable_raw_mode(struct termios *original_termios)
-{
-	stryct termios	raw;
+void enable_raw_mode(t_termios *termios) {
+    struct termios raw;
 
-	if (tcgetattr(STDIN_FILENO, original_termios) == -1)
-	{
-		perror("tcgetattr");
-		if (DEBUG)
-			ft_fprintf(2, "ERROR IN %s", FILE);
-		exit(EXIT_FAILURE);
-	}
-	raw = *original_termios;
-	raw.c_lflag &= ~(ICANON | ECHO);
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1)
-	{
-		perror("tcsetattr");
-		if (DEBUG)
-			ft_fprintf(2, "ERROR IN %s", FILE);
-		exit(EXIT_FAILURE);
-	}
+    // Obtenir les attributs du terminal actuel
+    if (tcgetattr(STDIN_FILENO, termios->original_termios) == -1) {
+        perror("tcgetattr");
+        return;
+    }
+
+    // Copier les attributs pour les modifier
+    raw = *termios->original_termios;
+
+    // Modifier les attributs pour le mode brut
+    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+    raw.c_iflag &= ~(BRKINT | INPCK | ISTRIP | IXON | ICRNL);
+    raw.c_cflag |= (CS8);
+    raw.c_oflag &= ~(OPOST);
+    raw.c_cc[VMIN] = 1;
+    raw.c_cc[VTIME] = 0;
+
+    // Appliquer les nouveaux attributs du terminal
+    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
+        perror("tcsetattr");
+        return;
+    }
 }
 
 /**
@@ -81,13 +59,9 @@ void	enable_raw_mode(struct termios *original_termios)
  * @return none
  */
 
-void	disable_raw_mode(const struct termios *original_termios)
-{
-	if (tcsetattr(STDILENO, TCSAFLUSH, original_termios) == -1)
-	{
-		perror("tcsetattr");
-		if (DEBUG)
-			ft_fprintf(2, "ERROR IN %s", FILE);
-		exit(EXIT_FAILURE);
-	}
+void disable_raw_mode(t_termios *termios) {
+    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, termios->original_termios) == -1) {
+        perror("tcsetattr");
+		return ;
+    }
 }

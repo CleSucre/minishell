@@ -14,17 +14,17 @@ NAME			= minishell
 
 SRCS			= main.c
 
-SRCS_COMMAND	= history.c executor.c
+SRCS_TERMINAL	= history.c executor.c terminal.c
 
-SRCS_HANDLER	= sig_handler.c raw.c
+SRCS_HANDLER	= raw.c
 
 #################################################################################
 
-SRCS_COMMAND	:= ${addprefix command${DIRSEP}, $(SRCS_COMMAND)}
+SRCS_TERMINAL	:= ${addprefix terminal${DIRSEP}, $(SRCS_TERMINAL)}
 
 SRCS_HANDLER	:= ${addprefix sig${DIRSEP}, $(SRCS_HANDLER)}
 
-SRCS			+= ${SRCS_COMMAND} ${SRCS_HANDLER}
+SRCS			+= ${SRCS_TERMINAL} ${SRCS_HANDLER}
 
 SRCS			:= ${addprefix src${DIRSEP}, ${SRCS}}
 
@@ -85,7 +85,7 @@ fclean:
 re: fclean all
 
 run:
-	@clear && $(MAKE) re DEBUG=1 && valgrind --leak-check=full --show-leak-kinds=all ./minishell
+	@clear && $(MAKE) re DEBUG=1 && valgrind --leak-check=full --track-origins=yes ./minishell
 
 norm:
 	@norminette | grep Error || echo "$(GREEN)Success"

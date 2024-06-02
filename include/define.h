@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manager.c                                          :+:      :+:    :+:   */
+/*   define.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,35 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef DEFINE_H
+#define DEFINE_H
 
-char	*wait_input(t_minishell *minishell, const char *prompt)
-{
-	char	*line;
+# define HISTORY_FILE ".ministory"
 
-	ft_printf(BOLDWHITE"%s "RESET, prompt);
-	line = get_next_line(0);
-	if (!line)
-	{
-		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET"get_next_line failed\n");
-		return (NULL);
-	}
-	line[ft_strlen(line) - 1] = '\0';
-	return (line);
-}
+// ########################################################
+// #					CURSOR MOVES					  #
+// ########################################################
 
-int	exec_command(t_minishell *minishell, char *input)
-{
-	if (DEBUG)
-		ft_printf(BOLDWHITE"[DEBUG] command: "RESET"\"%s\"\n", input);
-	if (ft_strlen(input) != 0)
-		add_to_history(minishell, input);
-	if (ft_strcmp(input, "exit") == 0)
-	{
-		free(input);
-		return (1);
-	}
-	free(input);
-	return (0);
-}
+#define CURSOR_UP \033[{1}A
+#define CURSOR_DOWN \033[{1}B
+#define CURSOR_LEFT \033[{1}D
+#define CURSOR_RIGHT \033[{1}C
+#define CURSOR_NLINE \033[E
+#define CURSOR_PLINE \033[F]
+
+
+#endif
