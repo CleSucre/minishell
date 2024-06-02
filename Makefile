@@ -10,7 +10,7 @@ endif
 
 NAME		= minishell
 
-SRCS		= src${DIRSEP}main.c
+SRCS		= src${DIRSEP}main.c src$P{}
 
 OBJ_PATH	= obj${DIRSEP}
 
@@ -64,7 +64,7 @@ fclean:
 
 re: fclean all
 
-run: all
+run:
 	@clear && make re DEBUG=1 && valgrind --leak-check=full --show-leak-kinds=all ./minishell
 
 .PHONY: all clean fclean re run

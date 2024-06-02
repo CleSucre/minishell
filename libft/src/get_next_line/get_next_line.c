@@ -64,6 +64,11 @@ static void	ft_clean_readed(char **readed)
 	tmp[j] = '\0';
 	free(*readed);
 	*readed = tmp;
+	if (ft_strlen(*readed) == 0)
+	{
+		free(*readed);
+		*readed = NULL;
+	}
 }
 
 static int	ft_strcontain(const char *s, int c)
