@@ -12,11 +12,96 @@
 
 #include "minishell.h"
 
+static char	*wait_input(const char *prompt)
+{
+	char	*line;
+
+	ft_printf(BOLDWHITE"%s "RESET, prompt);
+	line = get_next_line(0);
+	if (!line)
+	{
+		if (DEBUG)
+			ft_fprintf(2, BOLDRED"Error: "RESET"get_next_line failed\n");
+		return (NULL);
+	}
+	line[ft_strlen(line) - 1] = '\0';
+	return (line);
+}
+
+static t_bool	exec_command(char *input)
+{
+	if (DEBUG)
+		ft_printf(BOLDWHITE"[DEBUG] command: "RESET"%s\n", input);
+	if (ft_strcmp(input, "exit"))
+	{
+		free(input);
+		return (false);
+	}
+	free(input);
+	return (true);
+}
+
 int	main(int argc, char **args, char **env)
 {
+	char	*input;
 	(void)argc;
 	(void)args;
 	(void)env;
-	write(1, "Hello World !\n", 14);
+
+	while (1)
+	{
+		input = wait_input(BOLDWHITE"minishell$");
+		if (!input)
+			return (1);
+		if (!exec_command(input))
+			return (1);
+	}
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -22,7 +22,13 @@ CC			= gcc
 
 HEAD		= include
 
-CFLAGS		= -g -I ${HEAD} -Wall -Wextra -Werror
+LIBFT_DIR	= libft
+
+CFLAGS		= -I ${HEAD} -Wall -Wextra -Werror
+
+# DEBUG
+DEBUG ?= 0
+CFLAGS += -g -D DEBUG=$(DEBUG)
 
 # COLORS
 DEFCOLOR = \033[0;39m
@@ -40,19 +46,25 @@ ${OBJ_PATH}%.o : %.c
 	@${CC} ${CFLAGS} -o $@ -c $<
 
 ${NAME}: ${OBJS}
-	@${CC} ${CFLAGS} -o ${NAME} ${OBJS}
+	@make -C ${LIBFT_DIR}
+	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} -L ${LIBFT_DIR} -lft
 	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
 
 
 clean:
+	@make -C ${LIBFT_DIR} clean
 	@${RM} -r ${OBJ_PATH} 2> ${DIRSEP}dev${DIRSEP}null || true
 	@echo "$(PURPLE)Object files have been removed.$(DEFCOLOR)"
 
 fclean:
+	@make -C ${LIBFT_DIR} fclean
 	@${RM} -r ${OBJ_PATH} 2> ${DIRSEP}dev${DIRSEP}null || true
 	@${RM} ${NAME}
 	@echo "$(RED)$(NAME) has been removed.$(DEFCOLOR)"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+run: all
+	@clear && make re DEBUG=1 && valgrind --leak-check=full --show-leak-kinds=all ./minishell
+
+.PHONY: all clean fclean re run

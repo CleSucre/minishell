@@ -13,10 +13,34 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// Others .h
-# include "struct.h"
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
-// includes
+typedef enum e_bool
+{
+	true,
+	false
+}	t_bool;
+
+// ########################################################
+// #					CUSTOM INCLUDES					  #
+// ########################################################
+
+#include "../libft/include/libft.h"
+#include "../libft/include/colors.h"
+
+// ########################################################
+// #					OTHERS INCLUDES					  #
+// ########################################################
+
+# include "struct.h"
+# include "funcs.h"
+
+// ########################################################
+// #					DEFAULTS INCLUDES				  #
+// ########################################################
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
