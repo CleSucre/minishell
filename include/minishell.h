@@ -40,6 +40,7 @@
 // ########################################################
 
 # include <stdio.h>
+# include <readline/readline.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/types.h>
@@ -50,5 +51,6 @@
 # include <string.h>
 # include <termios.h>
 # include <fcntl.h>
+# include <termios.h>
 
 #endif

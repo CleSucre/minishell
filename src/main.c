@@ -12,50 +12,50 @@
 
 #include "minishell.h"
 
-static char	*wait_input(const char *prompt)
+static void	destroy_minishell(t_minishell *minishell)
 {
-	char	*line;
+	t_history	*tmp;
+	t_history	*next;
 
-	ft_printf(BOLDWHITE"%s "RESET, prompt);
-	line = get_next_line(0);
-	if (!line)
+	tmp = minishell->history;
+	while (tmp)
 	{
-		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET"get_next_line failed\n");
-		return (NULL);
+		next = tmp->next;
+		free(tmp->cmd);
+		free(tmp);
+		tmp = next;
 	}
-	line[ft_strlen(line) - 1] = '\0';
-	return (line);
+	free(minishell);
 }
 
-static int	exec_command(char *input)
+t_minishell	*init_minishell(void)
 {
-	if (DEBUG)
-		ft_printf(BOLDWHITE"[DEBUG] command: "RESET"\"%s\"\n", input);
-	if (ft_strlen(input) != 0)
-		add_to_history(input);
-	if (ft_strcmp(input, "exit") == 0)
-	{
-		free(input);
-		return (1);
-	}
-	free(input);
-	return (0);
+	t_minishell	*minishell;
+
+	minishell = malloc(sizeof(t_minishell));
+	if (!minishell)
+		return (NULL);
+	refresh_history(minishell);
+	return (minishell);
 }
 
 int	main(int argc, char **args, char **env)
 {
-	char	*input;
+	t_minishell		*minishell;
+	struct termios	original_termios;
+	char			*input;
 
-	(void)argc;
-	(void)args;
-	(void)env;
+	minishell = init_minishell();
+	enable_raw_mode(&original_termios);
 	while (1)
 	{
-		input = wait_input(BOLDWHITE"minishell$");
-		if (exec_command(input))
+		is_raw(&original_termios);
+		input = wait_input(minishell, BOLDWHITE"minishell$");
+		if (exec_command(minishell, input))
 			break ;
 	}
+	disable_raw_mode(&original_termios);
 	reset_history();
+	destroy_minishell(minishell);
 	return (0);
 }

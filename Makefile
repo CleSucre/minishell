@@ -14,13 +14,17 @@ NAME			= minishell
 
 SRCS			= main.c
 
-SRCS_HISTORY	= history.c
+SRCS_COMMAND	= history.c executor.c
+
+SRCS_HANDLER	= sig_handler.c raw.c
 
 #################################################################################
 
-SRCS_HISTORY	:= ${addprefix history${DIRSEP}, $(SRCS_HISTORY)}
+SRCS_COMMAND	:= ${addprefix command${DIRSEP}, $(SRCS_COMMAND)}
 
-SRCS			+= ${SRCS_HISTORY}
+SRCS_HANDLER	:= ${addprefix sig${DIRSEP}, $(SRCS_HANDLER)}
+
+SRCS			+= ${SRCS_COMMAND} ${SRCS_HANDLER}
 
 SRCS			:= ${addprefix src${DIRSEP}, ${SRCS}}
 
@@ -36,11 +40,15 @@ HEAD			= include
 
 LIBFT_DIR		= libft
 
-CFLAGS			= -I ${HEAD} -Wall -Wextra -Werror
+CFLAGS			= -I ${HEAD}
 
 # DEBUG
 DEBUG ?= 0
-CFLAGS += -g -D DEBUG=$(DEBUG)
+ifeq ($(DEBUG), 0)
+	CFLAGS += -Wall -Wextra -Werror
+else
+	CFLAGS += -g -D DEBUG=$(DEBUG)
+endif
 
 # COLORS
 DEFCOLOR = \033[0;39m
@@ -59,7 +67,7 @@ ${OBJ_PATH}%.o : %.c
 
 ${NAME}: ${OBJS}
 	@make -C ${LIBFT_DIR}
-	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} -L ${LIBFT_DIR} -lft
+	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} -L ${LIBFT_DIR} -lft -lreadline
 	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
 
 

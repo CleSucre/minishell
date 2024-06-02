@@ -13,10 +13,28 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# include "minishell.h"
-
 // ########################################################
 // #						AST STRUCT					  #
 // ########################################################
+
+// ########################################################
+// #					HISTORY STRUCT					  #
+// ########################################################
+
+typedef struct s_history
+{
+	char				*cmd;
+	struct s_history	*prev;
+	struct s_history	*next;
+}		t_history;
+
+// ########################################################
+// #					MINISHELL STRUCT				  #
+// ########################################################
+
+typedef struct s_minishell
+{
+	t_history	*history;
+}		t_minishell;
 
 #endif
