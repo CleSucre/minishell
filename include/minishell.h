@@ -17,18 +17,16 @@
 #  define DEBUG 0
 # endif
 
-typedef enum e_bool
-{
-	true,
-	false
-}	t_bool;
+# define HISTORY_FILE ".ministory"
 
 // ########################################################
 // #					CUSTOM INCLUDES					  #
 // ########################################################
 
-#include "../libft/include/libft.h"
-#include "../libft/include/colors.h"
+# include "../libft/include/libft.h"
+# include "../libft/include/colors.h"
+# include "funcs.h"
+# include "struct.h"
 
 // ########################################################
 // #					OTHERS INCLUDES					  #
@@ -51,5 +49,6 @@ typedef enum e_bool
 # include <dirent.h>
 # include <string.h>
 # include <termios.h>
+# include <fcntl.h>
 
 #endif

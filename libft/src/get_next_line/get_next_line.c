@@ -12,6 +12,17 @@
 
 #include "../../include/libft.h"
 
+static void	try_free(char **readed, char **tmp)
+{
+	free(*readed);
+	*readed = *tmp;
+	if (ft_strlen(*readed) == 0)
+	{
+		free(*readed);
+		*readed = NULL;
+	}
+}
+
 static char	*ft_get_line(char *readed)
 {
 	char	*res;
@@ -62,13 +73,7 @@ static void	ft_clean_readed(char **readed)
 	while ((*readed)[i])
 		tmp[j++] = (*readed)[i++];
 	tmp[j] = '\0';
-	free(*readed);
-	*readed = tmp;
-	if (ft_strlen(*readed) == 0)
-	{
-		free(*readed);
-		*readed = NULL;
-	}
+	try_free(readed, &tmp);
 }
 
 static int	ft_strcontain(const char *s, int c)

@@ -32,6 +32,7 @@ static t_bool	exec_command(char *input)
 {
 	if (DEBUG)
 		ft_printf(BOLDWHITE"[DEBUG] command: "RESET"%s\n", input);
+	add_to_history(input);
 	if (ft_strcmp(input, "exit"))
 	{
 		free(input);
@@ -44,10 +45,10 @@ static t_bool	exec_command(char *input)
 int	main(int argc, char **args, char **env)
 {
 	char	*input;
+
 	(void)argc;
 	(void)args;
 	(void)env;
-
 	while (1)
 	{
 		input = wait_input(BOLDWHITE"minishell$");
@@ -56,52 +57,6 @@ int	main(int argc, char **args, char **env)
 		if (!exec_command(input))
 			return (1);
 	}
+	reset_history();
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

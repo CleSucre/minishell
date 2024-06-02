@@ -8,23 +8,35 @@ else
 	RM		= rm -f
 endif
 
-NAME		= minishell
+NAME			= minishell
 
-SRCS		= src${DIRSEP}main.c src$P{}
+#################################### SOURCES ####################################
 
-OBJ_PATH	= obj${DIRSEP}
+SRCS			= main.c
 
-OBJ_NAME	= ${SRCS:%.c=%.o}
+SRCS_HISTORY	= history.c
 
-OBJS		= ${addprefix ${OBJ_PATH}, ${OBJ_NAME}}
+#################################################################################
 
-CC			= gcc
+SRCS_HISTORY	:= ${addprefix history${DIRSEP}, $(SRCS_HISTORY)}
 
-HEAD		= include
+SRCS			+= ${SRCS_HISTORY}
 
-LIBFT_DIR	= libft
+SRCS			:= ${addprefix src${DIRSEP}, ${SRCS}}
 
-CFLAGS		= -I ${HEAD} -Wall -Wextra -Werror
+OBJ_PATH		= obj${DIRSEP}
+
+OBJ_NAME		= ${SRCS:%.c=%.o}
+
+OBJS			= ${addprefix ${OBJ_PATH}, ${OBJ_NAME}}
+
+CC				= gcc
+
+HEAD			= include
+
+LIBFT_DIR		= libft
+
+CFLAGS			= -I ${HEAD} -Wall -Wextra -Werror
 
 # DEBUG
 DEBUG ?= 0
@@ -65,6 +77,9 @@ fclean:
 re: fclean all
 
 run:
-	@clear && make re DEBUG=1 && valgrind --leak-check=full --show-leak-kinds=all ./minishell
+	@clear && $(MAKE) re DEBUG=1 && valgrind --leak-check=full --show-leak-kinds=all ./minishell
 
-.PHONY: all clean fclean re run
+norm:
+	@norminette | grep Error || echo "$(GREEN)Success"
+
+.PHONY: all clean fclean re run norm

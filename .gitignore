@@ -1,12 +1,14 @@
 # compilation
 
 minishell
+.ministory
 obj/
 
-# CLion
+# IDE
 
 .idea/
-
-# Visual Studio Code
-
 .vscode/
+
+# Libft
+
+libft.a
