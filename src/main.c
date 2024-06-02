@@ -28,18 +28,19 @@ static char	*wait_input(const char *prompt)
 	return (line);
 }
 
-static t_bool	exec_command(char *input)
+static int	exec_command(char *input)
 {
 	if (DEBUG)
-		ft_printf(BOLDWHITE"[DEBUG] command: "RESET"%s\n", input);
-	add_to_history(input);
-	if (ft_strcmp(input, "exit"))
+		ft_printf(BOLDWHITE"[DEBUG] command: "RESET"\"%s\"\n", input);
+	if (ft_strlen(input) != 0)
+		add_to_history(input);
+	if (ft_strcmp(input, "exit") == 0)
 	{
 		free(input);
-		return (false);
+		return (1);
 	}
 	free(input);
-	return (true);
+	return (0);
 }
 
 int	main(int argc, char **args, char **env)
@@ -52,10 +53,8 @@ int	main(int argc, char **args, char **env)
 	while (1)
 	{
 		input = wait_input(BOLDWHITE"minishell$");
-		if (!input)
-			return (1);
-		if (!exec_command(input))
-			return (1);
+		if (exec_command(input))
+			break ;
 	}
 	reset_history();
 	return (0);
