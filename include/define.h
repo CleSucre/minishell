@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef DEFINE_H
-#define DEFINE_H
+# define DEFINE_H
 
 # define HISTORY_FILE ".ministory"
 
@@ -19,12 +19,11 @@
 // #					CURSOR MOVES					  #
 // ########################################################
 
-#define CURSOR_UP \033[{1}A
-#define CURSOR_DOWN \033[{1}B
-#define CURSOR_LEFT \033[{1}D
-#define CURSOR_RIGHT \033[{1}C
-#define CURSOR_NLINE \033[E
-#define CURSOR_PLINE \033[F]
-
+# define CURSOR_UP "\033[{1}A"
+# define CURSOR_DOWN "\033[{1}B"
+# define CURSOR_LEFT "\033[{1}D"
+# define CURSOR_RIGHT "\033[{1}C"
+# define CURSOR_NLINE "\033[E"
+# define CURSOR_PLINE "\033[F]"
 
 #endif

@@ -57,7 +57,6 @@ YELLOW   = \033[0;93m
 PURPLE   = \033[0;95m
 RED		 = \033[0;91m
 
-
 all: ${NAME}
 
 ${OBJ_PATH}%.o : %.c
@@ -87,7 +86,7 @@ re: fclean all
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 
 run:
-	@clear && $(MAKE) re DEBUG=1 && ./minishell
+	@clear && $(MAKE) re DEBUG=1 && ${VALGRIND} ./minishell
 
 norm:
 	@norminette | grep Error || echo "$(GREEN)Success"

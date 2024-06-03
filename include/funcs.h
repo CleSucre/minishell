@@ -30,9 +30,8 @@ int		get_history_file(void);
 // #						EXECOTOR					  #
 // ########################################################
 
-int		use_termios(t_minishell *minishell, char **input);
+int		use_termios(t_minishell *minishell);
 int		exec_command(t_minishell *minishell, char *input);
-
 
 // ########################################################
 // #						RAW 						  #

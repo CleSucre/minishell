@@ -13,7 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
@@ -54,7 +53,6 @@
 # include <string.h>
 # include <termios.h>
 # include <fcntl.h>
-#include  <termios.h>
-
+# include <termios.h>
 
 #endif

@@ -15,7 +15,7 @@
 char	*ft_charjoin(char *str, char c)
 {
 	char	*dst;
-	size_t		i;
+	size_t	i;
 
 	dst = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
 	if (!dst)

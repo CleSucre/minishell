@@ -95,7 +95,8 @@ void	add_to_history(t_minishell *minishell, char *cmd)
 	ft_putchar_fd('\n', fd);
 	if (DEBUG)
 	{
-		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE"%s"RESET" added to history", 0);
+		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "
+			BOLDWHITE"%s"RESET" added to history", 0);
 		terminal_print(cmd, 1);
 	}
 }

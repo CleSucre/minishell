@@ -35,7 +35,6 @@ int	main(int argc, char **args, char **env)
 	t_minishell		*minishell;
 	struct termios	original_termios;
 	t_termios		termios;
-	char			*input;
 
 	(void)argc;
 	(void)args;
@@ -43,8 +42,7 @@ int	main(int argc, char **args, char **env)
 	minishell = init_minishell();
 	termios.original_termios = &original_termios;
 	enable_raw_mode(&termios);
-	use_termios(minishell, &input);
-	free(input);
+	use_termios(minishell);
 	disable_raw_mode(&termios);
 	destroy_minishell(minishell);
 	return (0);
