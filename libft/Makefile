@@ -51,7 +51,7 @@ CC			= gcc
 
 HEAD		= include
 
-CFLAGS		= -Wall -Wextra -Werror -I ${HEAD}
+CFLAGS		= -g -Wall -Wextra -Werror -I ${HEAD}
 
 ${OBJ_PATH}%.o: %.c
 	@mkdir -p ${@D} 2> /dev/null || true

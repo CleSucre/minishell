@@ -1,6 +1,14 @@
-//
-// Created by Julie on 02/06/2024.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   termios.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
+/*   Updated: 2024/06/03 05:39:00 by mpierrot         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -150,29 +158,6 @@ void	erase_term(size_t len)
 		ft_putstr_fd("\033[1D", 1);
 		i++;
 	}
-}
-
-void	get_cursor_position(int *rows, int *cols)
-{
-	char			buf[32];
-	unsigned int	i;
-	int				ret;
-
-	i = 0;
-	// Envoyer la séquence d'échappement pour demander la position du curseur
-	write(STDOUT_FILENO, "\033[6n", 4);
-	// Lire la réponse du terminal
-	while (i < sizeof(buf) - 1)
-	{
-		ret = read(STDIN_FILENO, buf + i, 1);
-		if (ret != 1 || buf[i] == 'R')
-			break ;
-		i++;
-	}
-	buf[i] = '\0';
-	// Analyser la réponse du terminal
-	if (buf[0] == '\033' && buf[1] == '[')
-		sscanf(buf + 2, "%d;%d", rows, cols);
 }
 
 int	arrow_iput(char **input, int cols)

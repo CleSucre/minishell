@@ -33,8 +33,8 @@ void	enable_raw_mode(t_termios *termios)
 {
 	struct termios	new_termios;
 
-	new_termios = *termios->original_termios;
 	save_termios(termios);
+	new_termios = *termios->original_termios;
 	new_termios.c_lflag &= ~(ECHO | ICANON | ISIG);
 	new_termios.c_cc[VERASE] = 127;
 	new_termios.c_iflag &= ~(ICRNL | INLCR | IGNCR);

@@ -23,9 +23,10 @@
 
 typedef struct s_history
 {
+	int					pos;
 	char				*cmd;
-	struct s_history	*prev;
-	struct s_history	*next;
+	struct s_history	*older;
+	struct s_history	*newer;
 }		t_history;
 
 // ########################################################

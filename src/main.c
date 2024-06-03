@@ -14,7 +14,7 @@
 
 static void	destroy_minishell(t_minishell *minishell)
 {
-	//free_history(minishell);
+	free_history(minishell->history);
 	free(minishell);
 }
 
@@ -25,8 +25,17 @@ t_minishell	*init_minishell(void)
 	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)
 		return (NULL);
-	minishell->history = NULL;
-	//refresh_history(minishell);
+	minishell->history = malloc(sizeof(t_history));
+	if (!minishell->history)
+	{
+		free(minishell);
+		return (NULL);
+	}
+	minishell->history->cmd = NULL;
+	minishell->history->older = NULL;
+	minishell->history->newer = NULL;
+	minishell->history->pos = 0;
+	load_history(minishell->history);
 	return (minishell);
 }
 
