@@ -20,6 +20,7 @@
 // #						HISTORY						  #
 // ########################################################
 
+char	*search_history(t_minishell *minishell, char *cmd);
 void	add_to_history(t_minishell *minishell, char *cmd);
 int		refresh_history(t_minishell *minishell);
 void	reset_history(void);
@@ -29,7 +30,7 @@ int		get_history_file(void);
 // #						EXECOTOR					  #
 // ########################################################
 
-int		wait_input(char **input, t_minishell *minishell);
+int		use_termios(t_minishell *minishell, char **input);
 int		exec_command(t_minishell *minishell, char *input);
 
 
@@ -46,6 +47,7 @@ void	process_raw_arrow(t_termios *termios);
 // ########################################################
 
 void	erase_term(size_t len);
+void	terminal_print(char *str, int nl);
 
 // ########################################################
 // #						MAIN						  #

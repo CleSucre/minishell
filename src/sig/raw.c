@@ -20,36 +20,59 @@
  * the terminal, as canonical mode, echo and transmission speed
  */
 
+void save_termios(t_termios *termios) {
+	if (tcgetattr(STDIN_FILENO, termios->original_termios) == -1) {
+		perror("tcgetattr");
+	}
+}
+
 /**
  * @brief enable raw mode to read char, and catch exhaust sequence
  * @param original_termios
  * @return none
  */
-
 void enable_raw_mode(t_termios *termios) {
-    struct termios raw;
+    struct termios new_termios;
 
-    // Obtenir les attributs du terminal actuel
-    if (tcgetattr(STDIN_FILENO, termios->original_termios) == -1) {
-        perror("tcgetattr");
-        return;
-    }
+	new_termios = *termios->original_termios;
 
-    // Copier les attributs pour les modifier
-    raw = *termios->original_termios;
+	save_termios(termios);
 
-    // Modifier les attributs pour le mode brut
-    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-    raw.c_iflag &= ~(BRKINT | INPCK | ISTRIP | IXON | ICRNL);
-    raw.c_cflag |= (CS8);
-    raw.c_oflag &= ~(OPOST);
-    raw.c_cc[VMIN] = 1;
-    raw.c_cc[VTIME] = 0;
+	// Désactiver les signaux de contrôle, l'écho, le mode canonique, etc.
+	// ECHO : Echo des caractères saisis
+	// ICANON : Mode canonique, si activé, les caractères sont lus ligne par ligne
+	// IEXTEN : Caractères d'extension (Ctrl+V, Ctrl+O)
+	// ISIG : Signaux de contrôle (Ctrl+C, Ctrl+Z)
+	new_termios.c_lflag &= ~(ECHO | ICANON | ISIG);
 
-    // Appliquer les nouveaux attributs du terminal
-    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
+	new_termios.c_cc[VERASE] = 127; //127 est le code ASCII pour DEL
+
+
+	// Désactiver le contrôle de flux sauf ICRNL pour activer la conversion CR à NL
+	// BRKINT : Si défini, un signal d'interruption est envoyé à l'application et non au processus
+	// INPCK : Vérification de parité
+	// ISTRIP : Dépouillement des bits
+	// IXON : Contrôle de flux logiciel
+	// ICRNL : Conversion CR à NL
+	// INLCR : Conversion NL à CR
+	// IGNCR : Ignorer CR
+	new_termios.c_iflag &= ~(ICRNL | INLCR | IGNCR);
+
+	// Désactiver le contrôle de sortie
+	// CS8 : Configurer les caractères à 8 bits
+	// HUPCL : Fermeture du terminal lors de la dernière sortie
+	//new_termios.c_cflag |= (CS8 | HUPCL);
+
+    //new_termios.c_oflag &= ~(OPOST);
+
+	//VMIN : Nombre minimal de caractères pour lire (en mode non canonique).
+    new_termios.c_cc[VMIN] = 1;
+    //VTIME : Temps d'attente pour lire (en mode non canonique).
+	new_termios.c_cc[VTIME] = 1; //1/10ème de seconde
+
+   // Appliquer les nouveaux paramètres immédiatement
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &new_termios) == -1) {
         perror("tcsetattr");
-        return;
     }
 }
 
@@ -59,9 +82,8 @@ void enable_raw_mode(t_termios *termios) {
  * @return none
  */
 
-void disable_raw_mode(t_termios *termios) {
-    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, termios->original_termios) == -1) {
+void disable_raw_mode(t_termios *termios)
+{
+    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, termios->original_termios) == -1)
         perror("tcsetattr");
-		return ;
-    }
 }

@@ -21,28 +21,25 @@
  * @param int index
  * @return char *
  */
-char	*search_history(t_minishell *minishell, char *cmd, int index)
+char	*search_history(t_minishell *minishell, char *cmd)
 {
 	t_history	*tmp;
-	int			i;
 
 	tmp = minishell->history;
-	i = 0;
-	while (tmp)
+	while (tmp && tmp->next)
 	{
+		ft_fprintf(2, "[%s] %d\n", cmd, ft_strlen(cmd));
 		if (ft_strncmp(tmp->cmd, cmd, ft_strlen(cmd)) == 0)
 		{
-			if (i == index)
-				return (tmp->cmd);
-			i++;
+			return (tmp->cmd);
 		}
 		tmp = tmp->next;
 	}
-	return (NULL);
+	return ("NONE");
 }
 
 /**
- * @brief Refresh the history list from file
+ * @brief Refresh the history from file
  *
  * @param t_minishell *minishell
  * @return int
@@ -52,7 +49,7 @@ int	refresh_history(t_minishell *minishell)
 	int		fd;
 	char	*line;
 
-	fd = open(HISTORY_FILE, O_RDONLY);
+	fd = open(HISTORY_FILE, O_RDONLY | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		if (DEBUG)
@@ -64,6 +61,7 @@ int	refresh_history(t_minishell *minishell)
 	{
 		add_to_history(minishell, line);
 		free(line);
+		line = NULL;
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -93,11 +91,13 @@ void	add_to_history(t_minishell *minishell, char *cmd)
 	fd = get_history_file();
 	if (fd < 0)
 		return ;
-	write(fd, cmd, ft_strlen(cmd));
-	write(fd, "\n", 1);
+	ft_putstr_fd(cmd, fd);
+	ft_putchar_fd('\n', fd);
 	if (DEBUG)
-		ft_printf(BOLDWHITE"[DEBUG] "RESET"Command "
-			BOLDWHITE"%s"RESET" added to history\n", cmd);
+	{
+		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE"%s"RESET" added to history", 0);
+		terminal_print(cmd, 1);
+	}
 }
 
 /**

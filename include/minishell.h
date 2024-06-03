@@ -13,11 +13,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
 
-
+# define TERMINAL_PROMPT "minishell$ "
 
 // ########################################################
 // #					CUSTOM INCLUDES					  #
@@ -41,7 +42,8 @@
 // ########################################################
 
 # include <stdio.h>
-# include <readline/readline.h>
+//   #include <readline/readline.h>
+# include <readline/history.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/types.h>
@@ -52,6 +54,7 @@
 # include <string.h>
 # include <termios.h>
 # include <fcntl.h>
-# include <termios.h>
+#include  <termios.h>
+
 
 #endif

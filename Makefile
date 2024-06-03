@@ -84,8 +84,10 @@ fclean:
 
 re: fclean all
 
+VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
+
 run:
-	@clear && $(MAKE) re DEBUG=1 && valgrind --leak-check=full --track-origins=yes ./minishell
+	@clear && $(MAKE) re DEBUG=1 && ./minishell
 
 norm:
 	@norminette | grep Error || echo "$(GREEN)Success"

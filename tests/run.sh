@@ -1,3 +1,3 @@
 clear
-gcc -Wall -Werror -Wextra termios.c -o termios
+gcc -Wall -Werror -Wextra main.c -o termios
 ./termios
