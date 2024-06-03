@@ -86,7 +86,7 @@ int		ft_putnbr_unsigned_fd(unsigned int nb, int fd);
 int		ft_putnbr_float_fd(double n, int fd);
 int		ft_putpointer_fd(void *ptr, int fd);
 int		ft_count_words(char const *str, char const *charset);
-void	ft_trunc(char *str, size_t era);
+void	ft_trunc(char **str, size_t era);
 
 // ========LIST========
 

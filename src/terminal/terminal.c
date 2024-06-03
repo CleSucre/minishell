@@ -78,7 +78,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	{
 		if (ft_strlen(*input) > 0)
 		{
-			*input = ft_substr(*input, 0, ft_strlen(*input) - 1);
+			ft_trunc(input, 1);
 			erase_term(1);
 		}
 	}
@@ -93,6 +93,9 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		interpret_escape_sequence(*input);
 	else
 	{
+		//TODO: Recup les col et raw avec la fonction pour savoir ou faire le split
+		//TODO: join le nouveau char à la fin de input
+		//TODO: split en 2 dans le cas d'un insert
 		*input = ft_charjoin(*input, c);
 		ft_putchar_fd(c, 1);
 	}
