@@ -21,7 +21,7 @@ int	exec_command(t_minishell *minishell, char *input)
 		terminal_print(RESET" executed", 0);
 	}
 	if (ft_isprint(*input))
-		add_to_history(minishell, input, 1);
+		add_to_history(minishell->history, input, 1);
 	if (ft_strncmp(input, "exit", 4) == 0)
 		return (1);
 	return (0);

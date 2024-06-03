@@ -25,8 +25,16 @@ t_minishell	*init_minishell(void)
 	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)
 		return (NULL);
-	minishell->history = NULL;
-	load_history(minishell);
+	minishell->history = malloc(sizeof(t_history));
+	if (!minishell->history)
+	{
+		free(minishell);
+		return (NULL);
+	}
+	minishell->history->cmd = NULL;
+	minishell->history->next = NULL;
+	minishell->history->prev = NULL;
+	load_history(minishell->history);
 	return (minishell);
 }
 

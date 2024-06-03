@@ -16,16 +16,16 @@
  * @brief Search in history list for a command with the same prefix
  * starting from the given index
  *
- * @param t_minishell *minishell
+ * @param t_history *history
  * @param char *cmd
  * @param int index
  * @return char *
  */
-char	*search_history(t_minishell *minishell, char *cmd)
+char	*search_history(t_history *history, char *cmd)
 {
 	t_history	*tmp;
 
-	tmp = minishell->history;
+	tmp = history;
 	while (tmp && tmp->next)
 	{
 		ft_fprintf(2, "[%s] %d\n", cmd, ft_strlen(cmd));
@@ -41,10 +41,10 @@ char	*search_history(t_minishell *minishell, char *cmd)
 /**
  * @brief Load the history from file
  *
- * @param t_minishell *minishell
- * @return int
+ * @param t_history *history
+ * @return int 0 if success, -1 if failed
  */
-int	load_history(t_minishell *minishell)
+int	load_history(t_history *history)
 {
 	int		fd;
 	char	*line;
@@ -59,7 +59,7 @@ int	load_history(t_minishell *minishell)
 	line = get_next_line(fd);
 	while (line)
 	{
-		add_to_history(minishell, line, 0);
+		add_to_history(history, line, 0);
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -70,25 +70,23 @@ int	load_history(t_minishell *minishell)
 /**
  * @brief Add command to history file
  *
- * @param t_minishell *minishell
+ * @param t_history *history
  * @param char *cmd
  * @param int fs save to file if 1
  * @return none
  */
-void	add_to_history(t_minishell *minishell, char *cmd, int fs)
+void	add_to_history(t_history *history, char *cmd, int fs)
 {
-	int			fd;
 	t_history	*new;
+	int			fd;
 
-	new = (t_history *)malloc(sizeof(t_history));
+	new = malloc(sizeof(t_history));
 	if (!new)
 		return ;
 	new->cmd = ft_strdup(cmd);
-	new->prev = NULL;
-	new->next = minishell->history;
-	if (minishell->history)
-		minishell->history->prev = new;
-	minishell->history = new;
+	new->next = history->next;
+	new->prev = history;
+	history->next = new;
 	if (DEBUG)
 	{
 		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
@@ -115,6 +113,7 @@ void	free_history(t_history *history)
 		free(tmp->cmd);
 		free(tmp);
 	}
+	free(history);
 }
 
 /**
