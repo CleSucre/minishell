@@ -20,8 +20,8 @@
 // #						HISTORY						  #
 // ########################################################
 
-char	*search_history(t_history *history, char *cmd);
-void	add_to_history(t_history *history, char *cmd, int fs);
+char	*search_history(t_history *history, char *cmd, int direction);
+int		add_to_history(t_history *history, char *cmd, int fs);
 int		load_history(t_history *history);
 void	free_history(t_history *history);
 void	reset_history(void);

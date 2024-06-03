@@ -66,9 +66,10 @@ void	get_cursor_position(int *rows, int *cols)
 		sscanf(buf + 2, "%d;%d", rows, cols);
 }
 
-int	interpret_escape_sequence(char *input, int cols)
+int	interpret_escape_sequence(t_history *history, char **input, int cols)
 {
 	char	seq[2];
+	char 	*new_input;
 
 	if (read(STDIN_FILENO, &seq[0], 1) == -1)
 		return (-1);
@@ -77,10 +78,23 @@ int	interpret_escape_sequence(char *input, int cols)
 	if (seq[0] == '[')
 	{
 		if (seq[1] == 'A')
-			ft_putstr_fd("\033A", 1);
+		{
+			//ft_putstr_fd("\033A", 1);
+			//sreach in history and replace input
+			new_input = search_history(history, *input, 1);
+			if (new_input)
+			{
+				erase_term(ft_strlen(*input));
+				*input = new_input;
+				//replace input
+				terminal_print(*input, 0);
+			}
+		}
 		else if (seq[1] == 'B')
+		{
 			ft_putstr_fd("\033B", 1);
-		else if (seq[1] == 'C' && cols < ft_strlen(input) + ft_strlen(TERMINAL_PROMPT) + 1)
+		}
+		else if (seq[1] == 'C' && cols < ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
 			ft_putstr_fd("\033[1C", 1);
 		else if (seq[1] == 'D' && cols > ft_strlen(TERMINAL_PROMPT) + 1)
 			ft_putstr_fd("\033[1D", 1);
@@ -112,7 +126,7 @@ int	process_action(t_minishell *minishell, char c, char **input, int cols)
 	}
 	else if (c == '\033') //[ESC]
 	{
-		if (interpret_escape_sequence(*input, cols))
+		if (interpret_escape_sequence(minishell->history, input, cols))
 			return (0);
 	}
 	else

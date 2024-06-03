@@ -32,8 +32,9 @@ t_minishell	*init_minishell(void)
 		return (NULL);
 	}
 	minishell->history->cmd = NULL;
-	minishell->history->next = NULL;
-	minishell->history->prev = NULL;
+	minishell->history->older = NULL;
+	minishell->history->newer = NULL;
+	minishell->history->pos = 0;
 	load_history(minishell->history);
 	return (minishell);
 }
