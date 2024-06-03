@@ -14,16 +14,14 @@
 
 int	exec_command(t_minishell *minishell, char *input)
 {
-	(void)minishell;
 	if (DEBUG)
 	{
-		terminal_print(BOLDWHITE"[DEBUG] command: "RESET, 1);
+		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
 		terminal_print(input, 0);
+		terminal_print(RESET" executed", 0);
 	}
 	if (ft_isprint(*input))
-	{
-		//add_to_history(minishell, input);
-	}
+		add_to_history(minishell, input, 1);
 	if (ft_strncmp(input, "exit", 4) == 0)
 		return (1);
 	return (0);

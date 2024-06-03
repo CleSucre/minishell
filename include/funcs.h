@@ -21,8 +21,9 @@
 // ########################################################
 
 char	*search_history(t_minishell *minishell, char *cmd);
-void	add_to_history(t_minishell *minishell, char *cmd);
-int		refresh_history(t_minishell *minishell);
+void	add_to_history(t_minishell *minishell, char *cmd, int fs);
+int		load_history(t_minishell *minishell);
+void	free_history(t_history *history);
 void	reset_history(void);
 int		get_history_file(void);
 

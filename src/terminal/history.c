@@ -39,29 +39,28 @@ char	*search_history(t_minishell *minishell, char *cmd)
 }
 
 /**
- * @brief Refresh the history from file
+ * @brief Load the history from file
  *
  * @param t_minishell *minishell
  * @return int
  */
-int	refresh_history(t_minishell *minishell)
+int	load_history(t_minishell *minishell)
 {
 	int		fd;
 	char	*line;
 
-	fd = open(HISTORY_FILE, O_RDONLY | O_CREAT, 0644);
+	fd = open(HISTORY_FILE, O_RDONLY);
 	if (fd < 0)
 	{
 		if (DEBUG)
 			ft_fprintf(2, BOLDRED"Error: "RESET"open failed\n");
-		return (1);
+		return (-1);
 	}
 	line = get_next_line(fd);
 	while (line)
 	{
-		add_to_history(minishell, line);
+		add_to_history(minishell, line, 0);
 		free(line);
-		line = NULL;
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -71,10 +70,12 @@ int	refresh_history(t_minishell *minishell)
 /**
  * @brief Add command to history file
  *
+ * @param t_minishell *minishell
  * @param char *cmd
+ * @param int fs save to file if 1
  * @return none
  */
-void	add_to_history(t_minishell *minishell, char *cmd)
+void	add_to_history(t_minishell *minishell, char *cmd, int fs)
 {
 	int			fd;
 	t_history	*new;
@@ -88,16 +89,31 @@ void	add_to_history(t_minishell *minishell, char *cmd)
 	if (minishell->history)
 		minishell->history->prev = new;
 	minishell->history = new;
+	if (DEBUG)
+	{
+		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
+		terminal_print(new->cmd, 0);
+		terminal_print(RESET" added to history", 0);
+	}
+	if (!fs)
+		return ;
 	fd = get_history_file();
 	if (fd < 0)
 		return ;
-	ft_putstr_fd(cmd, fd);
+	ft_putstr_fd(new->cmd, fd);
 	ft_putchar_fd('\n', fd);
-	if (DEBUG)
+}
+
+void	free_history(t_history *history)
+{
+	t_history	*tmp;
+
+	while (history)
 	{
-		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "
-			BOLDWHITE"%s"RESET" added to history", 0);
-		terminal_print(cmd, 1);
+		tmp = history;
+		history = history->next;
+		free(tmp->cmd);
+		free(tmp);
 	}
 }
 
