@@ -70,12 +70,13 @@ void	get_cursor_position(int *rows, size_t *cols)
 {
 	char			buf[32];
 	unsigned int	i;
-	int				ret;
+    ssize_t				ret;
 
 	i = 0;
 	write(STDOUT_FILENO, "\033[6n", 4);
 	while (i < sizeof(buf) - 1)
 	{
+        //invalid read with CLion terminal debugger
 		ret = read(STDIN_FILENO, buf + i, 1);
 		if (ret != 1 || buf[i] == 'R')
 			break ;
@@ -119,7 +120,6 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 	{
 		if (seq[1] == 'A')
 		{
-            //ft_printf("\npos: %d\n", minishell->history_pos);
 			if (minishell->history_pos == 0)
 			{
 				free(minishell->cache->input);
@@ -179,9 +179,10 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
  * @brief Move cursor from cols to n positions
  * @param position
  */
-void	move_cursor_back(int position)
+void	move_cursor_back(size_t position)
 {
-	int i;
+    size_t  i;
+
 	i = 0;
 	while(i++ < position)
 		ft_putstr_fd("\033[1D", 1);
@@ -192,7 +193,7 @@ void	move_cursor_back(int position)
  * @param input
  * @param cols
  */
-void	reset_stdin(char *input, int cols)
+void	reset_stdin(const char *input, size_t cols)
 {
 	(void)input;
 	ft_putstr_fd("\033[2K", 1);
@@ -228,7 +229,7 @@ char	*put_in_string(char *input, char c, size_t cols)
 		i++;
 	}
 	free(input);
-	reset_stdin(res, (size_t)cols);;
+	reset_stdin(res, cols);
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u\033[1C", 1);
 	return (res);
@@ -264,8 +265,8 @@ char	*erase_in_string(char *input, size_t cols)
 		res[i-1] = input[i];
 		i++;
 	}
-	free(input);
 	reset_stdin(input, cols);
+    free(input);
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u", 1);
 	if (cols > ft_strlen(TERMINAL_PROMPT) + 1)
