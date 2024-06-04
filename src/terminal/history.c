@@ -25,8 +25,12 @@ t_history	*history_find_up(t_minishell *minishell, char *cmd)
 	t_history		*history;
 	unsigned int	pos;
 
+	if (ft_strlen(cmd) == 0)
+		return (history_up(minishell));
 	pos = minishell->history_pos;
 	history = history_up(minishell);
+	if (!history)
+		return (history_get_current(minishell));
 	while (history && history->cmd && cmd)
 	{
 		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0)
@@ -34,7 +38,7 @@ t_history	*history_find_up(t_minishell *minishell, char *cmd)
 		history = history_up(minishell);
 	}
 	minishell->history_pos = pos;
-	return (NULL);
+	return (history_get_current(minishell));
 }
 
 t_history	*history_find_down(t_minishell *minishell, char *cmd)
@@ -42,8 +46,12 @@ t_history	*history_find_down(t_minishell *minishell, char *cmd)
 	t_history		*history;
 	unsigned int	pos;
 
+	if (ft_strlen(cmd) == 0)
+		return (history_down(minishell));
 	pos = minishell->history_pos;
 	history = history_down(minishell);
+	if (!history)
+		return (history_get_current(minishell));
 	while (history && history->cmd && cmd)
 	{
 		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0)
@@ -51,15 +59,13 @@ t_history	*history_find_down(t_minishell *minishell, char *cmd)
 		history = history_down(minishell);
 	}
 	minishell->history_pos = pos;
-	return (NULL);
+	return (history_get_current(minishell));
 }
 
 t_history	*history_up(t_minishell *minishell)
 {
-	if (minishell->history_pos < minishell->history_size - 1)
+	if (minishell->history_pos < minishell->history_size)
 		minishell->history_pos++;
-	else
-		return (NULL);
 	return (history_get_current(minishell));
 }
 
@@ -67,8 +73,6 @@ t_history	*history_down(t_minishell *minishell)
 {
 	if (minishell->history_pos > 0)
 		minishell->history_pos--;
-	else
-		return (NULL);
 	return (history_get_current(minishell));
 }
 

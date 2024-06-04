@@ -38,7 +38,7 @@ t_minishell	*init_minishell(void)
 		free(minishell);
 		return (NULL);
 	}
-	minishell->cache->input = NULL;
+	minishell->cache->input = ft_strdup("");
 	minishell->history = ft_calloc(sizeof(t_history), 1);
 	if (!minishell->history)
 	{

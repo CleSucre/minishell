@@ -119,23 +119,12 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 		{
 			if (minishell->history_pos == 0)
 			{
-				if (minishell->cache->input)
-					free(minishell->cache->input);
+				free(minishell->cache->input);
 				minishell->cache->input = ft_strdup(*input);
 			}
-			if (!minishell->cache->input)
-				new_history = history_find_up(minishell, *input);
-			else if (ft_strlen(*input))
-			{
-				new_history = history_find_up(minishell, minishell->cache->input);
-				if (!new_history)
-					new_history = history_get_current(minishell);
-			}
-			if (!new_history)
-				new_history = history_up(minishell);
+			new_history = history_find_up(minishell, minishell->cache->input);
 			if (new_history && new_history->cmd)
 			{
-				erase_term(ft_strlen(*input));
 				free(*input);
 				*input = ft_strdup(new_history->cmd);
 				ft_putstr_fd("\033[1000D", 1);
@@ -146,22 +135,7 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 		}
 		else if (seq[1] == 'B')
 		{
-			if (minishell->cache->input)
-			{
-				new_history = history_find_down(minishell, minishell->cache->input);
-				if (!new_history)
-				{
-					free(*input);
-					*input = ft_strdup(minishell->cache->input);
-					ft_putstr_fd("\033[1000D", 1);
-					terminal_print("\033[2K", 0);
-					terminal_print(TERMINAL_PROMPT, 0);
-					terminal_print(*input, 0);
-					return (1);
-				}
-			}
-			else
-				new_history = history_down(minishell);
+			new_history = history_find_down(minishell, minishell->cache->input);
 			if (new_history && new_history->cmd)
 			{
 				free(*input);
