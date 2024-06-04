@@ -14,6 +14,8 @@
 
 int	exec_command(t_minishell *minishell, char *input)
 {
+	if (ft_strlen(input) == 0)
+		return (0);
 	if (DEBUG)
 	{
 		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
@@ -21,8 +23,8 @@ int	exec_command(t_minishell *minishell, char *input)
 		terminal_print(RESET" executed", 0);
 	}
 	if (ft_isprint(*input))
-		add_to_history(minishell->history, input, 1);
+		history_add(minishell, input, 1);
 	if (ft_strncmp(input, "exit", 4) == 0)
-		return (1);
+				return (1);
 	return (0);
 }

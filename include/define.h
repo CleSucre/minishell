@@ -25,5 +25,6 @@
 # define CURSOR_RIGHT "\033[{1}C"
 # define CURSOR_NLINE "\033[E"
 # define CURSOR_PLINE "\033[F]"
+# define CURSOR_ERA "\033[2K"
 
 #endif

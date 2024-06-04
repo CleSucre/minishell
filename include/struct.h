@@ -40,8 +40,12 @@ typedef struct s_termios
 
 typedef struct s_minishell
 {
-	t_history	*history;
-	t_termios	*termios;
+	t_history		*history;
+	t_termios		*termios;
+	int				exit_code;
+	unsigned int	history_pos;
+	unsigned int	history_size;
+
 }		t_minishell;
 
 #endif

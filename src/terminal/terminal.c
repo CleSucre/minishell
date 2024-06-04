@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+/**
+ * @brief	Move back cursor to fake an erasure in our term
+ * @param len
+ */
+
 void	erase_term(size_t len)
 {
 	size_t		i;
@@ -26,6 +31,12 @@ void	erase_term(size_t len)
 	ft_putstr_fd("\033[1D", 1);
 }
 
+/**
+ * @brief 	Print in our terminal
+ * 			if nl, move cursor one line down
+ * @param str 	String to print
+ * @param nl	Move cursor down and print newline(s)
+ */
 void	terminal_print(char *str, int nl)
 {
 	if (nl)
@@ -35,13 +46,25 @@ void	terminal_print(char *str, int nl)
 	ft_printf("%s", str);
 }
 
+
 void	reset_input(char **input)
 {
-	if (*input)
+	if (*input) {
 		free(*input);
-	*input = malloc(sizeof(char));
-	(*input)[0] = '\0';
+		*input = NULL;
+	}
+	*input = ft_calloc(sizeof(char *), 1);
+//	(*input)[0] = '\0';
 }
+
+/**
+ * @brief Get cursor position in our terminal
+ * 			Ask for it
+ * 			Read terms answer
+ * 			Analyse it
+ * @param rows position y
+ * @param cols position x
+ */
 
 void	get_cursor_position(int *rows, int *cols)
 {
@@ -50,9 +73,7 @@ void	get_cursor_position(int *rows, int *cols)
 	int				ret;
 
 	i = 0;
-	// Envoyer la séquence d'échappement pour demander la position du curseur
 	write(STDOUT_FILENO, "\033[6n", 4);
-	// Lire la réponse du terminal
 	while (i < sizeof(buf) - 1)
 	{
 		ret = read(STDIN_FILENO, buf + i, 1);
@@ -61,15 +82,25 @@ void	get_cursor_position(int *rows, int *cols)
 		i++;
 	}
 	buf[i] = '\0';
-	// Analyser la réponse du terminal
 	if (buf[0] == '\033' && buf[1] == '[')
 		sscanf(buf + 2, "%d;%d", rows, cols);
 }
 
-int	interpret_escape_sequence(t_history *history, char **input, int cols)
+/**
+ * @brief Specifically for escape sequence as up-down-left-right arrow
+ * 				- Left & right : Move cursor left and right as bash
+ * 				- Up & Down : 	go search familiar input user already wrote in .ministory
+ * @param history 	.ministory
+ * @param input 	String with command catch by term
+ * @param cols		position
+ * @param seq[2]	read stdin and sort which input was done
+ * @return
+ */
+
+int	interpret_escape_sequence(t_minishell *minishell, char **input, int cols)
 {
-	char	seq[2];
-	char 	*new_input;
+	char		seq[2];
+	t_history	*new_history;
 
 	if (read(STDIN_FILENO, &seq[0], 1) == -1)
 		return (-1);
@@ -79,35 +110,63 @@ int	interpret_escape_sequence(t_history *history, char **input, int cols)
 	{
 		if (seq[1] == 'A')
 		{
-			//ft_putstr_fd("\033A", 1);
-			//sreach in history and replace input
-			new_input = search_history(history, *input, 1);
-			if (new_input)
+			new_history = history_up(minishell);
+			if (new_history && new_history->cmd)
 			{
 				erase_term(ft_strlen(*input));
-				*input = new_input;
-				//replace input
+				free(*input);
+				*input = ft_strdup(new_history->cmd);
+				ft_putstr_fd("\033[1000D", 1);
+				terminal_print("\033[2K", 0);
+				terminal_print(TERMINAL_PROMPT, 0);
 				terminal_print(*input, 0);
 			}
 		}
 		else if (seq[1] == 'B')
 		{
-			ft_putstr_fd("\033B", 1);
+			new_history = history_down(minishell);
+			if (new_history && new_history->cmd)
+			{
+				erase_term(ft_strlen(*input));
+				free(*input);
+				*input = ft_strdup(new_history->cmd);
+				ft_putstr_fd("\033[1000D", 1);
+				terminal_print("\033[2K", 0);
+				terminal_print(TERMINAL_PROMPT, 0);
+				terminal_print(*input, 0);
+			}
 		}
-		else if (seq[1] == 'C' && cols < ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
+		else if (seq[1] == 'C' && (size_t)cols < ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
 			ft_putstr_fd("\033[1C", 1);
-		else if (seq[1] == 'D' && cols > ft_strlen(TERMINAL_PROMPT) + 1)
+		else if (seq[1] == 'D' && (size_t)cols > ft_strlen(TERMINAL_PROMPT) + 1)
 			ft_putstr_fd("\033[1D", 1);
 		return (1);
 	}
 	return (0);
 }
 
+
+/**
+ * @brief 		Sort inputs && act in consequence
+ * @param minishell struct which access history
+ * @param c 		char read by use_termios
+ * @param input 	string which join every char read by termios from 1st to Enter
+ * @param cols 		Cursor position
+ * @return
+ */
+
 int	process_action(t_minishell *minishell, char c, char **input, int cols)
 {
-	if (c == 3 || c == 4)
-	{
+	if (c == 4 && ft_strlen(*input) == 0)
 		return (1);
+	else if (c == 4)
+		return (0);
+	else if (c == 3)
+	{
+		terminal_print("^C", 0);
+		minishell->history->pos = 0;
+		reset_input(input);
+		terminal_print(TERMINAL_PROMPT, 1);
 	}
 	else if (c == 127)
 	{
@@ -119,6 +178,7 @@ int	process_action(t_minishell *minishell, char c, char **input, int cols)
 	}
 	else if (c == '\r' || c == '\n')
 	{
+		minishell->history->pos = 0;
 		if (exec_command(minishell, *input))
 			return (1);
 		reset_input(input);
@@ -126,7 +186,7 @@ int	process_action(t_minishell *minishell, char c, char **input, int cols)
 	}
 	else if (c == '\033') //[ESC]
 	{
-		if (interpret_escape_sequence(minishell->history, input, cols))
+		if (interpret_escape_sequence(minishell, input, cols))
 			return (0);
 	}
 	else
@@ -140,13 +200,20 @@ int	process_action(t_minishell *minishell, char c, char **input, int cols)
 	return (0);
 }
 
+/**
+ * @brief 	get cursor position (cols && rows)
+ *			read inputs and send it to process_action
+ *			When while is break, print Goodbye and close program.
+ * @param minishell Struct which access to history
+ * @return
+ */
+
 int	use_termios(t_minishell *minishell)
 {
 	char	*input;
 	char	c;
 	int		rows;
 	int		cols;
-	int		res;
 
 	input = NULL;
 	reset_input(&input);

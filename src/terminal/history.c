@@ -21,29 +21,61 @@
  * @param int direction 1 for newer, -1 for older
  * @return char *
  */
-char	*search_history(t_history *history, char *cmd, int direction)
+t_history	*history_find(t_minishell *minishell, char *cmd, int direction)
 {
-	t_history	*tmp;
+	t_history	*history;
 	int 		i;
 
-	tmp = history;
+	history = minishell->history;
 	i = 0;
 	if (direction == 1)
 	{
-		while (tmp->newer)
+		while (history->newer)
 		{
-			tmp = tmp->newer;
-			if (i++ > history->pos)
-				continue ;
-			else if (ft_strncmp(tmp->cmd, cmd, ft_strlen(tmp->cmd)) == 0)
+			history = history->newer;
+			if (i < history->pos)
 			{
-				history->pos++;
+				i++;
 				continue ;
 			}
-			if (ft_strncmp(tmp->cmd, cmd, ft_strlen(cmd)) == 0)
-				return (tmp->cmd);
-			history->pos++;
+			if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0)
+			{
+				history->pos = i;
+				return (history);
+			}
+			i++;
 		}
+	}
+	return (NULL);
+}
+
+t_history	*history_up(t_minishell *minishell)
+{
+	if (minishell->history_pos < minishell->history_size)
+		minishell->history_pos++;
+	return (history_get_current(minishell));
+}
+
+t_history	*history_down(t_minishell *minishell)
+{
+	if (minishell->history_pos > 0)
+		minishell->history_pos--;
+	return (history_get_current(minishell));
+}
+
+t_history *history_get_current(t_minishell *minishell)
+{
+	int 		i;
+	t_history	*history;
+
+	i = 0;
+	history = minishell->history;
+	while (history)
+	{
+		if (i == minishell->history_pos)
+			return (history);
+		history = history->older;
+		i++;
 	}
 	return (NULL);
 }
@@ -54,26 +86,23 @@ char	*search_history(t_history *history, char *cmd, int direction)
  * @param t_history *history
  * @return int 0 if success, -1 if failed
  */
-int	load_history(t_history *history)
+int	history_load(t_minishell *minishell)
 {
 	int		fd;
 	char	*line;
-	char	*trimmed;
 
-	fd = open(HISTORY_FILE, O_RDONLY);
+	fd = history_get_file();
 	if (fd < 0)
 	{
 		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET"open failed\n");
+			ft_fprintf(2, BOLDRED"Error: "RESET""HISTORY_FILE" open failed\n");
 		return (-1);
 	}
 	line = get_next_line(fd);
 	while (line)
 	{
-		trimmed = ft_strtrim(line, WHITESPACES);
-		if (trimmed && *trimmed)
-			add_to_history(history, trimmed, 0);
-		free(trimmed);
+		ft_trunc(&line, 1);
+		history_add(minishell, line, 0);
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -91,12 +120,12 @@ int	load_history(t_history *history)
  * @param int fs save to file if 1
  * @return int 0 if added, -1 if failed
  */
-int	add_to_history(t_history *history, char *cmd, int fs)
+int	history_add(t_minishell *minishell, char *cmd, int fs)
 {
 	t_history	*new;
 	int			fd;
 
-	if (history->newer && history->newer->cmd && ft_strcmp(history->newer->cmd, cmd) == 0)
+	if (minishell->history->newer && minishell->history->newer->cmd && ft_strcmp(minishell->history->newer->cmd, cmd) == 0)
 	{
 		if (DEBUG)
 		{
@@ -105,23 +134,16 @@ int	add_to_history(t_history *history, char *cmd, int fs)
 			terminal_print(RESET" not added to history (already the last command)", 0);
 		}
 	} else {
-		new = malloc(sizeof(t_history));
+		new = ft_calloc(sizeof(t_history), 1);
 		if (!new)
 			return (-1);
-		/*
-		 * typedef struct s_history
-		 * {
-		 * char				*cmd;
-		 * struct s_history	*older;
-		 * struct s_history	*newer;
-		 * }		t_history;
-		 */
 		new->cmd = ft_strdup(cmd);
-		new->older = history;
-		new->newer = history->newer;
-		if (history->newer)
-			history->newer->older = new;
-		history->newer = new;
+		new->newer = minishell->history;
+		new->older = minishell->history->older;
+		if (minishell->history->older)
+			minishell->history->older->newer = new;
+		minishell->history->older = new;
+		minishell->history_size++;
 		if (DEBUG)
 		{
 			terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
@@ -131,7 +153,7 @@ int	add_to_history(t_history *history, char *cmd, int fs)
 	}
 	if (!fs)
 		return (0);
-	fd = get_history_file();
+	fd = history_get_file();
 	if (fd < 0)
 		return (-1);
 	ft_putstr_fd(cmd, fd);
@@ -146,14 +168,14 @@ int	add_to_history(t_history *history, char *cmd, int fs)
 	return (0);
 }
 
-void	free_history(t_history *history)
+void	history_free(t_history *history)
 {
 	t_history	*tmp;
 
 	while (history)
 	{
 		tmp = history;
-		history = history->newer;
+		history = history->older;
 		free(tmp->cmd);
 		free(tmp);
 	}
@@ -165,7 +187,7 @@ void	free_history(t_history *history)
  * @param none
  * @return none
  */
-void	reset_history(void)
+void	history_reset(void)
 {
 	int	trunc;
 
@@ -173,7 +195,7 @@ void	reset_history(void)
 	if (trunc == -1)
 	{
 		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET"open failed\n");
+			ft_fprintf(2, BOLDRED"Error: "RESET""HISTORY_FILE" open failed\n");
 		return ;
 	}
 	close (trunc);
@@ -186,15 +208,15 @@ void	reset_history(void)
  * @param none
  * @return int
  */
-int	get_history_file(void)
+int	history_get_file(void)
 {
 	int	fd;
 
-	fd = open(HISTORY_FILE, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	fd = open(HISTORY_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET"open failed\n");
+			ft_fprintf(2, BOLDRED"Error: "RESET""HISTORY_FILE" open failed\n");
 		return (-1);
 	}
 	return (fd);

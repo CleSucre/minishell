@@ -1,0 +1,12 @@
+# Executables
+*.exe
+*.out
+*.a
+*.o
+*.gch
+
+# Jetbrain
+.idea/
+
+# CMake
+cmake-build-debug/

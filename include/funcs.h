@@ -20,34 +20,37 @@
 // #						HISTORY						  #
 // ########################################################
 
-char	*search_history(t_history *history, char *cmd, int direction);
-int		add_to_history(t_history *history, char *cmd, int fs);
-int		load_history(t_history *history);
-void	free_history(t_history *history);
-void	reset_history(void);
-int		get_history_file(void);
+t_history	*history_up(t_minishell *minishell);
+t_history	*history_down(t_minishell *minishell);
+t_history	*history_get_current(t_minishell *minishell);
+t_history	*history_find(t_minishell *minishell, char *cmd, int direction);
+int			history_add(t_minishell *minishell, char *cmd, int fs);
+int			history_load(t_minishell *minishell);
+void		history_free(t_history *history);
+void		history_reset(void);
+int			history_get_file(void);
 
 // ########################################################
-// #						EXECOTOR					  #
+// #						EXECUTOR					  #
 // ########################################################
 
-int		use_termios(t_minishell *minishell);
-int		exec_command(t_minishell *minishell, char *input);
+int			use_termios(t_minishell *minishell);
+int			exec_command(t_minishell *minishell, char *input);
 
 // ########################################################
 // #						RAW 						  #
 // ########################################################
 
-void	disable_raw_mode(t_termios *termios);
-void	enable_raw_mode(t_termios *termios);
-void	process_raw_arrow(t_termios *termios);
+void		disable_raw_mode(t_termios *termios);
+void		enable_raw_mode(t_termios *termios);
+void		process_raw_arrow(t_termios *termios);
 
 // ########################################################
 // #						TERMINAL					  #
 // ########################################################
 
-void	erase_term(size_t len);
-void	terminal_print(char *str, int nl);
+void		erase_term(size_t len);
+void		terminal_print(char *str, int nl);
 
 // ########################################################
 // #						MAIN						  #
