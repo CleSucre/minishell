@@ -218,7 +218,7 @@ char	*put_in_string(char *input, char c, size_t cols)
 		i++;
 	}
 	free(input);
-	reset_stdin(res, cols);;
+	reset_stdin(res, (size_t)cols);;
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u\033[1C", 1);
 	return (res);

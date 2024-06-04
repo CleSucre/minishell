@@ -68,7 +68,7 @@ $(OBJ_PATH)%.o : %.c
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft -lreadline
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft
 	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
 
 

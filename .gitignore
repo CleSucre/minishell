@@ -12,3 +12,7 @@ obj/
 # Libft
 
 libft.a
+
+# CMake
+
+cmake-build-debug/
