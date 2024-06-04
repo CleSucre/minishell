@@ -14,6 +14,8 @@
 
 static void	destroy_minishell(t_minishell *minishell)
 {
+	free(minishell->cache->input);
+	free(minishell->cache);
 	history_free(minishell->history);
 	free(minishell);
 }
@@ -30,9 +32,17 @@ t_minishell	*init_minishell(void)
 	minishell = ft_calloc(sizeof(t_minishell), 1);
 	if (!minishell)
 		return (NULL);
+	minishell->cache = ft_calloc(sizeof(t_cache), 1);
+	if (!minishell->cache)
+	{
+		free(minishell);
+		return (NULL);
+	}
+	minishell->cache->input = NULL;
 	minishell->history = ft_calloc(sizeof(t_history), 1);
 	if (!minishell->history)
 	{
+		free(minishell->cache);
 		free(minishell);
 		return (NULL);
 	}
@@ -40,7 +50,6 @@ t_minishell	*init_minishell(void)
 	minishell->history->cmd = NULL;
 	minishell->history->older = NULL;
 	minishell->history->newer = NULL;
-	minishell->history->pos = 0;
 	history_load(minishell);
 	return (minishell);
 }

@@ -39,7 +39,7 @@ void	enable_raw_mode(t_termios *termios)
 	new_termios.c_cc[VERASE] = 127;
 	new_termios.c_iflag &= ~(ICRNL | INLCR | IGNCR);
 	new_termios.c_cc[VMIN] = 1;
-	new_termios.c_cc[VTIME] = 1;
+	new_termios.c_cc[VTIME] = 0;
 
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &new_termios) == -1)
 		perror("tcsetattr");

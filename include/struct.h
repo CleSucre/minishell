@@ -23,7 +23,6 @@
 
 typedef struct s_history
 {
-	int					pos;
 	char				*cmd;
 	struct s_history	*older;
 	struct s_history	*newer;
@@ -38,8 +37,14 @@ typedef struct s_termios
 	struct termios	*original_termios;
 }		t_termios;
 
+typedef struct s_cache
+{
+	char			*input;
+}		t_cache;
+
 typedef struct s_minishell
 {
+	t_cache			*cache;
 	t_history		*history;
 	t_termios		*termios;
 	int				exit_code;

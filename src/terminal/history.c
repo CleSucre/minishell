@@ -13,46 +13,53 @@
 #include "minishell.h"
 
 /**
- * @brief Search in history list for a command with the same prefix
- * starting from the given index
+ * @brief Search in history a command that start with cmd, return the first one
  *
  * @param t_history *history
  * @param char *cmd
  * @param int direction 1 for newer, -1 for older
  * @return char *
  */
-t_history	*history_find(t_minishell *minishell, char *cmd, int direction)
+t_history	*history_find_up(t_minishell *minishell, char *cmd)
 {
-	t_history	*history;
-	int 		i;
+	t_history		*history;
+	unsigned int	pos;
 
-	history = minishell->history;
-	i = 0;
-	if (direction == 1)
+	pos = minishell->history_pos;
+	history = history_up(minishell);
+	while (history && history->cmd && cmd)
 	{
-		while (history->newer)
-		{
-			history = history->newer;
-			if (i < history->pos)
-			{
-				i++;
-				continue ;
-			}
-			if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0)
-			{
-				history->pos = i;
-				return (history);
-			}
-			i++;
-		}
+		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0)
+			return (history);
+		history = history_up(minishell);
 	}
+	minishell->history_pos = pos;
+	return (NULL);
+}
+
+t_history	*history_find_down(t_minishell *minishell, char *cmd)
+{
+	t_history		*history;
+	unsigned int	pos;
+
+	pos = minishell->history_pos;
+	history = history_down(minishell);
+	while (history && history->cmd && cmd)
+	{
+		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0)
+			return (history);
+		history = history_down(minishell);
+	}
+	minishell->history_pos = pos;
 	return (NULL);
 }
 
 t_history	*history_up(t_minishell *minishell)
 {
-	if (minishell->history_pos < minishell->history_size)
+	if (minishell->history_pos < minishell->history_size - 1)
 		minishell->history_pos++;
+	else
+		return (NULL);
 	return (history_get_current(minishell));
 }
 
@@ -60,13 +67,15 @@ t_history	*history_down(t_minishell *minishell)
 {
 	if (minishell->history_pos > 0)
 		minishell->history_pos--;
+	else
+		return (NULL);
 	return (history_get_current(minishell));
 }
 
 t_history *history_get_current(t_minishell *minishell)
 {
-	int 		i;
-	t_history	*history;
+	unsigned int	i;
+	t_history		*history;
 
 	i = 0;
 	history = minishell->history;
@@ -93,11 +102,7 @@ int	history_load(t_minishell *minishell)
 
 	fd = history_get_file();
 	if (fd < 0)
-	{
-		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET""HISTORY_FILE" open failed\n");
 		return (-1);
-	}
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -125,7 +130,7 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 	t_history	*new;
 	int			fd;
 
-	if (minishell->history->newer && minishell->history->newer->cmd && ft_strcmp(minishell->history->newer->cmd, cmd) == 0)
+	if (minishell->history->older && minishell->history->older->cmd && ft_strcmp(minishell->history->older->cmd, cmd) == 0)
 	{
 		if (DEBUG)
 		{
@@ -168,6 +173,33 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 	return (0);
 }
 
+void	history_print(t_minishell *minishell)
+{
+	t_history	*history;
+	unsigned int	i;
+	unsigned int	j;
+
+	history = minishell->history;
+	while (history && history->older)
+		history = history->older;
+	i = 0;
+	while (history && history->newer)
+	{
+		terminal_print("    ", 1);
+		terminal_print(ft_itoa(i), 0);
+		j = 0;
+		while (j < 4 - ft_nbrlen(i))
+		{
+			terminal_print(" ", 0);
+			j++;
+		}
+		terminal_print(history->cmd, 0);
+		history = history->newer;
+		i++;
+	}
+	terminal_print(TERMINAL_PROMPT, 1);
+}
+
 void	history_free(t_history *history)
 {
 	t_history	*tmp;
@@ -194,8 +226,7 @@ void	history_reset(void)
 	trunc = open(HISTORY_FILE, O_WRONLY | O_TRUNC);
 	if (trunc == -1)
 	{
-		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET""HISTORY_FILE" open failed\n");
+		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed", 1);
 		return ;
 	}
 	close (trunc);
@@ -215,8 +246,7 @@ int	history_get_file(void)
 	fd = open(HISTORY_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (fd < 0)
 	{
-		if (DEBUG)
-			ft_fprintf(2, BOLDRED"Error: "RESET""HISTORY_FILE" open failed\n");
+		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed", 1);
 		return (-1);
 	}
 	return (fd);

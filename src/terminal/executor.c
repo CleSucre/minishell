@@ -26,5 +26,7 @@ int	exec_command(t_minishell *minishell, char *input)
 		history_add(minishell, input, 1);
 	if (ft_strncmp(input, "exit", 4) == 0)
 				return (1);
+	else if (ft_strcmp(input, "history") == 0)
+		history_print(minishell);
 	return (0);
 }

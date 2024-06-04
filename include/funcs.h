@@ -23,9 +23,11 @@
 t_history	*history_up(t_minishell *minishell);
 t_history	*history_down(t_minishell *minishell);
 t_history	*history_get_current(t_minishell *minishell);
-t_history	*history_find(t_minishell *minishell, char *cmd, int direction);
+t_history	*history_find_up(t_minishell *minishell, char *cmd);
+t_history	*history_find_down(t_minishell *minishell, char *cmd);
 int			history_add(t_minishell *minishell, char *cmd, int fs);
 int			history_load(t_minishell *minishell);
+void		history_print(t_minishell *minishell);
 void		history_free(t_history *history);
 void		history_reset(void);
 int			history_get_file(void);
