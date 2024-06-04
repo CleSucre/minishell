@@ -107,7 +107,9 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 {
 	char		seq[2];
 	t_history	*new_history;
+    char        *cmd;
 
+    cmd = NULL;
 	new_history = NULL;
 	if (read(STDIN_FILENO, &seq[0], 1) == -1)
 		return (-1);
@@ -117,6 +119,7 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 	{
 		if (seq[1] == 'A')
 		{
+            //ft_printf("\npos: %d\n", minishell->history_pos);
 			if (minishell->history_pos == 0)
 			{
 				free(minishell->cache->input);
@@ -135,17 +138,24 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 		}
 		else if (seq[1] == 'B')
 		{
+            if (minishell->history_pos == 0)
+            {
+                free(minishell->cache->input);
+                minishell->cache->input = ft_strdup(*input);
+            }
 			new_history = history_find_down(minishell, minishell->cache->input);
 			if (new_history && new_history->cmd)
-			{
-				free(*input);
-				*input = ft_strdup(new_history->cmd);
-				ft_putstr_fd("\033[1000D", 1);
-				terminal_print("\033[2K", 0);
-				terminal_print(TERMINAL_PROMPT, 0);
-				terminal_print(*input, 0);
-			}
-		}
+                cmd = ft_strdup(new_history->cmd);
+            else
+                cmd = ft_strdup(minishell->cache->input);
+            free(*input);
+            *input = ft_strdup(cmd);
+            free(cmd);
+            ft_putstr_fd("\033[1000D", 1);
+            terminal_print("\033[2K", 0);
+            terminal_print(TERMINAL_PROMPT, 0);
+            terminal_print(*input, 0);
+        }
 		else if (seq[1] == 'C' && cols < ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
 			ft_putstr_fd("\033[1C", 1);
 		else if (seq[1] == 'D' && cols > ft_strlen(TERMINAL_PROMPT) + 1)
