@@ -52,6 +52,6 @@ void	enable_raw_mode(t_term *term)
  */
 void	disable_raw_mode(t_term *termios)
 {
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, termios->original_termios) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSANOW, termios->original_termios) == -1)
 		perror("tcsetattr");
 }
