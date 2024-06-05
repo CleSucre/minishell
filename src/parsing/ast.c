@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.h                                           :+:      :+:    :+:   */
+/*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,23 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MEMORY_H
-# define MEMORY_H
+#include "minishell.h"
 
-# include "parsing.h"
+/**
+ * @brief Create ast object
+ *
+ * @param t_type type of ast
+ * @param char *value value of ast
+ * @return t_ast *
+ */
+t_ast	*create_ast(t_type type, char *value)
+{
+	t_ast	*ast;
 
-// ########################################################
-// #						ALLOC						  #
-// ########################################################
+	ast = malloc(sizeof(t_ast));
+	if (!ast)
+		return (NULL);
+	ast->type = type;
+	ast->value = ft_strdup(value);
+	ast->left = NULL;
+	ast->right = NULL;
+	return (ast);
+}
 
-t_minishell	*alloc_minishell(void);
-
-// ########################################################
-// #						FREE						  #
-// ########################################################
-
-void		free_minishell(t_minishell *minishell);
-void		free_tokens(t_token *tokens);
-void		free_ast(t_ast *ast);
-
-#endif
+/**
+ * @brief Print the ast
+ *
+ * @param t_ast *ast
+ * @return None
+ */
+void	print_ast(t_ast *ast)
+{
+	(void)ast;
+}

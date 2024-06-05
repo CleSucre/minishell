@@ -26,7 +26,6 @@ void get_terminal_size(t_term *term)
     term->cols = size.ws_col;
 }
 
-
 /**
  * @brief Get cursor position in our terminal
  * 			Ask for it

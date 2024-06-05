@@ -37,6 +37,7 @@
 # include "history.h"
 # include "memory.h"
 # include "terminal.h"
+# include "parsing.h"
 
 // ########################################################
 // #						DEFAULTS					  #

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.h                                           :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,23 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MEMORY_H
-# define MEMORY_H
+#include "minishell.h"
 
-# include "parsing.h"
+/**
+ * @brief Parse the input and create ast
+ *
+ * @param char *input input to parse
+ * @return t_ast *
+ */
+t_ast	*parse_input(t_minishell *minishell, char *input)
+{
+	t_ast *ast;
+	t_token *start;
+    t_token *tokens;
+	int		i;
 
-// ########################################################
-// #						ALLOC						  #
-// ########################################################
-
-t_minishell	*alloc_minishell(void);
-
-// ########################################################
-// #						FREE						  #
-// ########################################################
-
-void		free_minishell(t_minishell *minishell);
-void		free_tokens(t_token *tokens);
-void		free_ast(t_ast *ast);
-
-#endif
+	if (!input)
+		return (NULL);
+	ast = NULL;
+	tokens = tokenize(input);
+	start = tokens;
+    if (!tokens)
+        return (NULL);
+	print_tokens(tokens);
+	i = 0;
+	while (tokens)
+	{
+		tokens = tokens->next;
+		i++;
+	}
+	free_tokens(start);
+    return (ast);
+}

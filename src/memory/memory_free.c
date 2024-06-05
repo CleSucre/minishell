@@ -45,3 +45,38 @@ void	free_minishell(t_minishell *minishell)
 	history_free(minishell->history);
 	free(minishell);
 }
+
+/**
+ * @brief Free token linked list
+ *
+ * @param t_token *token
+ * @return None
+ */
+void	free_tokens(t_token *tokens)
+{
+	t_token	*tmp;
+
+	while (tokens)
+	{
+		tmp = tokens;
+		tokens = tokens->next;
+		free(tmp->value);
+		free(tmp);
+	}
+}
+
+/**
+ * @brief Free ast linked list
+ *
+ * @param t_ast *ast
+ * @return None
+ */
+void	free_ast(t_ast *ast)
+{
+	if (ast->left)
+		free_ast(ast->left);
+	if (ast->right)
+		free_ast(ast->right);
+	free(ast->value);
+	free(ast);
+}
