@@ -14,11 +14,21 @@
 # define STRUCT_H
 
 // ########################################################
-// #						AST STRUCT					  #
+// #						TERMINAL					  #
 // ########################################################
 
+typedef struct s_term
+{
+	char *			iterm_buffer;
+	char *			strterm_buffer;
+	unsigned int	size;
+	unsigned int	cols;
+	unsigned int	rows;
+	struct termios	*original_termios;
+}		t_term;
+
 // ########################################################
-// #					HISTORY STRUCT					  #
+// #						HISTORY						  #
 // ########################################################
 
 typedef struct s_history
@@ -29,21 +39,13 @@ typedef struct s_history
 }		t_history;
 
 // ########################################################
-// #					MINISHELL STRUCT				  #
+// #						MINISHELL					  #
 // ########################################################
 
 typedef struct s_cache
 {
 	char			*input;
 }		t_cache;
-
-typedef struct s_term
-{
-	unsigned int	size;
-	unsigned int	cols;
-	unsigned int	rows;
-	struct termios	*original_termios;
-}		t_term;
 
 typedef struct s_minishell
 {

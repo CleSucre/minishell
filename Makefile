@@ -1,3 +1,7 @@
+#############################################################################
+#									OS										#
+#############################################################################
+
 ifeq ($(OS), Windows_NT)
 	DIRSEP	= \\
 	CP		= copy
@@ -10,23 +14,41 @@ endif
 
 NAME			= minishell
 
-#################################### SOURCES ####################################
+#############################################################################
+#									SOURCES									#
+#############################################################################
 
-SRCS			= main.c
+SRCS					= main.c
 
-SRCS_TERMINAL	= history.c executor.c terminal.c terminal_information.c
+SRCS_CONFIG				= term_config.c
 
-SRCS_HANDLER	= raw.c
+SRCS_HISTORY			= history.c
 
-#################################################################################
+SRCS_EXECUTION			= execution.c
 
-SRCS_TERMINAL	:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
+SRCS_MEMORY				= memory_alloc.c memory_free.c
 
-SRCS_HANDLER	:= $(addprefix sig$(DIRSEP), $(SRCS_HANDLER))
+SRCS_TERMINAL			= terminal.c terminal_action.c terminal_info.c
 
-SRCS			+= $(SRCS_TERMINAL) $(SRCS_HANDLER)
+#############################################################################
+#									FOLDERS									#
+#############################################################################
 
-SRCS			:= $(addprefix src$(DIRSEP), $(SRCS))
+SRCS_CONFIG				:= $(addprefix config$(DIRSEP), $(SRCS_CONFIG))
+
+SRCS_HISTORY			:= $(addprefix history$(DIRSEP), $(SRCS_HISTORY))
+
+SRCS_EXECUTION			:= $(addprefix execution$(DIRSEP), $(SRCS_EXECUTION))
+
+SRCS_MEMORY				:= $(addprefix memory$(DIRSEP), $(SRCS_MEMORY))
+
+SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
+
+SRCS					+= $(SRCS_TERMINAL) $(SRCS_HANDLER) $(SRCS_MEMORY) $(SRCS_HISTORY) $(SRCS_EXECUTION) $(SRCS_CONFIG)
+
+SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
+
+#############################################################################
 
 OBJ_PATH		= obj$(DIRSEP)
 
@@ -68,7 +90,7 @@ $(OBJ_PATH)%.o : %.c
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT_DIR)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft -lncurses
 	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
 
 

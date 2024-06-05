@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                        :+:      :+:    :+:   */
+/*   config.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#ifndef CONFIG_H
+# define CONFIG_H
 
 // ########################################################
-// #					CURSOR MOVES					  #
+// #					TERM_CONFIG						  #
 // ########################################################
 
-# define CURSOR_UP "\033[{1}A"
-# define CURSOR_DOWN "\033[{1}B"
-# define CURSOR_LEFT "\033[{1}D"
-# define CURSOR_RIGHT "\033[{1}C"
-# define CURSOR_NLINE "\033[E"
-# define CURSOR_PLINE "\033[F]"
-# define CURSOR_ERA "\033[2K"
+void		enable_termios(t_term *term);
+void		disable_termios(t_term *term);
 
 #endif

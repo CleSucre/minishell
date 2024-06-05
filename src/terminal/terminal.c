@@ -13,60 +13,27 @@
 #include "minishell.h"
 
 /**
- * @brief	Move back cursor to fake an erasure in our term
- * @param len
+ * @brief Clear the lines and put back prompt after moving cursor
+ *
+ * @param input
+ * @param cols
  */
-
-void	erase_term(size_t len)
+static void	reset_stdin(const char *input, size_t cols)
 {
-	size_t		i;
-
-	i = 0;
-	while (i < len)
-	{
-		ft_putstr_fd("\033[1D", 1);
-		i++;
-	}
-	ft_putchar_fd(' ', 1);
-	ft_putstr_fd("\033[1D", 1);
-}
-
-/**
- * @brief 	Print in our terminal
- * 			if nl, move cursor one line down
- * @param str 	String to print
- * @param nl	Move cursor down and print newline(s)
- */
-void	terminal_print(char *str, int nl)
-{
-	if (nl)
-		ft_printf("\033[1000D", str);
-	while (nl--)
-		ft_putchar_fd('\n', 1);
-	ft_printf("%s", str);
-}
-
-
-void	reset_input(char **input)
-{
-	if (*input) {
-		free(*input);
-		*input = NULL;
-	}
-	*input = ft_calloc(sizeof(char *), 1);
+	(void)input;
+	ft_putstr_fd("\033[2K", 1);
+	move_cursor_back(cols);
+	terminal_print(TERMINAL_PROMPT, 0);
 }
 
 /**
  * @brief Specifically for escape sequence as up-down-left-right arrow
- * 				- Left & right : Move cursor left and right as bash
- * 				- Up & Down : 	go search familiar input user already wrote in .ministory
- * @param history 	.ministory
- * @param input 	String with command catch by term
- * @param cols		position
- * @param seq[2]	read stdin and sort which input was done
- * @return
+ * 			- Left & right : Move cursor left and right as bash
+ * 			- Up & Down : 	go search familiar input user already wrote in .ministory
+ * @param t_minishell	Struct which access to history
+ * @param input			Current input from user
+ * @return int			1 if an action is done, 0 if not
  */
-
 int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 {
 	char		seq[2];
@@ -128,47 +95,13 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 	return (0);
 }
 
-
 /**
- * @brief 		Sort inputs && act in consequence
- * @param minishell struct which access history
- * @param c 		char read by use_termios
- * @param input 	string which join every char read by termios from 1st to Enter
- * @param cols 		Cursor position
- * @return
- */
-
-/**
- * @brief Move cursor from cols to n positions
- * @param position
- */
-void	move_cursor_back(size_t position)
-{
-    size_t  i;
-
-	i = 0;
-	while(i++ < position)
-		ft_putstr_fd("\033[1D", 1);
-}
-
-/**
- * @brief Clear the lines and put back prompt after moving cursor
- * @param input
- * @param cols
- */
-void	reset_stdin(const char *input, size_t cols)
-{
-	(void)input;
-	ft_putstr_fd("\033[2K", 1);
-	move_cursor_back(cols);
-	terminal_print(TERMINAL_PROMPT, 0);
-}
-
-/**
- * @brief 	Add a char in string at "cols" (n) position
+ * @brief Add a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
- * @param input
- * @param cols
+ *
+ * @param char *input	string to add char
+ * @param char c		char to add
+ * @param cols			Position to add char
  * @return
  */
 
@@ -200,13 +133,13 @@ char	*put_in_string(char *input, char c, size_t cols)
 
 
 /**
- * @brief 	Delete a char in string at "cols" (n) position
+ * @brief Delete a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
- * @param input
- * @param cols
+ *
+ * @param char *input	String to delete char
+ * @param size_t cols	Position to delete char
  * @return
  */
-
 char	*erase_in_string(char *input, size_t cols)
 {
 	char	*res;
@@ -237,64 +170,12 @@ char	*erase_in_string(char *input, size_t cols)
 	return (res);
 }
 
-int	process_action(t_minishell *minishell, char c, char **input)
-{
-	if (c == 4 && ft_strlen(*input) == 0)
-		return (1);
-	else if (c == 4)
-		return (0);
-	else if (c == 3)
-	{
-		terminal_print("^C", 0);
-		reset_input(input);
-		terminal_print(TERMINAL_PROMPT, 1);
-		minishell->history_pos = 0;
-	}
-	else if (c == 127)
-	{
-		if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-			*input = erase_in_string(*input, minishell->term->cols);
-		else if (ft_strlen(*input) > 0)
-		{
-			ft_trunc(input, 1);
-			erase_term(1);
-		}
-
-	}
-	else if (c == '\r' || c == '\n')
-	{
-		if (exec_command(minishell, *input))
-			return (1);
-		reset_input(input);
-		terminal_print(TERMINAL_PROMPT, 1);
-		minishell->history_pos = 0;
-	}
-	else if (c == '\033') //[ESC]
-	{
-		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
-			return (0);
-	}
-	else
-	{
-		if (minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-			*input = put_in_string(*input, c, minishell->term->cols);
-		else
-		{
-			*input = ft_charjoin(*input, c);
-			ft_putchar_fd(c, 1);
-		}
-	}
-	return (0);
-}
-
 /**
- * @brief 	get cursor position (cols && rows)
- *			read inputs and send it to process_action
- *			When while is break, print Goodbye and close program.
- * @param minishell Struct which access to history
- * @return
+ * @brief Use termios to get input from user and process it
+ *
+ * @param t_minishell *minishell
+ * @return int 0 if no error, 1 if error
  */
-
 int	use_termios(t_minishell *minishell)
 {
 	char	*input;

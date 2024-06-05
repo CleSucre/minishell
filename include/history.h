@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                        :+:      :+:    :+:   */
+/*   history.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#ifndef HISTORY_H
+# define HISTORY_H
+
+# define HISTORY_FILE ".ministory"
 
 // ########################################################
-// #					CURSOR MOVES					  #
+// #						HISTORY						  #
 // ########################################################
 
-# define CURSOR_UP "\033[{1}A"
-# define CURSOR_DOWN "\033[{1}B"
-# define CURSOR_LEFT "\033[{1}D"
-# define CURSOR_RIGHT "\033[{1}C"
-# define CURSOR_NLINE "\033[E"
-# define CURSOR_PLINE "\033[F]"
-# define CURSOR_ERA "\033[2K"
+t_history	*history_find_up(t_minishell *minishell, char *cmd);
+t_history	*history_find_down(t_minishell *minishell, char *cmd);
+int			history_load(t_minishell *minishell);
+int			history_add(t_minishell *minishell, char *cmd, int fs);
+void		history_print(t_minishell *minishell);
+void		history_reset(void);
 
 #endif
