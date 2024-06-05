@@ -14,7 +14,7 @@ NAME			= minishell
 
 SRCS			= main.c
 
-SRCS_TERMINAL	= history.c executor.c terminal.c
+SRCS_TERMINAL	= history.c executor.c terminal.c terminal_information.c
 
 SRCS_HANDLER	= raw.c
 

@@ -18,7 +18,7 @@
  * It's used to control differents communications options and signals send to
  * the terminal, as canonical mode, echo and transmission speed
  */
-void	save_termios(t_termios *termios)
+void	save_termios(t_term *termios)
 {
 	if (tcgetattr(STDIN_FILENO, termios->original_termios) == -1)
 		perror("tcgetattr");
@@ -29,12 +29,12 @@ void	save_termios(t_termios *termios)
  * @param original_termios
  * @return none
  */
-void	enable_raw_mode(t_termios *termios)
+void	enable_raw_mode(t_term *term)
 {
 	struct termios	new_termios;
 
-	save_termios(termios);
-	new_termios = *termios->original_termios;
+	save_termios(term);
+	new_termios = *term->original_termios;
 	new_termios.c_lflag &= ~(ECHO | ICANON | ISIG);
 	new_termios.c_cc[VERASE] = 127;
 	new_termios.c_iflag &= ~(ICRNL | INLCR | IGNCR);
@@ -50,7 +50,7 @@ void	enable_raw_mode(t_termios *termios)
  * @param original_termios
  * @return none
  */
-void	disable_raw_mode(t_termios *termios)
+void	disable_raw_mode(t_term *termios)
 {
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, termios->original_termios) == -1)
 		perror("tcsetattr");

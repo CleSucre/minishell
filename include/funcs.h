@@ -43,9 +43,9 @@ int			exec_command(t_minishell *minishell, char *input);
 // #						RAW 						  #
 // ########################################################
 
-void		disable_raw_mode(t_termios *termios);
-void		enable_raw_mode(t_termios *termios);
-void		process_raw_arrow(t_termios *termios);
+void		disable_raw_mode(t_term *term);
+void		enable_raw_mode(t_term *term);
+void		process_raw_arrow(t_term *term);
 
 // ########################################################
 // #						TERMINAL					  #
@@ -53,6 +53,15 @@ void		process_raw_arrow(t_termios *termios);
 
 void		erase_term(size_t len);
 void		terminal_print(char *str, int nl);
+
+
+// ########################################################
+// #				TERMINAL-INFORMATION				  #
+// ########################################################
+
+void	get_terminal_size(t_term *term);
+void	get_cursor_position(t_term *term);
+
 
 // ########################################################
 // #						MAIN						  #
