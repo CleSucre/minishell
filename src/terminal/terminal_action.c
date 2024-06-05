@@ -18,7 +18,7 @@
  * @param size_t len
  * @return None
  */
-static void	erase_term(size_t len)
+void	erase_term(size_t len)
 {
 	size_t		i;
 
@@ -99,13 +99,14 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	}
 	else if (c == 127)
 	{
-		if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-			*input = erase_in_string(*input, minishell->term->cols);
-		else if (ft_strlen(*input) > 0)
-		{
-			ft_trunc(input, 1);
-			erase_term(1);
-		}
+        del(minishell, input);
+//		if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+//			*input = erase_in_string(*input, minishell->term->cols);
+//		else if (ft_strlen(*input) > 0)
+//		{
+//			ft_trunc(input, 1);
+//			erase_term(1);
+//		}
 
 	}
 	else if (c == '\r' || c == '\n')

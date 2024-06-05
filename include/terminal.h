@@ -37,9 +37,18 @@ int			process_action(t_minishell *minishell, char c, char **input);
 
 void		get_terminal_size(t_term *term);
 void		get_cursor_position(t_term *term);
-void		term_info(t_term *term);
+void		term_info(t_minishell *minishell);
 void		get_cursor_position(t_term *term);
 void		move_cursor(t_term *term, int x, int y);
 void		refresh_cline(t_term *term);
+void        del(t_minishell *minishell, char **input);
+
+// ########################################################
+// #					GETENT_TEST						  #
+// ########################################################
+
+int		my_tgetent(t_term *info, const char *term_type);
+char *ft_strncpy(char *dest, const char *src, size_t n);
+
 
 #endif

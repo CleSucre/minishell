@@ -110,7 +110,7 @@ char	*put_in_string(char *input, char c, size_t cols)
 	char	*res;
 	size_t	i;
 
-	res = ft_calloc(sizeof(char *) * ft_strlen(input) + 1, 1);
+	res = ft_calloc(sizeof(char *) * ft_strlen(input) + 2, 1);
 	i = 0;
 	ft_putstr_fd("\033[s", 1);
 	while (input[i] && i < cols - ft_strlen(TERMINAL_PROMPT) - 1)
@@ -147,9 +147,9 @@ char	*erase_in_string(char *input, size_t cols)
 
 	if (cols <= ft_strlen(TERMINAL_PROMPT))
 		return (input);
-	res = ft_calloc(sizeof(char *) * ft_strlen(input), 1);
+	res = ft_calloc(sizeof(char *) * ft_strlen(input) + 2, 1);
 	i = 0;
-	ft_putstr_fd("\033[s", 1);
+//	ft_putstr_fd("\033[s", 1);
 	while (input[i] && i < cols - ft_strlen(TERMINAL_PROMPT) - 2)
 	{
 		res[i] = input[i];
@@ -164,9 +164,9 @@ char	*erase_in_string(char *input, size_t cols)
 	reset_stdin(input, cols);
     free(input);
 	terminal_print(res, 0);
-	ft_putstr_fd("\033[u", 1);
-	if (cols > ft_strlen(TERMINAL_PROMPT) + 1)
-		ft_putstr_fd("\033[1D", 1);
+//	ft_putstr_fd("\033[u", 1);
+//	if (cols > ft_strlen(TERMINAL_PROMPT) + 1)
+//		ft_putstr_fd("\033[1D", 1);
 	return (res);
 }
 
