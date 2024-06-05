@@ -147,19 +147,19 @@ void	refresh_cline(t_term *term)
 /**
 * @brief Delete 1 char
 */
-//void	del(t_minishel *minishell, char **input)
-//{
-//	char	*del_sequence;
-//
-//	del_sequence = tgetstr("dc", &minishell->term->strterm_buffer);
-//	if (!del_sequence)
-//	{
-//		ft_fprintf(2, "Impossible to catch delet_sequence");
-//		exit(EXIT_FAILURE);
-//	}
-//	tputs(del_sequence, 1, NULL);
-//	if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-//			*input = erase_in_string(*input, minishell->term->cols);
-//	else if (ft_strlen(*input) > 0)
-//			ft_trunc(input, 1);
-//}
+void	del(t_minishell *minishell, char **input)
+{
+	char	*del_sequence;
+
+	del_sequence = tgetstr("dc", &minishell->term->strterm_buffer);
+	if (!del_sequence)
+	{
+		ft_fprintf(2, "Impossible to catch delet_sequence");
+		exit(EXIT_FAILURE);
+	}
+	tputs(del_sequence, 1, NULL);
+	if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+			*input = erase_in_string(*input, minishell->term->cols);
+	else if (ft_strlen(*input) > 0)
+			ft_trunc(input, 1);
+}
