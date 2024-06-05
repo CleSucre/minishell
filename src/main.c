@@ -16,6 +16,7 @@ static void	destroy_minishell(t_minishell *minishell)
 {
 	free(minishell->cache->input);
 	free(minishell->cache);
+	free(minishell->term);
 	history_free(minishell->history);
 	free(minishell);
 }
@@ -46,6 +47,18 @@ t_minishell	*init_minishell(void)
 		free(minishell);
 		return (NULL);
 	}
+	minishell->term = ft_calloc(sizeof(t_term), 1);
+	if (!minishell->term)
+	{
+		free(minishell->history);
+		free(minishell->cache);
+		free(minishell);
+		return (NULL);
+	}
+	minishell->term->size = 0;
+	minishell->term->cols = 0;
+	minishell->term->rows = 0;
+
 	minishell->exit_code = 0;
 	minishell->history->cmd = NULL;
 	minishell->history->older = NULL;
@@ -67,17 +80,19 @@ int	main(int argc, char **args, char **env)
 {
 	t_minishell		*minishell;
 	struct termios	original_termios;
-	t_termios		termios;
 	int 			exit_code;
 
 	(void)argc;
 	(void)args;
 	(void)env;
+
 	minishell = init_minishell();
-	termios.original_termios = &original_termios;
-	enable_raw_mode(&termios);
+	minishell->term->original_termios = &original_termios;
+
+	enable_raw_mode(minishell->term);
 	use_termios(minishell);
-	disable_raw_mode(&termios);
+	disable_raw_mode(minishell->term);
+
 	exit_code = minishell->exit_code;
 	destroy_minishell(minishell);
 	return (exit_code);

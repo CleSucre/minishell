@@ -54,43 +54,6 @@ void	reset_input(char **input)
 		*input = NULL;
 	}
 	*input = ft_calloc(sizeof(char *), 1);
-//	(*input)[0] = '\0';
-}
-
-/**
- * @brief Get cursor position in our terminal
- * 			Ask for it
- * 			Read terms answer
- * 			Analyse it
- * @param rows position y
- * @param cols position x
- */
-
-void	get_cursor_position(int *rows, size_t *cols)
-{
-	char			buf[32];
-	unsigned int	i;
-    ssize_t				ret;
-
-	i = 0;
-	write(STDOUT_FILENO, "\033[6n", 4);
-	while (i < sizeof(buf) - 1)
-	{
-        //invalid read with CLion terminal debugger
-		ret = read(STDIN_FILENO, buf + i, 1);
-		if (ret != 1 || buf[i] == 'R')
-			break ;
-		i++;
-	}
-	buf[i] = '\0';
-	if (buf[0] == '\033' && buf[1] == '[')
-	{
-		i = 2;
-		*rows = ft_atoi(buf + i);
-		while (buf[i] && ft_isdigit(buf[i]))
-			i++;
-		*cols = ft_atoi(buf + i + 1);
-	}
 }
 
 /**
@@ -274,7 +237,7 @@ char	*erase_in_string(char *input, size_t cols)
 	return (res);
 }
 
-int	process_action(t_minishell *minishell, char c, char **input, size_t cols)
+int	process_action(t_minishell *minishell, char c, char **input)
 {
 	if (c == 4 && ft_strlen(*input) == 0)
 		return (1);
@@ -289,8 +252,8 @@ int	process_action(t_minishell *minishell, char c, char **input, size_t cols)
 	}
 	else if (c == 127)
 	{
-		if (ft_strlen(*input) > 0 && cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-			*input = erase_in_string(*input, cols);
+		if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+			*input = erase_in_string(*input, minishell->term->cols);
 		else if (ft_strlen(*input) > 0)
 		{
 			ft_trunc(input, 1);
@@ -308,13 +271,13 @@ int	process_action(t_minishell *minishell, char c, char **input, size_t cols)
 	}
 	else if (c == '\033') //[ESC]
 	{
-		if (interpret_escape_sequence(minishell, input, cols))
+		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
 			return (0);
 	}
 	else
 	{
-		if (cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-			*input = put_in_string(*input, c, cols);
+		if (minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+			*input = put_in_string(*input, c, minishell->term->cols);
 		else
 		{
 			*input = ft_charjoin(*input, c);
@@ -336,22 +299,19 @@ int	use_termios(t_minishell *minishell)
 {
 	char	*input;
 	char	c;
-	int		rows;
-	size_t		cols;
 
-	cols = 0;
 	input = NULL;
 	reset_input(&input);
 	terminal_print(TERMINAL_PROMPT, 1);
 	while (1)
 	{
-		get_cursor_position(&rows, &cols);
+		get_cursor_position(minishell->term);
 		if (read(STDIN_FILENO, &c, 1) == -1)
 		{
 			perror("read");
 			return (1);
 		}
-		if (process_action(minishell, c, &input, cols))
+		if (process_action(minishell, c, &input))
 			break ;
 	}
 	terminal_print("Goodbye !", 1);

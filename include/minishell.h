@@ -40,14 +40,15 @@
 // #					DEFAULTS INCLUDES				  #
 // ########################################################
 
+//   #include <readline/readline.h> BOUH LA HONTE CE TRUC AAAAAAHHHHHHHHHHHHHHHHHHHHHHH
 # include <stdio.h>
-//   #include <readline/readline.h>
-# include <stdlib.h>
 # include <unistd.h>
+# include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <signal.h>
+# include <sys/ioctl.h>
 # include <sys/stat.h>
+# include <signal.h>
 # include <dirent.h>
 # include <string.h>
 # include <termios.h>
