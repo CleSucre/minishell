@@ -58,7 +58,8 @@ minishell$
 
 ## Todo
 
+- [x] Study termios
+- [x] Study get_cursor_position
 - [ ] Add perror to error handling
-- [ ] List ansi escape codes for termios in a header file
-- [ ] Study termios
-- [ ] Study get_cursor_position
+- [ ] Live parsing
+
