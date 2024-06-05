@@ -20,39 +20,42 @@
 # define TERMINAL_PROMPT "minishell$ "
 
 // ########################################################
-// #					CUSTOM INCLUDES					  #
+// #						LIBFT						  #
 // ########################################################
 
-# include "../libft/include/libft.h"
 # include "../libft/include/colors.h"
-# include "funcs.h"
-# include "struct.h"
+# include "../libft/include/libft.h"
 
 // ########################################################
-// #					OTHERS INCLUDES					  #
+// #						MINISHELL					  #
 // ########################################################
 
-# include "struct.h"
-# include "funcs.h"
 # include "define.h"
+# include "struct.h"
+# include "config.h"
+# include "execution.h"
+# include "history.h"
+# include "memory.h"
+# include "terminal.h"
 
 // ########################################################
-// #					DEFAULTS INCLUDES				  #
+// #						DEFAULTS					  #
 // ########################################################
 
-//   #include <readline/readline.h> BOUH LA HONTE CE TRUC AAAAAAHHHHHHHHHHHHHHHHHHHHHHH
+//# include <readline/readline.h> BOUH LA HONTE CE TRUC AAAAAAHHHHHHHHHHHHHHHHHHHHHHH !! BURK LES ~400 LEAKS !!!
 # include <stdio.h>
-# include <unistd.h>
 # include <stdlib.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <sys/ioctl.h>
-# include <sys/stat.h>
-# include <signal.h>
-# include <dirent.h>
 # include <string.h>
-# include <termios.h>
+# include <unistd.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/ioctl.h>
+# include <dirent.h>
 # include <termios.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <ncurses.h>
+# include <term.h>
 
 #endif

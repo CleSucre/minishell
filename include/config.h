@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manager.c                                          :+:      :+:    :+:   */
+/*   config.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,23 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef CONFIG_H
+# define CONFIG_H
 
-int	exec_command(t_minishell *minishell, char *input)
-{
-	if (ft_strlen(input) == 0)
-		return (0);
-	if (DEBUG)
-	{
-		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
-		terminal_print(input, 0);
-		terminal_print(RESET" executed", 0);
-	}
-	if (ft_isprint(*input))
-		history_add(minishell, input, 1);
-	if (ft_strncmp(input, "exit", 4) == 0)
-				return (1);
-	else if (ft_strcmp(input, "history") == 0)
-		history_print(minishell);
-	return (0);
-}
+// ########################################################
+// #					TERM_CONFIG						  #
+// ########################################################
+
+void		enable_termios(t_term *term);
+void		disable_termios(t_term *term);
+
+#endif

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                        :+:      :+:    :+:   */
+/*   memory.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#ifndef MEMORY_H
+# define MEMORY_H
 
 // ########################################################
-// #					CURSOR MOVES					  #
+// #						ALLOC						  #
 // ########################################################
 
-# define CURSOR_UP "\033[{1}A"
-# define CURSOR_DOWN "\033[{1}B"
-# define CURSOR_LEFT "\033[{1}D"
-# define CURSOR_RIGHT "\033[{1}C"
-# define CURSOR_NLINE "\033[E"
-# define CURSOR_PLINE "\033[F]"
-# define CURSOR_ERA "\033[2K"
+t_minishell		*alloc_minishell(void);
+
+// ########################################################
+// #						FREE						  #
+// ########################################################
+
+void			free_minishell(t_minishell *minishell);
 
 #endif

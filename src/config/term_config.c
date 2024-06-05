@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raw.c                                              :+:      :+:    :+:   */
+/*   term_config.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,25 +11,25 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <termios.h>
 
 /**
- * Termios struct is used to set shell's settings in UNIX and Linux systems
- * It's used to control differents communications options and signals send to
- * the terminal, as canonical mode, echo and transmission speed
+ * @brief Save the original termios settings
+ *
+ * @param t_term *termios
  */
-void	save_termios(t_term *termios)
+static void	save_termios(t_term *termios)
 {
 	if (tcgetattr(STDIN_FILENO, termios->original_termios) == -1)
 		perror("tcgetattr");
 }
 
 /**
- * @brief enable raw mode to read char, and catch exhaust sequence
- * @param original_termios
- * @return none
+ * @brief Enable termios to read char, and catch exhaust sequence
+ *
+ * @param t_term *term
+ * @return None
  */
-void	enable_raw_mode(t_term *term)
+void	enable_termios(t_term *term)
 {
 	struct termios	new_termios;
 
@@ -46,11 +46,12 @@ void	enable_raw_mode(t_term *term)
 }
 
 /**
- * @brief Restore default settings
- * @param original_termios
- * @return none
+ * @brief Restore default settings of termios
+ *
+ * @param t_term *termios
+ * @return None
  */
-void	disable_raw_mode(t_term *termios)
+void	disable_termios(t_term *termios)
 {
 	if (tcsetattr(STDIN_FILENO, TCSANOW, termios->original_termios) == -1)
 		perror("tcsetattr");

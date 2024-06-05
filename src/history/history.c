@@ -13,6 +13,77 @@
 #include "minishell.h"
 
 /**
+ * @brief Get ministory file fd for reading and writing
+ * 			If the file does not exist, it will be created
+ *
+ * @return int fd if success, -1 if failed
+ */
+static int	history_get_file(void)
+{
+	int	fd;
+
+	fd = open(HISTORY_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed", 1);
+		return (-1);
+	}
+	return (fd);
+}
+
+/**
+ * @brief Get the current history command depending on the history_pos
+ *
+ * @param t_minishell *minishell
+ * @return t_history *
+ */
+static t_history *history_get_current(t_minishell *minishell)
+{
+	unsigned int	i;
+	t_history		*history;
+
+	i = 0;
+	history = minishell->history;
+	while (history)
+	{
+		if (i == minishell->history_pos)
+			return (history);
+		history = history->older;
+		i++;
+	}
+	return (NULL);
+}
+
+/**
+ * @brief Get the next command in history, depending on history_pos
+ * 			Increment history_pos by 1 and return the command
+ * 			Return current command if history_pos is already at the end
+ *
+ * @param t_minishell *minishell
+ * @return t_history *
+ */
+static t_history	*history_up(t_minishell *minishell)
+{
+	if (minishell->history_pos < minishell->history_size)
+		minishell->history_pos++;
+	return (history_get_current(minishell));
+}
+
+/**
+ * @brief Get the previous command in history, depending on history_pos
+ * 			Decrement history_pos by 1 and return the command
+ * 			Return current command if history_pos is already at the beginning
+ * @param t_minishell *minishell
+ * @return t_history *
+ */
+static t_history	*history_down(t_minishell *minishell)
+{
+	if (minishell->history_pos > 0)
+		minishell->history_pos--;
+	return (history_get_current(minishell));
+}
+
+/**
  * @brief Search in history a command that start with cmd, return the first one
  *
  * @param t_history *history
@@ -41,6 +112,15 @@ t_history	*history_find_up(t_minishell *minishell, char *cmd)
 	return (history_get_current(minishell));
 }
 
+/**
+ * @brief Search in history a command that start with cmd
+ * 			Return the next one depending on the history_pos
+ * 			Return the current command if no match is found
+ *
+ * @param t_minishell *minishell
+ * @param char *cmd
+ * @return t_history *
+ */
 t_history	*history_find_down(t_minishell *minishell, char *cmd)
 {
 	t_history		*history;
@@ -61,39 +141,8 @@ t_history	*history_find_down(t_minishell *minishell, char *cmd)
 	return (history_get_current(minishell));
 }
 
-t_history	*history_up(t_minishell *minishell)
-{
-	if (minishell->history_pos < minishell->history_size)
-		minishell->history_pos++;
-	return (history_get_current(minishell));
-}
-
-t_history	*history_down(t_minishell *minishell)
-{
-	if (minishell->history_pos > 0)
-		minishell->history_pos--;
-	return (history_get_current(minishell));
-}
-
-t_history *history_get_current(t_minishell *minishell)
-{
-	unsigned int	i;
-	t_history		*history;
-
-	i = 0;
-	history = minishell->history;
-	while (history)
-	{
-		if (i == minishell->history_pos)
-			return (history);
-		history = history->older;
-		i++;
-	}
-	return (NULL);
-}
-
 /**
- * @brief Load the history from file
+ * @brief Load the history from file to memory
  *
  * @param t_history *history
  * @return int 0 if success, -1 if failed
@@ -121,7 +170,9 @@ int	history_load(t_minishell *minishell)
 }
 
 /**
- * @brief Add command to history file
+ * @brief Add command to history file and memory
+ * 			If the command is the same as the last one, it will not be added
+ * 			to memory but will still be added to the file for log purposes
  *
  * @param t_history *history
  * @param char *cmd
@@ -176,6 +227,12 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 	return (0);
 }
 
+/**
+ * @brief Print the history in the terminal
+ *
+ * @param t_minishell *minishell
+ * @return None
+ */
 void	history_print(t_minishell *minishell)
 {
 	t_history	*history;
@@ -203,24 +260,13 @@ void	history_print(t_minishell *minishell)
 	terminal_print(TERMINAL_PROMPT, 1);
 }
 
-void	history_free(t_history *history)
-{
-	t_history	*tmp;
-
-	while (history)
-	{
-		tmp = history;
-		history = history->older;
-		free(tmp->cmd);
-		free(tmp);
-	}
-}
-
 /**
- * @brief Reset the history & delete the history file
+ * @brief Reset the history to the initial state
  *
- * @param none
- * @return none
+ * TODO: Do we need this function?
+ *
+ * @param None
+ * @return None
  */
 void	history_reset(void)
 {
@@ -233,24 +279,4 @@ void	history_reset(void)
 		return ;
 	}
 	close (trunc);
-}
-
-/**
- * @brief Create ministory file which is the minishell
- * copy from bash_history and return his fd
- *
- * @param none
- * @return int
- */
-int	history_get_file(void)
-{
-	int	fd;
-
-	fd = open(HISTORY_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
-	if (fd < 0)
-	{
-		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed", 1);
-		return (-1);
-	}
-	return (fd);
 }

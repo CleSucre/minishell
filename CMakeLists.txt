@@ -12,8 +12,7 @@ include_directories(include)
 # Source files
 set(SRCS
         src/main.c
-        src/terminal/history.c
-        src/terminal/executor.c
+        src/execution/execution.c
         src/terminal/terminal.c
         src/sig/raw.c
 )
