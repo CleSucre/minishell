@@ -24,19 +24,16 @@ int	main(int argc, char **args, char **env)
 {
 	t_minishell		*minishell;
 	struct termios	original_termios;
-	int 			exit_code;
+	int				exit_code;
 
 	(void)argc;
 	(void)args;
 	(void)env;
-
 	minishell = alloc_minishell();
 	minishell->term->original_termios = &original_termios;
-
 	enable_termios(minishell->term);
 	use_termios(minishell);
 	disable_termios(minishell->term);
-
 	exit_code = minishell->exit_code;
 	free_minishell(minishell);
 	return (exit_code);

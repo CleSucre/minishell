@@ -56,7 +56,8 @@ void	terminal_print(char *str, int nl)
  */
 void	reset_input(char **input)
 {
-	if (*input) {
+	if (*input)
+	{
 		free(*input);
 		*input = NULL;
 	}
@@ -69,10 +70,10 @@ void	reset_input(char **input)
  */
 void	move_cursor_back(size_t position)
 {
-    size_t  i;
+	size_t	i;
 
 	i = 0;
-	while(i++ < position)
+	while (i++ < position)
 		ft_putstr_fd("\033[1D", 1);
 }
 
@@ -81,7 +82,8 @@ void	move_cursor_back(size_t position)
  *
  * @param t_minishell *minishell 	struct which access history
  * @param char c					char read by use_termios
- * @param char **input				string which join every char read by termios from 1st to Enter
+ * @param char **input				string which join every char
+ * 								read by termios from 1st to Enter
  * @return int 						1 if exit, 0 if not
  */
 int	process_action(t_minishell *minishell, char c, char **input)
@@ -99,14 +101,14 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	}
 	else if (c == 127)
 	{
-		if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+		if (ft_strlen(*input) > 0 && minishell->term->cols
+			!= ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
 			*input = erase_in_string(*input, minishell->term->cols);
 		else if (ft_strlen(*input) > 0)
 		{
 			ft_trunc(input, 1);
 			erase_term(1);
 		}
-
 	}
 	else if (c == '\r' || c == '\n')
 	{
@@ -123,7 +125,8 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	}
 	else
 	{
-		if (minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+		if (minishell->term->cols
+			!= ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
 		{
 			ft_putstr_fd("\nBAD\n", 1);
 			*input = put_in_string(*input, c, minishell->term->cols);

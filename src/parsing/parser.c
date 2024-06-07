@@ -20,9 +20,9 @@
  */
 t_ast	*parse_input(t_minishell *minishell, char *input)
 {
-	t_ast *ast;
-	t_token *start;
-    t_token *tokens;
+	t_ast	*ast;
+	t_token	*start;
+	t_token	*tokens;
 	int		i;
 
 	if (!input)
@@ -30,8 +30,8 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	ast = NULL;
 	tokens = tokenize(input);
 	start = tokens;
-    if (!tokens)
-        return (NULL);
+	if (!tokens)
+		return (NULL);
 	debug_tokens(tokens);
 	i = 0;
 	while (tokens)
@@ -40,5 +40,5 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 		i++;
 	}
 	free_tokens(start);
-    return (ast);
+	return (ast);
 }

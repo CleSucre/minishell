@@ -29,7 +29,8 @@ static void	reset_stdin(const char *input, size_t cols)
 /**
  * @brief Specifically for escape sequence as up-down-left-right arrow
  * 			- Left & right : Move cursor left and right as bash
- * 			- Up & Down : 	go search familiar input user already wrote in .ministory
+ * 			- Up & Down : 	go search familiar
+ * 				input user already wrote in .ministory
  * @param t_minishell	Struct which access to history
  * @param input			Current input from user
  * @return int			1 if an action is done, 0 if not
@@ -38,9 +39,9 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 {
 	char		seq[2];
 	t_history	*new_history;
-    char        *cmd;
+	char		*cmd;
 
-    cmd = NULL;
+	cmd = NULL;
 	new_history = NULL;
 	if (read(STDIN_FILENO, &seq[0], 1) == -1)
 		return (-1);
@@ -68,25 +69,26 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 		}
 		else if (seq[1] == 'B')
 		{
-            if (minishell->history_pos == 0)
-            {
-                free(minishell->cache->input);
-                minishell->cache->input = ft_strdup(*input);
-            }
+			if (minishell->history_pos == 0)
+			{
+				free(minishell->cache->input);
+				minishell->cache->input = ft_strdup(*input);
+			}
 			new_history = history_find_down(minishell, minishell->cache->input);
 			if (new_history && new_history->cmd)
-                cmd = ft_strdup(new_history->cmd);
-            else
-                cmd = ft_strdup(minishell->cache->input);
-            free(*input);
-            *input = ft_strdup(cmd);
-            free(cmd);
-            ft_putstr_fd("\033[1000D", 1);
-            terminal_print("\033[2K", 0);
-            terminal_print(TERMINAL_PROMPT, 0);
-            terminal_print(*input, 0);
-        }
-		else if (seq[1] == 'C' && cols < ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
+				cmd = ft_strdup(new_history->cmd);
+			else
+				cmd = ft_strdup(minishell->cache->input);
+			free(*input);
+			*input = ft_strdup(cmd);
+			free(cmd);
+			ft_putstr_fd("\033[1000D", 1);
+			terminal_print("\033[2K", 0);
+			terminal_print(TERMINAL_PROMPT, 0);
+			terminal_print(*input, 0);
+		}
+		else if (seq[1] == 'C' && cols
+			< ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
 			ft_putstr_fd("\033[1C", 1);
 		else if (seq[1] == 'D' && cols > ft_strlen(TERMINAL_PROMPT) + 1)
 			ft_putstr_fd("\033[1D", 1);
@@ -131,7 +133,6 @@ char	*put_in_string(char *input, char c, size_t cols)
 	return (res);
 }
 
-
 /**
  * @brief Delete a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
@@ -158,11 +159,11 @@ char	*erase_in_string(char *input, size_t cols)
 	i++;
 	while (input[i])
 	{
-		res[i-1] = input[i];
+		res[i - 1] = input[i];
 		i++;
 	}
 	reset_stdin(input, cols);
-    free(input);
+	free(input);
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u", 1);
 	if (cols > ft_strlen(TERMINAL_PROMPT) + 1)

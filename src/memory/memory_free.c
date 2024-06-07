@@ -39,8 +39,6 @@ void	free_minishell(t_minishell *minishell)
 {
 	free(minishell->cache->input);
 	free(minishell->cache);
-	//free(minishell->term->iterm_buffer);
-	//free(minishell->term->strterm_buffer);
 	free(minishell->term);
 	history_free(minishell->history);
 	free(minishell);

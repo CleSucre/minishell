@@ -42,7 +42,6 @@ void	debug_history_add(char *cmd, int added)
 {
 	if (!DEBUG)
 		return ;
-
 	if (added)
 	{
 		terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1);
@@ -53,7 +52,8 @@ void	debug_history_add(char *cmd, int added)
 	{
 		terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1);
 		terminal_print(cmd, 0);
-		terminal_print(RESET" not added to history (already the last command)", 0);
+		terminal_print(RESET" not added to history "
+			"(already the last command)", 0);
 	}
 }
 

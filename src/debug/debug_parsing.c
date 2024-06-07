@@ -40,7 +40,6 @@ static char	*get_token_type(int type)
 		return ("UNKNOWN");
 }
 
-
 /**
  * @brief Print tokens list
  *
@@ -61,8 +60,9 @@ void	debug_tokens(t_token *tokens)
 	{
 		type = get_token_type(tmp->type);
 		ft_printf("\n%s[DEBUG] ====== tokens [%d] ======%s\n", BLUE, i, RESET);
-        ft_printf("token: %s%s%s\n", YELLOW, tmp->value, RESET);
-        ft_printf("type str: %s%s%s (id: %d)\n", BOLDWHITE, type, RESET, tmp->type);
+		ft_printf("token: %s%s%s\n", YELLOW, tmp->value, RESET);
+		ft_printf("type str: %s%s%s (id: %d)\n",
+			BOLDWHITE, type, RESET, tmp->type);
 		tmp = tmp->next;
 		i++;
 	}

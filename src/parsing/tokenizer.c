@@ -31,8 +31,6 @@ t_token	*create_token(t_type type, char *value)
 	return (token);
 }
 
-
-
 /**
  * @brief Get the type of token from string
  *
@@ -41,18 +39,18 @@ t_token	*create_token(t_type type, char *value)
  */
 t_type	token_type(char *str)
 {
-    if (ft_strcmp(str, "|") == 0)
-        return (PIPE);
-    else if (ft_strcmp(str, "<") == 0)
-        return (REDIRECT_IN);
-    else if (ft_strcmp(str, ">") == 0)
-        return (REDIRECT_OUT);
-    else if (ft_strcmp(str, ">>") == 0)
-        return (REDIRECT_APPEND);
-    else if (1)
-        return (COMMAND);
-    else
-        return (ARGUMENT);
+	if (ft_strcmp(str, "|") == 0)
+		return (PIPE);
+	else if (ft_strcmp(str, "<") == 0)
+		return (REDIRECT_IN);
+	else if (ft_strcmp(str, ">") == 0)
+		return (REDIRECT_OUT);
+	else if (ft_strcmp(str, ">>") == 0)
+		return (REDIRECT_APPEND);
+	else if (1)
+		return (COMMAND);
+	else
+		return (ARGUMENT);
 }
 
 /**
@@ -63,7 +61,8 @@ t_type	token_type(char *str)
  */
 t_token	*tokenize(char *input)
 {
-    t_token	*tokens;
+	t_token	*tokens;
+	t_token	*new_token;
 	char	**words_start;
 	char	**words;
 
@@ -72,16 +71,16 @@ t_token	*tokenize(char *input)
 	if (!words)
 		return (NULL);
 	words_start = words;
-    while (*words)
+	while (*words)
 	{
-        t_token *new_token = create_token(token_type(*words), *words);
-        if (!new_token)
-            return (NULL);
+		new_token = create_token(token_type(*words), *words);
+		if (!new_token)
+			return (NULL);
 		free(*words);
-        new_token->next = tokens;
-        tokens = new_token;
+		new_token->next = tokens;
+		tokens = new_token;
 		words++;
-    }
+	}
 	free(words_start);
-    return (tokens);
+	return (tokens);
 }

@@ -40,7 +40,6 @@ void	enable_termios(t_term *term)
 	new_termios.c_iflag &= ~(ICRNL | INLCR | IGNCR);
 	new_termios.c_cc[VMIN] = 1;
 	new_termios.c_cc[VTIME] = 0;
-
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &new_termios) == -1)
 		perror("tcsetattr");
 }

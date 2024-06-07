@@ -124,6 +124,6 @@ debug: fclean
 	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell
 
 norm:
-	@norminette | grep Error || echo "$(GREEN)Success"
+	@norminette src libft | grep Error || echo "$(GREEN)Success"
 
 .PHONY: all clean fclean re run debug norm
