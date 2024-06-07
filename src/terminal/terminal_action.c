@@ -16,7 +16,7 @@
  * @brief Erase a char in a string
  *
  * @param size_t len
- * @return None
+ * @return void
  */
 static void	erase_term(size_t len)
 {
@@ -37,12 +37,12 @@ static void	erase_term(size_t len)
  * 			if nl, move cursor one line down
  * @param char * String to print
  * @param int nl Move cursor down and print newline(s)
- * @return None
+ * @return void
  */
 void	terminal_print(char *str, int nl)
 {
 	if (nl)
-		ft_printf("\033[1000D", str);
+		ft_printf("\033[100D", str);
 	while (nl--)
 		ft_putchar_fd('\n', 1);
 	ft_printf("%s", str);
@@ -52,7 +52,7 @@ void	terminal_print(char *str, int nl)
  * @brief Reset input string
  *
  * @param char **input
- * @return None
+ * @return void
  */
 void	reset_input(char **input)
 {
@@ -124,7 +124,10 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	else
 	{
 		if (minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+		{
+			ft_putstr_fd("\nBAD\n", 1);
 			*input = put_in_string(*input, c, minishell->term->cols);
+		}
 		else
 		{
 			*input = ft_charjoin(*input, c);

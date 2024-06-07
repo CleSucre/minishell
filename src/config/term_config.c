@@ -27,7 +27,7 @@ static void	save_termios(t_term *termios)
  * @brief Enable termios to read char, and catch exhaust sequence
  *
  * @param t_term *term
- * @return None
+ * @return void
  */
 void	enable_termios(t_term *term)
 {
@@ -49,7 +49,7 @@ void	enable_termios(t_term *term)
  * @brief Restore default settings of termios
  *
  * @param t_term *termios
- * @return None
+ * @return void
  */
 void	disable_termios(t_term *termios)
 {

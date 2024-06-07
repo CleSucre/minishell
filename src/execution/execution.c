@@ -29,12 +29,7 @@ int	exec_command(t_minishell *minishell, char *input)
 	input = ft_strtrim(input, WHITESPACES);
 	if (!input)
 		return (0);
-	if (DEBUG)
-	{
-		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
-		terminal_print(input, 0);
-		terminal_print(RESET" executed", 0);
-	}
+	debug_execution(input);
 	if (ft_isprint(*input))
 		history_add(minishell, input, 1);
 	res = 0;

@@ -37,7 +37,7 @@ t_ast	*create_ast(t_type type, char *value)
  * @brief Print the ast
  *
  * @param t_ast *ast
- * @return None
+ * @return void
  */
 void	print_ast(t_ast *ast)
 {

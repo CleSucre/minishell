@@ -22,13 +22,15 @@ SRCS					= main.c
 
 SRCS_CONFIG				= term_config.c
 
+SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c
+
 SRCS_HISTORY			= history.c
 
 SRCS_EXECUTION			= execution.c
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c
 
-SRCS_PARSING			= ast.c parser.c tokenizer.c parsing_debug.c
+SRCS_PARSING			= ast.c parser.c tokenizer.c
 
 SRCS_TERMINAL			= terminal.c terminal_action.c terminal_info.c
 
@@ -37,6 +39,8 @@ SRCS_TERMINAL			= terminal.c terminal_action.c terminal_info.c
 #############################################################################
 
 SRCS_CONFIG				:= $(addprefix config$(DIRSEP), $(SRCS_CONFIG))
+
+SRCS_DEBUG				:= $(addprefix debug$(DIRSEP), $(SRCS_DEBUG))
 
 SRCS_HISTORY			:= $(addprefix history$(DIRSEP), $(SRCS_HISTORY))
 
@@ -48,9 +52,9 @@ SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(SRCS_PARSING))
 
 SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
-SRCS					+= $(SRCS_TERMINAL) $(SRCS_HANDLER) $(SRCS_MEMORY) \
-								$(SRCS_HISTORY) $(SRCS_EXECUTION) $(SRCS_CONFIG) \
-								$(SRCS_PARSING)
+SRCS					+= $(SRCS_CONFIG) $(SRCS_DEBUG) $(SRCS_HISTORY) \
+							$(SRCS_EXECUTION) $(SRCS_MEMORY) $(SRCS_PARSING) \
+							$(SRCS_TERMINAL)
 
 SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
 

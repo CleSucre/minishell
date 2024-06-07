@@ -50,7 +50,7 @@ void	free_minishell(t_minishell *minishell)
  * @brief Free token linked list
  *
  * @param t_token *token
- * @return None
+ * @return void
  */
 void	free_tokens(t_token *tokens)
 {
@@ -69,7 +69,7 @@ void	free_tokens(t_token *tokens)
  * @brief Free ast linked list
  *
  * @param t_ast *ast
- * @return None
+ * @return void
  */
 void	free_ast(t_ast *ast)
 {

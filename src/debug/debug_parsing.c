@@ -18,7 +18,7 @@
  * @param int type token type
  * @return char * token type as string
  */
-char	*get_token_type(int type)
+static char	*get_token_type(int type)
 {
 	if (type == PIPE)
 		return ("PIPE");
@@ -45,21 +45,24 @@ char	*get_token_type(int type)
  * @brief Print tokens list
  *
  * @param t_token *tokens list of tokens
- * @return None
+ * @return void
  */
-void	print_tokens(t_token *tokens)
+void	debug_tokens(t_token *tokens)
 {
 	t_token	*tmp;
-	int			i;
-	char		*type;
+	int		i;
+	char	*type;
 
+	if (!DEBUG)
+		return ;
 	tmp = tokens;
 	i = 0;
 	while (tmp)
 	{
 		type = get_token_type(tmp->type);
-		ft_printf("\n====== tokens [%d] ======\ntoken: %s\ntype str: %s (id: %d)",
-				  i, tmp->value, type, tmp->type);
+		ft_printf("\n%s[DEBUG] ====== tokens [%d] ======%s\n", BLUE, i, RESET);
+        ft_printf("token: %s%s%s\n", YELLOW, tmp->value, RESET);
+        ft_printf("type str: %s%s%s (id: %d)\n", BOLDWHITE, type, RESET, tmp->type);
 		tmp = tmp->next;
 		i++;
 	}

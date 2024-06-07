@@ -32,7 +32,7 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	start = tokens;
     if (!tokens)
         return (NULL);
-	print_tokens(tokens);
+	debug_tokens(tokens);
 	i = 0;
 	while (tokens)
 	{

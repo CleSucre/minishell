@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config.h                                           :+:      :+:    :+:   */
+/*   execution_debug.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,14 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONFIG_H
-# define CONFIG_H
+#include "minishell.h"
 
-// ########################################################
-// #					TERM_CONFIG						  #
-// ########################################################
-
-void		enable_termios(t_term *term);
-void		disable_termios(t_term *term);
-
-#endif
+/**
+ * @brief Print the command executed in debug mode
+ *
+ * @param cmd
+ * @return void
+ */
+void	debug_execution(char *cmd)
+{
+	if (!DEBUG)
+		return ;
+	terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1);
+	terminal_print(cmd, 0);
+	terminal_print(RESET" executed", 0);
+}
