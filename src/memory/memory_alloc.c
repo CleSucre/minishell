@@ -87,11 +87,11 @@ t_minishell	*alloc_minishell(void)
 	if (!minishell)
 		return (NULL);
 	minishell->exit_code = 0;
-	if (!alloc_cache(minishell))
+	if (alloc_cache(minishell))
 		return (NULL);
-	if (!alloc_history(minishell))
+	if (alloc_history(minishell))
 		return (NULL);
-	if (!alloc_term(minishell))
+	if (alloc_term(minishell))
 		return (NULL);
 	return (minishell);
 }

@@ -196,7 +196,7 @@ int	use_termios(t_minishell *minishell)
 		if (process_action(minishell, c, &input))
 			break ;
 	}
-	terminal_print("Goodbye !", 1);
+	terminal_print(TERMINAL_EXIT_MSG, 1);
 	terminal_print("", 1);
 	free(input);
 	return (0);

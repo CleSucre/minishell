@@ -13,6 +13,9 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
+# define TERMINAL_PROMPT "minishell$ "
+# define TERMINAL_EXIT_MSG BOLDYELLOW "Goodbye !" RESET
+
 // ########################################################
 // #						TERMINAL					  #
 // ########################################################
