@@ -58,13 +58,12 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 {
 	t_ast	*ast;
 	t_ast	*tmp;
-	char 	**commands;
-	int 	i;
+	char	**commands;
+	int		i;
 
 	(void)minishell;
-	if (!input) {
+	if (!input)
 		return (NULL);
-	}
 	commands = extract_full_commands(minishell, input);
 	if (!commands)
 		return (NULL);

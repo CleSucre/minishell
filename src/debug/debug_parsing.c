@@ -76,7 +76,7 @@ void	debug_ast(t_ast *ast)
 	{
 		ft_printf("\n%s[DEBUG] ====== AST ======%s\n", BLUE, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
-				  BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
+			BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
 		ft_printf("value: %s%s%s\n", YELLOW, ast->value, RESET);
 		debug_tokens(ast->tokens);
 		ast = ast->next;

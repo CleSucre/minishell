@@ -51,9 +51,8 @@ t_type	token_type(char *str)
 		return (FLAG);
 	else if (ft_strncmp(str, "$", 1) == 0)
 		return (VARIABLE);
-	else if (1)
+	else
 		return (COMMAND);
-
 }
 
 /**
@@ -76,7 +75,8 @@ t_token	*tokenize(char *input)
 	words_count = ft_strlentab((const char **)words);
 	while (words_count-- != 0)
 	{
-		new_token = create_token(token_type(words[words_count]), words[words_count]);
+		new_token = create_token(token_type(words[words_count]),
+				words[words_count]);
 		if (!new_token)
 			return (NULL);
 		free(words[words_count]);
