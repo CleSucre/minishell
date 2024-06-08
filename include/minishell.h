@@ -28,7 +28,6 @@
 // #						MINISHELL					  #
 // ########################################################
 
-# include "define.h"
 # include "struct.h"
 # include "config.h"
 # include "debug.h"

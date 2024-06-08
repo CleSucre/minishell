@@ -245,7 +245,7 @@ void	history_print(t_minishell *minishell)
 		history = history->newer;
 		i++;
 	}
-	terminal_print(TERMINAL_PROMPT, 1);
+	terminal_print(minishell->cache->prompt, 1);
 }
 
 /**

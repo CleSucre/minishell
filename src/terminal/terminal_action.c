@@ -25,11 +25,11 @@ static void	erase_term(size_t len)
 	i = 0;
 	while (i < len)
 	{
-		ft_putstr_fd("\033[1D", 1);
+		ft_printf(CURSOR_LEFT, 1);
 		i++;
 	}
 	ft_putchar_fd(' ', 1);
-	ft_putstr_fd("\033[1D", 1);
+	ft_printf(CURSOR_LEFT, 1);
 }
 
 /**
@@ -42,7 +42,7 @@ static void	erase_term(size_t len)
 void	terminal_print(char *str, int nl)
 {
 	if (nl)
-		ft_printf("\033[100D", str);
+		ft_printf("\033[%dD", 100);
 	while (nl--)
 		ft_putchar_fd('\n', 1);
 	ft_printf("%s", str);
@@ -74,7 +74,7 @@ void	move_cursor_back(size_t position)
 
 	i = 0;
 	while (i++ < position)
-		ft_putstr_fd("\033[1D", 1);
+		ft_printf(CURSOR_LEFT, 1);
 }
 
 /**
@@ -88,37 +88,37 @@ void	move_cursor_back(size_t position)
  */
 int	process_action(t_minishell *minishell, char c, char **input)
 {
-	if (c == 4 && ft_strlen(*input) == 0)
+	if (c == CTRL_D && ft_strlen(*input) == 0)
 		return (1);
-	else if (c == 4)
+	else if (c == CTRL_D)
 		return (0);
-	else if (c == 3)
+	else if (c == CTRL_C)
 	{
 		terminal_print("^C", 0);
 		reset_input(input);
-		terminal_print(TERMINAL_PROMPT, 1);
+		terminal_print(minishell->cache->prompt, 1);
 		minishell->history_pos = 0;
 	}
-	else if (c == 127)
+	else if (c == BACKSPACE)
 	{
 		if (ft_strlen(*input) > 0 && minishell->term->cols
-			!= ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-			*input = erase_in_string(*input, minishell->term->cols);
+			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+			*input = erase_in_string(minishell, *input);
 		else if (ft_strlen(*input) > 0)
 		{
 			ft_trunc(input, 1);
 			erase_term(1);
 		}
 	}
-	else if (c == '\r' || c == '\n')
+	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
 		if (exec_command(minishell, *input))
 			return (1);
 		reset_input(input);
-		terminal_print(TERMINAL_PROMPT, 1);
+		terminal_print(minishell->cache->prompt, 1);
 		minishell->history_pos = 0;
 	}
-	else if (c == '\033') //[ESC]
+	else if (c == ESC_SEQ)
 	{
 		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
 			return (0);
@@ -126,10 +126,9 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	else
 	{
 		if (minishell->term->cols
-			!= ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
 		{
-			ft_putstr_fd("\nBAD\n", 1);
-			*input = put_in_string(*input, c, minishell->term->cols);
+			*input = put_in_string(minishell, *input, c);
 		}
 		else
 		{

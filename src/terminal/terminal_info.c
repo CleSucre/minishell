@@ -122,7 +122,7 @@ void	move_cursor(t_term *term, int x, int y)
  * cline is for current_line
  * ce ou cd
 */
-
+/*
 void	refresh_cline(t_term *term)
 {
 	char	*clear_lsequence;
@@ -135,9 +135,9 @@ void	refresh_cline(t_term *term)
 		exit(EXIT_FAILURE);
 	}
 	tputs(clear_lsequence, 1, NULL);
-	ft_putstr_fd(TERMINAL_PROMPT, 1);
+	ft_putstr_fd(minishell->cache->prompt, 1);
 }
-
+*/
 /**
 * @brief Delete 1 char
 */
@@ -153,8 +153,8 @@ void	del(t_minishell *minishell, char **input)
 	}
 	tputs(del_sequence, 1, NULL);
 	if (ft_strlen(*input) > 0 && minishell->term->cols
-		!= ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-		*input = erase_in_string(*input, minishell->term->cols);
+		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+		*input = erase_in_string(minishell, *input);
 	else if (ft_strlen(*input) > 0)
 		ft_trunc(input, 1);
 }

@@ -27,6 +27,9 @@ static int	alloc_cache(t_minishell *minishell)
 		return (1);
 	}
 	minishell->cache->input = ft_strdup("");
+	minishell->cache->prompt
+		= ft_strdup(TERMINAL_PROMPT_COLOR TERMINAL_PROMPT RESET);
+	minishell->cache->prompt_len = ft_strlen(TERMINAL_PROMPT);
 	return (0);
 }
 
