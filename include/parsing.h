@@ -15,22 +15,17 @@
 
 typedef enum {
 	PIPE,
+	FULL_COMMAND,
+	COMMAND,
 	REDIRECT_IN,
 	REDIRECT_OUT,
 	REDIRECT_APPEND,
-	COMMAND,
 	ARGUMENT,
+	FLAG,
     QUOTE,
-    VARIABLE
+    VARIABLE,
+	UNKNOWN
 }	t_type;
-
-typedef struct s_ast
-{
-	char			*value;
-	int				type;
-	struct s_ast	*left;
-	struct s_ast	*right;
-}	t_ast;
 
 typedef struct s_token
 {
@@ -38,6 +33,15 @@ typedef struct s_token
 	char	*value;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_ast
+{
+	char			*value;
+	int				type;
+	t_token			*tokens;
+	struct s_ast	*next;
+	struct s_ast	*prev;
+}	t_ast;
 
 // ########################################################
 // #						PARSER						  #
@@ -58,6 +62,7 @@ t_token		*tokenize(char *input);
 // ########################################################
 
 t_ast		*create_ast(t_type type, char *value);
+void		ast_add_back(t_ast *head, t_ast *ast);
 
 // ########################################################
 // #						DEBUG						  #

@@ -72,10 +72,14 @@ void	free_tokens(t_token *tokens)
  */
 void	free_ast(t_ast *ast)
 {
-	if (ast->left)
-		free_ast(ast->left);
-	if (ast->right)
-		free_ast(ast->right);
-	free(ast->value);
-	free(ast);
+	t_ast	*tmp;
+
+	while (ast)
+	{
+		tmp = ast;
+		ast = ast->next;
+		free_tokens(tmp->tokens);
+		free(tmp->value);
+		free(tmp);
+	}
 }

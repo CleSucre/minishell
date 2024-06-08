@@ -114,7 +114,7 @@ char	*put_in_string(t_minishell *minishell, char *input, char c)
 	int		cols;
 
 	cols = minishell->term->cols;
-	res = ft_calloc(sizeof(char *) * ft_strlen(input) + 1, 1);
+	res = ft_calloc(ft_strlen(input) + 1, sizeof(char *));
 	i = 0;
 	ft_putstr_fd("\033[s", 1);
 	while (input[i] && i < cols - minishell->cache->prompt_len - 1)
@@ -152,7 +152,7 @@ char	*erase_in_string(t_minishell *minishell, char *input)
 	cols = minishell->term->cols;
 	if (cols <= minishell->cache->prompt_len)
 		return (input);
-	res = ft_calloc(sizeof(char *) * ft_strlen(input), 1);
+	res = ft_calloc(ft_strlen(input), sizeof(char *));
 	i = 0;
 	ft_putstr_fd("\033[s", 1);
 	while (input[i] && i < cols - minishell->cache->prompt_len - 2)

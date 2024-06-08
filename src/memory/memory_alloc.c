@@ -20,7 +20,7 @@
  */
 static int	alloc_cache(t_minishell *minishell)
 {
-	minishell->cache = ft_calloc(sizeof(t_cache), 1);
+	minishell->cache = ft_calloc(1, sizeof(t_cache));
 	if (!minishell->cache)
 	{
 		free(minishell);
@@ -41,7 +41,7 @@ static int	alloc_cache(t_minishell *minishell)
  */
 static int	alloc_history(t_minishell *minishell)
 {
-	minishell->history = ft_calloc(sizeof(t_history), 1);
+	minishell->history = ft_calloc(1, sizeof(t_history));
 	if (!minishell->history)
 	{
 		free(minishell->cache);
@@ -63,7 +63,7 @@ static int	alloc_history(t_minishell *minishell)
  */
 static int	alloc_term(t_minishell *minishell)
 {
-	minishell->term = ft_calloc(sizeof(t_term), 1);
+	minishell->term = ft_calloc(1, sizeof(t_term));
 	if (!minishell->term)
 	{
 		free(minishell->history);
@@ -86,7 +86,7 @@ t_minishell	*alloc_minishell(void)
 {
 	t_minishell	*minishell;
 
-	minishell = ft_calloc(sizeof(t_minishell), 1);
+	minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!minishell)
 		return (NULL);
 	minishell->exit_code = 0;

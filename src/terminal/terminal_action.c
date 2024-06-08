@@ -61,7 +61,7 @@ void	reset_input(char **input)
 		free(*input);
 		*input = NULL;
 	}
-	*input = ft_calloc(sizeof(char *), 1);
+	*input = ft_calloc(1, sizeof(char *));
 }
 
 /**

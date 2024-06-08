@@ -189,7 +189,7 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 	if (!minishell->history->older || !minishell->history->older->cmd
 		|| ft_strcmp(minishell->history->older->cmd, cmd) != 0)
 	{
-		new = ft_calloc(sizeof(t_history), 1);
+		new = ft_calloc(1, sizeof(t_history));
 		if (!new)
 			return (-1);
 		new->cmd = ft_strdup(cmd);

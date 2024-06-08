@@ -34,5 +34,6 @@ void	debug_history_add_file(char *cmd);
 // ########################################################
 
 void	debug_tokens(t_token *tokens);
+void	debug_ast(t_ast *ast);
 
 #endif

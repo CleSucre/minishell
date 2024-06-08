@@ -27,19 +27,26 @@ t_ast	*create_ast(t_type type, char *value)
 	if (!ast)
 		return (NULL);
 	ast->type = type;
-	ast->value = ft_strdup(value);
-	ast->left = NULL;
-	ast->right = NULL;
+	ast->value = value;
+	ast->next = NULL;
+	ast->prev = NULL;
+	ast->tokens = NULL;
 	return (ast);
 }
 
 /**
- * @brief Print the ast
+ * @brief Add ast to the end of the list
  *
- * @param t_ast *ast
- * @return void
+ * @param t_ast *head head of the list
+ * @param t_ast *ast ast to add
  */
-void	print_ast(t_ast *ast)
+void	ast_add_back(t_ast *head, t_ast *ast)
 {
-	(void)ast;
+	t_ast	*tmp;
+
+	tmp = head;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = ast;
+	ast->prev = tmp;
 }

@@ -74,8 +74,8 @@ void	term_info(t_term *term)
 	int		lib_access;
 
 	term_type = getenv("TERM");
-	term->iterm_buffer = ft_calloc(sizeof(char *) * 2048, 1);
-	term->strterm_buffer = ft_calloc(sizeof(char *) * 2048, 1);
+	term->iterm_buffer = ft_calloc(2048, sizeof(char *));
+	term->strterm_buffer = ft_calloc(2048, sizeof(char *));
 	if (!term->iterm_buffer || !term->strterm_buffer)
 	{
 		ft_fprintf(2, "Memory allocation failed");

@@ -47,10 +47,13 @@ t_type	token_type(char *str)
 		return (REDIRECT_OUT);
 	else if (ft_strcmp(str, ">>") == 0)
 		return (REDIRECT_APPEND);
+	else if (ft_strncmp(str, "-", 1) == 0)
+		return (FLAG);
+	else if (ft_strncmp(str, "$", 1) == 0)
+		return (VARIABLE);
 	else if (1)
 		return (COMMAND);
-	else
-		return (ARGUMENT);
+
 }
 
 /**
@@ -63,24 +66,23 @@ t_token	*tokenize(char *input)
 {
 	t_token	*tokens;
 	t_token	*new_token;
-	char	**words_start;
 	char	**words;
+	size_t	words_count;
 
 	tokens = NULL;
 	words = ft_split(input, WHITESPACES);
 	if (!words)
 		return (NULL);
-	words_start = words;
-	while (*words)
+	words_count = ft_strlentab((const char **)words);
+	while (words_count-- != 0)
 	{
-		new_token = create_token(token_type(*words), *words);
+		new_token = create_token(token_type(words[words_count]), words[words_count]);
 		if (!new_token)
 			return (NULL);
-		free(*words);
+		free(words[words_count]);
 		new_token->next = tokens;
 		tokens = new_token;
-		words++;
 	}
-	free(words_start);
+	free(words);
 	return (tokens);
 }

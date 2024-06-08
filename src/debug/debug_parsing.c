@@ -28,6 +28,8 @@ static char	*get_token_type(int type)
 		return ("REDIRECT_OUT");
 	else if (type == REDIRECT_APPEND)
 		return ("REDIRECT_APPEND");
+	else if (type == FULL_COMMAND)
+		return ("FULL_COMMAND");
 	else if (type == COMMAND)
 		return ("COMMAND");
 	else if (type == ARGUMENT)
@@ -36,6 +38,8 @@ static char	*get_token_type(int type)
 		return ("QUOTE");
 	else if (type == VARIABLE)
 		return ("VARIABLE");
+	else if (type == FLAG)
+		return ("FLAG");
 	else
 		return ("UNKNOWN");
 }
@@ -48,22 +52,33 @@ static char	*get_token_type(int type)
  */
 void	debug_tokens(t_token *tokens)
 {
-	t_token	*tmp;
 	int		i;
-	char	*type;
 
 	if (!DEBUG)
 		return ;
-	tmp = tokens;
 	i = 0;
-	while (tmp)
+	while (tokens)
 	{
-		type = get_token_type(tmp->type);
 		ft_printf("\n%s[DEBUG] ====== tokens [%d] ======%s\n", BLUE, i, RESET);
-		ft_printf("token: %s%s%s\n", YELLOW, tmp->value, RESET);
+		ft_printf("token: %s%s%s\n", YELLOW, tokens->value, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
-			BOLDWHITE, type, RESET, tmp->type);
-		tmp = tmp->next;
+			BOLDWHITE, get_token_type(tokens->type), RESET, tokens->type);
+		tokens = tokens->next;
 		i++;
+	}
+}
+
+void	debug_ast(t_ast *ast)
+{
+	if (!DEBUG)
+		return ;
+	while (ast)
+	{
+		ft_printf("\n%s[DEBUG] ====== AST ======%s\n", BLUE, RESET);
+		ft_printf("type str: %s%s%s (id: %d)\n",
+				  BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
+		ft_printf("value: %s%s%s\n", YELLOW, ast->value, RESET);
+		debug_tokens(ast->tokens);
+		ast = ast->next;
 	}
 }
