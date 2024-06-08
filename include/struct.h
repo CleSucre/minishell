@@ -45,7 +45,7 @@ typedef struct s_history
 typedef struct s_cache
 {
     char            *prompt;
-    size_t          prompt_len;
+	unsigned int	prompt_len;
 	char            *input;
 }		t_cache;
 

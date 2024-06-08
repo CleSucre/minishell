@@ -25,6 +25,7 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	t_token	*tokens;
 	int		i;
 
+	(void)minishell;
 	if (!input)
 		return (NULL);
 	ast = NULL;

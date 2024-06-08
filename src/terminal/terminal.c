@@ -145,9 +145,9 @@ char	*put_in_string(t_minishell *minishell, char *input, char c)
  */
 char	*erase_in_string(t_minishell *minishell, char *input)
 {
-	char	*res;
-	size_t	i;
-	int		cols;
+	char			*res;
+	size_t			i;
+	unsigned int	cols;
 
 	cols = minishell->term->cols;
 	if (cols <= minishell->cache->prompt_len)
