@@ -46,25 +46,6 @@ void	free_minishell(t_minishell *minishell)
 }
 
 /**
- * @brief Free token linked list
- *
- * @param t_token *token
- * @return void
- */
-void	free_tokens(t_token *tokens)
-{
-	t_token	*tmp;
-
-	while (tokens)
-	{
-		tmp = tokens;
-		tokens = tokens->next;
-		free(tmp->value);
-		free(tmp);
-	}
-}
-
-/**
  * @brief Free ast linked list
  *
  * @param t_ast *ast
@@ -78,7 +59,8 @@ void	free_ast(t_ast *ast)
 	{
 		tmp = ast;
 		ast = ast->next;
-		free_tokens(tmp->tokens);
+		if (tmp->children)
+			free_ast(tmp->children);
 		free(tmp->value);
 		free(tmp);
 	}

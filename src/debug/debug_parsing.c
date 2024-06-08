@@ -70,6 +70,20 @@ void	debug_tokens(t_token *tokens)
 	}
 }
 
+void	debug_children(t_ast *ast)
+{
+	if (!DEBUG)
+		return ;
+	while (ast)
+	{
+		ft_printf("\n%s[DEBUG] ====== CHILDREN ======%s\n", BLUE, RESET);
+		ft_printf("type str: %s%s%s (id: %d)\n",
+			BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
+		ft_printf("value: %s%s%s\n", YELLOW, ast->value, RESET);
+		ast = ast->next;
+	}
+}
+
 void	debug_ast(t_ast *ast)
 {
 	if (!DEBUG)
@@ -80,7 +94,8 @@ void	debug_ast(t_ast *ast)
 		ft_printf("type str: %s%s%s (id: %d)\n",
 			BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
 		ft_printf("value: %s%s%s\n", YELLOW, ast->value, RESET);
-		debug_tokens(ast->tokens);
+		if (ast->children)
+			debug_children(ast->children);
 		ast = ast->next;
 	}
 }

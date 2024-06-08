@@ -60,92 +60,45 @@ t_token	*create_token(t_type type, char *value)
 }
 
 /**
- * @brief Rejoin words that start and end with quotes and everything in between
+ * @brief Tokenize an argument from a command
  *
- * @param char	**words
+ * @param char *arg
+ * @return t_ast *
  */
-static void rejoin_quotes(char **words)
+t_ast	*tokenize(char *arg)
 {
-	size_t	i;
-	size_t	j;
-	size_t	k;
-	size_t	len;
-	char 	*tmp;
+	t_ast	*ast;
 
-	i = 0;
-	while (words[i])
-	{
-		if ((words[i][0] == '\'')
-			|| words[i][0] == '\"')
-		{
-			k = i;
-			j = i;
-			while (words[j])
-			{
-				len = ft_strlen(words[j]);
-				if (((words[j][len - 1] == '\'' && (words[j][len - 2] != '\\'))
-					|| (words[j][len - 1] == '\"') && (words[j][len - 2] != '\\')))
-				{
-					if (k == j)
-						break ;
-					while (i < j)
-					{
-						tmp = ft_strjoin(words[k], " ");
-						free(words[k]);
-						words[k] = tmp;
-						tmp = ft_strjoin(words[k], words[i + 1]);
-						free(words[k]);
-						free(words[i + 1]);
-						words[k] = tmp;
-						i++;
-					}
-					//move the rest of the words to the left
-					while (words[j])
-					{
-						words[k + 1] = words[j + 1];
-						j++;
-						k++;
-					}
-					words[k] = NULL;
-					i = 0;
-					break;
-				}
-				j++;
-			}
-		}
-		i++;
-	}
+	// If arg contain any token inside a token its self then
+	// create a new ast as a child of the current ast (recursion).
+	// else create a token object.
+	ast = create_ast(token_type(arg), arg);
+	return (ast);
 }
 
 /**
- * @brief Tokenize the input
+ * @brief Extract the children of a command
  *
- * @param char *input
- * @return t_token *
+ * @param t_ast *ast the ast to add the children to
+ * @param char *full_command the command to extract the children from
+ * @return t_ast *
  */
-t_token	*tokenize(char *input)
+void	extract_args(t_ast	*ast, char *full_command)
 {
-	t_token	*tokens;
-	t_token	*new_token;
-	char	**words;
-	int 	words_count;
+	t_ast	*tmp;
+	char	**args;
+	int		i;
 
-	tokens = NULL;
-	words = ft_split_quote(input, WHITESPACES);
-	if (!words)
-		return (NULL);
-	words_count = (int)ft_strlentab((const char **)words) - 1;
-	while (words_count >= 0)
+	args = ft_split_quote(full_command, WHITESPACES);
+	if (!args)
+		return ;
+	i = 0;
+	tmp = create_ast(COMMAND, args[i]);
+	ast->children = tmp;
+	while (args[++i])
 	{
-		new_token = create_token(token_type(words[words_count]),
-				words[words_count]);
-		if (!new_token)
-			return (NULL);
-		free(words[words_count]);
-		new_token->next = tokens;
-		tokens = new_token;
-		words_count--;
+		tmp->next = create_ast(token_type(args[i]), args[i]);
+		tmp = tmp->next;
 	}
-	free(words);
-	return (tokens);
+	free(args);
 }

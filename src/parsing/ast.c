@@ -28,9 +28,9 @@ t_ast	*create_ast(t_type type, char *value)
 		return (NULL);
 	ast->type = type;
 	ast->value = value;
+	ast->children = NULL;
 	ast->next = NULL;
 	ast->prev = NULL;
-	ast->tokens = NULL;
 	return (ast);
 }
 
@@ -49,4 +49,20 @@ void	ast_add_back(t_ast *head, t_ast *ast)
 		tmp = tmp->next;
 	tmp->next = ast;
 	ast->prev = tmp;
+}
+
+/**
+ * @brief Add ast as a children of given ast
+ *
+ * @param t_ast *head head of the list
+ * @param t_ast *ast ast to add
+ */
+void	ast_add_children(t_ast *ast, t_ast *children)
+{
+	t_ast	*tmp;
+
+	tmp = ast;
+	while (tmp->children)
+		tmp = tmp->children;
+	tmp->children = children;
 }

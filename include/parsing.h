@@ -39,8 +39,9 @@ typedef struct s_ast
 {
 	char			*value;
 	int				type;
-	t_token			*tokens;
 	struct s_ast	*next;
+	struct s_ast	*parent;
+	struct s_ast	*children;
 	struct s_ast	*prev;
 }	t_ast;
 
@@ -55,7 +56,8 @@ t_ast		*parse_input(t_minishell *minishell, char *input);
 // ########################################################
 
 t_token		*create_token(t_type type, char *value);
-t_token		*tokenize(char *input);
+t_ast		*tokenize(char *arg);
+void		extract_args(t_ast	*ast, char *full_command);
 
 
 // ########################################################
@@ -64,6 +66,7 @@ t_token		*tokenize(char *input);
 
 t_ast		*create_ast(t_type type, char *value);
 void		ast_add_back(t_ast *head, t_ast *ast);
+void		ast_add_children(t_ast *ast, t_ast *children);
 
 // ########################################################
 // #						DEBUG						  #
