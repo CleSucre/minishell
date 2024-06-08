@@ -28,16 +28,20 @@ static char	*get_token_type(int type)
 		return ("REDIRECT_OUT");
 	else if (type == REDIRECT_APPEND)
 		return ("REDIRECT_APPEND");
+	else if (type == FLAG)
+		return ("FLAG");
+	else if (type == VARIABLE)
+		return ("VARIABLE");
+	else if (type == TEXT_DOUBLE_QUOTE)
+		return ("TEXT_DOUBLE_QUOTE");
+	else if (type == TEXT_SINGLE_QUOTE)
+		return ("TEXT_SINGLE_QUOTE");
+	else if (type == ARGUMENT)
+		return ("ARGUMENT");
 	else if (type == FULL_COMMAND)
 		return ("FULL_COMMAND");
 	else if (type == COMMAND)
 		return ("COMMAND");
-	else if (type == ARGUMENT)
-		return ("ARGUMENT");
-	else if (type == VARIABLE)
-		return ("VARIABLE");
-	else if (type == FLAG)
-		return ("FLAG");
 	else
 		return ("UNKNOWN");
 }

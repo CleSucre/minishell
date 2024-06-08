@@ -32,6 +32,10 @@ static t_type	token_type(char *str)
 		return (FLAG);
 	else if (ft_strncmp(str, "$", 1) == 0)
 		return (VARIABLE);
+	else if (ft_strncmp(str, "\"", 1) == 0)
+		return (TEXT_DOUBLE_QUOTE);
+	else if (ft_strncmp(str, "\'", 1) == 0)
+		return (TEXT_SINGLE_QUOTE);
 	else
 		return (COMMAND);
 }
@@ -71,21 +75,19 @@ static void rejoin_quotes(char **words)
 	i = 0;
 	while (words[i])
 	{
-		if (words[i][0] == '\'' || words[i][0] == '\"')
+		if ((words[i][0] == '\'')
+			|| words[i][0] == '\"')
 		{
 			k = i;
 			j = i;
 			while (words[j])
 			{
 				len = ft_strlen(words[j]);
-				if ((words[j][len - 1] == '\'' || words[j][len - 1] == '\"'))
+				if (((words[j][len - 1] == '\'' && (words[j][len - 2] != '\\'))
+					|| (words[j][len - 1] == '\"') && (words[j][len - 2] != '\\')))
 				{
-					if (i == j)
-					{
-						i++;
-						break;
-					}
-					ft_printf("\nRejoining words from %d to %d", (int)i, (int)j);
+					if (k == j)
+						break ;
 					while (i < j)
 					{
 						tmp = ft_strjoin(words[k], " ");
@@ -126,18 +128,15 @@ t_token	*tokenize(char *input)
 	t_token	*tokens;
 	t_token	*new_token;
 	char	**words;
-	size_t	words_count;
+	int 	words_count;
 
 	tokens = NULL;
-	words = ft_split(input, WHITESPACES);
+	words = ft_split_quote(input, WHITESPACES);
 	if (!words)
 		return (NULL);
-	rejoin_quotes(words);
-	words_count = ft_strlentab((const char **)words);
-	ft_printf("\nwords_count = %d", (int)words_count);
-	while (words_count-- > 0)
+	words_count = (int)ft_strlentab((const char **)words) - 1;
+	while (words_count >= 0)
 	{
-		ft_printf("\nwords[%d] = %s", (int)words_count, words[words_count]);
 		new_token = create_token(token_type(words[words_count]),
 				words[words_count]);
 		if (!new_token)
@@ -145,6 +144,7 @@ t_token	*tokenize(char *input)
 		free(words[words_count]);
 		new_token->next = tokens;
 		tokens = new_token;
+		words_count--;
 	}
 	free(words);
 	return (tokens);

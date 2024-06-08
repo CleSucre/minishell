@@ -12,24 +12,22 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Extract full commands from input by splitting it with '|'
+ * 			It also handle single and double quotes
+ *
+ * @param minishell
+ * @param input
+ * @return
+ */
 static char	**extract_full_commands(t_minishell *minishell, char *input)
 {
 	char	**commands;
-	char	*tmp;
-	int		i;
 
 	(void)minishell;
-	commands = ft_split(input, "|");
+	commands = ft_split_quote(input, "|");
 	if (!commands)
 		return (NULL);
-	i = 0;
-	while (commands[i])
-	{
-		tmp = ft_strtrim(commands[i], " ");
-		free(commands[i]);
-		commands[i] = tmp;
-		i++;
-	}
 	return (commands);
 }
 
@@ -84,6 +82,6 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 		i++;
 	}
 	free(commands);
-	//debug_ast(ast);
+	debug_ast(ast);
 	return (ast);
 }
