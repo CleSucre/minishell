@@ -22,8 +22,9 @@ typedef enum {
 	REDIRECT_APPEND,
 	ARGUMENT,
 	FLAG,
-    QUOTE,
     VARIABLE,
+	TEXT_SINGLE_QUOTE,
+	TEXT_DOUBLE_QUOTE,
 	UNKNOWN
 }	t_type;
 

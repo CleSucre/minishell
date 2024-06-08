@@ -84,6 +84,6 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 		i++;
 	}
 	free(commands);
-	debug_ast(ast);
+	//debug_ast(ast);
 	return (ast);
 }

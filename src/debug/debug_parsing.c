@@ -34,8 +34,6 @@ static char	*get_token_type(int type)
 		return ("COMMAND");
 	else if (type == ARGUMENT)
 		return ("ARGUMENT");
-	else if (type == QUOTE)
-		return ("QUOTE");
 	else if (type == VARIABLE)
 		return ("VARIABLE");
 	else if (type == FLAG)

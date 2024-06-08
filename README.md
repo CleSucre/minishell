@@ -62,4 +62,3 @@ minishell$
 - [x] Study get_cursor_position
 - [ ] Add perror to error handling
 - [ ] Live parsing
-
