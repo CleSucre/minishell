@@ -56,7 +56,7 @@ t_ast		*parse_input(t_minishell *minishell, char *input);
 // ########################################################
 
 t_token		*create_token(t_type type, char *value);
-t_ast		*tokenize(char *arg);
+t_ast		*tokenize(t_ast *ast, char *arg);
 void		extract_args(t_ast	*ast, char *full_command);
 
 

@@ -67,12 +67,30 @@ t_token	*create_token(t_type type, char *value)
  */
 t_ast	*tokenize(char *arg)
 {
-	t_ast	*ast;
-
 	// If arg contain any token inside a token its self then
 	// create a new ast as a child of the current ast (recursion).
 	// else create a token object.
-	ast = create_ast(token_type(arg), arg);
+	t_ast	*tmp;
+	char	**tokens;
+	int		i;
+	
+	tokens = ft_split_quote(arg, "<>|");
+	i = 0;
+	tmp = ast;
+	while (tokens[i])
+	{
+		if (i % 2 == 0)
+		{
+			tmp->next = create_ast(token_type(tokens[i]), tokens[i]);
+			tmp = tmp->next;
+		}
+		else
+		{
+			tmp->next = create_ast(COMMAND, tokens[i]);
+			tmp = tmp->next;
+		}
+		i++;
+	}
 	return (ast);
 }
 
@@ -97,7 +115,7 @@ void	extract_args(t_ast	*ast, char *full_command)
 	ast->children = tmp;
 	while (args[++i])
 	{
-		tmp->next = create_ast(token_type(args[i]), args[i]);
+		tmp->next = tokenize(tmp, args[i]);
 		tmp = tmp->next;
 	}
 	free(args);
