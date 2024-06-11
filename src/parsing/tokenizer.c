@@ -115,7 +115,7 @@ void	extract_args(t_ast	*ast, char *full_command)
 	ast->children = tmp;
 	while (args[++i])
 	{
-		tmp->next = tokenize(tmp, args[i]);
+		tmp->next = create_ast(token_type(args[i]), args[i]);
 		tmp = tmp->next;
 	}
 	free(args);
