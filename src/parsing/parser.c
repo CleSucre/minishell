@@ -44,7 +44,7 @@ static t_ast	*extract_full_commands(t_minishell *minishell, char *input)
 			free_ast(ast);
 			return (NULL);
 		}
-		ast_add_back(ast, tmp);
+		ast_add_last(&ast, tmp);
 	}
 	free(commands);
 	return (ast);
@@ -65,6 +65,7 @@ static void	*parse_ast(t_ast *ast)
 		}
 		tmp = tmp->next;
 	}
+	return (ast);
 }
 
 /**

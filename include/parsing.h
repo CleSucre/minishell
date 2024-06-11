@@ -25,6 +25,7 @@ typedef enum {
     VARIABLE,
 	TEXT_SINGLE_QUOTE,
 	TEXT_DOUBLE_QUOTE,
+	FILE_NAME,
 	UNKNOWN
 }	t_type;
 
@@ -65,7 +66,8 @@ void		extract_args(t_ast	*ast, char *full_command);
 // ########################################################
 
 t_ast		*create_ast(t_type type, char *value);
-void		ast_add_back(t_ast *head, t_ast *ast);
+t_ast		*ast_get_last(t_ast *head);
+void		ast_add_last(t_ast **head, t_ast *ast);
 void		ast_add_children(t_ast *ast, t_ast *children);
 
 // ########################################################

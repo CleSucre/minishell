@@ -55,7 +55,7 @@ t_token	*create_token(t_type type, char *value)
 	if (!token)
 		return (NULL);
 	token->type = type;
-	token->value = ft_strdup(value);
+	token->value = value;
 	return (token);
 }
 
@@ -106,17 +106,26 @@ void	extract_args(t_ast	*ast, char *full_command)
 	t_ast	*tmp;
 	char	**args;
 	int		i;
-
+	t_type	type;
+	
+	tmp = NULL;
 	args = ft_split_quote(full_command, WHITESPACES);
 	if (!args)
 		return ;
 	i = 0;
-	tmp = create_ast(COMMAND, args[i]);
-	ast->children = tmp;
-	while (args[++i])
-	{
-		tmp->next = create_ast(token_type(args[i]), args[i]);
-		tmp = tmp->next;
+	while (args[i]) {
+		type = token_type(args[i]);
+		if (args[i + 1] && token_type(args[i + 1]) == REDIRECT_IN) {
+			ast_add_last(&tmp, create_ast(REDIRECT_IN, args[++i]));
+			ast_add_children(ast_get_last(tmp), create_ast(FILE_NAME, args[i - 1]));
+			i++;
+			continue ;
+		}
+		ast_add_last(&tmp, create_ast(type, args[i++]));
+		if (type == REDIRECT_OUT)
+			ast_add_children(ast_get_last(tmp), create_ast(FILE_NAME, args[i++]));
+		if (!ast->children)
+			ast->children = tmp;
 	}
 	free(args);
 }
