@@ -77,9 +77,15 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 		}
 		else if (seq[1] == R_ARROW && cols
 			< ft_strlen(*input) + minishell->cache->prompt_len + 1)
+		{
+			minishell->term->cols++;
 			ft_putstr_fd("\033[1C", 1);
+		}
 		else if (seq[1] == L_ARROW && cols > minishell->cache->prompt_len + 1)
+		{
+			minishell->term->cols--;
 			ft_putstr_fd("\033[1D", 1);
+		}
 		return (1);
 	}
 	return (0);
@@ -100,9 +106,9 @@ int	use_termios(t_minishell *minishell)
 	input = NULL;
 	reset_input(&input);
 	terminal_print(minishell->cache->prompt, 1);
+	get_cursor_position(minishell->term);
 	while (1)
 	{
-		get_cursor_position(minishell->term);
 		if (read(STDIN_FILENO, &c, 1) == -1)
 		{
 			perror("read");

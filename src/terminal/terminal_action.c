@@ -109,6 +109,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			ft_trunc(input, 1);
 			erase_term(1);
 		}
+		minishell->term->cols--;
 	}
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
@@ -117,6 +118,8 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		reset_input(input);
 		terminal_print(minishell->cache->prompt, 1);
 		minishell->history_pos = 0;
+		minishell->term->cols = ft_strlen(TERMINAL_PROMPT);
+		get_cursor_position(minishell->term);
 	}
 	else if (c == ESC_SEQ)
 	{
@@ -128,6 +131,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		if (minishell->term->cols
 			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
 		{
+//			printf("SHSDHJDSHDISsbadkjfcFJIUFJIUFJIFUJFIUFIIJUhahfccoilOHOSDHOSD");
 			*input = put_in_string(minishell, *input, c);
 		}
 		else
@@ -135,6 +139,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			*input = ft_charjoin(*input, c);
 			ft_putchar_fd(c, 1);
 		}
+		minishell->term->cols++;
 	}
 	return (0);
 }
