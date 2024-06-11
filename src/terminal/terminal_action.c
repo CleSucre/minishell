@@ -99,15 +99,14 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	}
 	else if (c == 127)
 	{
-        del(minishell, input);
-//		if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-//			*input = erase_in_string(*input, minishell->term->cols);
-//		else if (ft_strlen(*input) > 0)
-//		{
-//			ft_trunc(input, 1);
-//			erase_term(1);
-//		}
-
+		if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
+			*input = erase_in_string(*input, minishell->term->cols);
+		else if (ft_strlen(*input) > 0)
+		{
+			ft_trunc(input, 1);
+			erase_term(1);
+		}
+		minishell->term->cols--;
 	}
 	else if (c == '\r' || c == '\n')
 	{
@@ -131,6 +130,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			*input = ft_charjoin(*input, c);
 			ft_putchar_fd(c, 1);
 		}
+		minishell->term->cols++;
 	}
 	return (0);
 }

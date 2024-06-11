@@ -19,13 +19,14 @@
 
 typedef struct s_term
 {
-	unsigned int	size;
+	unsigned int	size_cols;
+	unsigned int	size_rows;
 	unsigned int	cols;
 	unsigned int	rows;
-	char			*iterm_buffer;
-	char 			*strterm_buffer;
-	char			*term_name;
-	char			*capabilities;
+//	char			*iterm_buffer;
+//	char 			*strterm_buffer;
+//	char			*term_name;
+//	char			*capabilities;
 	struct termios	*original_termios;
 }		t_term;
 

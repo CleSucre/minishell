@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+
 /**
  * @brief Clear the lines and put back prompt after moving cursor
  *
@@ -87,9 +88,15 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
             terminal_print(*input, 0);
         }
 		else if (seq[1] == 'C' && cols < ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
+		{
+			minishell->term->cols++;
 			ft_putstr_fd("\033[1C", 1);
+		}
 		else if (seq[1] == 'D' && cols > ft_strlen(TERMINAL_PROMPT) + 1)
+		{
+			minishell->term->cols--;
 			ft_putstr_fd("\033[1D", 1);
+		}
 		return (1);
 	}
 	return (0);
@@ -147,9 +154,9 @@ char	*erase_in_string(char *input, size_t cols)
 
 	if (cols <= ft_strlen(TERMINAL_PROMPT))
 		return (input);
-	res = ft_calloc(sizeof(char *) * ft_strlen(input) + 2, 1);
+	res = ft_calloc(sizeof(char *) * ft_strlen(input), 1);
 	i = 0;
-//	ft_putstr_fd("\033[s", 1);
+	ft_putstr_fd("\033[s", 1);
 	while (input[i] && i < cols - ft_strlen(TERMINAL_PROMPT) - 2)
 	{
 		res[i] = input[i];
@@ -162,11 +169,11 @@ char	*erase_in_string(char *input, size_t cols)
 		i++;
 	}
 	reset_stdin(input, cols);
-    free(input);
+	free(input);
 	terminal_print(res, 0);
-//	ft_putstr_fd("\033[u", 1);
-//	if (cols > ft_strlen(TERMINAL_PROMPT) + 1)
-//		ft_putstr_fd("\033[1D", 1);
+	ft_putstr_fd("\033[u", 1);
+	if (cols > ft_strlen(TERMINAL_PROMPT) + 1)
+		ft_putstr_fd("\033[1D", 1);
 	return (res);
 }
 
@@ -186,7 +193,7 @@ int	use_termios(t_minishell *minishell)
 	terminal_print(TERMINAL_PROMPT, 1);
 	while (1)
 	{
-		get_cursor_position(minishell->term);
+//		get_cursor_position(minishell->term);
 		if (read(STDIN_FILENO, &c, 1) == -1)
 		{
 			perror("read");

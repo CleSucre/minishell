@@ -46,8 +46,9 @@ t_minishell	*alloc_minishell(void)
 		free(minishell);
 		return (NULL);
 	}
-	minishell->term->size = 0;
-	minishell->term->cols = 0;
+	get_terminal_size(minishell->term);
+//	minishell->term->size_cols = 0;
+	minishell->term->cols = ft_strlen(TERMINAL_PROMPT) + 1;
 	minishell->term->rows = 0;
 
 	minishell->exit_code = 0;

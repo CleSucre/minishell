@@ -28,7 +28,7 @@ SRCS_EXECUTION			= execution.c
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c
 
-SRCS_TERMINAL			= terminal.c terminal_action.c terminal_info.c my_tgetent.c
+SRCS_TERMINAL			= terminal.c terminal_action.c terminal_info.c
 
 #############################################################################
 #									FOLDERS									#
