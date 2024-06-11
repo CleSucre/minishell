@@ -65,7 +65,7 @@ t_token	*create_token(t_type type, char *value)
  * @param char *arg
  * @return t_ast *
  */
-t_ast	*tokenize(char *arg)
+t_ast	*tokenize(t_ast *ast, char *arg)
 {
 	// If arg contain any token inside a token its self then
 	// create a new ast as a child of the current ast (recursion).
