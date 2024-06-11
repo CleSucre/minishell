@@ -15,6 +15,7 @@ set(SRCS
         src/execution/execution.c
         src/terminal/terminal.c
         src/sig/raw.c
+        src/terminal/erase_put.c
 )
 
 # Object files directory
