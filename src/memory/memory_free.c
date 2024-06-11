@@ -38,10 +38,30 @@ static void	history_free(t_history *history)
 void	free_minishell(t_minishell *minishell)
 {
 	free(minishell->cache->input);
+	free(minishell->cache->prompt);
 	free(minishell->cache);
-	//free(minishell->term->iterm_buffer);
-	//free(minishell->term->strterm_buffer);
 	free(minishell->term);
 	history_free(minishell->history);
 	free(minishell);
+}
+
+/**
+ * @brief Free ast linked list
+ *
+ * @param t_ast *ast
+ * @return void
+ */
+void	free_ast(t_ast *ast)
+{
+	t_ast	*tmp;
+
+	while (ast)
+	{
+		tmp = ast;
+		ast = ast->next;
+		if (tmp->children)
+			free_ast(tmp->children);
+		free(tmp->value);
+		free(tmp);
+	}
 }

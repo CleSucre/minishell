@@ -17,8 +17,6 @@
 #  define DEBUG 0
 # endif
 
-# define TERMINAL_PROMPT "minishell$ "
-
 // ########################################################
 // #						LIBFT						  #
 // ########################################################
@@ -30,13 +28,14 @@
 // #						MINISHELL					  #
 // ########################################################
 
-# include "define.h"
 # include "struct.h"
 # include "config.h"
+# include "debug.h"
 # include "execution.h"
 # include "history.h"
 # include "memory.h"
 # include "terminal.h"
+# include "parsing.h"
 
 // ########################################################
 // #						DEFAULTS					  #

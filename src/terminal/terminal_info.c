@@ -10,22 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 /**
  * @brief Get the terminal size
  * @param rows
  * @param cols
  */
-void get_terminal_size(t_term *term)
+void	get_terminal_size(t_term *term)
 {
-    struct winsize size;
+	struct winsize	size;
 
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
-    term->rows = size.ws_row;
-    term->cols = size.ws_col;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+	term->rows = size.ws_row;
+	term->cols = size.ws_col;
 }
-
 
 /**
  * @brief Get cursor position in our terminal
@@ -72,30 +71,29 @@ void	get_cursor_position(t_term *term)
 void	term_info(t_term *term)
 {
 	char	*term_type;
- 	int		lib_access;
+	int		lib_access;
 
- 	term_type = getenv("TERM");
- 	term->iterm_buffer = ft_calloc(sizeof(char*) * 2048, 1);
- 	term->strterm_buffer = ft_calloc(sizeof(char*) * 2048, 1);
- 	if(!term->iterm_buffer || !term->strterm_buffer)
- 	{
- 		ft_fprintf(2, "Memory allocation failed");
- 		exit(EXIT_FAILURE);
- 	}
- 	if(!term_type)
- 	{
- 		ft_fprintf(2, "Can't access TERM info because of env");
- 		exit(EXIT_FAILURE);
- 	}
- 	lib_access = tgetent(term->iterm_buffer, term_type);
- 	if (lib_access < 1)
+	term_type = getenv("TERM");
+	term->iterm_buffer = ft_calloc(2048, sizeof(char *));
+	term->strterm_buffer = ft_calloc(2048, sizeof(char *));
+	if (!term->iterm_buffer || !term->strterm_buffer)
 	{
- 		ft_fprintf(2, "Can't access terminfo database or term_type not found in database");
- 		exit(EXIT_FAILURE);
- 	}
+		ft_fprintf(2, "Memory allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	if (!term_type)
+	{
+		ft_fprintf(2, "Can't access TERM info because of env");
+		exit(EXIT_FAILURE);
+	}
+	lib_access = tgetent(term->iterm_buffer, term_type);
+	if (lib_access < 1)
+	{
+		ft_fprintf(2, "Can't access terminfo database"
+			"or term_type not found in database");
+		exit(EXIT_FAILURE);
+	}
 }
-
-
 
 /**
  * @brief Move cursor
@@ -103,63 +101,60 @@ void	term_info(t_term *term)
  *		tputs --> send control sequence to  terms
  */
 
-
 void	move_cursor(t_term *term, int x, int y)
 {
-	char *move_sequence;
- 	char *move_action;
+	char	*move_sequence;
+	char	*move_action;
 
- 	move_sequence = tgetstr("cm", &term->strterm_buffer);
- 	if(!move_sequence)
- 	{
-
- 		ft_fprintf(2, "Impossible to get cursor move's sequence");
- 		exit(EXIT_FAILURE);
- 	}
-// 	get_cursor_position(term);
- 	move_action = tgoto(move_sequence, x, y);
- 	tputs(move_action, 1, NULL);
+	move_sequence = tgetstr("cm", &term->strterm_buffer);
+	if (!move_sequence)
+	{
+		ft_fprintf(2, "Impossible to get cursor move's sequence");
+		exit(EXIT_FAILURE);
+	}
+	//get_cursor_position(term);
+	move_action = tgoto(move_sequence, x, y);
+	tputs(move_action, 1, NULL);
 }
-
 
 /**
 * @brief Clear screen and reprint printf if necessary
  * cline is for current_line
  * ce ou cd
 */
-
-
+/*
 void	refresh_cline(t_term *term)
 {
 	char	*clear_lsequence;
 
 	move_cursor(term, 1, term->rows);
 	clear_lsequence = tgetstr("ce", &term->strterm_buffer);
-	if(!clear_lsequence)
- 	{
- 		ft_fprintf(2, "Impossible to catch clear_lsequence");
- 		exit(EXIT_FAILURE);
- 	}
+	if (!clear_lsequence)
+	{
+		ft_fprintf(2, "Impossible to catch clear_lsequence");
+		exit(EXIT_FAILURE);
+	}
 	tputs(clear_lsequence, 1, NULL);
-	ft_putstr_fd(TERMINAL_PROMPT, 1);
+	ft_putstr_fd(minishell->cache->prompt, 1);
 }
-
+*/
 /**
 * @brief Delete 1 char
 */
-//void	del(t_minishel *minishell, char **input)
-//{
-//	char	*del_sequence;
-//
-//	del_sequence = tgetstr("dc", &minishell->term->strterm_buffer);
-//	if (!del_sequence)
-//	{
-//		ft_fprintf(2, "Impossible to catch delet_sequence");
-//		exit(EXIT_FAILURE);
-//	}
-//	tputs(del_sequence, 1, NULL);
-//	if (ft_strlen(*input) > 0 && minishell->term->cols != ft_strlen(TERMINAL_PROMPT) + ft_strlen(*input) + 1)
-//			*input = erase_in_string(*input, minishell->term->cols);
-//	else if (ft_strlen(*input) > 0)
-//			ft_trunc(input, 1);
-//}
+void	del(t_minishell *minishell, char **input)
+{
+	char	*del_sequence;
+
+	del_sequence = tgetstr("dc", &minishell->term->strterm_buffer);
+	if (!del_sequence)
+	{
+		ft_fprintf(2, "Impossible to catch delet_sequence");
+		exit(EXIT_FAILURE);
+	}
+	tputs(del_sequence, 1, NULL);
+	if (ft_strlen(*input) > 0 && minishell->term->cols
+		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+		*input = erase_in_string(minishell, *input);
+	else if (ft_strlen(*input) > 0)
+		ft_trunc(input, 1);
+}

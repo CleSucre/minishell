@@ -37,7 +37,7 @@ static int	history_get_file(void)
  * @param t_minishell *minishell
  * @return t_history *
  */
-static t_history *history_get_current(t_minishell *minishell)
+static t_history	*history_get_current(t_minishell *minishell)
 {
 	unsigned int	i;
 	t_history		*history;
@@ -102,13 +102,15 @@ t_history	*history_find_up(t_minishell *minishell, char *cmd)
 	history = history_up(minishell);
 	if (!history)
 		return (history_get_current(minishell));
-	while (history && history->cmd && cmd && minishell->history_pos < minishell->history_size)
+	while (history && history->cmd && cmd
+		&& minishell->history_pos < minishell->history_size)
 	{
-		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0 && pos != minishell->history_pos)
+		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0
+			&& pos != minishell->history_pos)
 			return (history);
 		history = history_up(minishell);
 	}
-    minishell->history_pos = pos;
+	minishell->history_pos = pos;
 	return (history_get_current(minishell));
 }
 
@@ -134,7 +136,8 @@ t_history	*history_find_down(t_minishell *minishell, char *cmd)
 		return (history_get_current(minishell));
 	while (history && history->cmd && cmd)
 	{
-		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0 && pos != minishell->history_pos)
+		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0
+			&& pos != minishell->history_pos)
 			return (history);
 		history = history_down(minishell);
 	}
@@ -163,8 +166,7 @@ int	history_load(t_minishell *minishell)
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (DEBUG)
-		terminal_print(BOLDWHITE"[DEBUG] "RESET"History loaded from file", 1);
+	debug_history_loaded(minishell->history_size);
 	close(fd);
 	return (0);
 }
@@ -184,16 +186,10 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 	t_history	*new;
 	int			fd;
 
-	if (minishell->history->older && minishell->history->older->cmd && ft_strcmp(minishell->history->older->cmd, cmd) == 0)
+	if (!minishell->history->older || !minishell->history->older->cmd
+		|| ft_strcmp(minishell->history->older->cmd, cmd) != 0)
 	{
-		if (DEBUG)
-		{
-			terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
-			terminal_print(cmd, 0);
-			terminal_print(RESET" not added to history (already the last command)", 0);
-		}
-	} else {
-		new = ft_calloc(sizeof(t_history), 1);
+		new = ft_calloc(1, sizeof(t_history));
 		if (!new)
 			return (-1);
 		new->cmd = ft_strdup(cmd);
@@ -203,13 +199,10 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 			minishell->history->older->newer = new;
 		minishell->history->older = new;
 		minishell->history_size++;
-		if (DEBUG)
-		{
-			terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
-			terminal_print(cmd, 0);
-			terminal_print(RESET" added to history", 0);
-		}
+		debug_history_add(cmd, 1);
 	}
+	else
+		debug_history_add(cmd, 0);
 	if (!fs)
 		return (0);
 	fd = history_get_file();
@@ -217,12 +210,7 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 		return (-1);
 	ft_putstr_fd(cmd, fd);
 	ft_putchar_fd('\n', fd);
-	if (DEBUG)
-	{
-		terminal_print(BOLDWHITE"[DEBUG] "RESET"Command "BOLDWHITE, 1);
-		terminal_print(cmd, 0);
-		terminal_print(RESET" added to history file", 0);
-	}
+	debug_history_add_file(cmd);
 	close(fd);
 	return (0);
 }
@@ -231,11 +219,11 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
  * @brief Print the history in the terminal
  *
  * @param t_minishell *minishell
- * @return None
+ * @return void
  */
 void	history_print(t_minishell *minishell)
 {
-	t_history	*history;
+	t_history		*history;
 	unsigned int	i;
 	unsigned int	j;
 
@@ -257,7 +245,7 @@ void	history_print(t_minishell *minishell)
 		history = history->newer;
 		i++;
 	}
-	terminal_print(TERMINAL_PROMPT, 1);
+	terminal_print(minishell->cache->prompt, 1);
 }
 
 /**
@@ -266,7 +254,7 @@ void	history_print(t_minishell *minishell)
  * TODO: Do we need this function?
  *
  * @param None
- * @return None
+ * @return void
  */
 void	history_reset(void)
 {

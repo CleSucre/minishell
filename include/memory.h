@@ -13,16 +13,20 @@
 #ifndef MEMORY_H
 # define MEMORY_H
 
+# include "parsing.h"
+
 // ########################################################
 // #						ALLOC						  #
 // ########################################################
 
-t_minishell		*alloc_minishell(void);
+t_minishell	*alloc_minishell(void);
 
 // ########################################################
 // #						FREE						  #
 // ########################################################
 
-void			free_minishell(t_minishell *minishell);
+void		free_minishell(t_minishell *minishell);
+void		free_tokens(t_token *tokens);
+void		free_ast(t_ast *ast);
 
 #endif

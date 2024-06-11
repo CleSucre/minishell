@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config.h                                           :+:      :+:    :+:   */
+/*   debug.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,14 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONFIG_H
-# define CONFIG_H
+#ifndef DEBUG_H
+# define DEBUG_H
+
+# include "parsing.h"
 
 // ########################################################
-// #					TERM_CONFIG						  #
+// #					DEBUG_EXECUTION					  #
 // ########################################################
 
-void		enable_termios(t_term *term);
-void		disable_termios(t_term *term);
+void	debug_execution(char *cmd);
+
+// ########################################################
+// #					DEBUG_HISTORY					  #
+// ########################################################
+
+void	debug_history_loaded(int cmd_count);
+void	debug_history_add(char *cmd, int added);
+void	debug_history_add_file(char *cmd);
+
+// ########################################################
+// #					DEBUG_PARSING					  #
+// ########################################################
+
+void	debug_tokens(t_token *tokens);
+void	debug_ast(t_ast *ast);
 
 #endif
