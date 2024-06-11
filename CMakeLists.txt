@@ -15,6 +15,7 @@ set(SRCS
         src/execution/execution.c
         src/terminal/terminal.c
         src/sig/raw.c
+        src/terminal/my_tgetent.c
 )
 
 # Object files directory

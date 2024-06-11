@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+
 /**
  * @brief Clear the lines and put back prompt after moving cursor
  *
@@ -76,22 +77,27 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 			}
 			new_history = history_find_down(minishell, minishell->cache->input);
 			if (new_history && new_history->cmd)
-				cmd = ft_strdup(new_history->cmd);
-			else
-				cmd = ft_strdup(minishell->cache->input);
-			free(*input);
-			*input = ft_strdup(cmd);
-			free(cmd);
-			ft_putstr_fd("\033[1000D", 1);
-			terminal_print("\033[2K", 0);
-			terminal_print(minishell->cache->prompt, 0);
-			terminal_print(*input, 0);
-		}
-		else if (seq[1] == 'C' && cols
-			< ft_strlen(*input) + minishell->cache->prompt_len + 1)
+                cmd = ft_strdup(new_history->cmd);
+            else
+                cmd = ft_strdup(minishell->cache->input);
+            free(*input);
+            *input = ft_strdup(cmd);
+            free(cmd);
+            ft_putstr_fd("\033[1000D", 1);
+            terminal_print("\033[2K", 0);
+            terminal_print(TERMINAL_PROMPT, 0);
+            terminal_print(*input, 0);
+        }
+		else if (seq[1] == 'C' && cols < ft_strlen(*input) + ft_strlen(TERMINAL_PROMPT) + 1)
+		{
+			minishell->term->cols++;
 			ft_putstr_fd("\033[1C", 1);
-		else if (seq[1] == 'D' && cols > minishell->cache->prompt_len + 1)
+		}
+		else if (seq[1] == 'D' && cols > ft_strlen(TERMINAL_PROMPT) + 1)
+		{
+			minishell->term->cols--;
 			ft_putstr_fd("\033[1D", 1);
+		}
 		return (1);
 	}
 	return (0);
@@ -113,8 +119,7 @@ char	*put_in_string(t_minishell *minishell, char *input, char c)
 	size_t	i;
 	int		cols;
 
-	cols = minishell->term->cols;
-	res = ft_calloc(ft_strlen(input) + 1, sizeof(char *));
+	res = ft_calloc(sizeof(char *) * ft_strlen(input) + 2, 1);
 	i = 0;
 	ft_putstr_fd("\033[s", 1);
 	while (input[i] && i < cols - minishell->cache->prompt_len - 1)
@@ -166,7 +171,7 @@ char	*erase_in_string(t_minishell *minishell, char *input)
 		res[i - 1] = input[i];
 		i++;
 	}
-	reset_stdin(minishell, input);
+	reset_stdin(input, cols);
 	free(input);
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u", 1);
@@ -191,7 +196,7 @@ int	use_termios(t_minishell *minishell)
 	terminal_print(minishell->cache->prompt, 1);
 	while (1)
 	{
-		get_cursor_position(minishell->term);
+//		get_cursor_position(minishell->term);
 		if (read(STDIN_FILENO, &c, 1) == -1)
 		{
 			perror("read");

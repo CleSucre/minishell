@@ -18,7 +18,7 @@
  * @param size_t len
  * @return void
  */
-static void	erase_term(size_t len)
+void	erase_term(size_t len)
 {
 	size_t		i;
 
@@ -109,6 +109,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			ft_trunc(input, 1);
 			erase_term(1);
 		}
+		minishell->term->cols--;
 	}
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
@@ -135,6 +136,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			*input = ft_charjoin(*input, c);
 			ft_putchar_fd(c, 1);
 		}
+		minishell->term->cols++;
 	}
 	return (0);
 }
