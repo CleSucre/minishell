@@ -32,6 +32,8 @@ static char	*get_token_type(int type)
 		return ("FLAG");
 	else if (type == VARIABLE)
 		return ("VARIABLE");
+	else if (type == TEXT)
+		return ("TEXT");
 	else if (type == TEXT_DOUBLE_QUOTE)
 		return ("TEXT_DOUBLE_QUOTE");
 	else if (type == TEXT_SINGLE_QUOTE)
@@ -44,6 +46,12 @@ static char	*get_token_type(int type)
 		return ("COMMAND");
 	else if (type == FILE_NAME)
 		return ("FILE_NAME");
+	else if (type == AND_OPERATOR)
+		return ("AND_OPERATOR");
+	else if (type == OR_OPERATOR)
+		return ("OR_OPERATOR");
+	else if (type == SEMICOLON)
+		return ("SEMICOLON");
 	else
 		return ("UNKNOWN");
 }
@@ -74,15 +82,16 @@ void	debug_tokens(t_token *tokens)
 
 void	debug_children(t_ast *ast, int level)
 {
-	char *space;
-	
+	char	*space;
+
 	if (!DEBUG)
 		return ;
 	while (ast)
 	{
 		space = ft_calloc((level * 8) + 1, sizeof(char));
 		ft_memset(space, ' ', (level * 8));
-		ft_printf("\n%s%s[DEBUG] ====== CHILDREN ======%s\n", space, BLUE, RESET);
+		ft_printf("\n%s%s[DEBUG] ====== CHILDREN ======%s\n",
+			space, BLUE, RESET);
 		ft_printf("%stype str: %s%s%s (id: %d)\n",
 			space, BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
 		ft_printf("%svalue: %s%s%s\n", space, YELLOW, ast->value, RESET);

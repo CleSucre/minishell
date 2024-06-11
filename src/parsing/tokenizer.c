@@ -36,6 +36,12 @@ static t_type	token_type(char *str)
 		return (TEXT_DOUBLE_QUOTE);
 	else if (ft_strncmp(str, "\'", 1) == 0)
 		return (TEXT_SINGLE_QUOTE);
+	else if (ft_strncmp(str, "&&", 2) == 0)
+		return (AND_OPERATOR);
+	else if (ft_strncmp(str, "||", 2) == 0)
+		return (OR_OPERATOR);
+	else if (ft_strncmp(str, ";", 1) == 0)
+		return (SEMICOLON);
 	else
 		return (COMMAND);
 }
@@ -67,13 +73,10 @@ t_token	*create_token(t_type type, char *value)
  */
 t_ast	*tokenize(t_ast *ast, char *arg)
 {
-	// If arg contain any token inside a token its self then
-	// create a new ast as a child of the current ast (recursion).
-	// else create a token object.
 	t_ast	*tmp;
 	char	**tokens;
 	int		i;
-	
+
 	tokens = ft_split_quote(arg, "<>|");
 	i = 0;
 	tmp = ast;
@@ -107,23 +110,34 @@ void	extract_args(t_ast	*ast, char *full_command)
 	char	**args;
 	int		i;
 	t_type	type;
-	
+
 	tmp = NULL;
 	args = ft_split_quote(full_command, WHITESPACES);
 	if (!args)
 		return ;
 	i = 0;
-	while (args[i]) {
+	while (args[i])
+	{
 		type = token_type(args[i]);
-		if (args[i + 1] && token_type(args[i + 1]) == REDIRECT_IN) {
+		if (args[i + 1] && token_type(args[i + 1]) == REDIRECT_IN)
+		{
 			ast_add_last(&tmp, create_ast(REDIRECT_IN, args[++i]));
-			ast_add_children(ast_get_last(tmp), create_ast(FILE_NAME, args[i - 1]));
+			ast_add_children(ast_get_last(tmp),
+				create_ast(FILE_NAME, args[i - 1]));
 			i++;
 			continue ;
 		}
+		else if (tmp && ast_get_last(tmp) && type == COMMAND)
+			type = TEXT;
+		if (tmp && ast_get_last(tmp)
+			&& (ast_get_last(tmp)->type == AND_OPERATOR
+				|| ast_get_last(tmp)->type == OR_OPERATOR
+				|| ast_get_last(tmp)->type == SEMICOLON))
+			type = COMMAND;
 		ast_add_last(&tmp, create_ast(type, args[i++]));
 		if (type == REDIRECT_OUT)
-			ast_add_children(ast_get_last(tmp), create_ast(FILE_NAME, args[i++]));
+			ast_add_children(ast_get_last(tmp),
+				create_ast(FILE_NAME, args[i++]));
 		if (!ast->children)
 			ast->children = tmp;
 	}

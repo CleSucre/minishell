@@ -60,9 +60,7 @@ static void	*parse_ast(t_ast *ast)
 	while (tmp)
 	{
 		if (tmp->type == FULL_COMMAND)
-		{
 			extract_args(tmp, tmp->value);
-		}
 		tmp = tmp->next;
 	}
 	return (ast);

@@ -58,7 +58,7 @@ t_ast	*ast_get_last(t_ast *head)
 void	ast_add_last(t_ast **head, t_ast *ast)
 {
 	t_ast	*tmp;
-	
+
 	if (!*head)
 	{
 		*head = ast;

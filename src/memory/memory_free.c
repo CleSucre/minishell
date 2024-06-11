@@ -61,11 +61,7 @@ void	free_ast(t_ast *ast)
 		ast = ast->next;
 		if (tmp->children)
 			free_ast(tmp->children);
-		if (tmp->value)
-		{
-			ft_printf("free %s\n", tmp->value);
-			free(tmp->value);
-		}
+		free(tmp->value);
 		free(tmp);
 	}
 }
