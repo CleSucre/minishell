@@ -21,9 +21,11 @@ typedef struct s_term
 {
 	char *			iterm_buffer;
 	char *			strterm_buffer;
-	unsigned int	size;
+	unsigned int	ws_cols;
+    unsigned int	ws_rows;
 	unsigned int	cols;
 	unsigned int	rows;
+    unsigned int    begin_rows;
 	struct termios	*original_termios;
 }		t_term;
 

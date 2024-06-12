@@ -109,6 +109,10 @@ int	use_termios(t_minishell *minishell)
 	get_cursor_position(minishell->term);
 	while (1)
 	{
+		get_terminal_size(minishell->term);
+		//check_input_len_ws(minishell->term); LIGNE DU DESSOUS
+		//term base row = strlen(input) % ws row
+		minishell->term->begin_rows = ft_strlen(input) % 4294967295;
 		if (read(STDIN_FILENO, &c, 1) == -1)
 		{
 			perror("read");

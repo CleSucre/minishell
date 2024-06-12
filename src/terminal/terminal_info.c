@@ -22,8 +22,8 @@ void	get_terminal_size(t_term *term)
 	struct winsize	size;
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
-	term->rows = size.ws_row;
-	term->cols = size.ws_col;
+	term->ws_rows = size.ws_row;
+	term->ws_cols = size.ws_col;
 }
 
 /**
