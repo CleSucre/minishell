@@ -30,12 +30,18 @@ static t_type	token_type(char *str)
 		return (REDIRECT_APPEND);
 	else if (ft_strncmp(str, "-", 1) == 0)
 		return (FLAG);
-	else if (ft_strncmp(str, "$", 1) == 0)
+	else if (ft_strncmp(str, "$", 1) == 0 && ft_strlen(str) > 1)
 		return (VARIABLE);
 	else if (ft_strncmp(str, "\"", 1) == 0)
 		return (TEXT_DOUBLE_QUOTE);
 	else if (ft_strncmp(str, "\'", 1) == 0)
 		return (TEXT_SINGLE_QUOTE);
+	else if (ft_strncmp(str, "&&", 2) == 0)
+		return (AND_OPERATOR);
+	else if (ft_strncmp(str, "||", 2) == 0)
+		return (OR_OPERATOR);
+	else if (ft_strncmp(str, ";", 1) == 0)
+		return (SEMICOLON);
 	else
 		return (COMMAND);
 }
@@ -55,7 +61,7 @@ t_token	*create_token(t_type type, char *value)
 	if (!token)
 		return (NULL);
 	token->type = type;
-	token->value = ft_strdup(value);
+	token->value = value;
 	return (token);
 }
 
@@ -67,13 +73,10 @@ t_token	*create_token(t_type type, char *value)
  */
 t_ast	*tokenize(t_ast *ast, char *arg)
 {
-	// If arg contain any token inside a token its self then
-	// create a new ast as a child of the current ast (recursion).
-	// else create a token object.
 	t_ast	*tmp;
 	char	**tokens;
 	int		i;
-	
+
 	tokens = ft_split_quote(arg, "<>|");
 	i = 0;
 	tmp = ast;
@@ -95,6 +98,21 @@ t_ast	*tokenize(t_ast *ast, char *arg)
 }
 
 /**
+ * @brief Extract variables from a string
+ *
+ *
+ */
+t_ast	*extract_variables(char *str)
+{
+	char	*trimmed;
+	t_ast	*tmp;
+	
+	trimmed = ft_strtrim(str, "\"");
+	tmp = create_ast(TEXT, trimmed);
+	return (tmp);
+}
+
+/**
  * @brief Extract the children of a command
  *
  * @param t_ast *ast the ast to add the children to
@@ -106,17 +124,49 @@ void	extract_args(t_ast	*ast, char *full_command)
 	t_ast	*tmp;
 	char	**args;
 	int		i;
+	t_type	type;
 
+	tmp = NULL;
 	args = ft_split_quote(full_command, WHITESPACES);
 	if (!args)
 		return ;
 	i = 0;
-	tmp = create_ast(COMMAND, args[i]);
-	ast->children = tmp;
-	while (args[++i])
+	while (args[i])
 	{
-		tmp->next = tokenize(tmp, args[i]);
-		tmp = tmp->next;
+		type = token_type(args[i]);
+		if (args[i + 1] && token_type(args[i + 1]) == REDIRECT_IN)
+		{
+			ast_add_last(&tmp, create_ast(REDIRECT_IN, args[++i]));
+			ast_add_children(ast_get_last(tmp),
+				create_ast(FILE_NAME, args[i - 1]));
+			i++;
+			continue ;
+		}
+		else if (tmp && ast_get_last(tmp) && type == COMMAND)
+			type = TEXT;
+		if (tmp && ast_get_last(tmp)
+			&& (ast_get_last(tmp)->type == AND_OPERATOR
+				|| ast_get_last(tmp)->type == OR_OPERATOR
+				|| ast_get_last(tmp)->type == SEMICOLON))
+			type = COMMAND;
+
+		if (type == TEXT_DOUBLE_QUOTE)
+		{
+			ast_add_last(&tmp, create_ast(type, args[i]));
+			//get variables and add them to the ast as children
+			//get every word starting with $
+			ast_add_children(ast_get_last(tmp),
+				extract_variables(args[i++]));
+			continue ;
+		}
+
+
+		ast_add_last(&tmp, create_ast(type, args[i++]));
+		if (type == REDIRECT_OUT)
+			ast_add_children(ast_get_last(tmp),
+				create_ast(FILE_NAME, args[i++]));
+		if (!ast->children)
+			ast->children = tmp;
 	}
 	free(args);
 }

@@ -64,7 +64,7 @@ static t_history	*history_get_current(t_minishell *minishell)
  */
 static t_history	*history_up(t_minishell *minishell)
 {
-	if (minishell->history_pos < minishell->history_size)
+	if (minishell->history_pos <= minishell->history_size)
 		minishell->history_pos++;
 	return (history_get_current(minishell));
 }
@@ -103,7 +103,7 @@ t_history	*history_find_up(t_minishell *minishell, char *cmd)
 	if (!history)
 		return (history_get_current(minishell));
 	while (history && history->cmd && cmd
-		&& minishell->history_pos < minishell->history_size)
+		&& minishell->history_pos <= minishell->history_size)
 	{
 		if (ft_strncmp(history->cmd, cmd, ft_strlen(cmd)) == 0
 			&& pos != minishell->history_pos)

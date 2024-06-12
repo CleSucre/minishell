@@ -117,10 +117,10 @@ fclean:
 
 re: fclean all
 
-run: fclean
+run:
 	$(MAKE) DEBUG=0 && ./minishell
 
-debug: fclean
+debug:
 	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell
 
 norm:

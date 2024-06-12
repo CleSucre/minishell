@@ -35,18 +35,36 @@ t_ast	*create_ast(t_type type, char *value)
 }
 
 /**
- * @brief Add ast to the end of the list
- *
- * @param t_ast *head head of the list
- * @param t_ast *ast ast to add
+ * @brief Get last ast of the list
+ * @param t_ast *head
+ * @return t_ast	*
  */
-void	ast_add_back(t_ast *head, t_ast *ast)
+t_ast	*ast_get_last(t_ast *head)
 {
 	t_ast	*tmp;
 
 	tmp = head;
 	while (tmp->next)
 		tmp = tmp->next;
+	return (tmp);
+}
+
+/**
+ * @brief Add ast to the end of the list
+ *
+ * @param t_ast *head head of the list
+ * @param t_ast *ast ast to add
+ */
+void	ast_add_last(t_ast **head, t_ast *ast)
+{
+	t_ast	*tmp;
+
+	if (!*head)
+	{
+		*head = ast;
+		return ;
+	}
+	tmp = ast_get_last(*head);
 	tmp->next = ast;
 	ast->prev = tmp;
 }
