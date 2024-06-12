@@ -117,7 +117,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		//&& minishell->term->cols != minishell->term->ws_cols + 1
 //		ft_fprintf(2, "voila col %d\n et row %d", minishell->term->cols, minishell->term->rows);
 //		ft_fprintf(2, "voila ws col %d\n et ws row %d", minishell->term->ws_cols, minishell->term->ws_rows);
-		if (minishell->term->cols != minishell->term->ws_cols && minishell->term->cols - minishell->term->ws_cols == 1 &&  minishell->term->begin_rows > 0)
+		if (minishell->term->cols != minishell->term->ws_cols && minishell->term->cols % minishell->term->ws_cols == 1 &&  minishell->term->begin_rows > 0)
 		{
 			ft_putstr_fd("\033[A", 1);
 			move_cursor_back(minishell->term->cols);
