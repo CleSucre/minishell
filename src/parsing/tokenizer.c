@@ -30,7 +30,7 @@ static t_type	token_type(char *str)
 		return (REDIRECT_APPEND);
 	else if (ft_strncmp(str, "-", 1) == 0)
 		return (FLAG);
-	else if (ft_strncmp(str, "$", 1) == 0)
+	else if (ft_strncmp(str, "$", 1) == 0 && ft_strlen(str) > 1)
 		return (VARIABLE);
 	else if (ft_strncmp(str, "\"", 1) == 0)
 		return (TEXT_DOUBLE_QUOTE);
@@ -98,6 +98,21 @@ t_ast	*tokenize(t_ast *ast, char *arg)
 }
 
 /**
+ * @brief Extract variables from a string
+ *
+ *
+ */
+t_ast	*extract_variables(char *str)
+{
+	char	*trimmed;
+	t_ast	*tmp;
+	
+	trimmed = ft_strtrim(str, "\"");
+	tmp = create_ast(TEXT, trimmed);
+	return (tmp);
+}
+
+/**
  * @brief Extract the children of a command
  *
  * @param t_ast *ast the ast to add the children to
@@ -134,6 +149,18 @@ void	extract_args(t_ast	*ast, char *full_command)
 				|| ast_get_last(tmp)->type == OR_OPERATOR
 				|| ast_get_last(tmp)->type == SEMICOLON))
 			type = COMMAND;
+
+		if (type == TEXT_DOUBLE_QUOTE)
+		{
+			ast_add_last(&tmp, create_ast(type, args[i]));
+			//get variables and add them to the ast as children
+			//get every word starting with $
+			ast_add_children(ast_get_last(tmp),
+				extract_variables(args[i++]));
+			continue ;
+		}
+
+
 		ast_add_last(&tmp, create_ast(type, args[i++]));
 		if (type == REDIRECT_OUT)
 			ast_add_children(ast_get_last(tmp),
