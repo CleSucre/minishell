@@ -68,32 +68,32 @@ void	get_cursor_position(t_term *term)
 
 //TODO: ELLE SEMBLE PRETE
 
-void	term_info(t_term *term)
-{
-	char	*term_type;
-	int		lib_access;
-
-	term_type = getenv("TERM");
-	term->iterm_buffer = ft_calloc(2048, sizeof(char *));
-	term->strterm_buffer = ft_calloc(2048, sizeof(char *));
-	if (!term->iterm_buffer || !term->strterm_buffer)
-	{
-		ft_fprintf(2, "Memory allocation failed");
-		exit(EXIT_FAILURE);
-	}
-	if (!term_type)
-	{
-		ft_fprintf(2, "Can't access TERM info because of env");
-		exit(EXIT_FAILURE);
-	}
-	lib_access = tgetent(term->iterm_buffer, term_type);
-	if (lib_access < 1)
-	{
-		ft_fprintf(2, "Can't access terminfo database"
-			"or term_type not found in database");
-		exit(EXIT_FAILURE);
-	}
-}
+//void	term_info(t_term *term)
+//{
+//	char	*term_type;
+//	int		lib_access;
+//
+//	term_type = getenv("TERM");
+//	term->iterm_buffer = ft_calloc(2048, sizeof(char *));
+//	term->strterm_buffer = ft_calloc(2048, sizeof(char *));
+//	if (!term->iterm_buffer || !term->strterm_buffer)
+//	{
+//		ft_fprintf(2, "Memory allocation failed");
+//		exit(EXIT_FAILURE);
+//	}
+//	if (!term_type)
+//	{
+//		ft_fprintf(2, "Can't access TERM info because of env");
+//		exit(EXIT_FAILURE);
+//	}
+//	lib_access = tgetent(term->iterm_buffer, term_type);
+//	if (lib_access < 1)
+//	{
+//		ft_fprintf(2, "Can't access terminfo database"
+//			"or term_type not found in database");
+//		exit(EXIT_FAILURE);
+//	}
+//}
 
 /**
  * @brief Move cursor
@@ -101,21 +101,21 @@ void	term_info(t_term *term)
  *		tputs --> send control sequence to  terms
  */
 
-void	move_cursor(t_term *term, int x, int y)
-{
-	char	*move_sequence;
-	char	*move_action;
-
-	move_sequence = tgetstr("cm", &term->strterm_buffer);
-	if (!move_sequence)
-	{
-		ft_fprintf(2, "Impossible to get cursor move's sequence");
-		exit(EXIT_FAILURE);
-	}
-	//get_cursor_position(term);
-	move_action = tgoto(move_sequence, x, y);
-	tputs(move_action, 1, NULL);
-}
+//void	move_cursor(t_term *term, int x, int y)
+//{
+//	char	*move_sequence;
+//	char	*move_action;
+//
+//	move_sequence = tgetstr("cm", &term->strterm_buffer);
+//	if (!move_sequence)
+//	{
+//		ft_fprintf(2, "Impossible to get cursor move's sequence");
+//		exit(EXIT_FAILURE);
+//	}
+//	//get_cursor_position(term);
+//	move_action = tgoto(move_sequence, x, y);
+//	tputs(move_action, 1, NULL);
+//}
 
 /**
 * @brief Clear screen and reprint printf if necessary
@@ -141,20 +141,20 @@ void	refresh_cline(t_term *term)
 /**
 * @brief Delete 1 char
 */
-void	del(t_minishell *minishell, char **input)
-{
-	char	*del_sequence;
-
-	del_sequence = tgetstr("dc", &minishell->term->strterm_buffer);
-	if (!del_sequence)
-	{
-		ft_fprintf(2, "Impossible to catch delet_sequence");
-		exit(EXIT_FAILURE);
-	}
-	tputs(del_sequence, 1, NULL);
-	if (ft_strlen(*input) > 0 && minishell->term->cols
-		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
-		*input = erase_in_string(minishell, *input);
-	else if (ft_strlen(*input) > 0)
-		ft_trunc(input, 1);
-}
+//void	del(t_minishell *minishell, char **input)
+//{
+//	char	*del_sequence;
+//
+//	del_sequence = tgetstr("dc", &minishell->term->strterm_buffer);
+//	if (!del_sequence)
+//	{
+//		ft_fprintf(2, "Impossible to catch delet_sequence");
+//		exit(EXIT_FAILURE);
+//	}
+//	tputs(del_sequence, 1, NULL);
+//	if (ft_strlen(*input) > 0 && minishell->term->cols
+//		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+//		*input = erase_in_string(minishell, *input);
+//	else if (ft_strlen(*input) > 0)
+//		ft_trunc(input, 1);
+//}

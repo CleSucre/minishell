@@ -131,7 +131,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		if (minishell->term->cols
 			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
 		{
-//			printf("SHSDHJDSHDISsbadkjfcFJIUFJIUFJIFUJFIUFIIJUhahfccoilOHOSDHOSD");
+			printf("SHSDHJDSHDISsbadkjfcFJIUFJIUFJIFUJFIUFIIJUhahfccoilOHOSDHOSD");
 			*input = put_in_string(minishell, *input, c);
 		}
 		else
