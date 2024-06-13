@@ -60,13 +60,16 @@ t_ast		*parse_input(t_minishell *minishell, char *input);
 // #						TOKENIZER					  #
 // ########################################################
 
-t_token		*create_token(t_type type, char *value);
-t_ast		*tokenize(t_ast *ast, char *arg);
-void		extract_args(t_ast	*ast, char *full_command);
-
+t_type		token_type_primary(char *str);
 
 // ########################################################
-// #						AST						  #
+// #					AST_CREATION					  #
+// ########################################################
+
+void		extract_args(t_ast	*ast, char **args);
+
+// ########################################################
+// #						AST						  	  #
 // ########################################################
 
 t_ast		*create_ast(t_type type, char *value);

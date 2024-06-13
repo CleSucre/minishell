@@ -16,6 +16,7 @@
  * @brief Save the original termios settings
  *
  * @param t_term *termios
+ * @return void
  */
 static void	save_termios(t_term *termios)
 {

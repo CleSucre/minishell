@@ -13,12 +13,40 @@
 #include "minishell.h"
 
 /**
+ * @brief Get token type as string (2)
+ * 			This function is the second part of get_token_type_primary
+ * 			and has been separated to respect the 25 lines per function rule
+ * 			of the 42 norm.
+ *
+ * @param int type token type id
+ * @return char	* token type as string
+ */
+static char	*get_token_type_secondary(int type)
+{
+	if (type == ARGUMENT)
+		return ("ARGUMENT");
+	else if (type == FULL_COMMAND)
+		return ("FULL_COMMAND");
+	else if (type == COMMAND)
+		return ("COMMAND");
+	else if (type == FILE_NAME)
+		return ("FILE_NAME");
+	else if (type == AND_OPERATOR)
+		return ("AND_OPERATOR");
+	else if (type == OR_OPERATOR)
+		return ("OR_OPERATOR");
+	else if (type == SEMICOLON)
+		return ("SEMICOLON");
+	return ("UNKNOWN");
+}
+
+/**
  * @brief Get token type as string
  *
- * @param int type token type
+ * @param int type token type id
  * @return char * token type as string
  */
-static char	*get_token_type(int type)
+static char	*get_token_type_primary(int type)
 {
 	if (type == PIPE)
 		return ("PIPE");
@@ -38,22 +66,7 @@ static char	*get_token_type(int type)
 		return ("TEXT_DOUBLE_QUOTE");
 	else if (type == TEXT_SINGLE_QUOTE)
 		return ("TEXT_SINGLE_QUOTE");
-	else if (type == ARGUMENT)
-		return ("ARGUMENT");
-	else if (type == FULL_COMMAND)
-		return ("FULL_COMMAND");
-	else if (type == COMMAND)
-		return ("COMMAND");
-	else if (type == FILE_NAME)
-		return ("FILE_NAME");
-	else if (type == AND_OPERATOR)
-		return ("AND_OPERATOR");
-	else if (type == OR_OPERATOR)
-		return ("OR_OPERATOR");
-	else if (type == SEMICOLON)
-		return ("SEMICOLON");
-	else
-		return ("UNKNOWN");
+	return (get_token_type_secondary(type));
 }
 
 /**
@@ -74,12 +87,20 @@ void	debug_tokens(t_token *tokens)
 		ft_printf("\n%s[DEBUG] ====== tokens [%d] ======%s\n", BLUE, i, RESET);
 		ft_printf("token: %s%s%s\n", YELLOW, tokens->value, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
-			BOLDWHITE, get_token_type(tokens->type), RESET, tokens->type);
+			BOLDWHITE, get_token_type_primary(tokens->type),
+			RESET, tokens->type);
 		tokens = tokens->next;
 		i++;
 	}
 }
 
+/**
+ * @brief Print children of an ast node
+ *
+ * @param t_ast *ast ast node
+ * @param int level level of the ast node
+ * @return void
+ */
 void	debug_children(t_ast *ast, int level)
 {
 	char	*space;
@@ -93,7 +114,8 @@ void	debug_children(t_ast *ast, int level)
 		ft_printf("\n%s%s[DEBUG] ====== CHILDREN ======%s\n",
 			space, BLUE, RESET);
 		ft_printf("%stype str: %s%s%s (id: %d)\n",
-			space, BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
+			space, BOLDWHITE, get_token_type_primary(ast->type),
+			RESET, ast->type);
 		ft_printf("%svalue: %s%s%s\n", space, YELLOW, ast->value, RESET);
 		free(space);
 		if (ast->children)
@@ -102,6 +124,12 @@ void	debug_children(t_ast *ast, int level)
 	}
 }
 
+/**
+ * @brief Print ast
+ *
+ * @param t_ast *ast
+ * @return void
+ */
 void	debug_ast(t_ast *ast)
 {
 	if (!DEBUG)
@@ -110,7 +138,7 @@ void	debug_ast(t_ast *ast)
 	{
 		ft_printf("\n%s[DEBUG] ====== AST ======%s\n", BLUE, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
-			BOLDWHITE, get_token_type(ast->type), RESET, ast->type);
+			BOLDWHITE, get_token_type_primary(ast->type), RESET, ast->type);
 		ft_printf("value: %s%s%s\n", YELLOW, ast->value, RESET);
 		if (ast->children)
 			debug_children(ast->children, 1);
