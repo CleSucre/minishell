@@ -1,7 +1,7 @@
 # compilation
 
 minishell
-.ministory
+#.ministory
 obj/
 
 # IDE

@@ -16,6 +16,7 @@
  * @brief Free history linked list
  *
  * @param t_history *history
+ * @return void
  */
 static void	history_free(t_history *history)
 {
@@ -34,6 +35,7 @@ static void	history_free(t_history *history)
  * @brief Free minishell structure
  *
  * @param t_minishell *minishell
+ * @return void
  */
 void	free_minishell(t_minishell *minishell)
 {

@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /**
- * @brief	Main function of the minishell
+ * @brief Main function of the minishell
  *
  * @param int argc
  * @param char **args
