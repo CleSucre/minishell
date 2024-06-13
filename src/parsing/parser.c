@@ -16,9 +16,8 @@
  * @brief Extract full commands from input by splitting it with '|'
  * 			It also handle single and double quotes
  *
- * @param minishell
- * @param input
- * @return
+ * @param char *input
+ * @return t_ast *
  */
 static t_ast	*extract_full_commands(char *input)
 {
@@ -49,6 +48,12 @@ static t_ast	*extract_full_commands(char *input)
 	return (ast);
 }
 
+/**
+ * @brief Extract arguments from a full command by splitting it with WHITESPACES
+ *
+ * @param t_ast *ast ast containing all full commands
+ * @return void *
+ */
 static void	*parse_ast(t_ast *ast)
 {
 	t_ast	*tmp;
@@ -75,7 +80,7 @@ static void	*parse_ast(t_ast *ast)
 /**
  * @brief Parse the input and create ast
  *
- * @param char *input input to parse
+ * @param char *input string to parse
  * @return t_ast *
  */
 t_ast	*parse_input(t_minishell *minishell, char *input)

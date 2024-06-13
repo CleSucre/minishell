@@ -14,8 +14,9 @@
 
 /**
  * @brief Get the type of token from string for secondary tokens
- * @param char *str
- * @return t_type
+ *
+ * @param char *str string to check
+ * @return t_type type of token
  */
 static t_type	token_type_secondary(char *str)
 {
@@ -31,8 +32,8 @@ static t_type	token_type_secondary(char *str)
 /**
  * @brief Get the type of token from string
  *
- * @param char *str
- * @return t_type
+ * @param char *str string to check
+ * @return t_type type of token
  */
 t_type	token_type_primary(char *str)
 {

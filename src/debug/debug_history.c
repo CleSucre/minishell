@@ -15,7 +15,7 @@
 /**
  * @brief Print the number of commands loaded in debug mode
  *
- * @param cmd_count
+ * @param int cmd_count
  * @return void
  */
 void	debug_history_loaded(int cmd_count)
@@ -34,8 +34,8 @@ void	debug_history_loaded(int cmd_count)
 /**
  * @brief Print the command added to history in debug mode
  *
- * @param cmd
- * @param added 1 if the command was added, 0 otherwise
+ * @param char *cmd
+ * @param int added 1 if the command was added, 0 otherwise
  * @return void
  */
 void	debug_history_add(char *cmd, int added)
@@ -60,7 +60,7 @@ void	debug_history_add(char *cmd, int added)
 /**
  * @brief Print the command added to history file in debug mode
  *
- * @param cmd
+ * @param char *cmd
  * @return void
  */
 void	debug_history_add_file(char *cmd)

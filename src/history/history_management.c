@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Create a new history element
+ *
+ * @param char *cmd
+ * @param t_history *older
+ * @param t_history *newer
+ * @return t_history *
+ */
 static t_history	*history_create(char *cmd, t_history *older,
 							t_history *newer)
 {
@@ -66,11 +74,10 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 }
 
 /**
- * @brief Reset the history to the initial state
+ * @brief Reset the history file to the initial state
  *
  * TODO: Do we need this function?
  *
- * @param None
  * @return void
  */
 void	history_reset(void)
@@ -87,7 +94,7 @@ void	history_reset(void)
 }
 
 /**
- * @brief Print the history in the terminal
+ * @brief Print the content of history file to the terminal
  *
  * @param t_minishell *minishell
  * @return void

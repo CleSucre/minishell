@@ -13,7 +13,10 @@
 #include "minishell.h"
 
 /**
- * @brief Extract variables from a string
+ * @brief Replace the variables in a string by their values
+ * 			using the env variables loaded in t_minishell struct
+ *
+ * 	TODO: give t_minishell and just code it :)
  *
  * @param char *str
  * @return t_ast *
@@ -28,6 +31,13 @@ static t_ast	*extract_variables(char *str)
 	return (tmp);
 }
 
+/**
+ * @brief Handle the command type
+ *
+ * @param t_ast **tmp
+ * @param t_type *type
+ * @return void
+ */
 static void	handle_command_type(t_ast **tmp, t_type *type)
 {
 	if (*tmp && ast_get_last(*tmp) && *type == COMMAND)
@@ -39,6 +49,14 @@ static void	handle_command_type(t_ast **tmp, t_type *type)
 		*type = COMMAND;
 }
 
+/**
+ * @brief Handle the redirect in (<) operator
+ *
+ * @param t_ast **tmp
+ * @param char **args
+ * @param int *i
+ * @return int 1 if the redirect in was handled, 0 otherwise
+ */
 static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
 {
 	if (args[*i + 1] && token_type_primary(args[*i + 1]) == REDIRECT_IN)
@@ -52,6 +70,15 @@ static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
 	return (0);
 }
 
+/**
+ * @brief Handle the double quote (") operator
+ *
+ * @param int type
+ * @param t_ast **tmp
+ * @param char **args
+ * @param int *i
+ * @return int 1 if the double quote was handled, 0 otherwise
+ */
 static int	handle_double_quote(int type, t_ast **tmp, char **args, int *i)
 {
 	if (type == TEXT_DOUBLE_QUOTE)

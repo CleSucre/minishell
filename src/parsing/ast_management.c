@@ -36,8 +36,9 @@ t_ast	*create_ast(t_type type, char *value)
 
 /**
  * @brief Get last ast of the list
+ *
  * @param t_ast *head
- * @return t_ast	*
+ * @return t_ast *
  */
 t_ast	*ast_get_last(t_ast *head)
 {
@@ -54,6 +55,7 @@ t_ast	*ast_get_last(t_ast *head)
  *
  * @param t_ast *head head of the list
  * @param t_ast *ast ast to add
+ * @return void
  */
 void	ast_add_last(t_ast **head, t_ast *ast)
 {
@@ -74,6 +76,7 @@ void	ast_add_last(t_ast **head, t_ast *ast)
  *
  * @param t_ast *head head of the list
  * @param t_ast *ast ast to add
+ * @return void
  */
 void	ast_add_children(t_ast *ast, t_ast *children)
 {

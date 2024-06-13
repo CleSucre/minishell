@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Get token type as string (2)
+ * 			This function is the second part of get_token_type_primary
+ * 			and has been separated to respect the 25 lines per function rule
+ * 			of the 42 norm.
+ *
+ * @param int type token type id
+ * @return char	* token type as string
+ */
 static char	*get_token_type_secondary(int type)
 {
 	if (type == ARGUMENT)
@@ -34,7 +43,7 @@ static char	*get_token_type_secondary(int type)
 /**
  * @brief Get token type as string
  *
- * @param int type token type
+ * @param int type token type id
  * @return char * token type as string
  */
 static char	*get_token_type_primary(int type)
@@ -85,6 +94,13 @@ void	debug_tokens(t_token *tokens)
 	}
 }
 
+/**
+ * @brief Print children of an ast node
+ *
+ * @param t_ast *ast ast node
+ * @param int level level of the ast node
+ * @return void
+ */
 void	debug_children(t_ast *ast, int level)
 {
 	char	*space;
@@ -108,6 +124,12 @@ void	debug_children(t_ast *ast, int level)
 	}
 }
 
+/**
+ * @brief Print ast
+ *
+ * @param t_ast *ast
+ * @return void
+ */
 void	debug_ast(t_ast *ast)
 {
 	if (!DEBUG)
