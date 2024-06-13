@@ -147,3 +147,13 @@ asasdldzlkdzkdzldkzdjzkdzjedldsfkdzejlflijkejzefjzofezjkezkjhfjehfkzhfkjezkefzjl
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $ && echo $
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $ && echo $
+79249792
+79253968
+-775655280
+-775654432
+-775654912
+79274480
+79280032
+79285552
+79291008
+79295728

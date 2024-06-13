@@ -20,14 +20,13 @@
  * @param input
  * @return
  */
-static t_ast	*extract_full_commands(t_minishell *minishell, char *input)
+static t_ast	*extract_full_commands(char *input)
 {
 	char	**commands;
 	void	*tmp;
 	t_ast	*ast;
 	int		i;
 
-	(void)minishell;
 	commands = ft_split_quote(input, "|");
 	if (!commands)
 		return (NULL);
@@ -53,6 +52,7 @@ static t_ast	*extract_full_commands(t_minishell *minishell, char *input)
 static void	*parse_ast(t_ast *ast)
 {
 	t_ast	*tmp;
+	char	**args;
 
 	if (!ast)
 		return (NULL);
@@ -60,7 +60,13 @@ static void	*parse_ast(t_ast *ast)
 	while (tmp)
 	{
 		if (tmp->type == FULL_COMMAND)
-			extract_args(tmp, tmp->value);
+		{
+			args = ft_split_quote(tmp->value, WHITESPACES);
+			if (!args)
+				return (NULL);
+			extract_args(tmp, args);
+			free(args);
+		}
 		tmp = tmp->next;
 	}
 	return (ast);
@@ -79,7 +85,7 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	(void)minishell;
 	if (!input)
 		return (NULL);
-	ast = extract_full_commands(minishell, input);
+	ast = extract_full_commands(input);
 	if (!ast)
 		return (NULL);
 	parse_ast(ast);
