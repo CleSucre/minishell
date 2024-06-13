@@ -39,7 +39,7 @@ static void	handle_command_type(t_ast **tmp, t_type *type)
 		*type = COMMAND;
 }
 
-static int	handle_redirect_in(int type, t_ast **tmp, char **args, int *i)
+static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
 {
 	if (args[*i + 1] && token_type_primary(args[*i + 1]) == REDIRECT_IN)
 	{
@@ -81,7 +81,7 @@ void	extract_args(t_ast *ast, char **args)
 	while (args[i])
 	{
 		type = token_type_primary(args[i]);
-		if (handle_redirect_in(type, &tmp, args, &i))
+		if (handle_redirect_in(&tmp, args, &i))
 			continue ;
 		handle_command_type(&tmp, &type);
 		if (handle_double_quote(type, &tmp, args, &i))
