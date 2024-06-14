@@ -32,7 +32,7 @@ SRCS_MEMORY				= memory_alloc.c memory_free.c
 
 SRCS_PARSING			= ast_creation.c ast_management.c parser.c tokenizer.c
 
-SRCS_TERMINAL			= terminal.c terminal_action.c terminal_info.c erase_put.c terminal_cursor.c terminal_utils.c terminal_arrow.c
+SRCS_TERMINAL			= erase_put.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_utils.c terminal_variable.c
 
 #############################################################################
 #									FOLDERS									#

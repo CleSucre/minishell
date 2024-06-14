@@ -40,7 +40,6 @@ static void	history_free(t_history *history)
 void	free_minishell(t_minishell *minishell)
 {
 	free(minishell->cache->input);
-	free(minishell->cache->prompt);
 	free(minishell->cache);
 	free(minishell->term);
 	history_free(minishell->history);

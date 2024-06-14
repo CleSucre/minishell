@@ -33,7 +33,7 @@ static void	backspace_action(t_minishell *minishell, char **input)
 		ft_putstr_fd("\033[C", 1);
 	}
 	else if (ft_strlen(*input) > 0 && minishell->term->cols
-		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+		!= get_prompt_len(minishell) + ft_strlen(*input) + 1)
 	{
 		*input = erase_in_string(minishell, *input);
 		minishell->term->cols--;
@@ -50,7 +50,7 @@ void	ctrl_c_action(t_minishell *minishell, char **input)
 {
 	terminal_print("^C", 0);
 	reset_input(input);
-	terminal_print(minishell->cache->prompt, 1);
+	print_terminal_prompt(minishell, 1);
 	minishell->history_pos = 0;
 	get_cursor_position(minishell->term);
 }
@@ -58,7 +58,7 @@ void	ctrl_c_action(t_minishell *minishell, char **input)
 void	edit_input(t_minishell *minishell, char **input, char c)
 {
 	if (minishell->term->cols
-		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+		!= get_prompt_len(minishell) + ft_strlen(*input) + 1)
 		*input = put_in_string(minishell, *input, c);
 	else
 	{
@@ -93,7 +93,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		if (execute_command(minishell, *input))
 			return (1);
 		reset_input(input);
-		terminal_print(minishell->cache->prompt, 1);
+		print_terminal_prompt(minishell, 1);
 		minishell->history_pos = 0;
 		get_cursor_position(minishell->term);
 	}

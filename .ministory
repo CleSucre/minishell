@@ -34,20 +34,6 @@ cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
-78390304
-78394304
-78395712
-78405456
-78407440
-78410832
-78415264
-78423184
-78427248
-78431184
-78436848
-78441184
-78445696
-78449872
-78453488
-78456992
-78460704
+1560703440
+78393760
+78404096

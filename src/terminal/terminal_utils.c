@@ -21,7 +21,7 @@ void	reset_stdin(t_minishell *minishell)
 {
 	ft_putstr_fd("\033[2K", 1);
 	move_cursor_back(minishell->term->cols);
-	terminal_print(minishell->cache->prompt, 0);
+	print_terminal_prompt(minishell, 0);
 }
 
 /**

@@ -46,8 +46,6 @@ typedef struct s_history
 
 typedef struct s_cache
 {
-    char            *prompt;
-	unsigned int	prompt_len;
 	char            *input;
 }		t_cache;
 
@@ -56,6 +54,7 @@ typedef struct s_minishell
 	t_cache			*cache;
 	t_history		*history;
 	t_term			*term;
+	char			**env;
 	int				exit_code;
 	unsigned int	history_pos;
 	unsigned int	history_size;

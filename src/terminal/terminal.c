@@ -33,7 +33,7 @@ void	cursor_up_action(t_minishell *minishell,
 		*input = ft_strdup(new_history->cmd);
 		ft_putstr_fd("\033[1000D", 1);
 		terminal_print("\033[2K", 0);
-		terminal_print(minishell->cache->prompt, 0);
+		print_terminal_prompt(minishell, 0);
 		terminal_print(*input, 0);
 	}
 	get_cursor_position(minishell->term);
@@ -66,7 +66,7 @@ void	cursor_down_action(t_minishell *minishell,
 	free(cmd);
 	ft_putstr_fd("\033[1000D", 1);
 	terminal_print("\033[2K", 0);
-	terminal_print(minishell->cache->prompt, 0);
+	print_terminal_prompt(minishell, 0);
 	terminal_print(*input, 0);
 	get_cursor_position(minishell->term);
 }
@@ -96,9 +96,9 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 		else if (seq[1] == D_ARROW)
 			arrow_down_action(minishell, input, new_history);
 		else if (seq[1] == R_ARROW && cols
-			< ft_strlen(*input) + minishell->cache->prompt_len + 1)
+			< ft_strlen(*input) + get_prompt_len(minishell) + 1)
 			arrow_right_action(minishell);
-		else if (seq[1] == L_ARROW && cols > minishell->cache->prompt_len + 1)
+		else if (seq[1] == L_ARROW && cols > get_prompt_len(minishell) + 1)
 			arrow_left_action(minishell);
 		return (1);
 	}
@@ -119,7 +119,7 @@ int	use_termios(t_minishell *minishell)
 
 	input = NULL;
 	reset_input(&input);
-	terminal_print(minishell->cache->prompt, 1);
+	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
 	while (1)
 	{

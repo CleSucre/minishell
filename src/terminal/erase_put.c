@@ -31,7 +31,7 @@ char	*put_in_string(t_minishell *minishell, char *input, char c)
 	res = ft_calloc(ft_strlen(input) + 1, sizeof(char *));
 	i = 0;
 	ft_putstr_fd("\033[s", 1);
-	while (input[i] && i < cols - minishell->cache->prompt_len - 1)
+	while (input[i] && i < cols - get_prompt_len(minishell) - 1)
 	{
 		res[i] = input[i];
 		i++;
@@ -64,12 +64,12 @@ char	*erase_in_string(t_minishell *minishell, char *input)
 	unsigned int	cols;
 
 	cols = minishell->term->cols;
-	if (cols <= minishell->cache->prompt_len)
+	if (cols <= get_prompt_len(minishell))
 		return (input);
 	res = ft_calloc(ft_strlen(input), sizeof(char *));
 	i = 0;
 	ft_putstr_fd("\033[s", 1);
-	while (input[i] && i < cols - minishell->cache->prompt_len - 2)
+	while (input[i] && i < cols - get_prompt_len(minishell) - 2)
 	{
 		res[i] = input[i];
 		i++;
@@ -80,7 +80,7 @@ char	*erase_in_string(t_minishell *minishell, char *input)
 	free(input);
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u", 1);
-	if (cols > minishell->cache->prompt_len + 1)
+	if (cols > get_prompt_len(minishell) + 1)
 		ft_putstr_fd("\033[1D", 1);
 	return (res);
 }
