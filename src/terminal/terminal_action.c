@@ -65,7 +65,7 @@ void	reset_input(char **input)
 }
 
 /**
- * @brief Move cursor from cols to n positions
+ * @brief Move cursor backward from cols to n positions
  * @param position
  */
 void	move_cursor_back(size_t position)
@@ -77,6 +77,10 @@ void	move_cursor_back(size_t position)
 		ft_printf(CURSOR_LEFT, 1);
 }
 
+/**
+ * @brief Move cursor forward from cols to n positions
+ * @param position
+ */
 void move_cursor_forward(size_t position)
 {
 	size_t  i;
@@ -95,8 +99,6 @@ void move_cursor_forward(size_t position)
  * 								read by termios from 1st to Enter
  * @return int 						1 if exit, 0 if not
  */
-//TODO: Gerer bien les changements de size du terminal, vis a vis de l effacement, des rows/cols/etcs
-// Strlen de l arg > ws_col plutot que col > ws_col, comme MAJ a chaque while ca peut ptet le faire
 
 int	process_action(t_minishell *minishell, char c, char **input)
 {
@@ -114,9 +116,6 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	}
 	else if (c == BACKSPACE)
 	{
-		//&& minishell->term->cols != minishell->term->ws_cols + 1
-//		ft_fprintf(2, "voila col %d\n et row %d", minishell->term->cols, minishell->term->rows);
-//		ft_fprintf(2, "voila ws col %d\n et ws row %d", minishell->term->ws_cols, minishell->term->ws_rows);
 		if (minishell->term->cols != minishell->term->ws_cols && minishell->term->cols % minishell->term->ws_cols == 1 &&  minishell->term->begin_rows > 0)
 		{
 			ft_putstr_fd("\033[A", 1);
@@ -130,8 +129,6 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		else if (ft_strlen(*input) > 0 && minishell->term->cols
 			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
         {
-			ft_fprintf(2, "BHBHBHBHBHBHBH");
-
 			*input = erase_in_string(minishell, *input);
             minishell->term->cols--;
         }
@@ -141,7 +138,6 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			erase_term(1);
             minishell->term->cols--;
 		}
-
 	}
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
@@ -150,7 +146,6 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		reset_input(input);
 		terminal_print(minishell->cache->prompt, 1);
 		minishell->history_pos = 0;
-		minishell->term->begin_rows;
 		get_cursor_position(minishell->term);
 	}
 	else if (c == ESC_SEQ)
