@@ -18,7 +18,6 @@
  * @param input
  * @param cols
  */
-
 static void	reset_stdin(t_minishell *minishell, const char *input)
 {
 	(void)input;
@@ -36,7 +35,6 @@ static void	reset_stdin(t_minishell *minishell, const char *input)
  * @param cols			Position to add char
  * @return
  */
-
 char	*put_in_string(t_minishell *minishell, char *input, char c)
 {
 	char	*res;
@@ -90,12 +88,8 @@ char	*erase_in_string(t_minishell *minishell, char *input)
 		res[i] = input[i];
 		i++;
 	}
-	i++;
-	while (input[i])
-	{
+	while (input[++i])
 		res[i - 1] = input[i];
-		i++;
-	}
 	reset_stdin(minishell, input);
 	free(input);
 	terminal_print(res, 0);
