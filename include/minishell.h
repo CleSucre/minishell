@@ -27,6 +27,7 @@
 # include "struct.h"
 # include "config.h"
 # include "debug.h"
+# include "environment.h"
 # include "execution.h"
 # include "history.h"
 # include "memory.h"

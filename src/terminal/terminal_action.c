@@ -90,10 +90,10 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		backspace_action(minishell, input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
-		if (execute_command(minishell, *input))
+		if (execute(minishell, *input))
 			return (1);
+		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
 		reset_input(input);
-		print_terminal_prompt(minishell, 1);
 		minishell->history_pos = 0;
 		get_cursor_position(minishell->term);
 	}

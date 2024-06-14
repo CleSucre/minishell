@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   terminal_variable.c                                :+:      :+:    :+:   */
+/*   env_variable.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,6 +11,40 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Locate the executable path for a command within the system's PATH.
+ *
+ * @param char *cmd The command to locate.
+ * @param char **env Environment variables, including PATH.
+ * @return char* Full path to the executable, or NULL if not found.
+ */
+char	*get_path(char *cmd, char **env)
+{
+	int		i;
+	char	*path;
+	char	**paths;
+	char	*tmp;
+
+	if (access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
+	paths = ft_split(get_var_value_const(env, (char *)"PATH"), ":");
+	i = -1;
+	while (paths[++i])
+	{
+		tmp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(path, X_OK) == 0)
+		{
+			ft_freetab(paths);
+			return (path);
+		}
+		free(path);
+	}
+	ft_freetab(paths);
+	return (NULL);
+}
 
 /**
  * @brief Get a duplicate of the value of a variable

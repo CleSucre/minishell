@@ -24,21 +24,25 @@ SRCS_CONFIG				= term_config.c
 
 SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c
 
+SRCS_ENVIRONMENT		= env_variable.c
+
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
-SRCS_EXECUTION			= execution.c
+SRCS_EXECUTION			= execution.c executor.c
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c
 
 SRCS_PARSING			= ast_creation.c ast_management.c parser.c tokenizer.c
 
-SRCS_TERMINAL			= erase_put.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_utils.c terminal_variable.c
+SRCS_TERMINAL			= erase_put.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_utils.c
 
 #############################################################################
 #									FOLDERS									#
 #############################################################################
 
 SRCS_CONFIG				:= $(addprefix config$(DIRSEP), $(SRCS_CONFIG))
+
+SRCS_ENVIRONMENT		:= $(addprefix environment$(DIRSEP), $(SRCS_ENVIRONMENT))
 
 SRCS_DEBUG				:= $(addprefix debug$(DIRSEP), $(SRCS_DEBUG))
 
@@ -52,7 +56,7 @@ SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(SRCS_PARSING))
 
 SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
-SRCS					+= $(SRCS_CONFIG) $(SRCS_DEBUG) $(SRCS_HISTORY) \
+SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_EXECUTION) $(SRCS_MEMORY) $(SRCS_PARSING) \
 							$(SRCS_TERMINAL)
 
