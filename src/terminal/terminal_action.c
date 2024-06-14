@@ -81,13 +81,63 @@ void	move_cursor_back(size_t position)
  * @brief Move cursor forward from cols to n positions
  * @param position
  */
-void move_cursor_forward(size_t position)
+void	move_cursor_forward(size_t position)
 {
-	size_t  i;
+	size_t	i;
 
 	i = 0;
 	while (i++ < position)
 		ft_printf(CURSOR_RIGHT, 1);
+}
+
+void	backspace_action(t_minishell *minishell, char **input)
+{
+	if (minishell->term->cols != minishell->term->ws_cols
+		&& minishell->term->cols % minishell->term->ws_cols == 1
+		&& minishell->term->begin_rows > 0)
+	{
+		ft_putstr_fd("\033[A", 1);
+		move_cursor_back(minishell->term->cols);
+		move_cursor_forward(minishell->term->ws_cols);
+		ft_trunc(input, 1);
+		erase_term(0);
+		minishell->term->cols--;
+		ft_putstr_fd("\033[C", 1);
+	}
+	else if (ft_strlen(*input) > 0 && minishell->term->cols
+		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+	{
+		*input = erase_in_string(minishell, *input);
+		minishell->term->cols--;
+	}
+	else if (ft_strlen(*input) > 0 && minishell->term->cols > 1)
+	{
+		ft_trunc(input, 1);
+		erase_term(1);
+		minishell->term->cols--;
+	}
+}
+
+void	ctrl_c_action(t_minishell *minishell, char **input)
+{
+	terminal_print("^C", 0);
+	reset_input(input);
+	terminal_print(minishell->cache->prompt, 1);
+	minishell->history_pos = 0;
+	get_cursor_position(minishell->term);
+}
+
+void	act_in_string(t_minishell *minishell, char **input, char c)
+{
+	if (minishell->term->cols
+		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
+		*input = put_in_string(minishell, *input, c);
+	else
+	{
+		*input = ft_charjoin(*input, c);
+		ft_putchar_fd(c, 1);
+	}
+	minishell->term->cols++;
 }
 
 /**
@@ -107,38 +157,9 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	else if (c == CTRL_D)
 		return (0);
 	else if (c == CTRL_C)
-	{
-		terminal_print("^C", 0);
-		reset_input(input);
-		terminal_print(minishell->cache->prompt, 1);
-		minishell->history_pos = 0;
-        get_cursor_position(minishell->term);
-	}
+		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
-	{
-		if (minishell->term->cols != minishell->term->ws_cols && minishell->term->cols % minishell->term->ws_cols == 1 &&  minishell->term->begin_rows > 0)
-		{
-			ft_putstr_fd("\033[A", 1);
-			move_cursor_back(minishell->term->cols);
-			move_cursor_forward(minishell->term->ws_cols);
-			ft_trunc(input, 1);
-			erase_term(0);
-			minishell->term->cols--;
-			ft_putstr_fd("\033[C", 1);
-		}
-		else if (ft_strlen(*input) > 0 && minishell->term->cols
-			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
-        {
-			*input = erase_in_string(minishell, *input);
-            minishell->term->cols--;
-        }
-		else if (ft_strlen(*input) > 0 && minishell->term->cols > 1)
-		{
-			ft_trunc(input, 1);
-			erase_term(1);
-            minishell->term->cols--;
-		}
-	}
+		backspace_action(minishell, input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
 		if (execute_command(minishell, *input))
@@ -153,16 +174,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
 			return (0);
 	}
-	else {
-		if (minishell->term->cols
-			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
-			*input = put_in_string(minishell, *input, c);
-		else
-		{
-			*input = ft_charjoin(*input, c);
-			ft_putchar_fd(c, 1);
-		}
-		minishell->term->cols++;
-	}
+	else
+		act_in_string(minishell, input, c);
 	return (0);
 }

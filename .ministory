@@ -166,3 +166,7 @@ cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $ && echo $
 79289264
 79294528
 79297184
+79304672
+79309664
+79314896
+1981614624
