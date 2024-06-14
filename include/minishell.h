@@ -13,10 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# ifndef DEBUG
-#  define DEBUG 0
-# endif
-
 // ########################################################
 // #						LIBFT						  #
 // ########################################################

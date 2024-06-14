@@ -23,8 +23,13 @@ typedef enum {
 	ARGUMENT,
 	FLAG,
     VARIABLE,
+	TEXT,
 	TEXT_SINGLE_QUOTE,
 	TEXT_DOUBLE_QUOTE,
+	FILE_NAME,
+	AND_OPERATOR,
+	OR_OPERATOR,
+	SEMICOLON,
 	UNKNOWN
 }	t_type;
 
@@ -55,17 +60,21 @@ t_ast		*parse_input(t_minishell *minishell, char *input);
 // #						TOKENIZER					  #
 // ########################################################
 
-t_token		*create_token(t_type type, char *value);
-t_ast		*tokenize(t_ast *ast, char *arg);
-void		extract_args(t_ast	*ast, char *full_command);
-
+t_type		token_type_primary(char *str);
 
 // ########################################################
-// #						AST						  #
+// #					AST_CREATION					  #
+// ########################################################
+
+void		extract_args(t_ast	*ast, char **args);
+
+// ########################################################
+// #						AST						  	  #
 // ########################################################
 
 t_ast		*create_ast(t_type type, char *value);
-void		ast_add_back(t_ast *head, t_ast *ast);
+t_ast		*ast_get_last(t_ast *head);
+void		ast_add_last(t_ast **head, t_ast *ast);
 void		ast_add_children(t_ast *ast, t_ast *children);
 
 // ########################################################

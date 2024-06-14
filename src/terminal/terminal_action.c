@@ -141,7 +141,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	}
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
-		if (exec_command(minishell, *input))
+		if (execute_command(minishell, *input))
 			return (1);
 		reset_input(input);
 		terminal_print(minishell->cache->prompt, 1);

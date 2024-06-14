@@ -24,13 +24,13 @@ SRCS_CONFIG				= term_config.c
 
 SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c
 
-SRCS_HISTORY			= history.c
+SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
 SRCS_EXECUTION			= execution.c
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c
 
-SRCS_PARSING			= ast.c parser.c tokenizer.c
+SRCS_PARSING			= ast_creation.c ast_management.c parser.c tokenizer.c
 
 SRCS_TERMINAL			= terminal.c terminal_action.c terminal_info.c erase_put.c
 
@@ -117,10 +117,10 @@ fclean:
 
 re: fclean all
 
-run: fclean
+run:
 	$(MAKE) DEBUG=0 && ./minishell
 
-debug: fclean
+debug:
 	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell
 
 norm:
