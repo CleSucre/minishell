@@ -93,6 +93,7 @@ static int	execute_ast(t_minishell *minishell, t_ast *ast)
 				//set empty flags for now
 				if (!execute_command(path, args, minishell->env))
 				{
+					free(args);
 					free(path);
 					return (0);
 				}
@@ -103,6 +104,7 @@ static int	execute_ast(t_minishell *minishell, t_ast *ast)
 		}
 		tmp = tmp->next;
 	}
+	free(args);
 	return (0);
 }
 
