@@ -16,6 +16,8 @@ set(SRCS
         src/terminal/terminal.c
         src/sig/raw.c
         src/terminal/erase_put.c
+        src/terminal/terminal_cursor.c
+        src/terminal/terminal_utils.c
 )
 
 # Object files directory

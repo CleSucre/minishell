@@ -13,84 +13,12 @@
 #include "minishell.h"
 
 /**
- * @brief Erase a char in a string
+ * @brief Erase a char in string
  *
- * @param size_t len
- * @return void
+ * @param minishell
+ * @param input
  */
-static void	erase_term(size_t len)
-{
-	size_t		i;
-
-	i = 0;
-	while (i < len)
-	{
-		ft_printf(CURSOR_LEFT, 1);
-		i++;
-	}
-	ft_putchar_fd(' ', 1);
-	ft_printf(CURSOR_LEFT, 1);
-}
-
-/**
- * @brief Print in our terminal
- * 			if nl, move cursor one line down
- * @param char * String to print
- * @param int nl Move cursor down and print newline(s)
- * @return void
- */
-void	terminal_print(char *str, int nl)
-{
-	if (nl)
-		ft_printf("\033[%dD", 100);
-	while (nl--)
-		ft_putchar_fd('\n', 1);
-	ft_printf("%s", str);
-}
-
-/**
- * @brief Reset input string
- *
- * @param char **input
- * @return void
- */
-void	reset_input(char **input)
-{
-	if (*input)
-	{
-		free(*input);
-		*input = NULL;
-	}
-	*input = ft_calloc(1, sizeof(char *));
-}
-
-/**
- * @brief Move cursor backward from cols to n positions
- * @param position
- */
-void	move_cursor_back(size_t position)
-{
-	size_t	i;
-
-	i = 0;
-	while (i++ < position)
-		ft_printf(CURSOR_LEFT, 1);
-}
-
-/**
- * @brief Move cursor forward from cols to n positions
- * @param position
- */
-void	move_cursor_forward(size_t position)
-{
-	size_t	i;
-
-	i = 0;
-	while (i++ < position)
-		ft_printf(CURSOR_RIGHT, 1);
-}
-
-void	backspace_action(t_minishell *minishell, char **input)
+static void	backspace_action(t_minishell *minishell, char **input)
 {
 	if (minishell->term->cols != minishell->term->ws_cols
 		&& minishell->term->cols % minishell->term->ws_cols == 1
@@ -127,7 +55,7 @@ void	ctrl_c_action(t_minishell *minishell, char **input)
 	get_cursor_position(minishell->term);
 }
 
-void	act_in_string(t_minishell *minishell, char **input, char c)
+void	edit_input(t_minishell *minishell, char **input, char c)
 {
 	if (minishell->term->cols
 		!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
@@ -175,6 +103,6 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			return (0);
 	}
 	else
-		act_in_string(minishell, input, c);
+		edit_input(minishell, input, c);
 	return (0);
 }

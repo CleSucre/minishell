@@ -13,20 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Clear the lines and put back prompt after moving cursor
- *
- * @param input
- * @param cols
- */
-static void	reset_stdin(t_minishell *minishell, const char *input)
-{
-	(void)input;
-	ft_putstr_fd("\033[2K", 1);
-	move_cursor_back(minishell->term->cols);
-	terminal_print(minishell->cache->prompt, 0);
-}
-
-/**
  * @brief Add a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
  *
@@ -57,7 +43,7 @@ char	*put_in_string(t_minishell *minishell, char *input, char c)
 		i++;
 	}
 	free(input);
-	reset_stdin(minishell, res);
+	reset_stdin(minishell);
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u\033[1C", 1);
 	return (res);
@@ -90,11 +76,31 @@ char	*erase_in_string(t_minishell *minishell, char *input)
 	}
 	while (input[++i])
 		res[i - 1] = input[i];
-	reset_stdin(minishell, input);
+	reset_stdin(minishell);
 	free(input);
 	terminal_print(res, 0);
 	ft_putstr_fd("\033[u", 1);
 	if (cols > minishell->cache->prompt_len + 1)
 		ft_putstr_fd("\033[1D", 1);
 	return (res);
+}
+
+/**
+ * @brief Erase a char in a string
+ *
+ * @param size_t len
+ * @return void
+ */
+void	erase_term(size_t len)
+{
+	size_t		i;
+
+	i = 0;
+	while (i < len)
+	{
+		ft_printf(CURSOR_LEFT, 1);
+		i++;
+	}
+	ft_putchar_fd(' ', 1);
+	ft_printf(CURSOR_LEFT, 1);
 }

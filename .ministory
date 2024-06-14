@@ -1,10 +1,3 @@
-salut toi
-salut toi
-s uato
-salut toi
-salut toi
-test
-test -la
 test -la
 test -la | ls -a
 test -la | ls -a
@@ -18,155 +11,43 @@ exit
 ls -la | grep "mini" | wc -l > text.txt
 ls -la | grep "mini" | wc -l > text.txt
 ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-1
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-1
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
+input.txt < grep "hello" | cat -e | wc -l > output.txt
+input.txt < grep "hello" | cat -e | wc -l > output.txt
+input.txt < grep "hello" | cat -e | wc -l > output.txt
+input.txt < grep "hello" | cat -e | wc -l > output.txt
 make fclean
-input.txt < grep "salut" | cat -e | wc -l > output.txt
+input.txt < grep "hello" | cat -e | wc -l > output.txt
 exit
-hiuhhi
-hiuhhi
-hiuhhi
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-saluto ut le monde
-salut  | tout | le | monde
-salut  | tout | le | monde > test.txt
-salut t | tout | le | monde > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey > test.txt
-salut t | tout | le | echo hey > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
+input.txt < grep "hello" | cat -e | wc -l > output.txt
 echo
-echo "salut"
-echo "salut" toi
-echo "salut" toi
-echo "salut" toi
-echo "salut" toi
-echo "salut" toi comment vas tu
-echo "salut" toi comment 'vas tu' depuis
-echo "salut" toi comment 'vas tu' depuis > test.txt
-echo "salut" toi |comment 'vas tu' depuis > test.txt
-echo "salut" toi |comment
-echo "salut" toi|comment
-echo "salut" toi|comment>test.txt
-echo "salut" toi|comment >test.txt
-echo "salut" toi|comment > test.txt
+echo "hello"
+echo "hello" world
+echo '"hello" world'
 cat -e test.txt | grep . | wc -l > output.txt
 cat -e test.txt | grep . | wc -l > output.txt >>
 cat -e test.txt | grep $VAR | wc -l > output.txt
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo '$VAR'
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR" || yey
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
 cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-ksasasaks
-,:,s;:,snsns,:;dflsjlsjddclkkcnn,n;,;ndzdelzkhnlkllkzzm,lzjzefejejhjhk,hjjjhjjjjjjjjjjh
-asasdldzlkdzkdzldkzdjzkdzjedldsfkdzejlflijkejzefjzofezjkezkjhfjehfkzhfkjezkefzjlfdzdkdldkfefkejzhfzhfkzjdz
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $ && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $ && echo $
-79249792
-79253968
--775655280
--775654432
--775654912
-79274480
-79280032
-79285552
-79291008
-79295728
-242912672
-242926160
-79276656
-79278624
-79287312
-79286336
-79289264
-79294528
-79297184
-79304672
-79309664
-79314896
-1981614624
+cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
+cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
+cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
+cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $$
+78390304
+78394304
+78395712
+78405456
+78407440
+78410832
+78415264
+78423184
+78427248
+78431184
+78436848
+78441184
+78445696
+78449872
+78453488
+78456992
+78460704

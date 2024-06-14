@@ -31,30 +31,9 @@ Debug mode will force relink and run the program with `valgrind` with the follow
 
 Our minishell also has its own debug mode that enables debug messages.
 
-Exemple:
-```shell
-minishell has been created successfully.
-==377405== Memcheck, a memory error detector
-==377405== Copyright (C) 2002-2017, and GNU GPLd, by Julian Seward et al.
-==377405== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==377405== Command: ./minishell
-==377405==
+![debug_history_load.png](resources/img/debug_history_load.png)
 
-[DEBUG] History loaded from file
-minishell$ ls
-[DEBUG] Command ls executed
-[DEBUG] Command ls added to history
-[DEBUG] Command ls added to history file
-minishell$ ls
-[DEBUG] Command ls executed
-[DEBUG] Command ls not added to history (already the last command)
-[DEBUG] Command ls added to history file
-minishell$ mkdir test
-[DEBUG] Command mkdir test executed
-[DEBUG] Command mkdir test added to history
-[DEBUG] Command mkdir test added to history file
-minishell$
-```
+![debug_parsing.png](resources/img/debug_parsing.png)
 
 ## Todo
 
