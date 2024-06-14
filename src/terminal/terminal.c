@@ -54,6 +54,7 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 				terminal_print(minishell->cache->prompt, 0);
 				terminal_print(*input, 0);
 			}
+			get_cursor_position(minishell->term);
 		}
 		else if (seq[1] == D_ARROW)
 		{
@@ -74,6 +75,8 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 			terminal_print("\033[2K", 0);
 			terminal_print(minishell->cache->prompt, 0);
 			terminal_print(*input, 0);
+			get_cursor_position(minishell->term);
+
 		}
 		else if (seq[1] == R_ARROW && cols
 			< ft_strlen(*input) + minishell->cache->prompt_len + 1)

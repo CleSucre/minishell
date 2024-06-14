@@ -156,10 +156,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	else {
 		if (minishell->term->cols
 			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
-		{
-			ft_fprintf(2, "SHSDHJDSHDISsbadkjfcFJIUFJIUFJIFUJFIUFIIJUhahfccoilOHOSDHOSD");
 			*input = put_in_string(minishell, *input, c);
-		}
 		else
 		{
 			*input = ft_charjoin(*input, c);
