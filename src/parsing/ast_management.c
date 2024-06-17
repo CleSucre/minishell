@@ -13,6 +13,25 @@
 #include "minishell.h"
 
 /**
+ * @brief Get length of ast
+ *
+ * @param t_ast *ast
+ * @return unsigned int
+ */
+unsigned int	ast_len(t_ast *ast)
+{
+	unsigned int	len;
+
+	len = 0;
+	while (ast)
+	{
+		len++;
+		ast = ast->next;
+	}
+	return (len);
+}
+
+/**
  * @brief Create ast object
  *
  * @param t_type type of ast

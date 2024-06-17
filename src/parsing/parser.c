@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /**
- * @brief Extract full commands from input by splitting it with '|'
+ * @brief Extract full custom from input by splitting it with '|'
  * 			It also handle single and double quotes
  *
  * @param char *input
@@ -51,7 +51,7 @@ static t_ast	*extract_full_commands(char *input)
 /**
  * @brief Extract arguments from a full command by splitting it with WHITESPACES
  *
- * @param t_ast *ast ast containing all full commands
+ * @param t_ast *ast ast containing all full custom
  * @return void *
  */
 static void	*parse_ast(t_ast *ast)

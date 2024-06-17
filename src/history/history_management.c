@@ -74,16 +74,26 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 }
 
 /**
- * @brief Reset the history file to the initial state
+ * @brief Reset the history file and memory
  *
- * TODO: Do we need this function?
- *
+ * @param t_minishell *minishell
  * @return void
  */
-void	history_reset(void)
+void	history_reset(t_minishell *minishell)
 {
+	t_history	*tmp;
 	int	trunc;
 
+	while (minishell->history->older)
+	{
+		tmp = minishell->history->older;
+		free(minishell->history->cmd);
+		free(minishell->history);
+		minishell->history = tmp;
+	}
+	free(minishell->history->cmd);
+	free(minishell->history);
+	minishell->history = history_create(NULL, NULL, NULL);
 	trunc = open(HISTORY_FILE, O_WRONLY | O_TRUNC);
 	if (trunc == -1)
 	{
@@ -102,6 +112,7 @@ void	history_reset(void)
 void	history_print(t_minishell *minishell)
 {
 	t_history		*history;
+	char 			*tmp;
 	unsigned int	i;
 	unsigned int	j;
 
@@ -112,7 +123,9 @@ void	history_print(t_minishell *minishell)
 	while (history && history->newer)
 	{
 		terminal_print("    ", 1);
-		terminal_print(ft_itoa(i), 0);
+		tmp = ft_itoa(i);
+		terminal_print(tmp, 0);
+		free(tmp);
 		j = 0;
 		while (j < 4 - ft_nbrlen(i))
 		{
@@ -123,5 +136,5 @@ void	history_print(t_minishell *minishell)
 		history = history->newer;
 		i++;
 	}
-	print_terminal_prompt(minishell, 1);
+	terminal_print(" ", 1);
 }

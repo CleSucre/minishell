@@ -12,35 +12,47 @@
 
 #include "minishell.h"
 
+static t_cmd	get_cmd(t_minishell *minishell, char *input)
+{
+}
+
 /**
  * @brief Execute custom command before parsing the input
  *
  * @param t_minishell *minishell
- * @param char *input
+ * @param t_cmd *cmd
  * @return int 1 if a command was executed, 0 otherwise,
  * 			2 if exit was called
  */
-static int	execute_custom_command(t_minishell *minishell, char *input)
+static int	execute_custom_command(t_minishell *minishell, t_cmd *cmd)
 {
-	if (ft_strncmp(input, "exit", 4) == 0)
-		return (-1);
-	else if (ft_strcmp(input, "history") == 0)
+	if (ft_strcmp(cmd->cmd, "exit") == 0)
 	{
-		history_print(minishell);
+		command_exit(cmd);
+		return (2);
+	}
+	else if (ft_strcmp(cmd->cmd, "history") == 0)
+	{
+		command_history(cmd, minishell);
 		return (1);
 	}
+	else if (ft_strcmp(cmd->cmd, "cd") == 0)
+	{
+		if (!command_cd(cmd))
+			ft_putstr_fd("Error: cd failed\n", 2);
+		return (1);
+	}
+
 	return (0);
 }
 
 /**
  * @brief Execute the command given in input
  *
- * @param t_minishell *minishell
- * @param char **args
- * @param char **env
+ * @param t_cmd *cmd
  * @return int 1 on success, 0 on failure
  */
-static int	execute_command(char *path, char **args, char **env)
+static int	execute_command(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
@@ -48,9 +60,11 @@ static int	execute_command(char *path, char **args, char **env)
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(path, args, env);
-		ft_putstr_fd("Error: execve failed\n", 2);
-		return (0);
+		if (execve(cmd->cmd, cmd->argv, cmd->env) == -1)
+		{
+			ft_putstr_fd("Error: execve failed\n", 2);
+			return (0);
+		}
 	}
 	else if (pid < 0)
 	{
@@ -72,12 +86,8 @@ static int	execute_ast(t_minishell *minishell, t_ast *ast)
 {
 	char	*path;
 	t_ast	*tmp;
-	char	**args;
+	t_cmd	*cmd;
 
-    args = ft_calloc(1, sizeof(char *));
-    if (args == NULL)
-		return (0);
-	args[0] = NULL;
 	path = NULL;
 	tmp = ast;
 	while (tmp)
@@ -86,25 +96,31 @@ static int	execute_ast(t_minishell *minishell, t_ast *ast)
 			execute_ast(minishell, tmp->children);
 		else if (tmp->type == COMMAND)
 		{
-			// TODO: create a command to read ast and return infos
+			cmd = command_maker(minishell, tmp);
+			if (!cmd)
+				return (0);
+			if (execute_custom_command(minishell, cmd))
+			{
+				free_cmd(cmd);
+				return (0);
+			}
 			path = get_path(tmp->value, minishell->env);
 			if (path)
 			{
-				//set empty flags for now
-				if (!execute_command(path, args, minishell->env))
+				free(cmd->cmd);
+				cmd->cmd = path;
+				if (!execute_command(cmd))
 				{
-					free(args);
-					free(path);
+					free_cmd(cmd);
 					return (0);
 				}
-				free(path);
+				free_cmd(cmd);
 			}
 			else
 				ft_putstr_fd("Error: command not found\n", 2);
 		}
 		tmp = tmp->next;
 	}
-	free(args);
 	return (0);
 }
 

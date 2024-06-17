@@ -66,3 +66,11 @@ void	free_ast(t_ast *ast)
 		free(tmp);
 	}
 }
+
+void	free_cmd(t_cmd *cmd)
+{
+	free(cmd->cmd);
+	ft_freetab(cmd->argv);
+	free(cmd->path);
+	free(cmd);
+}

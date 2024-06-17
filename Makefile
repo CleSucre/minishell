@@ -28,7 +28,11 @@ SRCS_ENVIRONMENT		= env_variable.c
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
-SRCS_EXECUTION			= execution.c executor.c
+SRCS_EXECUTION			= execution.c
+
+SRCS_COMMANDS			= command_maker.c
+
+SRCS_COMMANDS_CUSTOM	= cd.c echo.c env.c export.c exit.c history.c pwd.c unset.c
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c
 
@@ -50,6 +54,10 @@ SRCS_HISTORY			:= $(addprefix history$(DIRSEP), $(SRCS_HISTORY))
 
 SRCS_EXECUTION			:= $(addprefix execution$(DIRSEP), $(SRCS_EXECUTION))
 
+SRCS_COMMANDS			:= $(addprefix commands$(DIRSEP), $(SRCS_COMMANDS))
+
+SRCS_COMMANDS_CUSTOM	:= $(addprefix commands$(DIRSEP), $(addprefix custom$(DIRSEP), $(SRCS_COMMANDS_CUSTOM)))
+
 SRCS_MEMORY				:= $(addprefix memory$(DIRSEP), $(SRCS_MEMORY))
 
 SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(SRCS_PARSING))
@@ -57,8 +65,8 @@ SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(SRCS_PARSING))
 SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
 SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
-							$(SRCS_EXECUTION) $(SRCS_MEMORY) $(SRCS_PARSING) \
-							$(SRCS_TERMINAL)
+							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL)
 
 SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
 
