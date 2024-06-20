@@ -37,7 +37,7 @@ typedef struct s_cmd
 int		command_cd(t_cmd *cmd);
 int		command_echo(t_cmd *cmd);
 void	command_env(t_cmd *cmd);
-void	command_exit(t_cmd *cmd);
+int		command_exit(t_cmd *cmd);
 void	command_export(t_cmd *cmd);
 void	command_history(t_cmd *cmd, t_minishell *minishell);
 void	command_pwd(t_cmd *cmd);

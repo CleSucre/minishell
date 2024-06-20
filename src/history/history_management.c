@@ -67,7 +67,7 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 	fd = history_get_file();
 	if (fd < 0)
 		return (-1);
-	ft_fprintf(fd, "%d\n", cmd);
+	ft_fprintf(fd, "%s\n", cmd);
 	debug_history_add_file(cmd);
 	close(fd);
 	return (0);
