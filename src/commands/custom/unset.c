@@ -14,4 +14,5 @@
 
 void	command_unset(t_cmd *cmd)
 {
+	(void)cmd;
 }

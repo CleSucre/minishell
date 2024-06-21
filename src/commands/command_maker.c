@@ -14,10 +14,10 @@
 
 static char **get_args(t_ast *cmd)
 {
-	char	**args;
-	t_ast	*tmp;
-	int 	size;
-	int 	i;
+	char			**args;
+	t_ast			*tmp;
+	unsigned int	size;
+	int 			i;
 
 	size = ast_len(cmd);
 	args = ft_calloc(size + 1, sizeof(char *));
@@ -27,7 +27,10 @@ static char **get_args(t_ast *cmd)
 	tmp = cmd->next;
 	while (tmp)
 	{
-		args[i] = ft_strdup(tmp->value);
+		if (tmp->type == TEXT_DOUBLE_QUOTE || tmp->type == TEXT_SINGLE_QUOTE)
+			args[i] = ft_strdup(tmp->children->value);
+		else
+			args[i] = ft_strdup(tmp->value);
 		tmp = tmp->next;
 		i++;
 	}

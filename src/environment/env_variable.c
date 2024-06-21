@@ -118,3 +118,32 @@ int	get_var_len(char **env, char *var)
 	}
 	return (len);
 }
+
+/**
+ * @brief Replace the variables in a string by their values
+ * 			using the env variables (only for the $VARNAME format)
+ *
+ * @param t_minishell *minishell
+ * @param char *str
+ * @return char* string with replaced variables
+ */
+char	*replace_variables(char **env, char *str)
+{
+	int		i;
+	int		j;
+	char	*res;
+
+	res = NULL;
+	i = 0;
+	while (str[i])
+	{
+		j = 0;
+		while (env[j])
+		{
+			res = ft_strreplace(str, env[j], get_var_value(env, env[j]));
+			j++;
+		}
+		i++;
+	}
+	return (res);
+}

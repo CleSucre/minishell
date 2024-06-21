@@ -12,16 +12,13 @@
 
 #include "minishell.h"
 
-int	command_exit(t_cmd *cmd)
+void	command_exit(t_cmd *cmd)
 {
 	int		status;
 
 	if (cmd->argc > 1)
-	{
 		status = ft_atoi(cmd->argv[0]);
-	}
 	else
 		status = 0;
-	cmd->exit_status = 13;
-	return (1);
+	cmd->exit_status = status % 256;
 }

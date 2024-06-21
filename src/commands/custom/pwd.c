@@ -14,4 +14,5 @@
 
 void	command_pwd(t_cmd *cmd)
 {
+	(void)cmd;
 }

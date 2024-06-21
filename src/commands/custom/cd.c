@@ -14,4 +14,6 @@
 
 int	command_cd(t_cmd *cmd)
 {
+	(void)cmd;
+	return (0);
 }

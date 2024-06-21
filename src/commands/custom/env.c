@@ -14,4 +14,5 @@
 
 void	command_env(t_cmd *cmd)
 {
+	(void)cmd;
 }

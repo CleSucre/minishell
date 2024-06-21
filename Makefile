@@ -130,7 +130,8 @@ fclean:
 re: fclean all
 
 run:
-	$(MAKE) DEBUG=0 && ./minishell
+	$(MAKE) DEBUG=0
+	./minishell
 
 debug:
 	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell

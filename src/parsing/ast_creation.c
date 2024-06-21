@@ -21,13 +21,17 @@
  * @param char *str
  * @return t_ast *
  */
-static t_ast	*extract_variables(char *str)
+static t_ast	*extract_variables(t_minishell *minishell, char *str)
 {
 	char	*trimmed;
+	char	*text;
 	t_ast	*tmp;
 
 	trimmed = ft_strtrim(str, "\"");
-	tmp = create_ast(TEXT, trimmed);
+	if (!trimmed)
+		return (NULL);
+	text = replace_variables(minishell->env, trimmed);
+	tmp = create_ast(TEXT, text);
 	return (tmp);
 }
 
@@ -79,12 +83,12 @@ static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
  * @param int *i
  * @return int 1 if the double quote was handled, 0 otherwise
  */
-static int	handle_double_quote(int type, t_ast **tmp, char **args, int *i)
+static int	handle_double_quote(t_minishell *minishell, int type, t_ast **tmp, char **args, int *i)
 {
 	if (type == TEXT_DOUBLE_QUOTE)
 	{
 		ast_add_last(tmp, create_ast(TEXT_DOUBLE_QUOTE, args[*i]));
-		ast_add_children(ast_get_last(*tmp), extract_variables(args[(*i)++]));
+		ast_add_children(ast_get_last(*tmp), extract_variables(minishell, args[(*i)++]));
 		return (1);
 	}
 	return (0);
@@ -97,7 +101,7 @@ static int	handle_double_quote(int type, t_ast **tmp, char **args, int *i)
  * @param char *full_command the command to extract the children from
  * @return void
  */
-void	extract_args(t_ast *ast, char **args)
+void	extract_args(t_minishell *minishell, t_ast *ast, char **args)
 {
 	t_ast	*tmp;
 	t_type	type;
@@ -111,7 +115,7 @@ void	extract_args(t_ast *ast, char **args)
 		if (handle_redirect_in(&tmp, args, &i))
 			continue ;
 		handle_command_type(&tmp, &type);
-		if (handle_double_quote(type, &tmp, args, &i))
+		if (handle_double_quote(minishell, type, &tmp, args, &i))
 			continue ;
 		ast_add_last(&tmp, create_ast(type, args[i++]));
 		if (type == REDIRECT_OUT)

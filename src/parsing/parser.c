@@ -54,7 +54,7 @@ static t_ast	*extract_full_commands(char *input)
  * @param t_ast *ast ast containing all full custom
  * @return void *
  */
-static void	*parse_ast(t_ast *ast)
+static void	*parse_ast(t_minishell *minishell, t_ast *ast)
 {
 	t_ast	*tmp;
 	char	**args;
@@ -69,7 +69,7 @@ static void	*parse_ast(t_ast *ast)
 			args = ft_split_quote(tmp->value, WHITESPACES);
 			if (!args)
 				return (NULL);
-			extract_args(tmp, args);
+			extract_args(minishell, tmp, args);
 			free(args);
 		}
 		tmp = tmp->next;
@@ -93,7 +93,7 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	ast = extract_full_commands(input);
 	if (!ast)
 		return (NULL);
-	parse_ast(ast);
+	parse_ast(minishell, ast);
 	debug_ast(ast);
 	return (ast);
 }

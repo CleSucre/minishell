@@ -30,3 +30,99 @@ exit 27
 exit 27
 exit 27
 exit 27
+exit
+exit
+exit
+exit 12
+exit
+exit 12
+make fclean
+exit 12
+exit 13
+exit 8
+exit 8
+exit 255
+exit 290
+echo "salut"
+echo "salut"
+echo "salut"
+echo "salut"
+echo "salut"
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo "salut tout le monde"
+echo "salut tout "le monde"
+echo "salut tout " le monde"
+echo 'salut tout " le monde'
+echo 'salut tout le monde'
+clear
+echo -n 'salut tout le monde'
+echo -n 'salut tout le monde'
+echo 'salut tout le monde'
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo 'salut tout le monde'
+echo -n salut
+echo salut
+echo -n salut
+echo salut
+echo -n salut
+echo salut
+exit 1736234
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo salut
+make nor
+echo "salut"
+echo "salut"
+echo "salut"
+echo "&? salut"
+echo "&ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$USER salut"
+make debug
+make debug
+echo "$USER salut"
+echo "$USER salut"
+make debug
+make debug
+echo "$USER salut"
+echo "$USER salut"
+echo "$USER salut"
+echo "dwdwdwd$USER salut"
+echo "dwdwdwd $USER salut"
+echo "$USER"
+"$USER"
+ls
