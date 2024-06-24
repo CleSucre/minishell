@@ -17,18 +17,18 @@ int	command_echo(t_cmd *cmd)
 	int		i;
 	int		n_flag;
 
-	i = 0;
+	i = 1;
 	n_flag = 0;
-	if (cmd->argc > 1 && ft_strcmp(cmd->argv[0], "-n") == 0)
+	if (cmd->argc > 1 && ft_strcmp(cmd->argv[1], "-n") == 0)
 	{
 		n_flag = 1;
 		i++;
 	}
 	terminal_print("", 1);
-	while (i < cmd->argc - 1)
+	while (i < cmd->argc)
 	{
 		terminal_print(cmd->argv[i], 0);
-		if (i + 1 < cmd->argc - 1)
+		if (i + 1 < cmd->argc)
 			ft_putchar_fd(' ', 0);
 		i++;
 	}

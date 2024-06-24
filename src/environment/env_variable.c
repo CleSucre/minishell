@@ -179,3 +179,25 @@ char	*replace_variables(char **env, char *str)
 	}
 	return (res);
 }
+
+/**
+ * @brief Replace the variables in a string by their values
+ * 			using the env variables loaded in t_minishell struct
+ *
+ * 	TODO: give t_minishell and just code it :)
+ *
+ * @param char *str
+ * @return t_ast *
+ */
+char	*extract_variables(t_minishell *minishell, char *str)
+{
+	char	*trimmed;
+	char	*text;
+
+	trimmed = ft_strtrim(str, "\"");
+	if (!trimmed)
+		return (NULL);
+	text = replace_variables(minishell->env, trimmed);
+	free(trimmed);
+	return (text);
+}

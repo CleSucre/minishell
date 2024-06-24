@@ -12,7 +12,28 @@
 
 #include "minishell.h"
 
-static char **get_args(t_ast *cmd)
+/**
+ * @brief Handle the double quote (") operator
+ *
+ * @param int type
+ * @param t_ast **tmp
+ * @param char **args
+ * @param int *i
+ * @return int 1 if the double quote was handled, 0 otherwise
+ */
+static char	*handle_quote(t_minishell *minishell, int type, char *str)
+{
+	char	*res;
+
+	res = NULL;
+	if (type == TEXT_DOUBLE_QUOTE || type == VARIABLE)
+		res = extract_variables(minishell, str);
+	else if (type == TEXT_SINGLE_QUOTE)
+		res = ft_strdup(str);
+	return (res);
+}
+
+static char **get_args(t_minishell *minishell, t_ast *cmd)
 {
 	char			**args;
 	t_ast			*tmp;
@@ -28,10 +49,7 @@ static char **get_args(t_ast *cmd)
 	tmp = cmd->next;
 	while (tmp)
 	{
-		if (tmp->type == TEXT_DOUBLE_QUOTE || tmp->type == TEXT_SINGLE_QUOTE)
-			args[i] = ft_strdup(tmp->children->value);
-		else
-			args[i] = ft_strdup(tmp->value);
+		args[i] = handle_quote(minishell, tmp->type, tmp->value);
 		tmp = tmp->next;
 		i++;
 	}
@@ -60,7 +78,7 @@ t_cmd	*command_maker(t_minishell *minishell, t_ast *cmd)
 	if (!path)
 		path = ft_strdup(cmd->value);
 	new_cmd->cmd_exec = path;
-	new_cmd->argv = get_args(cmd);
+	new_cmd->argv = get_args(minishell, cmd);
 	new_cmd->argc = (int)ast_len(cmd);
 	new_cmd->env = minishell->env;
 	new_cmd->path = get_var_value(minishell->env, "PATH");

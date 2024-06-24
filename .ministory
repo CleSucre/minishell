@@ -256,3 +256,49 @@ exit
 echo "Hello World $USER yoyo"
 echo "Hello World $USER yoyo $USER"
 exit
+echo $USER
+echo "*$USER"
+echo "$USER"
+echo $USER
+echo $USER
+echo $USER
+echo $USER $USER
+echo -e $USER $USER
+echo -n $USER $USER
+echo -n yey
+echo -n
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo $USER
+echo -n
+echo -n sasa
+echo -n sasa
+echo -n $USER
+echo -n $USER
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+exit
