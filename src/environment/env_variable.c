@@ -119,6 +119,29 @@ int	get_var_len(char **env, char *var)
 	return (len);
 }
 
+static char	*ft_strjoin_char(char *s1, char c)
+{
+	char	*res;
+	int		i;
+
+	if (!s1)
+	{
+		res = ft_calloc(2, sizeof(char));
+		res[0] = c;
+		return (res);
+	}
+	res = ft_calloc(ft_strlen(s1) + 2, sizeof(char));
+	i = 0;
+	while (s1[i])
+	{
+		res[i] = s1[i];
+		i++;
+	}
+	res[i] = c;
+	free(s1);
+	return (res);
+}
+
 /**
  * @brief Replace the variables in a string by their values
  * 			using the env variables (only for the $VARNAME format)
@@ -132,18 +155,27 @@ char	*replace_variables(char **env, char *str)
 	int		i;
 	int		j;
 	char	*res;
+	char	*tmp;
 
 	res = NULL;
 	i = 0;
 	while (str[i])
 	{
 		j = 0;
-		while (env[j])
+		if (str[i] == '$' && str[i + 1] && str[i + 1] != ' ')
 		{
-			res = ft_strreplace(str, env[j], get_var_value(env, env[j]));
-			j++;
+			while (ft_isalnum(str[i + j + 1]))
+				j++;
+			tmp = ft_substr(str, i + 1, j);
+			res = ft_strjoin_free(res, get_var_value(env, tmp));
+			free(tmp);
+			i += j + 1;
 		}
-		i++;
+		else
+		{
+			res = ft_charjoin(res, str[i]);
+			i++;
+		}
 	}
 	return (res);
 }

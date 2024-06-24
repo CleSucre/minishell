@@ -42,7 +42,7 @@ t_ast	*create_ast(t_type type, char *value)
 {
 	t_ast	*ast;
 
-	ast = malloc(sizeof(t_ast));
+	ast = ft_calloc(1, sizeof(t_ast));
 	if (!ast)
 		return (NULL);
 	ast->type = type;

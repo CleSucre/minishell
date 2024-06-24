@@ -131,3 +131,128 @@ exit 23©
 exit 23
 ls -la
 exit
+ls -la
+clear
+history
+history 16
+exit
+echo "Hello World"
+clear
+exit
+echo "Hello World"
+exit
+echo "Hello World"
+echo "Hello World"
+exit
+ls
+ls -la
+ls
+ls -la
+exit
+echo "Hello World"
+echo "Hello World"
+echo "Hello World"
+echo "Hello World"
+ls
+ls -la
+echo "Hello World"
+exit
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo $ENV"
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+exit
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo $USER"
+exit
+echo "Hello World $USER yoyo $USER"
+exit
+echo "Hello World $USER yoyo $USER"
+exit
+echo "Hello World $USER yoyo $USER"
+echo "Hello World $USER yoyo"
+echo "Hello World $USERyoyo"
+exit
+echo "Hello World $USERyoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo $USER"
+exit

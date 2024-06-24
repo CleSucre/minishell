@@ -31,6 +31,7 @@ static t_ast	*extract_variables(t_minishell *minishell, char *str)
 	if (!trimmed)
 		return (NULL);
 	text = replace_variables(minishell->env, trimmed);
+	free(trimmed);
 	tmp = create_ast(TEXT, text);
 	return (tmp);
 }
