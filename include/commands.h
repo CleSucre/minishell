@@ -18,16 +18,17 @@
 
 typedef struct s_cmd
 {
-	char	*cmd;
+	char			*cmd_name;
+	char			*cmd_exec;
 	struct	s_cmd	*prev;
 	struct	s_cmd	*next;
-	int		argc;
-	char	**argv;
-	char	**env;
-	char	*path;
-	int		fd_in;
-	int		fd_out;
-	int		exit_status;
+	int				argc;
+	char			**argv;
+	char			**env;
+	char			*path;
+	int				fd_in;
+	int				fd_out;
+	int				exit_status;
 }	t_cmd;
 
 // ########################################################

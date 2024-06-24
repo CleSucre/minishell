@@ -69,7 +69,8 @@ void	free_ast(t_ast *ast)
 
 void	free_cmd(t_cmd *cmd)
 {
-	free(cmd->cmd);
+	free(cmd->cmd_name);
+	free(cmd->cmd_exec);
 	ft_freetab(cmd->argv);
 	free(cmd->path);
 	free(cmd);

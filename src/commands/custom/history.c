@@ -50,7 +50,7 @@ void	command_history(t_cmd *cmd, t_minishell *minishell)
 	{
 		history_print(minishell);
 	}
-	if (command_have_flag(cmd->argv, 'c'))
+	else if (command_have_flag(cmd->argv, 'c'))
 	{
 		ft_printf("Clearing history\n");
 		history_reset(minishell);

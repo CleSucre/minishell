@@ -136,5 +136,5 @@ void	history_print(t_minishell *minishell)
 		history = history->newer;
 		i++;
 	}
-	terminal_print(" ", 1);
+	terminal_print("", 1);
 }

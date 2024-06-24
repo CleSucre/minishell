@@ -13,46 +13,12 @@
 #include "minishell.h"
 
 /**
- * @brief Execute custom command before parsing the input
- *
- * @param t_minishell *minishell
- * @param t_cmd *cmd
- * @return int 1 if a command was executed, 0 otherwise,
- * 			2 if exit was called
- */
-static int	execute_custom_command(t_minishell *minishell, t_cmd *cmd)
-{
-	if (ft_strcmp(cmd->cmd, "exit") == 0)
-	{
-		command_exit(cmd);
-		return (2);
-	}
-	else if (ft_strcmp(cmd->cmd, "history") == 0)
-	{
-		command_history(cmd, minishell);
-		return (1);
-	}
-	else if (ft_strcmp(cmd->cmd, "echo") == 0)
-	{
-		command_echo(cmd);
-		return (1);
-	}
-	else if (ft_strcmp(cmd->cmd, "cd") == 0)
-	{
-		command_cd(cmd);
-		return (1);
-	}
-
-	return (0);
-}
-
-/**
  * @brief Execute the command given in input
  *
  * @param t_cmd *cmd
  * @return int 1 on success, 0 on failure
  */
-static int	execute_command(t_cmd *cmd)
+static int	execute_cmd(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
@@ -60,57 +26,57 @@ static int	execute_command(t_cmd *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(cmd->cmd, cmd->argv, cmd->env) == -1)
+		if (execve(cmd->cmd_exec, cmd->argv, cmd->env) == -1)
 		{
-			ft_putstr_fd("Error: execve failed\n", 2);
-			return (0);
+			ft_printf("minishell: command not found: %s\n", cmd->cmd_name);
+			cmd->exit_status = 127;
 		}
 	}
 	else if (pid < 0)
 	{
 		ft_putstr_fd("Error: fork failed\n", 2);
-		return (0);
+		cmd->exit_status = 1;
 	}
-	waitpid(pid, &status, 0);
+	else
+	{
+		waitpid(pid, &status, 0);
+		cmd->exit_status = WEXITSTATUS(status);
+	}
 	return (1);
 }
 
-int execute_cmd(t_minishell *minishell, t_ast *tmp)
+static int	execute_command(t_minishell *minishell, t_ast *ast)
 {
 	t_cmd	*cmd;
-	char	*path;
-	int		res;
+	int 	res;
 
-	cmd = command_maker(minishell, tmp);
+	cmd = command_maker(minishell, ast);
 	if (!cmd)
 		return (0);
-	res = execute_custom_command(minishell, cmd);
-	minishell->exit_code = cmd->exit_status;
-	if (res == 1)
+	if (ft_strcmp(cmd->cmd_name, "exit") == 0)
 	{
-		free_cmd(cmd);
-		return (0);
+		command_exit(cmd);
+		res = 2;
 	}
-	else if (res == 2)
+	else if (ft_strcmp(cmd->cmd_name, "history") == 0)
 	{
-		free_cmd(cmd);
-		return (1);
+		command_history(cmd, minishell);
+		res = 1;
 	}
-	path = get_path(tmp->value, minishell->env);
-	if (path)
+	else if (ft_strcmp(cmd->cmd_name, "echo") == 0)
 	{
-		free(cmd->cmd);
-		cmd->cmd = path;
-		if (!execute_command(cmd))
-		{
-			free_cmd(cmd);
-			return (0);
-		}
-		free_cmd(cmd);
+		command_echo(cmd);
+		res = 1;
+	}
+	else if (ft_strcmp(cmd->cmd_name, "cd") == 0)
+	{
+		command_cd(cmd);
+		res = 1;
 	}
 	else
-		ft_putstr_fd("Error: command not found\n", 2);
-	return (1);
+		res = execute_cmd(cmd);
+	free_cmd(cmd);
+	return (res);
 }
 
 /**
@@ -134,7 +100,7 @@ static int	execute_ast(t_minishell *minishell, t_ast *ast)
 		}
 		else if (tmp->type == COMMAND)
 		{
-			if (execute_cmd(minishell, tmp))
+			if (execute_command(minishell, tmp) == 2)
 				return (1);
 		}
 		tmp = tmp->next;

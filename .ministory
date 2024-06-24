@@ -129,3 +129,5 @@ ls
 exit &Ã©
 exit 23©
 exit 23
+ls -la
+exit
