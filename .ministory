@@ -126,3 +126,6 @@ echo "dwdwdwd $USER salut"
 echo "$USER"
 "$USER"
 ls
+exit &Ã©
+exit 23©
+exit 23
