@@ -12,27 +12,6 @@
 
 #include "minishell.h"
 
-/**
- * @brief Handle the double quote (") operator
- *
- * @param int type
- * @param t_ast **tmp
- * @param char **args
- * @param int *i
- * @return int 1 if the double quote was handled, 0 otherwise
- */
-static char	*handle_quote(t_minishell *minishell, int type, char *str)
-{
-	char	*res;
-
-	res = NULL;
-	if (type == TEXT_DOUBLE_QUOTE || type == VARIABLE)
-		res = extract_variables(minishell, str);
-	else if (type == TEXT_SINGLE_QUOTE)
-		res = ft_strdup(str);
-	return (res);
-}
-
 static char **get_args(t_minishell *minishell, t_ast *cmd)
 {
 	char			**args;
@@ -49,7 +28,15 @@ static char **get_args(t_minishell *minishell, t_ast *cmd)
 	tmp = cmd->next;
 	while (tmp)
 	{
-		args[i] = handle_quote(minishell, tmp->type, tmp->value);
+		if (tmp->type == TEXT_DOUBLE_QUOTE || tmp->type == TEXT_SINGLE_QUOTE || tmp->type == VARIABLE)
+		{
+			if (tmp->children->type == TEXT)
+				args[i] = ft_strdup(tmp->children->value);
+			//TODO: handle the case where the children is a command or else
+		}
+		else if (tmp->type == TEXT)
+			args[i] = ft_strdup(tmp->value);
+		ft_printf("args[%d] = %s\n", i, args[i]);
 		tmp = tmp->next;
 		i++;
 	}

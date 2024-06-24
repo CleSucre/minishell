@@ -52,6 +52,32 @@ static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
 }
 
 /**
+ * @brief Handle the double quote (") operator
+ *
+ * @param int type
+ * @param t_ast **tmp
+ * @param char **args
+ * @param int *i
+ * @return int 1 if the double quote was handled, 0 otherwise
+ */
+static char	*handle_quote(t_minishell *minishell, int type, char *str)
+{
+	char	*res;
+
+	res = NULL;
+	if (type == TEXT_DOUBLE_QUOTE || type == VARIABLE)
+		res = extract_variables(minishell, str);
+	else if (type == TEXT_SINGLE_QUOTE)
+	{
+		str = ft_strtrim(str, "'");
+		if (str)
+			res = ft_strdup(str);
+		free(str);
+	}
+	return (res);
+}
+
+/**
  * @brief Extract the children of a command
  *
  * @param t_ast *ast the ast to add the children to
@@ -63,6 +89,7 @@ void	extract_args(t_minishell *minishell, t_ast *ast, char **args)
 	t_ast	*tmp;
 	t_type	type;
 	int		i;
+	char	*str;
 
 	tmp = NULL;
 	i = 0;
@@ -73,6 +100,9 @@ void	extract_args(t_minishell *minishell, t_ast *ast, char **args)
 			continue ;
 		handle_command_type(&tmp, &type);
 		ast_add_last(&tmp, create_ast(type, args[i++]));
+		str = handle_quote(minishell, type, args[i - 1]);
+		if (str)
+			ast_add_children(ast_get_last(tmp), create_ast(TEXT, str));
 		if (type == REDIRECT_OUT)
 			ast_add_children(ast_get_last(tmp),
 				create_ast(FILE_NAME, args[i++]));

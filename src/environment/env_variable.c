@@ -173,7 +173,7 @@ char	*replace_variables(char **env, char *str)
 		}
 		else
 		{
-			res = ft_charjoin(res, str[i]);
+			res = ft_strjoin_char(res, str[i]);
 			i++;
 		}
 	}
@@ -183,8 +183,6 @@ char	*replace_variables(char **env, char *str)
 /**
  * @brief Replace the variables in a string by their values
  * 			using the env variables loaded in t_minishell struct
- *
- * 	TODO: give t_minishell and just code it :)
  *
  * @param char *str
  * @return t_ast *
