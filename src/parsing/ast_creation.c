@@ -92,6 +92,9 @@ void	extract_args(t_minishell *minishell, t_ast *ast, char **args)
 	char	*str;
 
 	tmp = NULL;
+	args[0] = ft_strtrim(args[0], " ");
+	if (!args[0])
+		return ;
 	i = 0;
 	while (args[i])
 	{

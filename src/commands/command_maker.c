@@ -36,7 +36,6 @@ static char **get_args(t_minishell *minishell, t_ast *cmd)
 		}
 		else if (tmp->type == TEXT)
 			args[i] = ft_strdup(tmp->value);
-		ft_printf("args[%d] = %s\n", i, args[i]);
 		tmp = tmp->next;
 		i++;
 	}
