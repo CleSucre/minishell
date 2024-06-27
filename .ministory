@@ -613,3 +613,162 @@ echo "salut "tout" "le "monde"
 echo 'salut 'tout' 'le 'monde'
 echo 'salut 'tout' 'le 'monde'
 echo salut tout le monde
+ls
+ls -la
+clear
+make debug
+make debug
+make debug
+make debug
+clear
+exit
+./mishell
+./mishell
+exit
+ls -l
+ls
+clear
+ls
+clear
+ls
+clear
+ls
+clear
+ls
+clear
+ls
+ls -l
+ls -l
+exit
+echo "salut tout le monde"
+echo 'salut tout le monde'
+echo 'salut "tout" le monde'
+echo "salut "tout" le monde"
+echo "salut "tout" le monde"
+echo "salut "tout" l"e monde"
+echo "salut "tout" le mon"d"e"
+echo "sa'l'ut "tout" le monde"
+echo 'sa'l'ut "tout" le monde"
+echo 'salut'
+echo 'salut' tout
+echo 'salut' tout le" monde"
+echo 'salut' tout le " monde"
+echo 'salut' tout le "monde"
+echo 'salut' tout le "monde"
+echo 'salut' tout le "monde"
+echo 'salut' "tout" le "monde"
+echo 'salut' 'tout' le "monde"
+echo 'salut' 'tout 'le "monde"
+echo 'salut' 'tout 'l'e "monde"
+echo 'salut' 'tout 'l'e "monde"
+echo "salut" tout 'l'e "monde"
+echo "salut" tout le "monde"
+echo '"salut" tout le "monde"'
+echo '"salut" tout le "monde" '
+echo '"salut" tout le "monde"'
+echo 'hello "world" !'
+echo '"hello "world" !"'
+echo '"hello "world" !"'
+echo 'hello "world" !'
+echo '"hello "world" !"'
+echo "hello "world" !"
+echo "hello"world"!"
+echo "hello"world"!"
+echo "hello "world" !"
+echo "he'llo"world"'!"
+echo "he'llo"world"''!"
+echo "he'llo"world"' '!"
+echo '"he'llo"world"'!"'
+echo '"he'llo"world"'!"'
+echo "he'llo"world"'!"
+echo "he'llo"world"'!"
+echo "salut tout le monde"
+echo "salut tout "le monde"
+echo "salut tout "le monde"
+echo "salut tout ""le monde"
+echo "salut tout " "le monde"
+echo "salut tout " "le monde"
+echo "salut tout " "le mo"n"de"
+echo "salut""tout"
+echo "salut"'"tout"
+echo "salut"'"tout"
+echo "salut"'"tout"
+echo "salut" ' "tout"
+echo "salut"'"tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+ls -la
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+ls -la
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut"'"tout"
+echo "salut tout " "le mo"n"de"
+echo "salut tout " "le mo"n"de" "$USER"
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo '"salut tout " "le mo"n"de" "$USER" $USER'
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER"
+echo "salut tout " "le mo"n"de"
+echo "salut tout yeye" "le mo"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+exit
+exit
+exit
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de" "comment"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comment"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER' 'yey'
+echo "salut tout " "le mo"n"de" "$USER" '$USER' 'yey'
+ls
+ls -la
+ls -la
+echo "salut'tout'le"
+echo 'salut"tout" le'
+echo salut"tout" le
+echo salut"tout"    le
+echo 'salut"tout"    le'
+echo "salut"tout"    le"
+echo "salut" tout"    le"
+echo "salut" tout "    le"
+echo "salut"tout"    le"
+echo "salut" tout "    le"

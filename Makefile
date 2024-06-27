@@ -36,7 +36,7 @@ SRCS_COMMANDS_CUSTOM	= cd.c echo.c env.c export.c exit.c history.c pwd.c unset.c
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c
 
-SRCS_PARSING			= ast_creation.c ast_management.c parser.c tokenizer.c
+SRCS_PARSING			= ast_management.c parsing.c parsing_args.c tokenizer.c
 
 SRCS_TERMINAL			= erase_put.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_utils.c
 
@@ -103,26 +103,33 @@ YELLOW   = \033[0;93m
 PURPLE   = \033[0;95m
 RED		 = \033[0;91m
 
+libft:
+	@make -C $(LIBFT_DIR)
+
+libft_clean:
+	@make -C $(LIBFT_DIR) clean
+
+libft_fclean:
+	@make -C $(LIBFT_DIR) fclean
+
 all: $(NAME)
 
 $(OBJ_PATH)%.o : %.c
-	@mkdir -p $(@D) 2> $(DIRSEP)dev$(DIRSEP)null || true
+	@mkdir -p $(@D) 2> $(DIRSEP)dev$(DIRSEP)null || trueatus
+
 	@echo "$(YELLOW)Compiling $< $(DEFCOLOR)"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-$(NAME): $(OBJS)
-	@make -C $(LIBFT_DIR)
+$(NAME): $(OBJS) libft
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft -lncurses
 	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
 
 
-clean:
-	@make -C $(LIBFT_DIR) clean
+clean: libft_clean
 	@$(RM) -r $(OBJ_PATH) 2> $(DIRSEP)dev$(DIRSEP)null || true
 	@echo "$(PURPLE)Object files have been removed.$(DEFCOLOR)"
 
-fclean:
-	@make -C $(LIBFT_DIR) fclean
+fclean: libft_fclean
 	@$(RM) -r $(OBJ_PATH) 2> $(DIRSEP)dev$(DIRSEP)null || true
 	@$(RM) $(NAME)
 	@echo "$(RED)$(NAME) has been removed.$(DEFCOLOR)"
@@ -135,6 +142,13 @@ run:
 
 debug:
 	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell
+
+#############################################################################
+#									TESTS									#
+#############################################################################
+
+test:
+
 
 norm:
 	@norminette src libft | grep Error || echo "$(GREEN)Success"

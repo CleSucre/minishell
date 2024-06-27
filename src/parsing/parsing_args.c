@@ -84,7 +84,7 @@ static char	*handle_quote(t_minishell *minishell, int type, char *str)
  * @param char *full_command the command to extract the children from
  * @return void
  */
-void	extract_args(t_minishell *minishell, t_ast *ast, char **args)
+void	parse_args(t_minishell *minishell, t_ast *ast, char **args)
 {
 	t_ast	*tmp;
 	t_type	type;
@@ -92,9 +92,6 @@ void	extract_args(t_minishell *minishell, t_ast *ast, char **args)
 	char	*str;
 
 	tmp = NULL;
-	args[0] = ft_strtrim(args[0], " ");
-	if (!args[0])
-		return ;
 	i = 0;
 	while (args[i])
 	{
@@ -106,6 +103,7 @@ void	extract_args(t_minishell *minishell, t_ast *ast, char **args)
 		str = handle_quote(minishell, type, args[i - 1]);
 		if (str)
 			ast_add_children(ast_get_last(tmp), create_ast(TEXT, str));
+
 		if (type == REDIRECT_OUT)
 			ast_add_children(ast_get_last(tmp),
 				create_ast(FILE_NAME, args[i++]));

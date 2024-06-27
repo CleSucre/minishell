@@ -68,7 +68,7 @@ t_type			token_type_primary(char *str);
 // #					AST_CREATION					  #
 // ########################################################
 
-void			extract_args(t_minishell *minishell, t_ast *ast, char **args);
+void			parse_args(t_minishell *minishell, t_ast *ast, char **args);
 
 // ########################################################
 // #						AST						  	  #

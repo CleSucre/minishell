@@ -14,159 +14,177 @@
 #include <stdio.h>
 #include <string.h>
 
-// Helper function to check if a character is in the charset
-static int	ft_is_charset(char c, const char *charset)
+#define COLOR_RED "\033[31m"
+#define COLOR_GREEN "\033[32m"
+#define COLOR_RESET "\033[0m"
+
+static char	**initialize_result(int capacity)
 {
-	while (*charset)
-	{
-		if (c == *charset)
-			return (1);
-		charset++;
-	}
-	return (0);
-}
+	char	**result;
 
-// Helper function to handle quote state
-static void	handle_quote(char c, int *in_quotes, char *quote_char)
-{
-	if ((c == '"' || c == '\'') && (!(*in_quotes) || c == *quote_char))
-	{
-		*in_quotes = !(*in_quotes);
-		*quote_char = c;
-	}
-}
-
-// Helper function to count the number of words
-static int	count_words(const char *str, const char *charset)
-{
-	int		count;
-	int		in_quotes;
-	char	quote_char;
-
-	count = 0;
-	in_quotes = 0;
-	quote_char = '\0';
-	while (*str)
-	{
-		while (*str && ft_is_charset(*str, charset) && !in_quotes)
-			str++;
-		if (*str)
-		{
-			count++;
-			while (*str && (!ft_is_charset(*str, charset) || in_quotes))
-			{
-				handle_quote(*str, &in_quotes, &quote_char);
-				str++;
-			}
-		}
-	}
-	return (count);
-}
-
-// Helper function to get the length of a word
-static size_t	get_word_length(const char *str, const char *charset)
-{
-	int		in_quotes;
-	char	quote_char;
-	size_t	len;
-
-	in_quotes = 0;
-	quote_char = '\0';
-	len = 0;
-	while (*str && (!ft_is_charset(*str, charset) || in_quotes))
-	{
-		handle_quote(*str, &in_quotes, &quote_char);
-		str++;
-		len++;
-	}
-	return (len);
-}
-
-// Helper function to copy a word to the result array
-static char	*copy_word(const char **str_ptr, const char *charset)
-{
-	const char	*str;
-	const char	*start;
-	size_t		len;
-	char		*word;
-
-	str = *str_ptr;
-	start = str;
-	len = get_word_length(str, charset);
-	word = (char *)malloc(len + 1);
-	if (!word)
+	result = (char **)malloc(capacity * sizeof(char *));
+	if (!result)
 		return (NULL);
-	strncpy(word, start, len);
-	word[len] = '\0';
-	*str_ptr = start + len;
-	return (word);
+	return (result);
 }
 
-// Helper function to free memory in case of error
-static int	ft_freetab(char **tab)
+static int	resize_result(char ***result, int *capacity)
+{
+	int		new_capacity;
+	char	**new_result;
+
+	new_capacity = *capacity * 2;
+	new_result = (char **)realloc(*result, new_capacity * sizeof(char *));
+	if (!new_result)
+		return (0);
+	*result = new_result;
+	*capacity = new_capacity;
+	return (1);
+}
+
+static void	free_result(char **result, int count)
 {
 	int	i;
 
 	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-	return (0);
+	while (i < count)
+	{
+		free(result[i]);
+		i++;
+	}
+	free(result);
 }
 
-char	**ft_split_quote(char const *str, char const *charset)
+static char	*create_word(const char *start, int length)
 {
-	int		words;
-	char	**result;
-	int		i;
+	char	*word;
 
-	if (!str || !charset)
+	word = (char *)malloc((length + 1) * sizeof(char));
+	if (!word)
 		return (NULL);
-	words = count_words(str, charset);
-	result = (char **)malloc((words + 1) * sizeof(char *));
-	if (!result)
-		return (NULL);
-	i = 0;
+	strncpy(word, start, length);
+	word[length] = '\0';
+	return (word);
+}
+
+static char	**process_string(const char *str, const char *charset,
+		const char *quote_set, char **result)
+{
+	int			count;
+	char		current_quote;
+	const char	*start;
+	int			capacity;
+
+	count = 0;
+	current_quote = 0;
+	capacity = 10;
 	while (*str)
 	{
-		while (*str && ft_is_charset(*str, charset))
+		while (*str && !current_quote && strchr(charset, *str))
 			str++;
-		if (*str)
+		if (!*str)
+			break ;
+		start = str;
+		while (*str && (current_quote || !strchr(charset, *str)))
 		{
-			result[i] = copy_word(&str, charset);
-			if (!result[i])
-				return ((char **)ft_freetab(result));
-			i++;
+			if (!current_quote && strchr(quote_set, *str))
+				current_quote = *str;
+			else if (current_quote == *str)
+				current_quote = 0;
+			str++;
 		}
+		if (count == capacity && !resize_result(&result, &capacity))
+		{
+			free_result(result, count);
+			return (NULL);
+		}
+		result[count++] = create_word(start, str - start);
 	}
-	result[i] = NULL;
+	result[count] = NULL;
 	return (result);
+}
+
+/**
+ * @brief Split the string into words,
+ * 		if the word is quoted, don't split what's inside.
+ *
+ * @param str The string to split.
+ * @param charset The set of delimiter characters.
+ * @return A dynamically allocated array of strings, NULL-terminated.
+ */
+char	**ft_split_quote(const char *str,
+		const char *charset, const char *quote_set)
+{
+	char	**result;
+
+	result = initialize_result(10);
+	if (!result)
+		return (NULL);
+	result = process_string(str, charset, quote_set, result);
+	return (result);
+}
+
+static int	ft_check(char **res, char **expected)
+{
+	int	i;
+
+	i = 0;
+	while (res[i] && expected[i])
+	{
+		if (strcmp(res[i], expected[i]))
+			return (0);
+		i++;
+	}
+	if (res[i] || expected[i])
+		return (0);
+	return (1);
+}
+
+static int	ft_test(char *str, char *charset, char *quote_set, char **expected)
+{
+	int 	succes;
+	char	**res;
+
+	res = ft_split_quote(str, charset, quote_set);
+	if (ft_check(res, expected))
+	{
+		printf(COLOR_GREEN "OK : " COLOR_GREEN);
+		succes = 1;
+	}
+	else
+	{
+		printf(COLOR_RED "KO : " COLOR_RED);
+		succes = 0;
+	}
+	printf("str: |%s| -> ", str);
+	for (int i = 0; res[i]; i++)
+	{
+		printf("[%s]", res[i]);
+		free(res[i]);
+	}
+	if (!succes)
+	{
+		printf(" EXPECTED : ");
+		for (int i = 0; expected[i]; i++)
+			printf("[%s]", expected[i]);
+	}
+	printf("\n");
+	free(res);
+	return (succes);
 }
 
 int	main(void)
 {
-	char	*str;
-	char	*charset;
-	char	**result;
-	int		i;
+	int	succes;
 
-	str = strdup("Hello \"world, welcome\" 'to the ' world | of' \"programming. Its a very fun place.");
-	charset = strdup(" ,|");
-	result = ft_split_quote(str, charset);
-	if (result)
-	{
-		i = 0;
-		while (result[i])
-		{
-			printf("Word[%d]: %s\n", i, result[i]);
-			free(result[i]);
-			i++;
-		}
-		free(result);
-	}
-	else
-		printf("Error in splitting the string.\n");
-	free(str);
-	free(charset);
+	succes = 0;
+	succes += ft_test("hello \"world\" !", " ", "\"'", (char *[]){"hello", "\"world\"", "!", NULL});
+	succes += ft_test("\"hello \"world\" !\"", " ", "\"'", (char *[]){ "\"hello \"world\" !\"", NULL});
+	succes += ft_test("hello\"world\"!", " ", "\"", (char *[]){"hello\"world\"!", NULL});
+	succes += ft_test("\"hello 'world' !\"", " ", "\"", (char *[]){"\"hello 'world' !\"", NULL});
+	succes += ft_test("hello 'world' !", " ", "\"'", (char *[]){"hello", "'world'", "!", NULL});
+	succes += ft_test("hello 'wo\"rld' !", " ", "\"", (char *[]){"hello", "'wo\"rld' !", NULL});
+
+	printf(COLOR_RESET"Total : %d/6\n", succes);
 	return (0);
 }

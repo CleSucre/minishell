@@ -48,31 +48,13 @@ static t_ast	*extract_full_commands(char *input)
 	return (ast);
 }
 
-static char **add_space_between_words(char **args)
-{
-	int		i;
-	char	*tmp;
-	char	*tmp2;
-
-	i = 0;
-	while (args[i])
-	{
-		tmp = ft_strjoin(args[i], " ");
-		tmp2 = ft_strjoin(tmp, args[i + 1]);
-		free(args[i]);
-		free(args[i + 1]);
-		args[i] = tmp2;
-		i++;
-	}
-}
-
 /**
- * @brief Extract arguments from a full command by splitting it with WHITESPACES
+ * @brief Extract arguments from a full commands by splitting it with WHITESPACES
  *
- * @param t_ast *ast ast containing all full custom
- * @return void *
+ * @param t_ast *ast ast containing all full commands
+ * @return void * NULL on failure or ast on success
  */
-static void	*parse_ast(t_minishell *minishell, t_ast *ast)
+static void	*parse_full_commands(t_minishell *minishell, t_ast *ast)
 {
 	t_ast	*tmp;
 	char	**args;
@@ -84,21 +66,10 @@ static void	*parse_ast(t_minishell *minishell, t_ast *ast)
 	{
 		if (tmp->type == FULL_COMMAND)
 		{
-			if (ft_strchr(tmp->value, '"') && ft_strchr(tmp->value, '\''))
-				args = ft_split_quote(tmp->value, WHITESPACES, "\"'");
-			else if (ft_strchr(tmp->value, '"'))
-				args = ft_split_quote(tmp->value, "\"", "'");
-			else if (ft_strchr(tmp->value, '\''))
-				args = ft_split_quote(tmp->value, "'", "\"");
-			else
-			{
-				args = ft_split(tmp->value, WHITESPACES);
-				//set space between each word
-				add_space_between_words(args);
-			}
+			args = ft_split_quote(tmp->value, WHITESPACES, "\"'");
 			if (!args)
 				return (NULL);
-			extract_args(minishell, tmp, args);
+			parse_args(minishell, tmp, args);
 			free(args);
 		}
 		tmp = tmp->next;
@@ -122,7 +93,8 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	ast = extract_full_commands(input);
 	if (!ast)
 		return (NULL);
-	parse_ast(minishell, ast);
+	parse_full_commands(minishell, ast);
+	//parse_args(ast);
 	debug_ast(ast);
 	return (ast);
 }

@@ -22,9 +22,9 @@ set(SRCS
         src/terminal/terminal_prompt.c
         src/terminal/terminal_utils.c
 
-        src/parsing/ast_creation.c
+        src/parsing/parsing_args.c
         src/parsing/ast_management.c
-        src/parsing/parser.c
+        src/parsing/parsing.c
         src/parsing/tokenizer.c
 
         src/memory/memory_alloc.c
