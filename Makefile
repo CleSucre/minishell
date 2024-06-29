@@ -12,7 +12,7 @@ else
 	RM		= rm -f
 endif
 
-NAME			= minishell
+NAME					= minishell
 
 #############################################################################
 #									SOURCES									#
@@ -124,6 +124,10 @@ YELLOW   = \033[0;93m
 PURPLE   = \033[0;95m
 RED		 = \033[0;91m
 
+$(NAME): $(OBJS) libft
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft -lncurses
+	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
+
 libft:
 	@make -C $(LIBFT_DIR)
 
@@ -139,10 +143,6 @@ $(OBJ_PATH)%.o : %.c
 	@mkdir -p $(@D) 2> $(DIRSEP)dev$(DIRSEP)null || true
 	@echo "$(YELLOW)Compiling $< $(DEFCOLOR)"
 	@$(CC) $(CFLAGS) -o $@ -c $<
-
-$(NAME): $(OBJS) libft
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT_DIR) -lft -lncurses
-	@echo "$(GREEN)$(NAME) has been created successfully.$(DEFCOLOR)"
 
 clean: libft_clean
 	@$(RM) -r $(OBJ_PATH) 2> $(DIRSEP)dev$(DIRSEP)null || true
@@ -165,20 +165,19 @@ debug:
 norm:
 	@norminette src libft | grep Error || echo "$(GREEN)Success"
 
-
 #############################################################################
 #									TESTS									#
 #############################################################################
+
+$(OBJ_PATH)%.o: %.cpp
+	@mkdir -p $(@D) 2> $(DIRSEP)dev$(DIRSEP)null || true
+	@echo "$(YELLOW)Compiling $< $(DEFCOLOR)"
+	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 tests: $(OBJS_CPP) libft
 	@$(CXX) $(CXXFLAGS) -o test $(OBJS_CPP) -L $(LIBFT_DIR) -lft
 	@echo "$(GREEN)Tests have been created successfully.$(DEFCOLOR)"
 	./test
 	rm -f test
-
-$(OBJ_PATH)%.o: %.cpp
-	@mkdir -p $(@D) 2> $(DIRSEP)dev$(DIRSEP)null || true
-	@echo "$(YELLOW)Compiling $< $(DEFCOLOR)"
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 .PHONY: libft libft_clean libft_fclean all clean fclean re run debug norm tests

@@ -780,3 +780,20 @@ make tests
 clear
 make fclean
 make fclean
+make fclean
+clear
+make all
+ls
+ls
+ls -la
+ls -la
+echo "salut tout le monde"
+echo "salut tou't le mon'de"
+echo "salut" tou't le mon'd"e"
+echo "salut" tou't le mon'd "e"
+echo "salut" t$USERou't le mon'd "e"
+echo "salut" t $USERou't le mon'd "e"
+echo "salut" t $USER ou't le mon'd "e"
+echo "salut" t $USERou't le mon'd "e"
+echo "salut" t$USER ou't le mon'd "e"
+echo "salut" t $USER ou't le mon'd "e"
