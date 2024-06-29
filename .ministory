@@ -772,3 +772,11 @@ echo "salut" tout"    le"
 echo "salut" tout "    le"
 echo "salut"tout"    le"
 echo "salut" tout "    le"
+make tests
+make tests
+make tests
+make tests
+make tests
+clear
+make fclean
+make fclean
