@@ -66,7 +66,7 @@ static char	*handle_quote(t_minishell *minishell, int type, char *str)
 
 	res = NULL;
 	if (type == TEXT_DOUBLE_QUOTE || type == VARIABLE)
-		res = extract_variables(minishell, str);
+		res = replace_variables(minishell, str);
 	else if (type == TEXT_SINGLE_QUOTE)
 	{
 		str = ft_strtrim(str, "'");
@@ -75,6 +75,31 @@ static char	*handle_quote(t_minishell *minishell, int type, char *str)
 		free(str);
 	}
 	return (res);
+}
+
+/**
+ * @brief Split the text using variables as separator,
+ * and add the text and variables to the ast
+ *
+ * @param t_ast **ast
+ * @param char *str
+ * @return void
+ */
+static void parse_text(t_minishell *minishell, t_ast **ast, char *str)
+{
+    char	**split;
+    int		i;
+
+    split = extract_variables(minishell, str);
+    i = 0;
+    while (split[i])
+    {
+        ast_add_last(ast, create_ast(TEXT, split[i]));
+        if (split[i + 1])
+            ast_add_last(ast, create_ast(VARIABLE, split[i + 1]));
+        i += 2;
+    }
+    ft_freetab(split);
 }
 
 /**
@@ -101,8 +126,10 @@ void	parse_args(t_minishell *minishell, t_ast *ast, char **args)
 		handle_command_type(&tmp, &type);
 		ast_add_last(&tmp, create_ast(type, args[i++]));
 		str = handle_quote(minishell, type, args[i - 1]);
-		if (str)
-			ast_add_children(ast_get_last(tmp), create_ast(TEXT, str));
+		if (str) {
+            //ast_add_children(ast_get_last(tmp), create_ast(TEXT, str));
+            parse_text(minishell, &tmp, str);
+        }
 
 		if (type == REDIRECT_OUT)
 			ast_add_children(ast_get_last(tmp),

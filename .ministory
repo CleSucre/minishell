@@ -813,3 +813,9 @@ echo "salut"      "t$USER "    ou ' t le mon ' d "e"
 echo "salut"      t$USER     ou ' t le mon ' d "e"
 echo "salut"      "t$USER "    ou ' t le mon ' d "e"
 echo "salut"      t$USER     ou ' t le mon ' d "e"
+echo "salut"      t$USER     ou ' t le mon ' d "e"
+clear
+echo "salut"      t$USER     ou ' t le mon ' d "e"
+clear
+clear
+echo "salut"      t$USER     ou ' t le mon ' d "e"
