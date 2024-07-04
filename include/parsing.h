@@ -13,6 +13,8 @@
 #ifndef MINISHELL_PARSING_H
 # define MINISHELL_PARSING_H
 
+# include "struct.h"
+
 typedef enum {
 	PIPE,
 	FULL_COMMAND,
@@ -54,34 +56,35 @@ typedef struct s_ast
 // #						PARSER						  #
 // ########################################################
 
-t_ast		*parse_input(t_minishell *minishell, char *input);
+t_ast			*parse_input(t_minishell *minishell, char *input);
 
 // ########################################################
 // #						TOKENIZER					  #
 // ########################################################
 
-t_type		token_type_primary(char *str);
+t_type			token_type_primary(char *str);
 
 // ########################################################
 // #					AST_CREATION					  #
 // ########################################################
 
-void		extract_args(t_ast	*ast, char **args);
+void			parse_args(t_minishell *minishell, t_ast *ast, char **args);
 
 // ########################################################
 // #						AST						  	  #
 // ########################################################
 
-t_ast		*create_ast(t_type type, char *value);
-t_ast		*ast_get_last(t_ast *head);
-void		ast_add_last(t_ast **head, t_ast *ast);
-void		ast_add_children(t_ast *ast, t_ast *children);
+unsigned int	ast_len(t_ast *ast);
+t_ast			*create_ast(t_type type, char *value);
+t_ast			*ast_get_last(t_ast *head);
+void			ast_add_last(t_ast **head, t_ast *ast);
+void			ast_add_children(t_ast *ast, t_ast *children);
 
 // ########################################################
 // #						DEBUG						  #
 // ########################################################
 
-void	print_tokens(t_token *tokens);
-void	print_ast(t_ast *ast);
+void			print_tokens(t_token *tokens);
+void			print_ast(t_ast *ast);
 
 #endif

@@ -13,21 +13,97 @@
 #include "minishell.h"
 
 /**
- * @brief Execute custom command before parsing the input
+ * @brief Execute the command given in input
+ *
+ * @param t_cmd *cmd
+ * @return int 1 on success, 0 on failure
+ */
+static int	execute_cmd(t_cmd *cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (execve(cmd->cmd_exec, cmd->argv, cmd->env) == -1)
+		{
+			ft_printf("minishell: command not found: %s\n", cmd->cmd_name);
+			cmd->exit_status = 127;
+		}
+	}
+	else if (pid < 0)
+	{
+		ft_putstr_fd("Error: fork failed\n", 2);
+		cmd->exit_status = 1;
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		cmd->exit_status = WEXITSTATUS(status);
+	}
+	return (1);
+}
+
+static int	execute_command(t_minishell *minishell, t_ast *ast)
+{
+	t_cmd	*cmd;
+	int 	res;
+
+	cmd = command_maker(minishell, ast);
+	if (!cmd)
+		return (0);
+	if (ft_strcmp(cmd->cmd_name, "exit") == 0)
+	{
+		command_exit(cmd);
+		res = 2;
+	}
+	else if (ft_strcmp(cmd->cmd_name, "history") == 0)
+	{
+		command_history(cmd, minishell);
+		res = 1;
+	}
+	else if (ft_strcmp(cmd->cmd_name, "echo") == 0)
+	{
+		command_echo(cmd);
+		res = 1;
+	}
+	else if (ft_strcmp(cmd->cmd_name, "cd") == 0)
+	{
+		command_cd(cmd);
+		res = 1;
+	}
+	else
+		res = execute_cmd(cmd);
+	free_cmd(cmd);
+	return (res);
+}
+
+/**
+ * @brief Execute the ast
  *
  * @param t_minishell *minishell
- * @param char *input
- * @return int 1 if a command was executed, 0 otherwise,
- * 			2 if exit was called
+ * @param t_ast *ast
+ * @return int 1 on success, 0 on failure
  */
-static int	execute_custom_command(t_minishell *minishell, char *input)
+static int	execute_ast(t_minishell *minishell, t_ast *ast)
 {
-	if (ft_strncmp(input, "exit", 4) == 0)
-		return (-1);
-	else if (ft_strcmp(input, "history") == 0)
+	t_ast	*tmp;
+
+	tmp = ast;
+	while (tmp)
 	{
-		history_print(minishell);
-		return (1);
+		if (tmp->type == FULL_COMMAND)
+		{
+			if (execute_ast(minishell, tmp->children))
+				return (1);
+		}
+		else if (tmp->type == COMMAND)
+		{
+			if (execute_command(minishell, tmp) == 2)
+				return (1);
+		}
+		tmp = tmp->next;
 	}
 	return (0);
 }
@@ -39,7 +115,7 @@ static int	execute_custom_command(t_minishell *minishell, char *input)
  * @param char *input
  * @return int 1 on success, 0 on failure
  */
-int	execute_command(t_minishell *minishell, char *input)
+int	execute(t_minishell *minishell, char *input)
 {
 	t_ast	*ast;
 	int		res;
@@ -52,18 +128,14 @@ int	execute_command(t_minishell *minishell, char *input)
 	debug_execution(input);
 	if (ft_isprint(*input))
 		history_add(minishell, input, 1);
-	res = execute_custom_command(minishell, input);
-	if (res == -1)
-		return (1);
-	else if (res == 1)
-		return (0);
 	ast = parse_input(minishell, input);
 	if (!ast)
 	{
 		free(input);
 		return (0);
 	}
+	res = execute_ast(minishell, ast);
 	free_ast(ast);
 	free(input);
-	return (0);
+	return (res);
 }

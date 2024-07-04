@@ -116,7 +116,7 @@ void	debug_children(t_ast *ast, int level)
 		ft_printf("%stype str: %s%s%s (id: %d)\n",
 			space, BOLDWHITE, get_token_type_primary(ast->type),
 			RESET, ast->type);
-		ft_printf("%svalue: %s%s%s\n", space, YELLOW, ast->value, RESET);
+		ft_printf("%svalue: %s|%s%s%s|%s\n", space, CYAN, YELLOW, ast->value, CYAN, RESET);
 		free(space);
 		if (ast->children)
 			debug_children(ast->children, level + 1);
@@ -139,7 +139,7 @@ void	debug_ast(t_ast *ast)
 		ft_printf("\n%s[DEBUG] ====== AST ======%s\n", BLUE, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
 			BOLDWHITE, get_token_type_primary(ast->type), RESET, ast->type);
-		ft_printf("value: %s%s%s\n", YELLOW, ast->value, RESET);
+		ft_printf("value: %s|%s%s%s|%s\n", CYAN, YELLOW, ast->value, CYAN, RESET);
 		if (ast->children)
 			debug_children(ast->children, 1);
 		ast = ast->next;

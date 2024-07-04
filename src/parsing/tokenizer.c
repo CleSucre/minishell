@@ -49,9 +49,9 @@ t_type	token_type_primary(char *str)
 		return (FLAG);
 	else if (ft_strncmp(str, "$", 1) == 0 && ft_strlen(str) > 1)
 		return (VARIABLE);
-	else if (ft_strncmp(str, "\"", 1) == 0)
+	else if (ft_strsameedge(str, "\""))
 		return (TEXT_DOUBLE_QUOTE);
-	else if (ft_strncmp(str, "\'", 1) == 0)
+	else if (ft_strsameedge(str, "'"))
 		return (TEXT_SINGLE_QUOTE);
 	return (token_type_secondary(str));
 }

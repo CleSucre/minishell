@@ -13,68 +13,59 @@
 #include "minishell.h"
 
 /**
- * @brief Erase a char in a string
+ * @brief Erase a char in string
  *
- * @param size_t len
- * @return void
+ * @param minishell
+ * @param input
  */
-static void	erase_term(size_t len)
+static void	backspace_action(t_minishell *minishell, char **input)
 {
-	size_t		i;
-
-	i = 0;
-	while (i < len)
+	if (minishell->term->cols != minishell->term->ws_cols
+		&& minishell->term->cols % minishell->term->ws_cols == 1
+		&& minishell->term->begin_rows > 0)
 	{
-		ft_printf(CURSOR_LEFT, 1);
-		i++;
+		ft_putstr_fd("\033[A", 1);
+		move_cursor_back(minishell->term->cols);
+		move_cursor_forward(minishell->term->ws_cols);
+		ft_trunc(input, 1);
+		erase_term(0);
+		minishell->term->cols--;
+		ft_putstr_fd("\033[C", 1);
 	}
-	ft_putchar_fd(' ', 1);
-	ft_printf(CURSOR_LEFT, 1);
-}
-
-/**
- * @brief Print in our terminal
- * 			if nl, move cursor one line down
- * @param char * String to print
- * @param int nl Move cursor down and print newline(s)
- * @return void
- */
-void	terminal_print(char *str, int nl)
-{
-	if (nl)
-		ft_printf("\033[%dD", 100);
-	while (nl--)
-		ft_putchar_fd('\n', 1);
-	ft_printf("%s", str);
-}
-
-/**
- * @brief Reset input string
- *
- * @param char **input
- * @return void
- */
-void	reset_input(char **input)
-{
-	if (*input)
+	else if (ft_strlen(*input) > 0 && minishell->term->cols
+		!= get_prompt_len(minishell) + ft_strlen(*input) + 1)
 	{
-		free(*input);
-		*input = NULL;
+		*input = erase_in_string(minishell, *input);
+		minishell->term->cols--;
 	}
-	*input = ft_calloc(1, sizeof(char *));
+	else if (ft_strlen(*input) > 0 && minishell->term->cols > 1)
+	{
+		ft_trunc(input, 1);
+		erase_term(1);
+		minishell->term->cols--;
+	}
 }
 
-/**
- * @brief Move cursor from cols to n positions
- * @param position
- */
-void	move_cursor_back(size_t position)
+void	ctrl_c_action(t_minishell *minishell, char **input)
 {
-	size_t	i;
+	terminal_print("^C", 0);
+	reset_input(input);
+	print_terminal_prompt(minishell, 1);
+	minishell->history_pos = 0;
+	get_cursor_position(minishell->term);
+}
 
-	i = 0;
-	while (i++ < position)
-		ft_printf(CURSOR_LEFT, 1);
+void	edit_input(t_minishell *minishell, char **input, char c)
+{
+	if (minishell->term->cols
+		!= get_prompt_len(minishell) + ft_strlen(*input) + 1)
+		*input = put_in_string(minishell, *input, c);
+	else
+	{
+		*input = ft_charjoin(*input, c);
+		ft_putchar_fd(c, 1);
+	}
+	minishell->term->cols++;
 }
 
 /**
@@ -86,6 +77,7 @@ void	move_cursor_back(size_t position)
  * 								read by termios from 1st to Enter
  * @return int 						1 if exit, 0 if not
  */
+
 int	process_action(t_minishell *minishell, char c, char **input)
 {
 	if (c == CTRL_D && ft_strlen(*input) == 0)
@@ -93,30 +85,17 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	else if (c == CTRL_D)
 		return (0);
 	else if (c == CTRL_C)
-	{
-		terminal_print("^C", 0);
-		reset_input(input);
-		terminal_print(minishell->cache->prompt, 1);
-		minishell->history_pos = 0;
-	}
+		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
-	{
-		if (ft_strlen(*input) > 0 && minishell->term->cols
-			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
-			*input = erase_in_string(minishell, *input);
-		else if (ft_strlen(*input) > 0)
-		{
-			ft_trunc(input, 1);
-			erase_term(1);
-		}
-	}
+		backspace_action(minishell, input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
-		if (execute_command(minishell, *input))
+		if (execute(minishell, *input))
 			return (1);
+		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
 		reset_input(input);
-		terminal_print(minishell->cache->prompt, 1);
 		minishell->history_pos = 0;
+		get_cursor_position(minishell->term);
 	}
 	else if (c == ESC_SEQ)
 	{
@@ -124,17 +103,6 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			return (0);
 	}
 	else
-	{
-		if (minishell->term->cols
-			!= minishell->cache->prompt_len + ft_strlen(*input) + 1)
-		{
-			*input = put_in_string(minishell, *input, c);
-		}
-		else
-		{
-			*input = ft_charjoin(*input, c);
-			ft_putchar_fd(c, 1);
-		}
-	}
+		edit_input(minishell, input, c);
 	return (0);
 }

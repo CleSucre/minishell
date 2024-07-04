@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.27)
 project(minishell)
 
 # Compiler settings
@@ -12,9 +12,48 @@ include_directories(include)
 # Source files
 set(SRCS
         src/main.c
-        src/execution/execution.c
+
+        src/terminal/erase_put.c
         src/terminal/terminal.c
-        src/sig/raw.c
+        src/terminal/terminal_action.c
+        src/terminal/terminal_arrow.c
+        src/terminal/terminal_cursor.c
+        src/terminal/terminal_info.c
+        src/terminal/terminal_prompt.c
+        src/terminal/terminal_utils.c
+
+        src/parsing/parsing_args.c
+        src/parsing/ast_management.c
+        src/parsing/parsing.c
+        src/parsing/tokenizer.c
+
+        src/memory/memory_alloc.c
+        src/memory/memory_free.c
+
+        src/history/history_file.c
+        src/history/history_management.c
+        src/history/history_navigation.c
+
+        src/execution/execution.c
+
+        src/environment/env_variable.c
+
+        src/debug/debug_execution.c
+        src/debug/debug_history.c
+        src/debug/debug_parsing.c
+
+        src/config/term_config.c
+
+        src/commands/command_maker.c
+
+        src/commands/custom/cd.c
+        src/commands/custom/echo.c
+        src/commands/custom/env.c
+        src/commands/custom/exit.c
+        src/commands/custom/export.c
+        src/commands/custom/history.c
+        src/commands/custom/pwd.c
+        src/commands/custom/unset.c
 )
 
 # Object files directory

@@ -28,9 +28,9 @@ int	main(int argc, char **args, char **env)
 
 	(void)argc;
 	(void)args;
-	(void)env;
 	minishell = alloc_minishell();
 	minishell->term->original_termios = &original_termios;
+	minishell->env = env;
 	enable_termios(minishell->term);
 	use_termios(minishell);
 	disable_termios(minishell->term);

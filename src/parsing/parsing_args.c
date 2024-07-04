@@ -13,25 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Replace the variables in a string by their values
- * 			using the env variables loaded in t_minishell struct
- *
- * 	TODO: give t_minishell and just code it :)
- *
- * @param char *str
- * @return t_ast *
- */
-static t_ast	*extract_variables(char *str)
-{
-	char	*trimmed;
-	t_ast	*tmp;
-
-	trimmed = ft_strtrim(str, "\"");
-	tmp = create_ast(TEXT, trimmed);
-	return (tmp);
-}
-
-/**
  * @brief Handle the command type
  *
  * @param t_ast **tmp
@@ -79,15 +60,21 @@ static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
  * @param int *i
  * @return int 1 if the double quote was handled, 0 otherwise
  */
-static int	handle_double_quote(int type, t_ast **tmp, char **args, int *i)
+static char	*handle_quote(t_minishell *minishell, int type, char *str)
 {
-	if (type == TEXT_DOUBLE_QUOTE)
+	char	*res;
+
+	res = NULL;
+	if (type == TEXT_DOUBLE_QUOTE || type == VARIABLE)
+		res = extract_variables(minishell, str);
+	else if (type == TEXT_SINGLE_QUOTE)
 	{
-		ast_add_last(tmp, create_ast(TEXT_DOUBLE_QUOTE, args[*i]));
-		ast_add_children(ast_get_last(*tmp), extract_variables(args[(*i)++]));
-		return (1);
+		str = ft_strtrim(str, "'");
+		if (str)
+			res = ft_strdup(str);
+		free(str);
 	}
-	return (0);
+	return (res);
 }
 
 /**
@@ -97,11 +84,12 @@ static int	handle_double_quote(int type, t_ast **tmp, char **args, int *i)
  * @param char *full_command the command to extract the children from
  * @return void
  */
-void	extract_args(t_ast *ast, char **args)
+void	parse_args(t_minishell *minishell, t_ast *ast, char **args)
 {
 	t_ast	*tmp;
 	t_type	type;
 	int		i;
+	char	*str;
 
 	tmp = NULL;
 	i = 0;
@@ -111,9 +99,11 @@ void	extract_args(t_ast *ast, char **args)
 		if (handle_redirect_in(&tmp, args, &i))
 			continue ;
 		handle_command_type(&tmp, &type);
-		if (handle_double_quote(type, &tmp, args, &i))
-			continue ;
 		ast_add_last(&tmp, create_ast(type, args[i++]));
+		str = handle_quote(minishell, type, args[i - 1]);
+		if (str)
+			ast_add_children(ast_get_last(tmp), create_ast(TEXT, str));
+
 		if (type == REDIRECT_OUT)
 			ast_add_children(ast_get_last(tmp),
 				create_ast(FILE_NAME, args[i++]));

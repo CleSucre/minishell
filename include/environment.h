@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   history.h                                          :+:      :+:    :+:   */
+/*   environment.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,31 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HISTORY_H
-# define HISTORY_H
-
-# define HISTORY_FILE ".ministory"
+#ifndef ENVIRONMENT_H
+#define ENVIRONMENT_H
 
 // ########################################################
-// #					HISTORY_FILE					  #
+// #						ENV_VARIABLE				  #
 // ########################################################
 
-int			history_get_file(void);
-int			history_load(t_minishell *minishell);
-
-// ########################################################
-// #					HISTORY_NAVIGATION				  #
-// ########################################################
-
-t_history	*history_find_up(t_minishell *minishell, char *cmd);
-t_history	*history_find_down(t_minishell *minishell, char *cmd);
-
-// ########################################################
-// #					HISTORY_MANAGEMENT				  #
-// ########################################################
-
-int			history_add(t_minishell *minishell, char *cmd, int fs);
-void		history_reset(t_minishell *minishell);
-void		history_print(t_minishell *minishell);
+char			*get_path(char *cmd, char **env);
+char			*get_var_value(char **env, char *var);
+const char		*get_var_value_const(char **env, char *var);
+int				get_var_len(char **env, char *var);
+char			*replace_variables(char **env, char *str);
+char			*extract_variables(t_minishell *minishell, char *str);
 
 #endif

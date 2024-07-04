@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /**
- * @brief Extract full commands from input by splitting it with '|'
+ * @brief Extract full custom from input by splitting it with '|'
  * 			It also handle single and double quotes
  *
  * @param char *input
@@ -26,7 +26,7 @@ static t_ast	*extract_full_commands(char *input)
 	t_ast	*ast;
 	int		i;
 
-	commands = ft_split_quote(input, "|");
+	commands = ft_split_quote(input, "|", "\"'");
 	if (!commands)
 		return (NULL);
 	i = 0;
@@ -49,12 +49,12 @@ static t_ast	*extract_full_commands(char *input)
 }
 
 /**
- * @brief Extract arguments from a full command by splitting it with WHITESPACES
+ * @brief Extract arguments from a full commands by splitting it with WHITESPACES
  *
  * @param t_ast *ast ast containing all full commands
- * @return void *
+ * @return void * NULL on failure or ast on success
  */
-static void	*parse_ast(t_ast *ast)
+static void	*parse_full_commands(t_minishell *minishell, t_ast *ast)
 {
 	t_ast	*tmp;
 	char	**args;
@@ -66,10 +66,10 @@ static void	*parse_ast(t_ast *ast)
 	{
 		if (tmp->type == FULL_COMMAND)
 		{
-			args = ft_split_quote(tmp->value, WHITESPACES);
+			args = ft_split_quote(tmp->value, WHITESPACES, "\"'");
 			if (!args)
 				return (NULL);
-			extract_args(tmp, args);
+			parse_args(minishell, tmp, args);
 			free(args);
 		}
 		tmp = tmp->next;
@@ -93,7 +93,8 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	ast = extract_full_commands(input);
 	if (!ast)
 		return (NULL);
-	parse_ast(ast);
+	parse_full_commands(minishell, ast);
+	//parse_args(ast);
 	debug_ast(ast);
 	return (ast);
 }

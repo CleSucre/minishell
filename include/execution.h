@@ -19,6 +19,6 @@
 // #						EXECUTOR					  #
 // ########################################################
 
-int			execute_command(t_minishell *minishell, char *input);
+int		execute(t_minishell *minishell, char *input);
 
 #endif

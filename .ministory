@@ -1,159 +1,815 @@
-salut toi
-salut toi
-s uato
-salut toi
-salut toi
-test
-test -la
-test -la
-test -la | ls -a
-test -la | ls -a
-test -la | ls -a
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
+exit
+clear
+ls
 exit
 exit
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-ls -la | grep "mini" | wc -l > text.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-1
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-1
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-input.txt < grep "salut" | cat -e | wc -l > output.txt
+exit
+exit
+exit
+exit
+exit
+exit
+exit 762
+exit
+exit
+exit
+exit
+exit
+exit 1
+exit
+exit
+exit 15
+exit 15
+exit 15
+exit 15
+exit 15
+exit 15
+exit 19872
+exit 27
+exit 27
+exit 27
+exit 27
+exit 27
+exit
+exit
+exit
+exit 12
+exit
+exit 12
 make fclean
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-exit
-hiuhhi
-hiuhhi
-hiuhhi
-input.txt < grep "salut" | cat -e | wc -l > output.txt
-saluto ut le monde
-salut  | tout | le | monde
-salut  | tout | le | monde > test.txt
-salut t | tout | le | monde > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey > test.txt
-salut t | tout | le | echo hey > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-salut t | tout | le | echo "hey" > test.txt
-echo
+exit 12
+exit 13
+exit 8
+exit 8
+exit 255
+exit 290
 echo "salut"
-echo "salut" toi
-echo "salut" toi
-echo "salut" toi
-echo "salut" toi
-echo "salut" toi comment vas tu
-echo "salut" toi comment 'vas tu' depuis
-echo "salut" toi comment 'vas tu' depuis > test.txt
-echo "salut" toi |comment 'vas tu' depuis > test.txt
-echo "salut" toi |comment
-echo "salut" toi|comment
-echo "salut" toi|comment>test.txt
-echo "salut" toi|comment >test.txt
-echo "salut" toi|comment > test.txt
-cat -e test.txt | grep . | wc -l > output.txt
-cat -e test.txt | grep . | wc -l > output.txt >>
-cat -e test.txt | grep $VAR | wc -l > output.txt
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo '$VAR'
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR" || yey
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $"
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-ksasasaks
-,:,s;:,snsns,:;dflsjlsjddclkkcnn,n;,;ndzdelzkhnlkllkzzm,lzjzefejejhjhk,hjjjhjjjjjjjjjjh
-asasdldzlkdzkdzldkzdjzkdzjedldsfkdzejlflijkejzefjzofezjkezkjhfjehfkzhfkjezkefzjlfdzdkdldkfefkejzhfzhfkzjdz
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $" && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $ && echo $
-cat -e test.txt | grep $VAR | wc -l > output.txt && echo "$VAR$VAR $ && echo $
-79249792
-79253968
--775655280
--775654432
--775654912
-79274480
-79280032
-79285552
-79291008
-79295728
+echo "salut"
+echo "salut"
+echo "salut"
+echo "salut"
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo "salut tout le monde"
+echo "salut tout "le monde"
+echo "salut tout " le monde"
+echo 'salut tout " le monde'
+echo 'salut tout le monde'
+clear
+echo -n 'salut tout le monde'
+echo -n 'salut tout le monde'
+echo 'salut tout le monde'
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo 'salut tout le monde'
+echo -n salut
+echo salut
+echo -n salut
+echo salut
+echo -n salut
+echo salut
+exit 1736234
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo -n salut
+echo salut
+make nor
+echo "salut"
+echo "salut"
+echo "salut"
+echo "&? salut"
+echo "&ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$ENV salut"
+echo "$USER salut"
+make debug
+make debug
+echo "$USER salut"
+echo "$USER salut"
+make debug
+make debug
+echo "$USER salut"
+echo "$USER salut"
+echo "$USER salut"
+echo "dwdwdwd$USER salut"
+echo "dwdwdwd $USER salut"
+echo "$USER"
+"$USER"
+ls
+exit &Ã©
+exit 23©
+exit 23
+ls -la
+exit
+ls -la
+clear
+history
+history 16
+exit
+echo "Hello World"
+clear
+exit
+echo "Hello World"
+exit
+echo "Hello World"
+echo "Hello World"
+exit
+ls
+ls -la
+ls
+ls -la
+exit
+echo "Hello World"
+echo "Hello World"
+echo "Hello World"
+echo "Hello World"
+ls
+ls -la
+echo "Hello World"
+exit
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo $ENV"
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+exit
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+echo "Hello World $USER yoyo $?"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo $USER"
+exit
+echo "Hello World $USER yoyo $USER"
+exit
+echo "Hello World $USER yoyo $USER"
+exit
+echo "Hello World $USER yoyo $USER"
+echo "Hello World $USER yoyo"
+echo "Hello World $USERyoyo"
+exit
+echo "Hello World $USERyoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World yoyo"
+exit
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo"
+exit
+echo "Hello World $USER yoyo"
+echo "Hello World $USER yoyo $USER"
+exit
+echo $USER
+echo "*$USER"
+echo "$USER"
+echo $USER
+echo $USER
+echo $USER
+echo $USER $USER
+echo -e $USER $USER
+echo -n $USER $USER
+echo -n yey
+echo -n
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo salut
+echo $USER
+echo -n
+echo -n sasa
+echo -n sasa
+echo -n $USER
+echo -n $USER
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+exit
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+exiyt
+exit
+exit
+echo "Hello World $USER"
+exit
+ls
+exit
+dzdad
+dzdad
+exit
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World $USER  sal,das"
+echo "Hello World $USER  'sal',das"
+echo "Hel"lo W"orld $USER  'sal',das"
+echo "Hel"lo W"orld $USER  saldas"
+echo "Hel" lo W"orld $USER  saldas"
+echo "Hel" lo W"orld $USER  saldas"
+echo "Hel" lo W"orld $USER  saldas"
+echo "Hel" lo W "orld $USER  saldas"
+echo '"Hel"lo W"orld $USER"'
+make
+make debug
+echo '"Hel"lo W"orld $USER"'
+echo "Hel"lo W"orld $USER"
+make debug
+make debug
+make debug
+echo "Hel"lo W"orld $USER"
+echo "Hel"lo W"orld $USER"
+echo "Hel"lo W"orld $USER"
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo "Hello World $USER"
+echo Hello World $USER
+echo "Hello World $USER"
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo Hello World $USER
+echo "Hello World $USER"
+echo Hello World $USER
+echo Hello World $USER
+echo "Hello World $USER"
+echo Hello World $USER
+echo "Hello World $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "W012.orld" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo salut tout le monde
+echo salut tout le monde
+echo "salut tout le monde"
+echo "salut tout" "le monde"
+echo "salut tout"" le monde"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER
+echo "Hello "World" $USER
+echo "Hello "World" $USER
+echo "Hello "World $USER
+echo "Hello "World $USER
+echo "Hello " World $USER
+echo "Hello " World $USER
+echo "Hello "World $USER
+echo "Hello "World $USER
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World"  $USER"
+echo "Hello "World"  $USER"
+echo "Hello "World"  $USER"
+echo "Hello "World"  $USER"
+echo "Hello "World"  $USER"
+echo "Hello "World"  $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello "World" $USER"
+echo "Hello World $USER"
+echo "Hello World $USER"
+echo "Hello World      $USER"
+echo "Hello World      $USER   "
+echo salut tout le monde
+echo "salut tout le monde"
+echo "salut "tout" le monde"
+echo "salut "tout" le monde"
+echo "salut "tout" le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut "tout le" monde"
+echo "salut "tout le" monde"
+echo salut tout le monde
+echo salut tout le monde
+echo salut tout le monde
+echo "salut tout le monde"
+echo "salut "tout "le monde"
+echo "salut "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut "tout" le monde"
+echo "salut "tout" le monde"
+echo "salut' "tout" le monde"
+echo salut tout le monde
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo salut tout le monde
+echo salut tout le monde
+echo "salut' "tout" le monde"
+echo salut tout le monde
+echo "salut' "tout" le monde"
+echo salut tout le monde
+echo "salut' "tout" le monde"
+echo salut tout le monde
+echo "salut' "tout" le monde"
+echo "salut' "tout" le monde"
+echo "salut' "tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut tout le monde"
+echo "salut' "tout le monde"
+echo "salut' "tout le monde"
+echo "salut' "tout le monde"
+echo "salut' "tout" le monde"
+echo salut tout le monde
+echo 'salut "tout le monde'
+echo 'salut "tout le monde'
+echo 'salut "tout le monde'
+echo 'salut tout le monde'
+echo "salut "tout "le monde"
+echo 'salut tout le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+cleqr
+clear
+echo 'salut "tout" le monde'
+echo 'salut "tout" le" monde'
+echo "salut "tout" le" monde"
+echo "salut "tout" le" monde
+echo "salut "tout" le" monde
+echo "salut "tout" le" monde
+echo "salut "tout" le" monde
+echo "salut 'tout' le monde"
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo "salut 'tout' le monde"
+echo "salut 'tout' le monde"
+echo "salut 'tout' le monde"
+echo "salut 'tout' le' monde"
+echo "salut 'tout' le' mon'de"
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo "salut 'tout' le' mon'de"
+echo "salut 'tout' le' mon'de"
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo 'salut "tout" le monde'
+echo 'salut tout le monde'
+echo "salut tout le monde"
+echo "salut "tout "le monde"
+echo "salut "tout "le monde"
+echo 'salut tout le monde'
+echo "salut tout le monde"
+echo 'salut tout le monde'
+echo "salut tout le monde"
+echo 'salut "tout" le monde'
+echo 'salut "tout" le monde'
+echo "salut 'tout' le monde"
+echo "salut 'tout' 'le 'monde"
+echo "salut "tout" "le "monde"
+echo "salut "tout" "le "monde"
+echo "salut 'tout' 'le 'monde"
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo "salut "tout" "le "monde"
+echo 'salut 'tout' 'le 'monde'
+echo "salut "tout" "le "monde"
+echo "salut "tout" "le "monde"
+echo 'salut 'tout' 'le 'monde'
+echo 'salut 'tout' 'le 'monde'
+echo salut tout le monde
+ls
+ls -la
+clear
+make debug
+make debug
+make debug
+make debug
+clear
+exit
+./mishell
+./mishell
+exit
+ls -l
+ls
+clear
+ls
+clear
+ls
+clear
+ls
+clear
+ls
+clear
+ls
+ls -l
+ls -l
+exit
+echo "salut tout le monde"
+echo 'salut tout le monde'
+echo 'salut "tout" le monde'
+echo "salut "tout" le monde"
+echo "salut "tout" le monde"
+echo "salut "tout" l"e monde"
+echo "salut "tout" le mon"d"e"
+echo "sa'l'ut "tout" le monde"
+echo 'sa'l'ut "tout" le monde"
+echo 'salut'
+echo 'salut' tout
+echo 'salut' tout le" monde"
+echo 'salut' tout le " monde"
+echo 'salut' tout le "monde"
+echo 'salut' tout le "monde"
+echo 'salut' tout le "monde"
+echo 'salut' "tout" le "monde"
+echo 'salut' 'tout' le "monde"
+echo 'salut' 'tout 'le "monde"
+echo 'salut' 'tout 'l'e "monde"
+echo 'salut' 'tout 'l'e "monde"
+echo "salut" tout 'l'e "monde"
+echo "salut" tout le "monde"
+echo '"salut" tout le "monde"'
+echo '"salut" tout le "monde" '
+echo '"salut" tout le "monde"'
+echo 'hello "world" !'
+echo '"hello "world" !"'
+echo '"hello "world" !"'
+echo 'hello "world" !'
+echo '"hello "world" !"'
+echo "hello "world" !"
+echo "hello"world"!"
+echo "hello"world"!"
+echo "hello "world" !"
+echo "he'llo"world"'!"
+echo "he'llo"world"''!"
+echo "he'llo"world"' '!"
+echo '"he'llo"world"'!"'
+echo '"he'llo"world"'!"'
+echo "he'llo"world"'!"
+echo "he'llo"world"'!"
+echo "salut tout le monde"
+echo "salut tout "le monde"
+echo "salut tout "le monde"
+echo "salut tout ""le monde"
+echo "salut tout " "le monde"
+echo "salut tout " "le monde"
+echo "salut tout " "le mo"n"de"
+echo "salut""tout"
+echo "salut"'"tout"
+echo "salut"'"tout"
+echo "salut"'"tout"
+echo "salut" ' "tout"
+echo "salut"'"tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+ls -la
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+ls -la
+echo "salut" ' "tout"
+echo "salut" ' "tout"
+echo "salut"'"tout"
+echo "salut tout " "le mo"n"de"
+echo "salut tout " "le mo"n"de" "$USER"
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo '"salut tout " "le mo"n"de" "$USER" $USER'
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER"
+echo "salut tout " "le mo"n"de"
+echo "salut tout yeye" "le mo"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de"
+exit
+exit
+exit
+echo "salut tout yeye" "l"e m"o"n"de"
+echo "salut tout yeye" "l"e m"o"n"de" "comment"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comment"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout yeye" "l"e m"o"n"de" "comm'ent"
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" $USER
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER'
+echo "salut tout " "le mo"n"de" "$USER" '$USER' 'yey'
+echo "salut tout " "le mo"n"de" "$USER" '$USER' 'yey'
+ls
+ls -la
+ls -la
+echo "salut'tout'le"
+echo 'salut"tout" le'
+echo salut"tout" le
+echo salut"tout"    le
+echo 'salut"tout"    le'
+echo "salut"tout"    le"
+echo "salut" tout"    le"
+echo "salut" tout "    le"
+echo "salut"tout"    le"
+echo "salut" tout "    le"
+make tests
+make tests
+make tests
+make tests
+make tests
+clear
+make fclean
+make fclean
+make fclean
+clear
+make all
+ls
+ls
+ls -la
+ls -la
+echo "salut tout le monde"
+echo "salut tou't le mon'de"
+echo "salut" tou't le mon'd"e"
+echo "salut" tou't le mon'd "e"
+echo "salut" t$USERou't le mon'd "e"
+echo "salut" t $USERou't le mon'd "e"
+echo "salut" t $USER ou't le mon'd "e"
+echo "salut" t $USERou't le mon'd "e"
+echo "salut" t$USER ou't le mon'd "e"
+echo "salut" t $USER ou't le mon'd "e"
+echo "salut" t $USER ou't le mon'd "e"
+echo "salut" t$USER ou't le mon'd "e"
+echo "salut" t$USER    ou't le mon'd "e"
+echo "salut"   t$USER    ou't le mon'd "e"
+echo "salut"      t$USER    ou't le mon'd "e"
+echo "salut"      t$USER    ou 't le mon'd "e"
+echo "salut"      t$USER    ou 't le mon ' d "e"
+echo "salut"      t$USER    ou ' t le mon ' d "e"
+echo "salut"      t$USER    ou ' t le mon ' d "e"
+echo "salut"      t$USER    ou ' t le mon ' d "e"
+echo "salut"      t$USER    ou ' t le mon ' d "e"
+echo "salut"      t$USER    ou ' t le mon ' d "e"
+echo "salut"      "t$USER "    ou ' t le mon ' d "e"
+echo "salut"      t$USER     ou ' t le mon ' d "e"
+echo "salut"      "t$USER "    ou ' t le mon ' d "e"
+echo "salut"      t$USER     ou ' t le mon ' d "e"

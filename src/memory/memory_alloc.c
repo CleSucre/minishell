@@ -27,9 +27,6 @@ static int	alloc_cache(t_minishell *minishell)
 		return (1);
 	}
 	minishell->cache->input = ft_strdup("");
-	minishell->cache->prompt
-		= ft_strdup(TERMINAL_PROMPT_COLOR TERMINAL_PROMPT RESET);
-	minishell->cache->prompt_len = ft_strlen(TERMINAL_PROMPT);
 	return (0);
 }
 
@@ -71,9 +68,10 @@ static int	alloc_term(t_minishell *minishell)
 		free(minishell);
 		return (1);
 	}
-	minishell->term->size = 0;
+	get_terminal_size(minishell->term);
 	minishell->term->cols = 0;
 	minishell->term->rows = 0;
+	minishell->term->begin_rows = 0;
 	return (0);
 }
 

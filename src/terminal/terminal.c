@@ -13,17 +13,62 @@
 #include "minishell.h"
 
 /**
- * @brief Clear the lines and put back prompt after moving cursor
+ * @brief Process action of cursor up
  *
- * @param input
- * @param cols
+ * @param t_minishell *minishell
+ * @param char **input
  */
-static void	reset_stdin(t_minishell *minishell, const char *input)
+void	cursor_up_action(t_minishell *minishell,
+		char **input, t_history *new_history)
 {
-	(void)input;
-	ft_putstr_fd("\033[2K", 1);
-	move_cursor_back(minishell->term->cols);
-	terminal_print(minishell->cache->prompt, 0);
+	if (minishell->history_pos == 0)
+	{
+		free(minishell->cache->input);
+		minishell->cache->input = ft_strdup(*input);
+	}
+	new_history = history_find_up(minishell, minishell->cache->input);
+	if (new_history && new_history->cmd)
+	{
+		free(*input);
+		*input = ft_strdup(new_history->cmd);
+		ft_putstr_fd("\033[1000D", 1);
+		terminal_print("\033[2K", 0);
+		print_terminal_prompt(minishell, 0);
+		terminal_print(*input, 0);
+	}
+	get_cursor_position(minishell->term);
+}
+
+/**
+ * @brief Process action of cursor down
+ *
+ * @param t_minishell *minishell
+ * @param char **input
+ */
+void	cursor_down_action(t_minishell *minishell,
+			char **input, t_history *new_history)
+{
+	char	*cmd;
+
+	cmd = NULL;
+	if (minishell->history_pos == 0)
+	{
+		free(minishell->cache->input);
+		minishell->cache->input = ft_strdup(*input);
+	}
+	new_history = history_find_down(minishell, minishell->cache->input);
+	if (new_history && new_history->cmd)
+		cmd = ft_strdup(new_history->cmd);
+	else
+		cmd = ft_strdup(minishell->cache->input);
+	free(*input);
+	*input = ft_strdup(cmd);
+	free(cmd);
+	ft_putstr_fd("\033[1000D", 1);
+	terminal_print("\033[2K", 0);
+	print_terminal_prompt(minishell, 0);
+	terminal_print(*input, 0);
+	get_cursor_position(minishell->term);
 }
 
 /**
@@ -39,140 +84,25 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 {
 	char		seq[2];
 	t_history	*new_history;
-	char		*cmd;
 
-	cmd = NULL;
 	new_history = NULL;
-	if (read(STDIN_FILENO, &seq[0], 1) == -1)
-		return (-1);
-	if (read(STDIN_FILENO, &seq[1], 1) == -1)
+	if (read(STDIN_FILENO, &seq[0], 1) == -1
+		|| read(STDIN_FILENO, &seq[1], 1) == -1)
 		return (-1);
 	if (seq[0] == '[')
 	{
-		if (seq[1] == 'A')
-		{
-			if (minishell->history_pos == 0)
-			{
-				free(minishell->cache->input);
-				minishell->cache->input = ft_strdup(*input);
-			}
-			new_history = history_find_up(minishell, minishell->cache->input);
-			if (new_history && new_history->cmd)
-			{
-				free(*input);
-				*input = ft_strdup(new_history->cmd);
-				ft_putstr_fd("\033[1000D", 1);
-				terminal_print("\033[2K", 0);
-				terminal_print(minishell->cache->prompt, 0);
-				terminal_print(*input, 0);
-			}
-		}
-		else if (seq[1] == 'B')
-		{
-			if (minishell->history_pos == 0)
-			{
-				free(minishell->cache->input);
-				minishell->cache->input = ft_strdup(*input);
-			}
-			new_history = history_find_down(minishell, minishell->cache->input);
-			if (new_history && new_history->cmd)
-				cmd = ft_strdup(new_history->cmd);
-			else
-				cmd = ft_strdup(minishell->cache->input);
-			free(*input);
-			*input = ft_strdup(cmd);
-			free(cmd);
-			ft_putstr_fd("\033[1000D", 1);
-			terminal_print("\033[2K", 0);
-			terminal_print(minishell->cache->prompt, 0);
-			terminal_print(*input, 0);
-		}
-		else if (seq[1] == 'C' && cols
-			< ft_strlen(*input) + minishell->cache->prompt_len + 1)
-			ft_putstr_fd("\033[1C", 1);
-		else if (seq[1] == 'D' && cols > minishell->cache->prompt_len + 1)
-			ft_putstr_fd("\033[1D", 1);
+		if (seq[1] == U_ARROW)
+			arrow_up_action(minishell, input, new_history);
+		else if (seq[1] == D_ARROW)
+			arrow_down_action(minishell, input, new_history);
+		else if (seq[1] == R_ARROW && cols
+			< ft_strlen(*input) + get_prompt_len(minishell) + 1)
+			arrow_right_action(minishell);
+		else if (seq[1] == L_ARROW && cols > get_prompt_len(minishell) + 1)
+			arrow_left_action(minishell);
 		return (1);
 	}
 	return (0);
-}
-
-/**
- * @brief Add a char in string at "cols" (n) position
- * 			and put back the cursor at the right place
- *
- * @param char *input	string to add char
- * @param char c		char to add
- * @param cols			Position to add char
- * @return
- */
-
-char	*put_in_string(t_minishell *minishell, char *input, char c)
-{
-	char	*res;
-	size_t	i;
-	int		cols;
-
-	cols = minishell->term->cols;
-	res = ft_calloc(ft_strlen(input) + 1, sizeof(char *));
-	i = 0;
-	ft_putstr_fd("\033[s", 1);
-	while (input[i] && i < cols - minishell->cache->prompt_len - 1)
-	{
-		res[i] = input[i];
-		i++;
-	}
-	res[i++] = c;
-	while (input[i - 1])
-	{
-		res[i] = input[i - 1];
-		i++;
-	}
-	free(input);
-	reset_stdin(minishell, res);
-	terminal_print(res, 0);
-	ft_putstr_fd("\033[u\033[1C", 1);
-	return (res);
-}
-
-/**
- * @brief Delete a char in string at "cols" (n) position
- * 			and put back the cursor at the right place
- *
- * @param char *input	String to delete char
- * @param size_t cols	Position to delete char
- * @return
- */
-char	*erase_in_string(t_minishell *minishell, char *input)
-{
-	char			*res;
-	size_t			i;
-	unsigned int	cols;
-
-	cols = minishell->term->cols;
-	if (cols <= minishell->cache->prompt_len)
-		return (input);
-	res = ft_calloc(ft_strlen(input), sizeof(char *));
-	i = 0;
-	ft_putstr_fd("\033[s", 1);
-	while (input[i] && i < cols - minishell->cache->prompt_len - 2)
-	{
-		res[i] = input[i];
-		i++;
-	}
-	i++;
-	while (input[i])
-	{
-		res[i - 1] = input[i];
-		i++;
-	}
-	reset_stdin(minishell, input);
-	free(input);
-	terminal_print(res, 0);
-	ft_putstr_fd("\033[u", 1);
-	if (cols > minishell->cache->prompt_len + 1)
-		ft_putstr_fd("\033[1D", 1);
-	return (res);
 }
 
 /**
@@ -181,6 +111,7 @@ char	*erase_in_string(t_minishell *minishell, char *input)
  * @param t_minishell *minishell
  * @return int 0 if no error, 1 if error
  */
+
 int	use_termios(t_minishell *minishell)
 {
 	char	*input;
@@ -188,10 +119,12 @@ int	use_termios(t_minishell *minishell)
 
 	input = NULL;
 	reset_input(&input);
-	terminal_print(minishell->cache->prompt, 1);
+	print_terminal_prompt(minishell, 1);
+	get_cursor_position(minishell->term);
 	while (1)
 	{
-		get_cursor_position(minishell->term);
+		get_terminal_size(minishell->term);
+		minishell->term->begin_rows = ft_strlen(input) % 4294967295;
 		if (read(STDIN_FILENO, &c, 1) == -1)
 		{
 			perror("read");

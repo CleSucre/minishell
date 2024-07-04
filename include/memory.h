@@ -28,5 +28,6 @@ t_minishell	*alloc_minishell(void);
 void		free_minishell(t_minishell *minishell);
 void		free_tokens(t_token *tokens);
 void		free_ast(t_ast *ast);
+void		free_cmd(t_cmd *cmd);
 
 #endif

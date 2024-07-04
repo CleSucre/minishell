@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /**
- * @brief Print the number of commands loaded in debug mode
+ * @brief Print the number of custom loaded in debug mode
  *
  * @param int cmd_count
  * @return void
@@ -27,7 +27,7 @@ void	debug_history_loaded(int cmd_count)
 	count = ft_itoa(cmd_count);
 	terminal_print(BOLDBLUE"[DEBUG] "RESET"History loaded with "BOLDYELLOW, 1);
 	terminal_print(count, 0);
-	terminal_print(RESET" commands", 0);
+	terminal_print(RESET" custom", 0);
 	free(count);
 }
 

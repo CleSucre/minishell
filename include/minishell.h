@@ -24,14 +24,16 @@
 // #						MINISHELL					  #
 // ########################################################
 
-# include "struct.h"
+# include "commands.h"
 # include "config.h"
 # include "debug.h"
+# include "environment.h"
 # include "execution.h"
 # include "history.h"
 # include "memory.h"
-# include "terminal.h"
 # include "parsing.h"
+# include "struct.h"
+# include "terminal.h"
 
 // ########################################################
 // #						DEFAULTS					  #
