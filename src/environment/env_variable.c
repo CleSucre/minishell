@@ -162,7 +162,7 @@ char	*replace_variables(char **env, char *str)
 	while (str[i])
 	{
 		j = 0;
-		if (str[i] == '$' && str[i + 1] && str[i + 1] != ' ')
+		if (str[i] == '$')
 		{
 			while (ft_isalnum(str[i + j + 1]))
 				j++;
