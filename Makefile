@@ -77,7 +77,7 @@ SRCS_TESTS				= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY)
 
 SRCS_TESTS				:= $(addprefix src$(DIRSEP), $(SRCS_TESTS))
 
-SRCS_TESTS				+= tests$(DIRSEP)src$(DIRSEP)main.cpp tests$(DIRSEP)src$(DIRSEP)tester$(DIRSEP)TesterQuote.cpp
+SRCS_TESTS				+= tests$(DIRSEP)src$(DIRSEP)main.cpp tests$(DIRSEP)src$(DIRSEP)tester$(DIRSEP)TesterQuote.cpp tests$(DIRSEP)src$(DIRSEP)tester$(DIRSEP)TesterStrSplit.cpp
 
 #############################################################################
 

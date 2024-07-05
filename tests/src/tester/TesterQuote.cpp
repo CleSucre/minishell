@@ -8,7 +8,7 @@ using std::tuple;
 using std::get;
 
 std::string TesterQuote::getTestName() {
-    return "Quote Tester";
+    return "ft_split_quote";
 }
 
 int TesterQuote::getTests() {

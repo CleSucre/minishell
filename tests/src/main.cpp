@@ -1,5 +1,5 @@
 #include "TesterQuote.h"
-#include <cstring>
+#include "TesterStrSplit.h"
 
 using std::string;
 using std::vector;
@@ -14,10 +14,13 @@ int main() {
 	int	successCount = 0;
 
 	TesterQuote quoteTester;
+	TesterStrSplit strSplitTester;
 
 	totalTests += quoteTester.getTests();
+	totalTests += strSplitTester.getTests();
 
 	successCount += quoteTester.runTests();
+	successCount += strSplitTester.runTests();
 
 	if (successCount == totalTests) {
 		cout << "\n" << GREEN << "All " << YELLOW << successCount << GREEN << " tests passed!" << RESET << endl;

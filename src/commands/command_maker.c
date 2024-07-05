@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char **get_args(t_minishell *minishell, t_ast *cmd)
+static char **get_argv(t_minishell *minishell, t_ast *cmd)
 {
 	char			**args;
 	t_ast			*tmp;
@@ -29,14 +29,26 @@ static char **get_args(t_minishell *minishell, t_ast *cmd)
 	tmp = cmd->next;
 	while (tmp)
 	{
-		if (tmp->type == TEXT_DOUBLE_QUOTE || tmp->type == TEXT_SINGLE_QUOTE || tmp->type == VARIABLE)
+		if (tmp->type == TEXT_SINGLE_QUOTE)
 		{
 			if (tmp->children->type == TEXT)
 				args[i] = ft_strdup(tmp->children->value);
+		}
+		else if (tmp->type == TEXT_DOUBLE_QUOTE)
+		{
+			if (tmp->children->type == TEXT)
+				args[i] = replace_variables(minishell->env, tmp->children->value);
 			//TODO: handle the case where the children is a command or else
 		}
+		else if (tmp->type == VARIABLE)
+		{
+			args[i] = get_var_value(minishell->env, tmp->value);
+		}
 		else if (tmp->type == TEXT)
-			args[i] = ft_strdup(tmp->value);
+		{
+			args[i] = replace_variables(minishell->env, tmp->value);
+
+		}
 		tmp = tmp->next;
 		i++;
 	}
@@ -65,7 +77,7 @@ t_cmd	*command_maker(t_minishell *minishell, t_ast *cmd)
 	if (!path)
 		path = ft_strdup(cmd->value);
 	new_cmd->cmd_exec = path;
-	new_cmd->argv = get_args(minishell, cmd);
+	new_cmd->argv = get_argv(minishell, cmd);
 	new_cmd->argc = (int)ast_len(cmd);
 	new_cmd->env = minishell->env;
 	new_cmd->path = get_var_value(minishell->env, "PATH");
