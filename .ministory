@@ -958,3 +958,9 @@ echo a$USER
 echo a$USER
 echo a$USER
 echo a$USER
+echo a$USER
+echo a$USER "" "" "" "" asasa
+echo a$USER "" "" "" "" asasa
+echo a$USER "" "" '' "" asasa ''
+echo a$USER "" "" '' "" asasa ''
+echo a$USER "" "" '' "" asasa ''

@@ -174,6 +174,8 @@ char	*replace_variables(char **env, char *str)
 		else
 			res = ft_strjoin_char(res, str[i++]);
 	}
+	if (!res)
+		res = ft_strdup("");
 	return (res);
 }
 
