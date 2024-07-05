@@ -158,44 +158,44 @@ char	*replace_variables(char **env, char *str)
 	char	*tmp;
 
 	res = NULL;
-	i = 0;
-	while (str[i])
+ 	i = 0;
+	while (ft_strlen(str) > i)
 	{
-		j = 0;
 		if (str[i] == '$')
 		{
-			while (ft_isalnum(str[i + j + 1]))
+			j = i + 1;
+			while (ft_isalnum(str[j]))
 				j++;
-			tmp = ft_substr(str, i + 1, j);
+			tmp = ft_substr(str, i + 1, j - i - 1);
 			res = ft_strjoin_free(res, get_var_value(env, tmp));
 			free(tmp);
-			i += j + 1;
+			i = j;
 		}
 		else
-		{
-			res = ft_strjoin_char(res, str[i]);
-			i++;
-		}
+			res = ft_strjoin_char(res, str[i++]);
 	}
 	return (res);
 }
 
 /**
- * @brief Replace the variables in a string by their values
- * 			using the env variables loaded in t_minishell struct
+ * @brief Split the text using variables as separator,
+ * and return a string array with the text and variables
  *
- * @param char *str
+ * @param t_minishell *minishell
+ * @param char **str
  * @return t_ast *
  */
-char	*extract_variables(t_minishell *minishell, char *str)
+char	**extract_variables(t_minishell *minishell, char *str)
 {
-	char	*trimmed;
-	char	*text;
+    int		i;
+    char	**res;
 
-	trimmed = ft_strtrim(str, "\"");
-	if (!trimmed)
-		return (NULL);
-	text = replace_variables(minishell->env, trimmed);
-	free(trimmed);
-	return (text);
+	(void)minishell;
+    res = ft_calloc(ft_strlen(str) + 1, sizeof(char *));
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (res);
 }

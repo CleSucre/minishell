@@ -52,29 +52,41 @@ static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
 }
 
 /**
- * @brief Handle the double quote (") operator
+ * @brief Split the text using variables as separator,
+ * and add the text and variables to the ast
  *
- * @param int type
- * @param t_ast **tmp
- * @param char **args
- * @param int *i
- * @return int 1 if the double quote was handled, 0 otherwise
+ * @param t_type type
+ * @param t_ast **ast
+ * @param char *str
+ * @return int 1 if handled, 0 otherwise
  */
-static char	*handle_quote(t_minishell *minishell, int type, char *str)
+static int handle_text(t_type type, t_ast **ast, char *str)
 {
 	char	*res;
 
 	res = NULL;
-	if (type == TEXT_DOUBLE_QUOTE || type == VARIABLE)
-		res = extract_variables(minishell, str);
+	if (type == TEXT_DOUBLE_QUOTE)
+	{
+		ast_add_last(ast, create_ast(TEXT_DOUBLE_QUOTE, str));
+		res = ft_strtrim(str, "\"");
+		if (res)
+			ast_add_children(ast_get_last(*ast), create_ast(TEXT, res));
+		return (1);
+	}
 	else if (type == TEXT_SINGLE_QUOTE)
 	{
-		str = ft_strtrim(str, "'");
-		if (str)
-			res = ft_strdup(str);
-		free(str);
+		ast_add_last(ast, create_ast(TEXT_SINGLE_QUOTE, str));
+		res = ft_strtrim(str, "'");
+		if (res)
+			ast_add_children(ast_get_last(*ast), create_ast(TEXT, res));
+		return (1);
 	}
-	return (res);
+	else if (type == TEXT)
+	{
+		ast_add_last(ast, create_ast(TEXT, str));
+		return (1);
+	}
+	return (0);
 }
 
 /**
@@ -99,11 +111,12 @@ void	parse_args(t_minishell *minishell, t_ast *ast, char **args)
 		if (handle_redirect_in(&tmp, args, &i))
 			continue ;
 		handle_command_type(&tmp, &type);
+		if (handle_text(type, &tmp, args[i]))
+		{
+			i++;
+			continue ;
+		}
 		ast_add_last(&tmp, create_ast(type, args[i++]));
-		str = handle_quote(minishell, type, args[i - 1]);
-		if (str)
-			ast_add_children(ast_get_last(tmp), create_ast(TEXT, str));
-
 		if (type == REDIRECT_OUT)
 			ast_add_children(ast_get_last(tmp),
 				create_ast(FILE_NAME, args[i++]));
