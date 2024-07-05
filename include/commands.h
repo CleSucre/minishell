@@ -50,4 +50,10 @@ void	command_unset(t_cmd *cmd);
 
 t_cmd	*command_maker(t_minishell *minishell, t_ast *cmd);
 
+// ########################################################
+// #						FLAGS_UTILS					  #
+// ########################################################
+
+int		contain_flag(char **argv, char flag);
+
 #endif

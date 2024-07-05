@@ -41,18 +41,15 @@ static char **get_argv(t_minishell *minishell, t_ast *cmd)
 			//TODO: handle the case where the children is a command or else
 		}
 		else if (tmp->type == VARIABLE)
-		{
-			args[i] = get_var_value(minishell->env, tmp->value);
-		}
+			args[i] = get_var_value(minishell->env, tmp->value + 1);
 		else if (tmp->type == TEXT)
-		{
 			args[i] = replace_variables(minishell->env, tmp->value);
-
-		}
+		else
+			args[i] = ft_strdup(tmp->value);
 		tmp = tmp->next;
 		i++;
 	}
-	args[size] = 0;
+	args[size] = NULL;
 	return (args);
 }
 

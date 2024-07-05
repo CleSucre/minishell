@@ -984,3 +984,53 @@ make debug
 make debug
 make debug
 echo "yey"
+history -s echo hello world
+echo hello world
+env
+env
+env
+history -s yey
+yey
+env
+env -i
+env -i
+env -i
+env -i
+env l
+env MFLAGS
+env sz
+env sz
+env sz
+env "sz"
+env $USER
+env $USER
+env yey
+env salut tout le monde
+env salut tout le monde
+env salut
+env $USER
+env $USER
+env $USER
+env USER
+env USER
+env USER
+env $USER
+clear
+clear
+env $USER
+env $USER
+echo $USER
+echo $USER
+echo USER
+echo sasjasa
+echo $USER
+echo $USER
+echo $USER
+echo USER
+env $USER
+env $HOSTNAME
+env $HOSTNAME
+env $USER
+env $HOST
+env $NAME
+env $LANG

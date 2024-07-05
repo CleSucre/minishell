@@ -53,7 +53,12 @@ static int	execute_command(t_minishell *minishell, t_ast *ast)
 	cmd = command_maker(minishell, ast);
 	if (!cmd)
 		return (0);
-	if (ft_strcmp(cmd->cmd_name, "exit") == 0)
+	if (ft_strcmp(cmd->cmd_name, "env") == 0)
+	{
+		command_env(cmd);
+		res = 1;
+	}
+	else if (ft_strcmp(cmd->cmd_name, "exit") == 0)
 	{
 		command_exit(cmd);
 		res = 2;
