@@ -96,12 +96,11 @@ static int handle_text(t_type type, t_ast **ast, char *str)
  * @param char *full_command the command to extract the children from
  * @return void
  */
-void	parse_args(t_minishell *minishell, t_ast *ast, char **args)
+void	parse_args(t_ast *ast, char **args)
 {
 	t_ast	*tmp;
 	t_type	type;
 	int		i;
-	char	*str;
 
 	tmp = NULL;
 	i = 0;

@@ -152,7 +152,7 @@ static char	*ft_strjoin_char(char *s1, char c)
  */
 char	*replace_variables(char **env, char *str)
 {
-	int		i;
+	size_t	i;
 	int		j;
 	char	*res;
 	char	*tmp;

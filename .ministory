@@ -964,3 +964,23 @@ echo a$USER "" "" "" "" asasa
 echo a$USER "" "" '' "" asasa ''
 echo a$USER "" "" '' "" asasa ''
 echo a$USER "" "" '' "" asasa ''
+echo a$USER "" "" '' "" asasa ''
+echo "yeyeyeye"
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+make debug
+make debug
+make debug
+make debug
+echo "yey"
