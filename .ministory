@@ -1034,3 +1034,131 @@ env $USER
 env $HOST
 env $NAME
 env $LANG
+env $LANG
+ls -la
+ls -l
+ls -la
+git pull
+make fclean
+make fclean
+make fclean
+make fclean
+make fclean
+make fclean
+make fclean
+make
+clear
+make fclean
+make
+./nishell
+./nishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+exit
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+./minishell
+clear
+exit
+ls -la | wc -l
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la | wc -l
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la | wc -l
+adduser
+integritysetup
+integritysetup
+ls
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la | wc -l
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
