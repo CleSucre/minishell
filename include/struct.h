@@ -46,8 +46,8 @@ typedef struct s_history
 
 typedef struct s_dict
 {
-	int				key;
-	int				value;
+	char			*key;
+	char			*value;
 	struct s_dict	*left_branch;
 	struct s_dict	*right_branch;
 	struct s_dict	*parent;

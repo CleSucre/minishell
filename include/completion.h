@@ -23,7 +23,15 @@ int	tab_completion(t_minishell *minishell, char **input);
 // #						DICTIONNARY					  #
 // ########################################################
 
-int	search_in_path(t_dict *dict);
+int	search_in_path(t_dict *dict, char *odir);
+int	creation_dict(t_minishell *minishell);
 
+
+
+// ########################################################
+// #							BST						  #
+// ########################################################
+
+t_dict	*insert_node(t_dict *root, char *key, char *value);
 
 #endif
