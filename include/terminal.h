@@ -58,6 +58,7 @@ int				use_termios(t_minishell *minishell);
 // ########################################################
 
 void			terminal_print(char *str, int nl);
+void    		set_tabstop(t_minishell *minishell);
 void			reset_input(char **input);
 void			move_cursor_back(size_t position);
 int				process_action(t_minishell *minishell, char c, char **input);

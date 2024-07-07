@@ -34,25 +34,26 @@
 # include "parsing.h"
 # include "struct.h"
 # include "terminal.h"
+# include "completion.h"
 
 // ########################################################
 // #						DEFAULTS					  #
 // ########################################################
 
 //# include <readline/readline.h> BOUH LA HONTE CE TRUC AAAAAAHHHHHHHHHHHHHHHHHHHHHHH !! BURK LES ~400 LEAKS !!!
+# include <dirent.h>
+# include <fcntl.h>
+# include <ncurses.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <sys/types.h>
-# include <sys/stat.h>
 # include <sys/ioctl.h>
-# include <dirent.h>
-# include <termios.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include <sys/wait.h>
-# include <signal.h>
-# include <ncurses.h>
+# include <termios.h>
 # include <term.h>
+# include <unistd.h>
 
 #endif

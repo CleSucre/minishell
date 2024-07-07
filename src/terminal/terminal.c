@@ -105,12 +105,32 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 	return (0);
 }
 
+/*
+ * @brief Set tabstop every 4, will possibly be delet
+ */
+
+void    set_tabstop(t_minishell *minishell)
+{
+	size_t i;
+
+	i = 0;
+	ft_putstr_fd("\033[3g", 1);
+	while(i < minishell->term->cols)
+	{
+		i += 4;
+		ft_putstr_fd("\033[4C", 1);
+		ft_putstr_fd("\033H", 1);
+	}
+	ft_putstr_fd("\033[1G", 1);
+}
+
 /**
  * @brief Use termios to get input from user and process it
  *
  * @param t_minishell *minishell
  * @return int 0 if no error, 1 if error
  */
+
 
 int	use_termios(t_minishell *minishell)
 {
@@ -119,6 +139,7 @@ int	use_termios(t_minishell *minishell)
 
 	input = NULL;
 	reset_input(&input);
+	set_tabstop(minishell);
 	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
 	while (1)

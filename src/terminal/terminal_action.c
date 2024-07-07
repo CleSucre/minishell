@@ -92,6 +92,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	{
 		if (execute(minishell, *input))
 			return (1);
+		set_tabstop(minishell);
 		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
 		reset_input(input);
 		minishell->history_pos = 0;
@@ -101,6 +102,11 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	{
 		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
 			return (0);
+	}
+	else if(c == '\t')
+	{
+		tab_completion(minishell, input);
+		return(0);
 	}
 	else
 		edit_input(minishell, input, c);

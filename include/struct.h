@@ -41,6 +41,31 @@ typedef struct s_history
 }		t_history;
 
 // ########################################################
+// #					DICTIONNARY						  #
+// ########################################################
+
+typedef struct s_dict
+{
+	int				key;
+	int				value;
+	struct s_dict	*left_branch;
+	struct s_dict	*right_branch;
+	struct s_dict	*parent;
+} 					t_dict;
+
+
+// ########################################################
+// #					AUTOCOMPLETION					  #
+// ########################################################
+
+typedef struct s_completion
+{
+	char	*cmd;
+	char	*path;
+	int		tab_count;
+}			t_completion;
+
+// ########################################################
 // #						MINISHELL					  #
 // ########################################################
 
@@ -54,6 +79,8 @@ typedef struct s_minishell
 	t_cache			*cache;
 	t_history		*history;
 	t_term			*term;
+	t_completion	*completion;
+	t_dict			*dict;
 	char			**env;
 	int				exit_code;
 	unsigned int	history_pos;

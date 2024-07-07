@@ -1034,3 +1034,19 @@ env $USER
 env $HOST
 env $NAME
 env $LANG
+ls -la
+ls -l
+ls
+exit
+ls "" -la
+ls "" -la\
+ls "" -la\
+ls "" -la
+ls "" -la
+ls "" -la
+ls "" -la
+ls "" -la
+ls "" -la
+ls-la
+ls -la
+exit
