@@ -16,11 +16,18 @@ static int	fill_dict(t_dict *dict, char *input);
 //en gros je get path, je check le exec, si oui j ajoute a l ast. FIN
 //J ajoute le mot complet au dico
 
+
+
+/**
+ * @brief Open dir with odir path and fill dict with all files in it which are executable
+ * 		return a BST full with all executable files found and sort alphabetically
+ * 	@return 0 if success
+ */
 int	search_in_path(t_dict *dict, char *odir)
 {
 	struct dirent *dir;
 	DIR *d;
-	(void)odir;
+	char *name;
 //	d = opendir("/sbin");
 	d = opendir(odir);
 	if (d)
@@ -29,10 +36,13 @@ int	search_in_path(t_dict *dict, char *odir)
 		{
 			if(access(dir->d_name, X_OK) != 0)
 			{
-				ft_putstr_fd(dir->d_name, 1);
-				ft_putstr_fd("\n", 1);
+//				ft_putstr_fd(dir->d_name, 1);
+//				ft_putstr_fd("\n", 1);
 //				fill_dict(dict, dir->d_name);
-				insert_node(dict, dir->d_name, 0);
+				name = ft_strndup(dir->d_name, (int)dir->d_reclen);
+				insert_node(dict, name, 0);
+//				ft_putstr_fd(dict->key, 1);
+//				ft_putstr_fd("\n", 1);
 			}
 		}
 		closedir(d);
@@ -47,21 +57,31 @@ static int	fill_dict(t_dict *dict, char *input)
 	return (0);
 }
 
+/**
+ * @brief 	Create first BST node (root)
+ *			Fill it with search in path
+ *			Search for a specific node
+ *			Print the branch found
+ * 	@return 0 if success
+ */
+
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
 
-	minishell->dict = ft_calloc(1, sizeof(t_dict));
+	minishell->dict = create_node("test", "file");
 	if (!minishell->dict)
 		return (1);
 	tmp = minishell->dict;
-	search_in_path(tmp, "/sbin");
-//	search_in_path(tmp, "/bin");
+//	search_in_path(tmp, ".");
+	search_in_path(tmp, "/bin");
 //	search_in_path(tmp, "/usr/sbin");
 //	search_in_path(tmp, "/usr/local/bin");
 //	search_in_path(tmp, "/opt/bin");
 //	search_in_path(tmp, "/etc");
-
+//	ft_putstr_fd(tmp->key, 1);
+	tmp = search_node(minishell->dict, "l");
+	print_branch(tmp);
 	return (0);
 }
 

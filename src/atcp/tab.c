@@ -18,7 +18,7 @@ int tab_completion(t_minishell *minishell, char **input)
 	(void)minishell;
 	(void)input;
 //	minishell->completion->tab_count++;
-	ft_putstr_fd("AHAHAHHAHAHHAUdghweuisghfuiowebf", 2);
+//	ft_putstr_fd("AHAHAHHAHAHHAUdghweuisghfuiowebf", 2);
 //	search_in_path(minishell->dict);
 	creation_dict(minishell);
 	return (0);

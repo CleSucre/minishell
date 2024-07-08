@@ -33,5 +33,11 @@ int	creation_dict(t_minishell *minishell);
 // ########################################################
 
 t_dict	*insert_node(t_dict *root, char *key, char *value);
+t_dict	*create_node(char *key, char *value);
+t_dict	*search_node(t_dict *root, char *key);
+void	print_branch(t_dict *root);
+
+
+char	*ft_strndup(char *s1, int len);
 
 #endif

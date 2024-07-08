@@ -1,2 +1,27 @@
 history
 exit
+c
+test
+md
+md
+ls
+ls -a
+echo "salut" $USE!R
+echo "salut" $USER
+echo
+echo '' bonjour
+ls
+TEST=salut
+echo $TEST
+echo $HOST
+echo $HOSTNAME
+echo "$HOSTNAME"
+echo "salut" $USER
+clear]\
+clear]\
+clear
+ttttttssssssssssssssssssstttttttt
+tput
+tput tcol
+tcol
+exit
