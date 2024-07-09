@@ -21,5 +21,7 @@ int tab_completion(t_minishell *minishell, char **input)
 //	ft_putstr_fd("AHAHAHHAHAHHAUdghweuisghfuiowebf", 2);
 //	search_in_path(minishell->dict);
 	creation_dict(minishell);
+	print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
+
 	return (0);
 }

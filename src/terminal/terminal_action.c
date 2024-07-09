@@ -104,10 +104,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 			return (0);
 	}
 	else if(c == '\t')
-	{
 		tab_completion(minishell, input);
-		return(0);
-	}
 	else
 		edit_input(minishell, input, c);
 	return (0);

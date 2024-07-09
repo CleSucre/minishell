@@ -26,23 +26,30 @@ static int	fill_dict(t_dict *dict, char *input);
 int	search_in_path(t_dict *dict, char *odir)
 {
 	struct dirent *dir;
-	DIR *d;
 	char *name;
+	t_dict *tmp;
+	DIR *d;
 //	d = opendir("/sbin");
 	d = opendir(odir);
+	ft_putstr_fd("\n", 1);
 	if (d)
 	{
 		while ((dir = readdir(d)) != NULL)
 		{
 			if(access(dir->d_name, X_OK) != 0)
 			{
-//				ft_putstr_fd(dir->d_name, 1);
-//				ft_putstr_fd("\n", 1);
-//				fill_dict(dict, dir->d_name);
+//				ft_putstr_fd("-------SEARCHING--------\n", 1);
+				tmp = dict;
+				fill_dict(tmp, dir->d_name);
 				name = ft_strndup(dir->d_name, (int)dir->d_reclen);
-				insert_node(dict, name, 0);
-//				ft_putstr_fd(dict->key, 1);
+				name= string_lower(name);
+//				ft_putstr_fd("\e[0;36m\t key search : ", 1);
+//				ft_putstr_fd(name, 1);
+//				ft_putstr_fd("\n \e[0;37m", 1);
+				insert_node(tmp, name, 0);
+				free(name);
 //				ft_putstr_fd("\n", 1);
+//				sleep(1);
 			}
 		}
 		closedir(d);
@@ -68,19 +75,35 @@ static int	fill_dict(t_dict *dict, char *input)
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
+	char *search;
 
-	minishell->dict = create_node("test", "file");
+	search = "app";
+
+	minishell->dict = create_node("\0", "file");
 	if (!minishell->dict)
 		return (1);
 	tmp = minishell->dict;
 //	search_in_path(tmp, ".");
 	search_in_path(tmp, "/bin");
-//	search_in_path(tmp, "/usr/sbin");
-//	search_in_path(tmp, "/usr/local/bin");
-//	search_in_path(tmp, "/opt/bin");
-//	search_in_path(tmp, "/etc");
+	search_in_path(tmp, "/usr/sbin");
+	search_in_path(tmp, "/usr/local/bin");
+	search_in_path(tmp, "/opt/bin");
+	search_in_path(tmp, "/etc");
 //	ft_putstr_fd(tmp->key, 1);
-	tmp = search_node(minishell->dict, "l");
+	ft_putstr_fd("\nSearch\n", 1);
+//	ft_putstr_fd("BEFORE\n", 1);
+//	print_branch(tmp);
+
+//
+	print_branch(tmp);
+
+	tmp = search_node(minishell->dict, search);
+
+	ft_putstr_fd("CUT\n", 1);
+
+	tmp = cut_node(tmp, search);
+
+	ft_putstr_fd("\nFound\n", 1);
 	print_branch(tmp);
 	return (0);
 }
