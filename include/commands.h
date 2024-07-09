@@ -26,7 +26,8 @@ typedef struct s_cmd
 	char			**argv;
 	char			**env;
 	char			*path;
-	int             *pipe_fd;
+	int             input;
+	int             output;
     int             fd_to_close;
 	int				exit_status;
 }	t_cmd;
@@ -48,7 +49,7 @@ void	command_unset(t_cmd *cmd);
 // #						UTILS						  #
 // ########################################################
 
-t_cmd	*command_maker(t_minishell *minishell, t_ast *cmd, int *pipe_fd, int fd_to_close);
+t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int *pipe_fd, int fd_to_close);
 
 // ########################################################
 // #						FLAGS_UTILS					  #

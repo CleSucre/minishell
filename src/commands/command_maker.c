@@ -62,7 +62,7 @@ static char **get_argv(t_minishell *minishell, t_ast *cmd)
  * @param int   output_fd
  * @return t_cmd *
  */
-t_cmd	*command_maker(t_minishell *minishell, t_ast *cmd, int *pipe_fd, int fd_to_close)
+t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int pipe_fd[2], int fd_to_close)
 {
 	t_cmd	*new_cmd;
 	char	*path;
@@ -79,8 +79,9 @@ t_cmd	*command_maker(t_minishell *minishell, t_ast *cmd, int *pipe_fd, int fd_to
 	new_cmd->argv = get_argv(minishell, cmd);
 	new_cmd->argc = (int)ast_len(cmd);
 	new_cmd->env = minishell->env;
-    new_cmd->path = get_var_value(minishell->env, "PATH");
-    new_cmd->pipe_fd = pipe_fd;
+    new_cmd->path = get_path(cmd->value, minishell->env);
+	new_cmd->input = pipe_fd[0];
+	new_cmd->output = pipe_fd[1];
     new_cmd->fd_to_close = fd_to_close;
     new_cmd->exit_status = 0;
 	return (new_cmd);

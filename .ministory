@@ -1162,3 +1162,152 @@ ls -la
 ls -la
 ls -la
 ls -la
+ls -la
+4
+echo sél
+exit
+cd pi
+exit
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls -la
+ls -la
+ls -la
+ls
+ls
+ls*
+ls
+ls
+ls
+ls -la
+ls
+ls -la
+ls -la | wc -l
+ls
+ls
+ls -la
+ls -la | wc -l
+ls -la
+ls
+ls
+ls -la
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+make debug
+ls
+ls -la
+ls -la | wc -l
+make debug
+make debug
+ls -la
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls
+ls
+ls -la | wc -l
+make debug
+ls -la | wc -l
+ls -la | wc -l
+ls
+ls -la
+ls -la | wc -l
+ls
+ls
+ls -la
+ls -la | wc -l
+ls
+ls -la | wc -l
+ls -la | wc -l
+ls
+ls -la | wc -l
+ls
+ls -la
+ls -la
+ls
+ls
+ls
+ls -la
+ls
+ls
+ls
+ls -la
+ls
+ls -la
+ls -la | wc -l
+ls
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la
+ls -la | grep "git" | wc -l
+ls -la | grep "git" | wc -l
+ls -la | grep "git" | wc -l | cat -"
+ls -la | grep "git" | wc -l | cat -e
+ls
+ls
+ls -la
+ls -la | grep "git" | wc -l | cat -e
+ls -la | grep "git" | wc -l | cat -e
+ls -la | grep "git" | wc -l | cat -e
+ls -la | wc -l | cat -e
+wc -l | cat -e
+echo "salut" | cat -e
+echo "salut"
+ls
+echo "salut" | cat -e
+git logs
+clear
+clear
+ls -la | wc -l | cat -e
+ls -la | wc -l | cat -e
+ls
+clear
+clear
+ls
+ls -la | wc -l | cat -e
+ls -la | wc -l | cat -e
+ls -la | wc -l | cat -e
+ls -la | wc -l | cat -e
+ls -la | wc -l | cat -e
+ls -la | wc -l | cat -e
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | grep "g" | wc -l | cat -e
+ls -la
+cat -e
+ls -la
+ls -la
+ls -la
+ls -la | grep g | wc -l
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+exit
+exit
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+exit
+exit
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e
+ls -la | grep g | wc -l | cat -e

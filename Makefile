@@ -29,7 +29,7 @@ SRCS_ENVIRONMENT		= env_variable.c
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
-SRCS_EXECUTION			= execution.c
+SRCS_EXECUTION			= execution.c pipe.c
 
 SRCS_COMMANDS			= command_maker.c flags_utils.c
 
@@ -115,7 +115,7 @@ else
 	CXXFLAGS += -g -D DEBUG=$(DEBUG)
 endif
 
-VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
+VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes --suppressions=valgrind.supp
 
 # COLORS
 DEFCOLOR = \033[0;39m
