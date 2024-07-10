@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 07:35:56 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/07 12:42:51 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:08:30 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,26 @@
  */
 int	search_in_path(t_dict *dict, char *odir)
 {
-	struct dirent *dir;
-	char *name;
-	t_dict *tmp;
-	DIR *d;
+	struct dirent	*dir;
+	char			*name;
+	t_dict			*tmp;
+	DIR				*d;
+
 	d = opendir(odir);
 	if (d)
 	{
-		while ((dir = readdir(d)) != NULL)
+		dir = readdir(d);
+		while (dir != NULL)
 		{
-			if(access(dir->d_name, X_OK) != 0)
+			if (access(dir->d_name, X_OK) != 0)
 			{
 				tmp = dict;
 				name = ft_strndup(dir->d_name, (int)dir->d_reclen);
-				name= string_lower(name);
+				name = string_lower(name);
 				insert_node(tmp, name, 0);
 				free(name);
 			}
+			dir = readdir(d);
 		}
 		closedir(d);
 	}
@@ -53,9 +56,9 @@ int	search_in_path(t_dict *dict, char *odir)
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
-	char *search;
+	char	*search;
 
-	search = "a";
+	search = "app";
 
 	minishell->dict = create_node("\0", "file");
 	if (!minishell->dict)
@@ -88,28 +91,3 @@ int	creation_dict(t_minishell *minishell)
 ///usr/local/bin
 ///opt/bin
 ///etc
-
-
-
-/* TEST
- * int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
-}
-int main(void)
-{
-	char *s1="tfstf";
-	char *s2="test";
-	printf("%d\n", ft_strncmp(s1, s2, ft_strlen(s2)));
-
-}
-*/
