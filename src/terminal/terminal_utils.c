@@ -31,13 +31,13 @@ void	reset_stdin(t_minishell *minishell)
  * @param int nl Move cursor down and print newline(s)
  * @return void
  */
-void	terminal_print(char *str, int nl)
+void	terminal_print(char *str, int nl, int fd)
 {
 	if (nl)
-		ft_printf("\033[%dD", 100);
+		ft_fprintf(fd, "\033[%dD", 100);
 	while (nl--)
-		ft_putchar_fd('\n', 1);
-	ft_printf("%s", str);
+		ft_putchar_fd('\n', fd);
+	ft_fprintf(fd, "%s", str);
 }
 
 /**

@@ -44,7 +44,7 @@ char	*put_in_string(t_minishell *minishell, char *input, char c)
 	}
 	free(input);
 	reset_stdin(minishell);
-	terminal_print(res, 0);
+	terminal_print(res, 0, STDOUT_FILENO);
 	ft_putstr_fd("\033[u\033[1C", 1);
 	return (res);
 }
@@ -78,7 +78,7 @@ char	*erase_in_string(t_minishell *minishell, char *input)
 		res[i - 1] = input[i];
 	reset_stdin(minishell);
 	free(input);
-	terminal_print(res, 0);
+	terminal_print(res, 0, STDOUT_FILENO);
 	ft_putstr_fd("\033[u", 1);
 	if (cols > get_prompt_len(minishell) + 1)
 		ft_putstr_fd("\033[1D", 1);

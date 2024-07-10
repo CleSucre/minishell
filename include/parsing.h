@@ -45,7 +45,7 @@ typedef struct s_token
 typedef struct s_ast
 {
 	char			*value;
-	int				type;
+	t_type			type;
 	struct s_ast	*next;
 	struct s_ast	*parent;
 	struct s_ast	*children;
@@ -75,6 +75,7 @@ void			parse_args(t_ast *ast, char **args);
 // ########################################################
 
 unsigned int	ast_len(t_ast *ast);
+unsigned int	ast_count_type(t_ast *ast, t_type type);
 t_ast			*create_ast(t_type type, char *value);
 t_ast			*ast_get_last(t_ast *head);
 void			ast_add_last(t_ast **head, t_ast *ast);

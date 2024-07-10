@@ -17,7 +17,7 @@
 // #						ENV_VARIABLE				  #
 // ########################################################
 
-char			*get_path(char *cmd, char **env);
+char			*get_path(char *cmd, char **envp);
 char			*get_var_value(char **env, char *var);
 const char		*get_var_value_const(char **env, char *var);
 int				get_var_len(char **env, char *var);
