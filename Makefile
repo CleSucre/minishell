@@ -41,9 +41,13 @@ SRCS_PARSING			= ast_management.c parsing.c parsing_args.c tokenizer.c
 
 SRCS_TERMINAL			= erase_put.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_utils.c
 
+SRCS_ATCP				= tab.c dictionnary/setup_dico.c dictionnary/bst.c
+
 #############################################################################
 #									FOLDERS									#
 #############################################################################
+
+SRCS_ATCP				:= $(addprefix atcp$(DIRSEP), $(SRCS_ATCP))
 
 SRCS_CONFIG				:= $(addprefix config$(DIRSEP), $(SRCS_CONFIG))
 
@@ -67,13 +71,13 @@ SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
 SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL) $(SRCS_ATCP)
 
 SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
 
 SRCS_TESTS				= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL) $(SRCS_ATCP)
 
 SRCS_TESTS				:= $(addprefix src$(DIRSEP), $(SRCS_TESTS))
 

@@ -1,227 +1,47 @@
-exit
-clear
-ls
-exit
-exit
-exit
-exit
-exit
-exit
-exit
-exit
-exit 762
-exit
-exit
-exit
-exit
-exit
-exit 1
-exit
-exit
-exit 15
-exit 15
-exit 15
-exit 15
-exit 15
-exit 15
-exit 19872
-exit 27
-exit 27
-exit 27
-exit 27
-exit 27
-exit
-exit
-exit
-exit 12
-exit
-exit 12
-make fclean
-exit 12
-exit 13
-exit 8
-exit 8
-exit 255
-exit 290
-echo "salut"
-echo "salut"
-echo "salut"
-echo "salut"
-echo "salut"
-echo salut tout le monde
-echo salut tout le monde
-echo salut tout le monde
-echo salut tout le monde
-echo salut tout le monde
-echo salut tout le monde
-echo salut tout le monde
-echo salut tout le monde
-echo salut tout le monde
-echo "salut tout le monde"
-echo "salut tout "le monde"
-echo "salut tout " le monde"
-echo 'salut tout " le monde'
-echo 'salut tout le monde'
-clear
-echo -n 'salut tout le monde'
-echo -n 'salut tout le monde'
-echo 'salut tout le monde'
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo 'salut tout le monde'
-echo -n salut
-echo salut
-echo -n salut
-echo salut
-echo -n salut
-echo salut
-exit 1736234
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo -n salut
-echo salut
-make nor
-echo "salut"
-echo "salut"
-echo "salut"
-echo "&? salut"
-echo "&ENV salut"
-echo "$ENV salut"
-echo "$ENV salut"
-echo "$ENV salut"
-echo "$ENV salut"
-echo "$ENV salut"
-echo "$ENV salut"
-echo "$ENV salut"
-echo "$USER salut"
-make debug
-make debug
-echo "$USER salut"
-echo "$USER salut"
-make debug
-make debug
-echo "$USER salut"
-echo "$USER salut"
-echo "$USER salut"
-echo "dwdwdwd$USER salut"
-echo "dwdwdwd $USER salut"
-echo "$USER"
-"$USER"
-ls
-exit &é
-exit 23�
-exit 23
-ls -la
-exit
-ls -la
-clear
 history
-history 16
 exit
-echo "Hello World"
+c
+test
+md
+md
+ls
+ls -a
+echo "salut" $USE!R
+echo "salut" $USER
+echo
+echo '' bonjour
+ls
+TEST=salut
+echo $TEST
+echo $HOST
+echo $HOSTNAME
+echo "$HOSTNAME"
+echo "salut" $USER
+clear]\
+clear]\
 clear
-exit
-echo "Hello World"
-exit
-echo "Hello World"
-echo "Hello World"
+ttttttssssssssssssssssssstttttttt
+tput
+tput tcol
+tcol
 exit
 ls
-ls -la
+test
 ls
-ls -la
-exit
-echo "Hello World"
-echo "Hello World"
-echo "Hello World"
-echo "Hello World"
 ls
-ls -la
-echo "Hello World"
-exit
-echo "Hello World $USER"
-echo "Hello World $USER"
-echo "Hello World $USER"
-echo "Hello World $USER"
-echo "Hello World $USER"
-echo "Hello World $USER"
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World yoyo"
-exit
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo"
-echo "Hello World $USER yoyo $ENV"
-echo "Hello World $USER yoyo $?"
-echo "Hello World $USER yoyo $?"
-exit
-echo "Hello World $USER yoyo $?"
-echo "Hello World $USER yoyo $?"
-echo "Hello World $USER yoyo $?"
-echo "Hello World $USER yoyo $?"
-exit
-echo "Hello World $USER yoyo"
-exit
-echo "Hello World $USER yoyo $USER"
-exit
-echo "Hello World $USER yoyo $USER"
-exit
-echo "Hello World $USER yoyo $USER"
-exit
-echo "Hello World $USER yoyo $USER"
-echo "Hello World $USER yoyo"
-echo "Hello World $USERyoyo"
-exit
+test
+test
+test
+test
+ml
+c
+ml
+ml
+ml
+ml
+ml
+ml
+=======
 echo "Hello World $USERyoyo"
 exit
 echo "Hello World yoyo"
@@ -1164,7 +984,7 @@ ls -la
 ls -la
 ls -la
 4
-echo sél
+echo sÃ©l
 exit
 cd pi
 exit
@@ -1356,7 +1176,7 @@ ls -la | grep g
 ls
 echo sasasas
 history
-history | cat -�e
+history | cat -Ãe
 history | cat -e
 history | cat -e
 history | cat -e
