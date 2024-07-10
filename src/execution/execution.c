@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:13:44 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static int	execute_path(t_cmd *cmd)
 			close(cmd->fd_to_close);
 		if (execve(cmd->cmd_exec, cmd->argv, cmd->env) == -1)
 		{
-			ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n", cmd->cmd_name);
+			ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
+				cmd->cmd_name);
 			cmd->exit_status = 127;
 			return (1);
 		}
@@ -54,7 +55,7 @@ static int	execute_path(t_cmd *cmd)
 
 static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)
 {
-	int 	custom_cmd_res;
+	int	custom_cmd_res;
 
 	if (!cmd)
 		return (0);
@@ -76,10 +77,10 @@ static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)
  */
 static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
 {
-	t_cmd	*cmd;
-	int 	i;
-	int 	fd[2];
-	int 	len;
+	t_cmd			*cmd;
+	int				i;
+	int				fd[2];
+	unsigned int	len;
 
 	if (!ast)
 		return (0);
@@ -103,10 +104,13 @@ static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
 				if (pipe_fd[0] != STDIN_FILENO)
 					close(pipe_fd[0]);
 				pipe_fd[0] = fd[0];
-			} else {
+			}
+			else
+			{
 				pipe_fd[1] = STDOUT_FILENO;
 				if (len > 1)
-					cmd = load_command(minishell, ast->children, pipe_fd, fd[1]);
+					cmd = load_command(minishell, ast->children, pipe_fd,
+							fd[1]);
 				else
 					cmd = load_command(minishell, ast->children, pipe_fd, -1);
 				if (cmd)
@@ -142,7 +146,7 @@ int	execute(t_minishell *minishell, char *input)
 {
 	t_ast	*ast;
 	int		res;
-    int     pipe_fd[2];
+	int		pipe_fd[2];
 
 	if (ft_strlen(input) == 0)
 		return (0);
@@ -158,8 +162,8 @@ int	execute(t_minishell *minishell, char *input)
 		free(input);
 		return (0);
 	}
-    pipe_fd[0] = STDIN_FILENO;
-    pipe_fd[1] = STDOUT_FILENO;
+	pipe_fd[0] = STDIN_FILENO;
+	pipe_fd[1] = STDOUT_FILENO;
 	res = execute_cmds(minishell, ast, pipe_fd);
 	free_ast(ast);
 	free(input);

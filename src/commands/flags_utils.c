@@ -10,10 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int contain_flag(char **argv, char flag)
+/**
+ * @brief Check if a flag is present in the argv
+ *
+ * @param argv
+ * @param flag
+ * @return
+ */
+int	contain_flag(char **argv, char flag)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (argv[i])

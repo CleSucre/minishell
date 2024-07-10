@@ -82,7 +82,7 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 void	history_reset(t_minishell *minishell)
 {
 	t_history	*tmp;
-	int	trunc;
+	int			trunc;
 
 	while (minishell->history->older)
 	{
@@ -97,7 +97,8 @@ void	history_reset(t_minishell *minishell)
 	trunc = open(HISTORY_FILE, O_WRONLY | O_TRUNC);
 	if (trunc == -1)
 	{
-		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed", 1, STDOUT_FILENO);
+		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed",
+			1, STDOUT_FILENO);
 		return ;
 	}
 	close (trunc);
@@ -112,7 +113,7 @@ void	history_reset(t_minishell *minishell)
 void	history_print(t_minishell *minishell, int fd)
 {
 	t_history		*history;
-	char 			*tmp;
+	char			*tmp;
 	unsigned int	i;
 	unsigned int	j;
 

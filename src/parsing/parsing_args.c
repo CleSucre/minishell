@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:13:56 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	handle_redirect_in(t_ast **tmp, char **args, int *i)
  * @param char *str
  * @return int 1 if handled, 0 otherwise
  */
-static int handle_text(t_type type, t_ast **ast, char *str)
+static int	handle_text(t_type type, t_ast **ast, char *str)
 {
 	char	*res;
 

@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:15:07 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	debug_execution(char *cmd)
 {
 	if (!DEBUG)
 		return ;
-	terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1, STDOUT_FILENO);
+	terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW,
+		1, STDOUT_FILENO);
 	terminal_print(cmd, 0, STDOUT_FILENO);
 	terminal_print(RESET" executed", 0, STDOUT_FILENO);
 }

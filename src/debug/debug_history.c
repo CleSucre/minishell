@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:15:30 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	debug_history_loaded(int cmd_count)
 	if (!DEBUG)
 		return ;
 	count = ft_itoa(cmd_count);
-	terminal_print(BOLDBLUE"[DEBUG] "RESET"History loaded with "BOLDYELLOW, 1, STDOUT_FILENO);
+	terminal_print(BOLDBLUE"[DEBUG] "RESET"History loaded with "BOLDYELLOW,
+		1, STDOUT_FILENO);
 	terminal_print(count, 0, STDOUT_FILENO);
 	terminal_print(RESET" commands", 0, STDOUT_FILENO);
 	free(count);
@@ -44,13 +45,15 @@ void	debug_history_add(char *cmd, int added)
 		return ;
 	if (added)
 	{
-		terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1, STDOUT_FILENO);
+		terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW,
+			1, STDOUT_FILENO);
 		terminal_print(cmd, 0, STDOUT_FILENO);
 		terminal_print(RESET" added to history", 0, STDOUT_FILENO);
 	}
 	else
 	{
-		terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1, STDOUT_FILENO);
+		terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW,
+			1, STDOUT_FILENO);
 		terminal_print(cmd, 0, STDOUT_FILENO);
 		terminal_print(RESET" not added to history "
 			"(already the last command)", 0, STDOUT_FILENO);
@@ -67,7 +70,8 @@ void	debug_history_add_file(char *cmd)
 {
 	if (!DEBUG)
 		return ;
-	terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1, STDOUT_FILENO);
+	terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW,
+		1, STDOUT_FILENO);
 	terminal_print(cmd, 0, STDOUT_FILENO);
 	terminal_print(RESET" added to history file", 0, STDOUT_FILENO);
 }
