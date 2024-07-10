@@ -35,6 +35,6 @@ t_history	*history_find_down(t_minishell *minishell, char *cmd);
 
 int			history_add(t_minishell *minishell, char *cmd, int fs);
 void		history_reset(t_minishell *minishell);
-void		history_print(t_minishell *minishell);
+void		history_print(t_minishell *minishell, int fd);
 
 #endif

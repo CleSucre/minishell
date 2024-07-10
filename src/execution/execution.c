@@ -16,81 +16,53 @@
  * @brief Execute the command given in input
  *
  * @param t_cmd *cmd
- * @return int 1 on success, 0 on failure
+ * @return int 0 on success, 1 on failure
  */
-static int	execute_cmd(t_cmd *cmd)
+static int	execute_path(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = fork();
-    if (pid < 0)
-    {
-        ft_putstr_fd("Error: fork failed\n", 2);
-        cmd->exit_status = 1;
-        return (0);
-    }
+	if (pid < 0)
+	{
+		ft_putstr_fd("Error: fork failed\n", STDERR_FILENO);
+		cmd->exit_status = 1;
+		return (0);
+	}
 	else if (pid == 0)
 	{
-        dup2(cmd->input, STDIN_FILENO);
-        dup2(cmd->output, STDOUT_FILENO);
-
+		dup2(cmd->input, STDIN_FILENO);
+		dup2(cmd->output, STDOUT_FILENO);
 		if (cmd->input != STDIN_FILENO)
 			close(cmd->input);
 		if (cmd->output != STDOUT_FILENO)
 			close(cmd->output);
-
 		if (cmd->fd_to_close != -1)
 			close(cmd->fd_to_close);
-
 		if (execve(cmd->cmd_exec, cmd->argv, cmd->env) == -1)
 		{
-			ft_printf("minishell: command not found: %s\n", cmd->cmd_name);
+			ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n", cmd->cmd_name);
 			cmd->exit_status = 127;
+			return (1);
 		}
 	}
-    waitpid(pid, &status, 0);
-    cmd->exit_status = WEXITSTATUS(status);
-	return (1);
+	waitpid(pid, &status, 0);
+	cmd->exit_status = WEXITSTATUS(status);
+	return (0);
 }
 
-static int	execute_command(t_minishell *minishell, t_cmd *cmd)
+static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)
 {
-	int 	res;
+	int 	custom_cmd_res;
 
 	if (!cmd)
 		return (0);
-	if (ft_strcmp(cmd->cmd_name, "env") == 0)
-	{
-		command_env(cmd);
-		res = 1;
-	}
-	else if (ft_strcmp(cmd->cmd_name, "exit") == 0)
-	{
-		command_exit(cmd);
-		res = 2;
-	}
-	else if (ft_strcmp(cmd->cmd_name, "history") == 0)
-	{
-		command_history(cmd, minishell);
-		res = 1;
-	}
-	else if (ft_strcmp(cmd->cmd_name, "echo") == 0)
-	{
-		command_echo(cmd);
-		res = 1;
-	}
-	else if (ft_strcmp(cmd->cmd_name, "cd") == 0)
-	{
-		command_cd(cmd);
-		res = 1;
-	}
-	else
-    {
-		execute_cmd(cmd);
-        res = 1;
-    }
-	return (res);
+	custom_cmd_res = execute_custom_command(minishell, cmd);
+	if (custom_cmd_res)
+		return (custom_cmd_res);
+	execute_path(cmd);
+	return (1);
 }
 
 /**
@@ -105,7 +77,6 @@ static int	execute_command(t_minishell *minishell, t_cmd *cmd)
 static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
 {
 	t_cmd	*cmd;
-	int		res;
 	int 	i;
 	int 	fd[2];
 	int 	len;
@@ -125,7 +96,7 @@ static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
 				cmd = load_command(minishell, ast->children, pipe_fd, fd[0]);
 				if (cmd)
 				{
-					execute_cmd(cmd);
+					execute_cmd(minishell, cmd);
 					free_cmd(cmd);
 					close(fd[1]);
 				}
@@ -140,7 +111,7 @@ static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
 					cmd = load_command(minishell, ast->children, pipe_fd, -1);
 				if (cmd)
 				{
-					execute_cmd(cmd);
+					execute_cmd(minishell, cmd);
 					free_cmd(cmd);
 				}
 				if (len > 1)
@@ -187,10 +158,8 @@ int	execute(t_minishell *minishell, char *input)
 		free(input);
 		return (0);
 	}
-
     pipe_fd[0] = STDIN_FILENO;
     pipe_fd[1] = STDOUT_FILENO;
-
 	res = execute_cmds(minishell, ast, pipe_fd);
 	free_ast(ast);
 	free(input);

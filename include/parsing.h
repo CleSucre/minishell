@@ -45,7 +45,7 @@ typedef struct s_token
 typedef struct s_ast
 {
 	char			*value;
-	int				type;
+	t_type			type;
 	struct s_ast	*next;
 	struct s_ast	*parent;
 	struct s_ast	*children;

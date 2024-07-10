@@ -25,7 +25,7 @@ int	history_get_file(void)
 	fd = open(HISTORY_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (fd < 0)
 	{
-		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed", 1);
+		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed", 1, STDOUT_FILENO);
 		return (-1);
 	}
 	return (fd);

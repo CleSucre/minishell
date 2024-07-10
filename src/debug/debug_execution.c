@@ -22,7 +22,7 @@ void	debug_execution(char *cmd)
 {
 	if (!DEBUG)
 		return ;
-	terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1);
-	terminal_print(cmd, 0);
-	terminal_print(RESET" executed", 0);
+	terminal_print(BOLDBLUE"[DEBUG] "RESET"Command "BOLDYELLOW, 1, STDOUT_FILENO);
+	terminal_print(cmd, 0, STDOUT_FILENO);
+	terminal_print(RESET" executed", 0, STDOUT_FILENO);
 }

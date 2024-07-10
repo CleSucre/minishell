@@ -49,12 +49,19 @@ void	command_unset(t_cmd *cmd);
 // #						UTILS						  #
 // ########################################################
 
-t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int *pipe_fd, int fd_to_close);
+t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int pipe_fd[2], int fd_to_close);
 
 // ########################################################
 // #						FLAGS_UTILS					  #
 // ########################################################
 
 int		contain_flag(char **argv, char flag);
+
+// ########################################################
+// #						COMMAND_MANAGER				  #
+// ########################################################
+
+int		execute_custom_command(t_minishell *minishell, t_cmd *cmd);
+
 
 #endif

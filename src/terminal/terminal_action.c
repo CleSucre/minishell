@@ -48,7 +48,7 @@ static void	backspace_action(t_minishell *minishell, char **input)
 
 void	ctrl_c_action(t_minishell *minishell, char **input)
 {
-	terminal_print("^C", 0);
+	terminal_print("^C", 0, STDOUT_FILENO);
 	reset_input(input);
 	print_terminal_prompt(minishell, 1);
 	minishell->history_pos = 0;
@@ -90,6 +90,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		backspace_action(minishell, input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
+		terminal_print("", ft_strlen(*input) > 0, STDOUT_FILENO);
 		if (execute(minishell, *input))
 			return (1);
 		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
