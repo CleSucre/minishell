@@ -136,6 +136,15 @@ int	get_var_len(char **env, char *var)
 	return (len);
 }
 
+/**
+ * @brief Join a string with a char
+ *
+ * TODO: move to libft
+ *
+ * @param char *s1
+ * @param char c
+ * @return
+ */
 static char	*ft_strjoin_char(char *s1, char c)
 {
 	char	*res;
@@ -175,7 +184,7 @@ char	*replace_variables(char **env, char *str)
 	char	*tmp;
 
 	res = NULL;
- 	i = 0;
+	i = 0;
 	while (ft_strlen(str) > i)
 	{
 		if (str[i] == '$')
@@ -193,28 +202,5 @@ char	*replace_variables(char **env, char *str)
 	}
 	if (!res)
 		res = ft_strdup("");
-	return (res);
-}
-
-/**
- * @brief Split the text using variables as separator,
- * and return a string array with the text and variables
- *
- * @param t_minishell *minishell
- * @param char **str
- * @return t_ast *
- */
-char	**extract_variables(t_minishell *minishell, char *str)
-{
-    int		i;
-    char	**res;
-
-	(void)minishell;
-    res = ft_calloc(ft_strlen(str) + 1, sizeof(char *));
-	i = 0;
-	while (str[i])
-	{
-		i++;
-	}
 	return (res);
 }

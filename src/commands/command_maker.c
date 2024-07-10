@@ -12,12 +12,21 @@
 
 #include "minishell.h"
 
-static char **get_argv(t_minishell *minishell, t_ast *cmd)
+/**
+ * @brief Extract the arguments from the AST node
+ *
+ * TODO: handle the case where there is commands in a child node
+ *
+ * @param minishell
+ * @param cmd
+ * @return
+ */
+static char	**get_argv(t_minishell *minishell, t_ast *cmd)
 {
 	char			**args;
 	t_ast			*tmp;
 	unsigned int	size;
-	int 			i;
+	int				i;
 
 	(void)minishell;
 	size = ast_len(cmd);
@@ -37,8 +46,8 @@ static char **get_argv(t_minishell *minishell, t_ast *cmd)
 		else if (tmp->type == TEXT_DOUBLE_QUOTE)
 		{
 			if (tmp->children->type == TEXT)
-				args[i] = replace_variables(minishell->env, tmp->children->value);
-			//TODO: handle the case where the children is a command or else
+				args[i] = replace_variables(minishell->env,
+						tmp->children->value);
 		}
 		else if (tmp->type == VARIABLE)
 			args[i] = get_var_value(minishell->env, tmp->value + 1);
@@ -62,7 +71,8 @@ static char **get_argv(t_minishell *minishell, t_ast *cmd)
  * @param int   output_fd
  * @return t_cmd *
  */
-t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int pipe_fd[2], int fd_to_close)
+t_cmd	*load_command(t_minishell *minishell, t_ast *cmd,
+	int pipe_fd[2], int fd_to_close)
 {
 	t_cmd	*new_cmd;
 	char	*path;
@@ -70,7 +80,6 @@ t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int pipe_fd[2], int fd_t
 	new_cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!new_cmd)
 		return (NULL);
-	//find the command in the PATH
 	new_cmd->cmd_name = ft_strdup(cmd->value);
 	path = get_path(cmd->value, minishell->env);
 	if (!path)
@@ -79,10 +88,10 @@ t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int pipe_fd[2], int fd_t
 	new_cmd->argv = get_argv(minishell, cmd);
 	new_cmd->argc = (int)ast_len(cmd);
 	new_cmd->env = minishell->env;
-    new_cmd->path = get_path(cmd->value, minishell->env);
+	new_cmd->path = get_path(cmd->value, minishell->env);
 	new_cmd->input = pipe_fd[0];
 	new_cmd->output = pipe_fd[1];
-    new_cmd->fd_to_close = fd_to_close;
-    new_cmd->exit_status = 0;
+	new_cmd->fd_to_close = fd_to_close;
+	new_cmd->exit_status = 0;
 	return (new_cmd);
 }

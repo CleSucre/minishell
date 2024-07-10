@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:14:24 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ t_ast	*parse_input(t_minishell *minishell, char *input)
 	if (!ast)
 		return (NULL);
 	parse_full_commands(ast);
-	//parse_args(ast);
 	debug_ast(ast);
 	return (ast);
 }

@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 09:14:52 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,8 @@ void	debug_children(t_ast *ast, int level)
 		ft_printf("%stype str: %s%s%s (id: %d)\n",
 			space, BOLDWHITE, get_token_type_primary(ast->type),
 			RESET, ast->type);
-		ft_printf("%svalue: %s|%s%s%s|%s\n", space, CYAN, YELLOW, ast->value, CYAN, RESET);
+		ft_printf("%svalue: %s|%s%s%s|%s\n", space, CYAN, YELLOW, ast->value,
+			CYAN, RESET);
 		free(space);
 		if (ast->children)
 			debug_children(ast->children, level + 1);
@@ -139,7 +140,8 @@ void	debug_ast(t_ast *ast)
 		ft_printf("\n%s[DEBUG] ====== AST ======%s\n", BLUE, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
 			BOLDWHITE, get_token_type_primary(ast->type), RESET, ast->type);
-		ft_printf("value: %s|%s%s%s|%s\n", CYAN, YELLOW, ast->value, CYAN, RESET);
+		ft_printf("value: %s|%s%s%s|%s\n", CYAN, YELLOW, ast->value,
+			CYAN, RESET);
 		if (ast->children)
 			debug_children(ast->children, 1);
 		ast = ast->next;

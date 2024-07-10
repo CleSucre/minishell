@@ -1265,3 +1265,12 @@ echo yey | wc -l
 | wc -lhistory
 history | wc -l
 git status
+history | wc -l
+history | wc -l
+history | wc -l
+history
+history | wc -l
+history | grep g | wc -l
+test
+echo daiujsa
+norminette

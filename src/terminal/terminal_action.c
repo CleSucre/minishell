@@ -104,7 +104,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
 			return (0);
 	}
-	else if(c == '\t')
+	else if (c == '\t')
 		tab_completion(minishell, input);
 	else
 		edit_input(minishell, input, c);

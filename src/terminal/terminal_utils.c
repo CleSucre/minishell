@@ -34,10 +34,10 @@ void	reset_stdin(t_minishell *minishell)
 void	terminal_print(char *str, int nl, int fd)
 {
 	if (nl)
-		ft_fprintf(fd, "\033[%dD", 100);
+		ft_putstr_fd("\033[100D", fd);
 	while (nl--)
 		ft_putchar_fd('\n', fd);
-	ft_fprintf(fd, "%s", str);
+	ft_putstr_fd(str, fd);
 }
 
 /**
