@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 09:13:44 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:31:24 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)
 static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
 {
 	t_cmd			*cmd;
-	int				i;
+	unsigned int	i;
 	int				fd[2];
 	unsigned int	len;
 
