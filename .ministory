@@ -1265,6 +1265,10 @@ echo yey | wc -l
 | wc -lhistory
 history | wc -l
 git status
+test
+tes
+test
+`no
 history | wc -l
 history | wc -l
 history | wc -l
