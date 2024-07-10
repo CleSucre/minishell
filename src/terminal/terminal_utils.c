@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 03:41:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/06/14 03:41:00 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:20:54 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	reset_stdin(t_minishell *minishell)
  */
 void	terminal_print(char *str, int nl, int fd)
 {
-	if (nl)
+	if (nl && fd == STDOUT_FILENO)
 		ft_putstr_fd("\033[100D", fd);
 	while (nl--)
 		ft_putchar_fd('\n', fd);
