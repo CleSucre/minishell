@@ -32,6 +32,27 @@ unsigned int	ast_len(t_ast *ast)
 }
 
 /**
+ * @brief Count number of ast with given type
+ *
+ * @param t_ast *ast
+ * @param t_type type
+ * @return unsigned int
+ */
+unsigned int	ast_count_type(t_ast *ast, t_type type)
+{
+	unsigned int	count;
+
+	count = 0;
+	while (ast)
+	{
+		if (ast->type == type)
+			count++;
+		ast = ast->next;
+	}
+	return (count);
+}
+
+/**
  * @brief Create ast object
  *
  * @param t_type type of ast

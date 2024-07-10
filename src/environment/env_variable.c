@@ -13,13 +13,31 @@
 #include "minishell.h"
 
 /**
- * @brief Locate the executable path for a command within the system's PATH.
+ * @brief Check if the path and free the paths if correct
  *
- * @param char *cmd The command to locate.
- * @param char **env Environment variables, including PATH.
- * @return char* Full path to the executable, or NULL if not found.
+ * @param char *path
+ * @param char **paths
+ * @return int 1 if the path is correct, 0 otherwise
  */
-char	*get_path(char *cmd, char **env)
+static int	check_path(char *path, char **paths)
+{
+	if (access(path, X_OK) == 0)
+	{
+		ft_freetab(paths);
+		return (1);
+	}
+	free(path);
+	return (0);
+}
+
+/**
+ * @brief Get the path of the command to execute
+ *
+ * @param char *cmd
+ * @param char **envp
+ * @return char* the path of the command
+ */
+char	*get_path(char *cmd, char **envp)
 {
 	int		i;
 	char	*path;
@@ -27,20 +45,19 @@ char	*get_path(char *cmd, char **env)
 	char	*tmp;
 
 	if (access(cmd, X_OK) == 0)
-		return (ft_strdup(cmd));
-	paths = ft_split(get_var_value_const(env, (char *)"PATH"), ":");
+		return (cmd);
+	i = 0;
+	while (ft_strncmp(envp[i], "PATH=", 5))
+		i++;
+	paths = ft_split(envp[i] + 5, ":");
 	i = -1;
 	while (paths[++i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (access(path, X_OK) == 0)
-		{
-			ft_freetab(paths);
+		if (check_path(path, paths))
 			return (path);
-		}
-		free(path);
 	}
 	ft_freetab(paths);
 	return (NULL);

@@ -32,9 +32,9 @@ void	cursor_up_action(t_minishell *minishell,
 		free(*input);
 		*input = ft_strdup(new_history->cmd);
 		ft_putstr_fd("\033[1000D", 1);
-		terminal_print("\033[2K", 0);
+		terminal_print("\033[2K", 0, STDOUT_FILENO);
 		print_terminal_prompt(minishell, 0);
-		terminal_print(*input, 0);
+		terminal_print(*input, 0, STDOUT_FILENO);
 	}
 	get_cursor_position(minishell->term);
 }
@@ -65,9 +65,9 @@ void	cursor_down_action(t_minishell *minishell,
 	*input = ft_strdup(cmd);
 	free(cmd);
 	ft_putstr_fd("\033[1000D", 1);
-	terminal_print("\033[2K", 0);
+	terminal_print("\033[2K", 0, STDOUT_FILENO);
 	print_terminal_prompt(minishell, 0);
-	terminal_print(*input, 0);
+	terminal_print(*input, 0, STDOUT_FILENO);
 	get_cursor_position(minishell->term);
 }
 
@@ -154,8 +154,8 @@ int	use_termios(t_minishell *minishell)
 		if (process_action(minishell, c, &input))
 			break ;
 	}
-	terminal_print(TERMINAL_EXIT_MSG, 1);
-	terminal_print("", 1);
+	terminal_print(TERMINAL_EXIT_MSG, 1, STDOUT_FILENO);
+	terminal_print("", 1, STDOUT_FILENO);
 	free(input);
 	return (0);
 }

@@ -57,8 +57,7 @@ int				use_termios(t_minishell *minishell);
 // #					TERMINAL-ACTION					  #
 // ########################################################
 
-void			terminal_print(char *str, int nl);
-void    		set_tabstop(t_minishell *minishell);
+void			set_tabstop(t_minishell *minishell);
 void			reset_input(char **input);
 void			move_cursor_back(size_t position);
 int				process_action(t_minishell *minishell, char c, char **input);
@@ -77,49 +76,49 @@ void			move_cursor(t_term *term, int x, int y);
 // #					TERMINAL-UTILS					  #
 // ########################################################
 
-void		reset_stdin(t_minishell *minishell);
-void		terminal_print(char *str, int nl);
-void		reset_input(char **input);
+void			terminal_print(char *str, int nl, int fd);
+void			reset_stdin(t_minishell *minishell);
+void			reset_input(char **input);
 
 // ########################################################
 // #					TERMINAL-CURSOR					  #
 // ########################################################
 
-void		move_cursor_forward(size_t position);
-void		move_cursor_back(size_t position);
+void			move_cursor_forward(size_t position);
+void			move_cursor_back(size_t position);
 
 // ########################################################
 // #						ERASE_PUT					  #
 // ########################################################
 
-char		*put_in_string(t_minishell *minishell, char *input, char c);
-char		*erase_in_string(t_minishell *minishell, char *input);
-void		erase_term(size_t len);
+char			*put_in_string(t_minishell *minishell, char *input, char c);
+char			*erase_in_string(t_minishell *minishell, char *input);
+void			erase_term(size_t len);
 
 // ########################################################
 // #					TERMINAL_ARROW					  #
 // ########################################################
 
-void		arrow_up_action(t_minishell *minishell,
-				char **input, t_history *new_history);
-void		arrow_down_action(t_minishell *minishell,
-				char **input, t_history *new_history);
-void		arrow_left_action(t_minishell *minishell);
-void		arrow_right_action(t_minishell *minishell);
+void			arrow_up_action(t_minishell *minishell,
+					char **input, t_history *new_history);
+void			arrow_down_action(t_minishell *minishell,
+					char **input, t_history *new_history);
+void			arrow_left_action(t_minishell *minishell);
+void			arrow_right_action(t_minishell *minishell);
 
 // ########################################################
 // #					TERMINAL_VARIABLE				  #
 // ########################################################
 
-char			*get_var_value(char **env, char *var);
-const char		*get_var_value_const(char **env, char *var);
-int				get_var_len(char **env, char *var);
+char				*get_var_value(char **env, char *var);
+const char			*get_var_value_const(char **env, char *var);
+int					get_var_len(char **env, char *var);
 
 // ########################################################
 // #					TERMINAL_PROMPT					  #
 // ########################################################
 
-unsigned int	get_prompt_len(t_minishell *minishell);
-void			print_terminal_prompt(t_minishell *minishell, int new_line);
+unsigned int		get_prompt_len(t_minishell *minishell);
+void				print_terminal_prompt(t_minishell *minishell, int new_line);
 
 #endif

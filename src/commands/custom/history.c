@@ -24,10 +24,10 @@ void	command_history(t_cmd *cmd, t_minishell *minishell)
 	char *tmp;
 
 	if (cmd->argc == 1)
-		history_print(minishell);
+		history_print(minishell, cmd->output);
 	else if (contain_flag(cmd->argv, 'c'))
 	{
-		terminal_print("History cleared\n", 1);
+		terminal_print("History cleared\n", 1, cmd->output);
 		history_reset(minishell);
 	}
 	if (contain_flag(cmd->argv, 's') && cmd->argc >= 3)
@@ -38,6 +38,6 @@ void	command_history(t_cmd *cmd, t_minishell *minishell)
 			return ;
 		history_add(minishell, tmp, 1);
 		free(tmp);
-		terminal_print("", 1);
+		terminal_print("", 1, cmd->output);
 	}
 }
