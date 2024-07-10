@@ -96,72 +96,39 @@ t_dict	*insert_node(t_dict *root, char *key, char *value)
 		return (NULL);
 	if (!root)
 		return (node);
-	// COMMENTAIRES DE DEBUG
-//	ft_putstr_fd("vla key: ", 1);
-//	ft_putstr_fd(key, 1);
-//	ft_putstr_fd("\n", 1);
-//	ft_putstr_fd("root key: ", 1);
-//	ft_putstr_fd(root->key, 1);
-//	ft_putstr_fd("\n", 1);
-//	ft_putstr_fd("root_right key: ", 1);
-//	if (root->right_branch)
-//		ft_putstr_fd(root->right_branch->key, 1);
-//	ft_putstr_fd("\n", 1);
-//	ft_putstr_fd("root_left key: ", 1);
-//	if(root->left_branch)
-//		ft_putstr_fd(root->left_branch->key, 1);
-//	if(root->right_branch)
-//	{
-//		ft_putstr_fd("right_branch\n", 1);
-//		ft_putstr_fd("res strncmp : ", 1);
-//		ft_putnbr_fd(ft_strncmp(key, root->right_branch->key, ft_strlen(key)), 1);
-//		ft_putstr_fd("\n", 1);
-//	}
-	// FIN COMMENTAIRES DE DEBUG
 	if(ft_strncmp(key, root->key, ft_strlen(key)) < 0)
 	{
 		if (!root->left_branch)
 		{
-//			ft_putstr_fd("\e[0;32m Create left\n\e[0;37m", 1);
 			node->parent = root;
 			root->left_branch = node;
 		}
 		else if(ft_strncmp(key, root->left_branch->key, ft_strlen(key)) < 0)
 		{
-//			ft_putstr_fd("\e[0;32mswitch node left\n\e[0;37m", 1);
 			node->parent = root;
 			node->left_branch = root->left_branch;
 			root->left_branch = node;
 		}
 		else
-		{
-//			ft_putstr_fd("\e[0;32mleft\n\e[0;37m", 1);
 			insert_node(root->left_branch, key, value);
-		}
 
 	}
 	else
 	{
 		if (!root->right_branch)
 		{
-//			ft_putstr_fd("\e[0;31mCreate right\n\e[0;37m", 1);
 			node->parent = root;
 			root->right_branch = node;
 		}
 		else if(ft_strncmp(key, root->right_branch->key, ft_strlen(key)) < 0)
 		{
-//			ft_putstr_fd("\e[0;31mswitch node right\n\e[0;37m", 1);
 			node->parent = root;
 			node->right_branch = root->right_branch;
 			root->right_branch = node;
 		}
 		else
-		{
-//			ft_putstr_fd("\e[0;31mright\n\e[0;37m", 1);
-			insert_node(root->right_branch, key, value);
-		}
+		insert_node(root->right_branch, key, value);
 	}
-
 	return(root);
 }
 
@@ -176,9 +143,6 @@ t_dict	*search_node(t_dict *root, char *key)
 {
 	if (!root)
 		return (NULL);
-	ft_putstr_fd("root key: ", 1);
-	ft_putstr_fd(root->key, 1);
-	ft_putstr_fd("\n", 1);
 	if (ft_strncmp(key, root->key, ft_strlen(key)) == 0)
 		return (root);
 	if (ft_strncmp(key, root->key, ft_strlen(key)) < 0)
@@ -194,41 +158,21 @@ t_dict	*search_node(t_dict *root, char *key)
 
 t_dict *cut_node(t_dict *root, char *key)
 {
-	/*
-	 * DEBUG
-	 */
-	ft_putstr_fd("root key: ", 1);
-	ft_putstr_fd(root->key, 1);
-	ft_putstr_fd("\n", 1);
-	/*
-	 * END DEBUG
-	 */
-
 	if(!root)
-	{
-		ft_putstr_fd("root is NULL\n", 1);
-		return (root);
-	}
+		return (NULL);
 	if(ft_strncmp(key, root->key, ft_strlen(key)) != 0)
 	{
-		ft_putstr_fd("cut root\n", 1);
 		root->left_branch = NULL;
 		root->right_branch = NULL;
 		root = NULL;
 		return(root);
 	}
 	else if(root->right_branch && ft_strncmp(key, root->right_branch->key, ft_strlen(key)) != 0)
-	{
-		ft_putstr_fd("cut right\n", 1);
 		root->right_branch = NULL;
-	}
 	else if (root->right_branch)
 		cut_node(root->right_branch, key);
 	if(root->left_branch && ft_strncmp(key, root->left_branch->key, ft_strlen(key)) != 0)
-	{
-		ft_putstr_fd("cut left\n", 1);
 		root->left_branch = NULL;
-	}
 	else if (root->left_branch)
 		cut_node(root->left_branch, key);
 	return(root);
@@ -241,11 +185,6 @@ void	print_branch(t_dict *root)
 		ft_putstr_fd("NULL\n", 1);
 		return ;
 	}
-//	if(root->parent)
-//	{
-//		ft_putstr_fd("parent:    ", 1);
-//		ft_putstr_fd(root->parent->key, 1);
-//	}
 	ft_putstr_fd(" key:   ", 1);
 	ft_putstr_fd(root->key, 1);
 	ft_putstr_fd("\n", 1);
