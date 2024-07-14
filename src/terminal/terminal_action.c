@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/06/03 05:39:00 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/07/11 07:34:04 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,28 @@ void	edit_input(t_minishell *minishell, char **input, char c)
 }
 
 /**
+ * @brief Process signals
+ *
+ * @param minishell
+ * @param c
+ * @param input
+ * @return int 0 if not found, 1 if found and 2 if found and exit
+ */
+int	process_signals(t_minishell *minishell, char c, char **input)
+{
+	if (c == CTRL_D && ft_strlen(*input) == 0)
+		return (2);
+	else if (c == CTRL_D)
+		return (1);
+	else if (c == CTRL_C)
+	{
+		ctrl_c_action(minishell, input);
+		return (1);
+	}
+	return (0);
+}
+
+/**
  * @brief Sort inputs && act in consequence
  *
  * @param t_minishell *minishell 	struct which access history
@@ -80,13 +102,7 @@ void	edit_input(t_minishell *minishell, char **input, char c)
 
 int	process_action(t_minishell *minishell, char c, char **input)
 {
-	if (c == CTRL_D && ft_strlen(*input) == 0)
-		return (1);
-	else if (c == CTRL_D)
-		return (0);
-	else if (c == CTRL_C)
-		ctrl_c_action(minishell, input);
-	else if (c == BACKSPACE)
+	if (c == BACKSPACE)
 		backspace_action(minishell, input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{

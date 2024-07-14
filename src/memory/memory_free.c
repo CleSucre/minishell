@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 03:58:37 by julthoma          #+#    #+#             */
-/*   Updated: 2024/06/05 03:58:37 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 17:19:22 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ void	free_cmd(t_cmd *cmd)
 	ft_freetab(cmd->argv);
 	free(cmd->path);
 	free(cmd);
+	cmd = NULL;
 }

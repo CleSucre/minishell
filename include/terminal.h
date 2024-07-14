@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:35:29 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int				use_termios(t_minishell *minishell);
 void			set_tabstop(t_minishell *minishell);
 void			reset_input(char **input);
 void			move_cursor_back(size_t position);
+int				process_signals(t_minishell *minishell, char c, char **input);
 int				process_action(t_minishell *minishell, char c, char **input);
 
 // ########################################################

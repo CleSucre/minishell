@@ -1,6 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
+/*   struct.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/10 14:20:34 by julthoma          #+#    #+#             */
+/*   Updated: 2024/07/10 15:32:36 by julthoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   struct.h                                        :+:      :+:    :+:   	  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
@@ -12,6 +24,8 @@
 
 #ifndef STRUCT_H
 # define STRUCT_H
+
+#include "commands.h"
 
 // ########################################################
 // #						TERMINAL					  #
@@ -71,7 +85,7 @@ typedef struct s_completion
 
 typedef struct s_cache
 {
-	char            *input;
+	char			*input;
 }		t_cache;
 
 typedef struct s_minishell
@@ -85,6 +99,7 @@ typedef struct s_minishell
 	int				exit_code;
 	unsigned int	history_pos;
 	unsigned int	history_size;
+	struct s_cmd	*current_cmd;
 }		t_minishell;
 
 #endif

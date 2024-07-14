@@ -6,11 +6,67 @@
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 14:31:24 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/11 07:50:12 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Handle the signal
+ *
+ * @param int sig
+ * @eturn void
+ */
+void	handle_signal(int sig)
+{
+	if (sig == SIGUSR1)
+		ft_putstr_fd("Received SIGUSR1 signal\n", STDOUT_FILENO);
+}
+
+/**
+ * @brief Ugly custom sleep function.
+ * 		We are not allowed to use sleep functions...
+ *
+ * @param int n
+ */
+void	custom_sleep(int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n * 1000000)
+		i++;
+}
+
+/**
+ * @brief Get the exit status of the command
+ *
+ * @param pid_t pid
+ * @param int *status
+ * @return
+ */
+static int	waitpid_with_timeout(pid_t pid)
+{
+	int	ret;
+	int status;
+
+	while (1)
+	{
+		ft_fprintf(STDERR_FILENO, "Sleeping...\n");
+		custom_sleep(100);
+		ft_fprintf(STDERR_FILENO, "Waking up...\n");
+		ret = waitpid(pid, &status, WNOHANG);
+		if (ret == -1)
+		{
+			perror("waitpid");
+			return (-1);
+		}
+		else if (ret > 0)
+			return (ret);
+		return (ETIMEDOUT);
+	}
+}
 
 /**
  * @brief Execute the command given in input
@@ -18,20 +74,48 @@
  * @param t_cmd *cmd
  * @return int 0 on success, 1 on failure
  */
-static int	execute_path(t_cmd *cmd)
+static int execute_path(t_cmd *cmd)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	struct sigaction sa;
+	int pipefd[2];
+	char buf;
 
+	sa.sa_handler = handle_signal;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		return 1;
+	}
+	if (pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		return 1;
+	}
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_putstr_fd("Error: fork failed\n", STDERR_FILENO);
+		perror("fork");
 		cmd->exit_status = 1;
-		return (0);
+		return 0;
 	}
 	else if (pid == 0)
 	{
+		close(pipefd[1]);
+		if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		{
+			perror("sigaction");
+			exit(EXIT_FAILURE);
+		}
+		if (read(pipefd[0], &buf, 1) != 1)
+		{
+			perror("read");
+			close(pipefd[0]);
+			exit(EXIT_FAILURE);
+		}
+		close(pipefd[0]);
 		dup2(cmd->input, STDIN_FILENO);
 		dup2(cmd->output, STDOUT_FILENO);
 		if (cmd->input != STDIN_FILENO)
@@ -40,17 +124,50 @@ static int	execute_path(t_cmd *cmd)
 			close(cmd->output);
 		if (cmd->fd_to_close != -1)
 			close(cmd->fd_to_close);
+		cmd->pid = getpid();
+		fprintf(stderr, "pid: %d\n", cmd->pid);
 		if (execve(cmd->cmd_exec, cmd->argv, cmd->env) == -1)
 		{
-			ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
-				cmd->cmd_name);
+			fprintf(stderr, "minishell: command not found: %s\n", cmd->cmd_name);
 			cmd->exit_status = 127;
-			return (1);
+			exit(EXIT_FAILURE);
 		}
 	}
-	waitpid(pid, &status, 0);
-	cmd->exit_status = WEXITSTATUS(status);
-	return (0);
+	else
+	{
+		close(pipefd[0]);
+		// Notify the child process by writing a byte to the pipe
+		if (write(pipefd[1], "x", 1) != 1)
+		{
+			perror("write");
+			close(pipefd[1]);
+			return 1;
+		}
+		close(pipefd[1]);
+		if (kill(pid, SIGUSR1) == -1)
+		{
+			perror("kill");
+			return 1;
+		}
+
+		while (waitpid_with_timeout(pid) == ETIMEDOUT)
+		{
+			read(STDIN_FILENO, &buf, 1);
+			if (buf == 4)
+			{
+				printf("Ctrl+D pressed\n");
+				//send signal to child
+				kill(pid, SIGKILL);
+				if (WIFEXITED(cmd->exit_status))
+					cmd->exit_status = WEXITSTATUS(cmd->exit_status);
+				break ;
+			}
+			else
+				write(STDOUT_FILENO, &buf, 1);
+		}
+	}
+
+	return 0;
 }
 
 static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)

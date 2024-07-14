@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/06/03 05:39:00 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/07/11 07:41:59 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int	use_termios(t_minishell *minishell)
 {
 	char	*input;
 	char	c;
+	int		signal;
 
 	input = NULL;
 	reset_input(&input);
@@ -149,6 +150,11 @@ int	use_termios(t_minishell *minishell)
 			perror("read");
 			return (1);
 		}
+		signal = process_signals(minishell, c, &input);
+		if (signal == 1)
+			continue ;
+		if (signal == 2)
+			break ;
 		if (process_action(minishell, c, &input))
 			break ;
 	}

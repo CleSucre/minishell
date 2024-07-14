@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 03:58:37 by julthoma          #+#    #+#             */
-/*   Updated: 2024/06/05 03:58:37 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:35:17 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ t_minishell	*alloc_minishell(void)
 	if (!minishell)
 		return (NULL);
 	minishell->exit_code = 0;
+	minishell->current_cmd = NULL;
 	if (alloc_cache(minishell))
 		return (NULL);
 	if (alloc_history(minishell))

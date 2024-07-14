@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 06:52:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/06/16 06:52:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:33:56 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ t_cmd	*load_command(t_minishell *minishell, t_ast *cmd,
 	new_cmd->output = pipe_fd[1];
 	new_cmd->fd_to_close = fd_to_close;
 	new_cmd->exit_status = 0;
+	new_cmd->pid = -1;
 	return (new_cmd);
 }
