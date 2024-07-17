@@ -19,13 +19,13 @@
 
 typedef struct s_term
 {
-	char *			iterm_buffer;
-	char *			strterm_buffer;
+	char			*iterm_buffer;
+	char			*strterm_buffer;
 	unsigned int	ws_cols;
-    unsigned int	ws_rows;
+	unsigned int	ws_rows;
 	unsigned int	cols;
 	unsigned int	rows;
-    unsigned int    begin_rows;
+	unsigned int	begin_rows;
 	struct termios	*original_termios;
 }		t_term;
 
@@ -41,17 +41,18 @@ typedef struct s_history
 }		t_history;
 
 // ########################################################
-// #					DICTIONNARY						  #
+// #				DICTIONARY	- BST					  #
 // ########################################################
 
 typedef struct s_dict
 {
+	int				bst_size;
 	char			*key;
 	char			*value;
 	struct s_dict	*left_branch;
 	struct s_dict	*right_branch;
 	struct s_dict	*parent;
-} 					t_dict;
+}					t_dict;
 
 
 // ########################################################
@@ -71,8 +72,8 @@ typedef struct s_completion
 
 typedef struct s_cache
 {
-	char            *input;
-}		t_cache;
+	char	*input;
+}			t_cache;
 
 typedef struct s_minishell
 {
@@ -81,6 +82,7 @@ typedef struct s_minishell
 	t_term			*term;
 	t_completion	*completion;
 	t_dict			*dict;
+	t_dict			*tab_dict;
 	char			**env;
 	int				exit_code;
 	unsigned int	history_pos;

@@ -56,15 +56,15 @@ int	search_in_path(t_dict *dict, char *odir)
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
-	char	*search;
-
-	search = "app";
+//	char	*search;
+//
+//	search = "app";
 
 	minishell->dict = create_node("\0", "file");
 	if (!minishell->dict)
 		return (1);
+	minishell->dict->bst_size = 0;
 	tmp = minishell->dict;
-//	search_in_path(tmp, ".");
 	search_in_path(tmp, "/bin");
 	search_in_path(tmp, "/usr/sbin");
 	search_in_path(tmp, "/usr/local/bin");
@@ -73,17 +73,20 @@ int	creation_dict(t_minishell *minishell)
 
 //	ft_putstr_fd("\nBefore\n", 1);
 //	print_branch(tmp);
-
+	ft_putstr_fd("\n BST SIZE \n", 1);
+	ft_putnbr_fd(minishell->dict->bst_size, 1);
 
 //	ft_putstr_fd("\nSearch\n", 1);
-	tmp = search_node(minishell->dict, search);
+//	tmp = search_node(minishell->dict, search);
 
 
 //	ft_putstr_fd("CUT\n", 1);
-	tmp = cut_node(tmp, search);
+//	tmp = cut_node(tmp, search);
+//
+//	ft_putstr_fd("\nFound\n", 1);
+//	print_branch(tmp);
 
-	ft_putstr_fd("\nFound\n", 1);
-	print_branch(tmp);
+
 	return (0);
 }
 

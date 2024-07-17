@@ -23,6 +23,7 @@ void	free_node(t_dict *node)
 	free(node->key);
 	free(node->value);
 	free(node);
+	node = NULL;
 }
 
 /**
@@ -40,4 +41,5 @@ void	free_branch(t_dict *root)
 	free(root->key);
 	free(root->value);
 	free(root);
+	root = NULL;
 }

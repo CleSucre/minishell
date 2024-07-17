@@ -111,11 +111,11 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 
 void    set_tabstop(t_minishell *minishell)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	ft_putstr_fd("\033[3g", 1);
-	while(i < minishell->term->cols)
+	while (i < minishell->term->cols)
 	{
 		i += 4;
 		ft_putstr_fd("\033[4C", 1);
@@ -140,6 +140,7 @@ int	use_termios(t_minishell *minishell)
 	input = NULL;
 	reset_input(&input);
 	set_tabstop(minishell);
+	creation_dict(minishell);
 	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
 	while (1)

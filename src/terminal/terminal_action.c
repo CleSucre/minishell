@@ -66,6 +66,7 @@ void	edit_input(t_minishell *minishell, char **input, char c)
 		ft_putchar_fd(c, 1);
 	}
 	minishell->term->cols++;
+	minishell->completion->tab_count = 0;
 }
 
 /**
@@ -84,6 +85,8 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		return (1);
 	else if (c == CTRL_D)
 		return (0);
+	else if (minishell->completion->tab_count == 1 && c == 'y')
+		tab_print(minishell, minishell->tab_dict, input);
 	else if (c == CTRL_C)
 		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
@@ -104,7 +107,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
 			return (0);
 	}
-	else if(c == '\t')
+	else if (c == '\t')
 		tab_completion(minishell, input);
 	else
 		edit_input(minishell, input, c);

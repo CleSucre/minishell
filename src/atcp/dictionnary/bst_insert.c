@@ -78,6 +78,7 @@ t_dict	*insert_node(t_dict *root, char *key, char *value)
 		return (NULL);
 	if (!root)
 		return (node);
+	root->bst_size++;
 	if (ft_strncmp(key, root->key, ft_strlen(key)) < 0)
 		insert_l_node(root, node, key, value);
 	else
