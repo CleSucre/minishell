@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   history.c                                           :+:      :+:    :+:   */
+/*   history.c                                           :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,13 +15,15 @@
 /**
  * @brief Print the history of commands, support for -c and -s flags
  *
+ * TODO: avoid saving history -s command in history
+ *
  * @param t_cmd *cmd
  * @param t_minishell *minishell
  * @return void
  */
 void	command_history(t_cmd *cmd, t_minishell *minishell)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (cmd->argc == 1)
 		history_print(minishell, cmd->output);
@@ -32,7 +34,6 @@ void	command_history(t_cmd *cmd, t_minishell *minishell)
 	}
 	if (contain_flag(cmd->argv, 's') && cmd->argc >= 3)
 	{
-		//TODO: avoid saving history -s command in history
 		tmp = ft_strjoin_list((const char **)(cmd->argv + 2), " ");
 		if (!tmp)
 			return ;

@@ -109,7 +109,7 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
  * @brief Set tabstop every 4, will possibly be delet
  */
 
-void    set_tabstop(t_minishell *minishell)
+void	set_tabstop(t_minishell *minishell)
 {
 	size_t	i;
 
@@ -130,8 +130,6 @@ void    set_tabstop(t_minishell *minishell)
  * @param t_minishell *minishell
  * @return int 0 if no error, 1 if error
  */
-
-
 int	use_termios(t_minishell *minishell)
 {
 	char	*input;
