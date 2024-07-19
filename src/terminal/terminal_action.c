@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/19 04:36:32 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:09:49 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 	{
 		terminal_print("", len > 0, STDOUT_FILENO);
 		str = ft_utf8_tab_to_str(*input);
-		if (execute(minishell, str))
+		if (execute(minishell, str) == 0)
 		{
 			free(str);
 			return (1);

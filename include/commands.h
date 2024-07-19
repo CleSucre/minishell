@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 07:13:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 16:26:27 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 06:47:39 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,10 @@
 typedef struct s_cmd
 {
 	char			*cmd_name;
-	char			*cmd_exec;
-	struct	s_cmd	*prev;
-	struct	s_cmd	*next;
 	int				argc;
 	char			**argv;
 	char			**env;
 	char			*path;
-	int             input;
-	int             output;
-    int             fd_to_close;
 	int				exit_status;
 	int 			pid;
 }	t_cmd;
@@ -50,7 +44,7 @@ void	command_unset(t_cmd *cmd);
 // #						UTILS						  #
 // ########################################################
 
-t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int pipe_fd[2], int fd_to_close);
+t_cmd	*load_command(t_minishell *minishell, t_ast *cmd);
 
 // ########################################################
 // #						FLAGS_UTILS					  #

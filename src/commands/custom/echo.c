@@ -26,18 +26,18 @@ int	command_echo(t_cmd *cmd)
 	}
 	while (i < cmd->argc)
 	{
-		terminal_print(cmd->argv[i], 0, cmd->output);
+		terminal_print(cmd->argv[i], 0, STDOUT_FILENO);
 		if (i + 1 < cmd->argc)
-			ft_putchar_fd(' ', cmd->output);
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
 	}
 	if (n_flag)
 	{
-		ft_putstr_fd(BACKGROUND_WHITE, cmd->output);
-		ft_putstr_fd(TEXT_BLACK, cmd->output);
-		terminal_print("%", 0, cmd->output);
-		ft_putstr_fd(RESET, cmd->output);
+		ft_putstr_fd(BACKGROUND_WHITE, STDOUT_FILENO);
+		ft_putstr_fd(TEXT_BLACK, STDOUT_FILENO);
+		terminal_print("%", 0, STDOUT_FILENO);
+		ft_putstr_fd(RESET, STDOUT_FILENO);
 	}
-	terminal_print("", 1, cmd->output);
+	terminal_print("", 1, STDOUT_FILENO);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 06:52:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 16:33:56 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:01:59 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,9 @@ static char	**get_argv(t_minishell *minishell, t_ast *cmd)
  *
  * @param t_minishell *minishell
  * @param t_ast *cmd
- * @param int   input_fd
- * @param int   output_fd
  * @return t_cmd *
  */
-t_cmd	*load_command(t_minishell *minishell, t_ast *cmd,
-	int pipe_fd[2], int fd_to_close)
+t_cmd	*load_command(t_minishell *minishell, t_ast *cmd)
 {
 	t_cmd	*new_cmd;
 	char	*path;
@@ -84,14 +81,10 @@ t_cmd	*load_command(t_minishell *minishell, t_ast *cmd,
 	path = get_path(cmd->value, minishell->env);
 	if (!path)
 		path = ft_strdup(cmd->value);
-	new_cmd->cmd_exec = path;
+	new_cmd->path = path;
 	new_cmd->argv = get_argv(minishell, cmd);
 	new_cmd->argc = (int)ast_len(cmd);
 	new_cmd->env = minishell->env;
-	new_cmd->path = get_path(cmd->value, minishell->env);
-	new_cmd->input = pipe_fd[0];
-	new_cmd->output = pipe_fd[1];
-	new_cmd->fd_to_close = fd_to_close;
 	new_cmd->exit_status = 0;
 	new_cmd->pid = -1;
 	return (new_cmd);
