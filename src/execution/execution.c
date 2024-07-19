@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/19 09:18:50 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:32:47 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
  */
 void	handle_signal(int sig)
 {
-	ft_printf("Received signal %d\n", sig);
 	if (sig == SIGUSR1)
 		ft_putstr_fd("Received SIGUSR1 signal\n", STDOUT_FILENO);
 }
@@ -47,11 +46,9 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 
 	if (!ast)
 		return (0);
-
 	cmd = load_command(minishell, ast->children);
 	if (!cmd)
 		return (0);
-
 	// Handle builtins
 	/*
 	if (is_builtin(cmd))
@@ -61,8 +58,6 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		return 1;
 	}
 	 */
-
-	// Handle signals
 	sa.sa_handler = handle_signal;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
@@ -71,8 +66,6 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		perror("sigaction");
 		return 1;
 	}
-	disable_termios(minishell->term);
-
 	pid = fork();
 	if (pid < 0)
 	{
@@ -87,7 +80,6 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 			perror("sigaction");
 			exit(EXIT_FAILURE);
 		}
-
 		if (input != STDIN_FILENO)
 		{
 			dup2(input, STDIN_FILENO);
@@ -102,22 +94,14 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		if (to_close != -1)
 			close(to_close);
 
-		// Handle signals
-		signal(SIGUSR1, handle_signal);
-
-		// Execute the command
 		execute_path(cmd);
-
 		free_cmd(cmd);
 		exit(0);
 	}
-	enable_termios(minishell->term);
-
 	if (input != STDIN_FILENO)
 		close(input);
 	if (output != STDOUT_FILENO)
 		close(output);
-
 	free_cmd(cmd);
 	return (1);
 }
@@ -138,7 +122,7 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
 
 	if (!ast)
 		return (0);
-
+	disable_termios(minishell->term);
 	input = STDIN_FILENO;
 	while (ast)
 	{
@@ -183,6 +167,7 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
 
 	// Wait for all children
 	while (wait(NULL) > 0);
+	enable_termios(minishell->term);
 
 	return (1);
 }

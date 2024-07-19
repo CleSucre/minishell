@@ -1665,3 +1665,21 @@ cat -e | ls
 cat
 cat | ls
 cat | ls | cat -e
+cat
+cat | ls
+cat | ls
+cat | ls
+cat
+cat
+cat
+ls
+echo ""
+echo "" | cat
+echo "" | cat -e
+echo -n | cat -e
+cat -e | ls
+cat -e | ls | cat -e
+cat -e | ls | cat -e
+cat
+cat
+cat
