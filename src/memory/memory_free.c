@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 03:58:37 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 17:19:22 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/17 04:01:21 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	history_free(t_history *history)
  */
 void	free_minishell(t_minishell *minishell)
 {
-	free(minishell->cache->input);
+	ft_tabfree(minishell->cache->input);
 	free(minishell->cache);
 	free(minishell->term);
 	history_free(minishell->history);
@@ -71,7 +71,7 @@ void	free_cmd(t_cmd *cmd)
 {
 	free(cmd->cmd_name);
 	free(cmd->cmd_exec);
-	ft_freetab(cmd->argv);
+	ft_tabfree(cmd->argv);
 	free(cmd->path);
 	free(cmd);
 	cmd = NULL;

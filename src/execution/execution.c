@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/11 07:50:12 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 04:08:21 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,25 +264,27 @@ int	execute(t_minishell *minishell, char *input)
 	t_ast	*ast;
 	int		res;
 	int		pipe_fd[2];
+	char 	*trimmed;
 
 	if (ft_strlen(input) == 0)
 		return (0);
-	input = ft_strtrim(input, WHITESPACES);
-	if (!input)
+	trimmed = ft_strtrim(input, WHITESPACES);
+	if (!trimmed)
 		return (0);
-	debug_execution(input);
-	if (ft_isprint(*input))
-		history_add(minishell, input, 1);
-	ast = parse_input(minishell, input);
+	debug_execution(trimmed);
+	if (ft_isprint(*trimmed))
+		history_add(minishell, trimmed, 1);
+	ast = parse_input(minishell, trimmed);
 	if (!ast)
 	{
-		free(input);
+		free(trimmed);
 		return (0);
 	}
+	free(trimmed);
 	pipe_fd[0] = STDIN_FILENO;
 	pipe_fd[1] = STDOUT_FILENO;
-	res = execute_cmds(minishell, ast, pipe_fd);
+	//res = execute_cmds(minishell, ast, pipe_fd);
+	res = 0;
 	free_ast(ast);
-	free(input);
 	return (res);
 }

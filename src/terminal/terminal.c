@@ -6,70 +6,11 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/11 07:41:59 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 03:53:13 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Process action of cursor up
- *
- * @param t_minishell *minishell
- * @param char **input
- */
-void	cursor_up_action(t_minishell *minishell,
-		char **input, t_history *new_history)
-{
-	if (minishell->history_pos == 0)
-	{
-		free(minishell->cache->input);
-		minishell->cache->input = ft_strdup(*input);
-	}
-	new_history = history_find_up(minishell, minishell->cache->input);
-	if (new_history && new_history->cmd)
-	{
-		free(*input);
-		*input = ft_strdup(new_history->cmd);
-		ft_putstr_fd("\033[1000D", 1);
-		terminal_print("\033[2K", 0, STDOUT_FILENO);
-		print_terminal_prompt(minishell, 0);
-		terminal_print(*input, 0, STDOUT_FILENO);
-	}
-	get_cursor_position(minishell->term);
-}
-
-/**
- * @brief Process action of cursor down
- *
- * @param t_minishell *minishell
- * @param char **input
- */
-void	cursor_down_action(t_minishell *minishell,
-			char **input, t_history *new_history)
-{
-	char	*cmd;
-
-	cmd = NULL;
-	if (minishell->history_pos == 0)
-	{
-		free(minishell->cache->input);
-		minishell->cache->input = ft_strdup(*input);
-	}
-	new_history = history_find_down(minishell, minishell->cache->input);
-	if (new_history && new_history->cmd)
-		cmd = ft_strdup(new_history->cmd);
-	else
-		cmd = ft_strdup(minishell->cache->input);
-	free(*input);
-	*input = ft_strdup(cmd);
-	free(cmd);
-	ft_putstr_fd("\033[1000D", 1);
-	terminal_print("\033[2K", 0, STDOUT_FILENO);
-	print_terminal_prompt(minishell, 0);
-	terminal_print(*input, 0, STDOUT_FILENO);
-	get_cursor_position(minishell->term);
-}
 
 /**
  * @brief Specifically for escape sequence as up-down-left-right arrow
@@ -80,35 +21,30 @@ void	cursor_down_action(t_minishell *minishell,
  * @param input			Current input from user
  * @return int			1 if an action is done, 0 if not
  */
-int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
+int	interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input, size_t cols)
 {
-	char		seq[2];
 	t_history	*new_history;
 
-	new_history = NULL;
-	if (read(STDIN_FILENO, &seq[0], 1) == -1
-		|| read(STDIN_FILENO, &seq[1], 1) == -1)
-		return (-1);
-	if (seq[0] == '[')
+	if (seq[1] == '[')
 	{
-		if (seq[1] == U_ARROW)
+		new_history = NULL;
+		if (seq[2] == U_ARROW)
 			arrow_up_action(minishell, input, new_history);
-		else if (seq[1] == D_ARROW)
+		else if (seq[2] == D_ARROW)
 			arrow_down_action(minishell, input, new_history);
-		else if (seq[1] == R_ARROW && cols
-			< ft_strlen(*input) + get_prompt_len(minishell) + 1)
+		else if (seq[2] == R_ARROW && cols
+									  < ft_tablen((const char **)*input) + get_prompt_len(minishell) + 1)
 			arrow_right_action(minishell);
-		else if (seq[1] == L_ARROW && cols > get_prompt_len(minishell) + 1)
+		else if (seq[2] == L_ARROW && cols > get_prompt_len(minishell) + 1)
 			arrow_left_action(minishell);
 		return (1);
 	}
 	return (0);
 }
 
-/*
- * @brief Set tabstop every 4, will possibly be delet
+/**
+ * @brief Set tabstop every 4, will possibly be deleted
  */
-
 void	set_tabstop(t_minishell *minishell)
 {
 	size_t	i;
@@ -132,34 +68,39 @@ void	set_tabstop(t_minishell *minishell)
  */
 int	use_termios(t_minishell *minishell)
 {
-	char	*input;
-	char	c;
+	char	**input;
+	char	buffer[256];
 	int		signal;
+	ssize_t bits;
 
-	input = NULL;
-	reset_input(&input);
+	input = ft_calloc(1, sizeof(char *));
+	if (input == NULL)
+		return (1);
+
 	set_tabstop(minishell);
 	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
 	while (1)
 	{
 		get_terminal_size(minishell->term);
-		minishell->term->begin_rows = ft_strlen(input) % 4294967295;
-		if (read(STDIN_FILENO, &c, 1) == -1)
+		minishell->term->begin_rows = ft_tablen((const char **)input) % 4294967295;
+		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
+		if (bits == -1)
 		{
 			perror("read");
 			return (1);
 		}
-		signal = process_signals(minishell, c, &input);
+		buffer[bits] = '\0';
+		signal = process_signals(minishell, buffer[0], &input);
 		if (signal == 1)
 			continue ;
 		if (signal == 2)
 			break ;
-		if (process_action(minishell, c, &input))
+		if (process_action(minishell, buffer, &input))
 			break ;
 	}
 	terminal_print(TERMINAL_EXIT_MSG, 1, STDOUT_FILENO);
 	terminal_print("", 1, STDOUT_FILENO);
-	free(input);
+	ft_tabfree(input);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 14:20:34 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 15:32:36 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/17 02:52:20 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_completion
 
 typedef struct s_cache
 {
-	char			*input;
+	char			**input;
 }		t_cache;
 
 typedef struct s_minishell

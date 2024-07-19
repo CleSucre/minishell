@@ -23,7 +23,7 @@ static int	check_path(char *path, char **paths)
 {
 	if (access(path, X_OK) == 0)
 	{
-		ft_freetab(paths);
+		ft_tabfree(paths);
 		return (1);
 	}
 	free(path);
@@ -59,7 +59,7 @@ char	*get_path(char *cmd, char **envp)
 		if (check_path(path, paths))
 			return (path);
 	}
-	ft_freetab(paths);
+	ft_tabfree(paths);
 	return (NULL);
 }
 
