@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/19 03:53:13 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 04:19:43 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @param input			Current input from user
  * @return int			1 if an action is done, 0 if not
  */
-int	interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input, size_t cols)
+int	interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input)
 {
 	t_history	*new_history;
 
@@ -32,10 +32,9 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***i
 			arrow_up_action(minishell, input, new_history);
 		else if (seq[2] == D_ARROW)
 			arrow_down_action(minishell, input, new_history);
-		else if (seq[2] == R_ARROW && cols
-									  < ft_tablen((const char **)*input) + get_prompt_len(minishell) + 1)
+		else if (seq[2] == R_ARROW && minishell->term->cols < ft_tablen((const char **)*input) + get_prompt_len(minishell) + 1)
 			arrow_right_action(minishell);
-		else if (seq[2] == L_ARROW && cols > get_prompt_len(minishell) + 1)
+		else if (seq[2] == L_ARROW && minishell->term->cols > get_prompt_len(minishell) + 1)
 			arrow_left_action(minishell);
 		return (1);
 	}

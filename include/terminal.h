@@ -48,7 +48,7 @@
 // #						TERMINAL					  #
 // ########################################################
 
-int				interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input, size_t cols);
+int				interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input);
 int				use_termios(t_minishell *minishell);
 
 // ########################################################

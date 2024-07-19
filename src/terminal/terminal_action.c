@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/19 04:06:02 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 04:36:32 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,12 @@ static void	backspace_action(t_minishell *minishell, char **input)
 		minishell->term->cols--;
 		ft_putstr_fd("\033[C", 1);
 	}
-	else if (len > 0 && minishell->term->cols
-		!= get_prompt_len(minishell) + len + 1)
+	else if (len > 0 && minishell->term->cols != get_prompt_len(minishell) + 1)
 	{
 		erase_in_string(minishell, &input);
 		minishell->term->cols--;
 	}
-	else if (len > 0 && minishell->term->cols > 1)
+	else if (len > 0 && minishell->term->cols != get_prompt_len(minishell) + 1)
 	{
 		ft_tabdel(input, len - 1);
 		erase_term(1);
@@ -130,7 +129,7 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 	}
 	else if (new[0] == ESC_SEQ)
 	{
-		if (interpret_escape_sequence(minishell, new, input, minishell->term->cols))
+		if (interpret_escape_sequence(minishell, new, input))
 			return (0);
 	}
 	else if (new[0] == '\t')
