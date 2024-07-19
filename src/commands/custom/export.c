@@ -6,13 +6,14 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 06:52:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/06/16 06:52:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:45:03 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	command_export(t_cmd *cmd)
+void	command_export(t_cmd *cmd, t_minishell *minishell)
 {
 	(void)cmd;
+	(void)minishell;
 }

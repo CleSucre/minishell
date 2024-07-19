@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/19 04:19:43 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:52:04 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	use_termios(t_minishell *minishell)
 			break ;
 	}
 	terminal_print(TERMINAL_EXIT_MSG, 1, STDOUT_FILENO);
+	ft_printf("\nexit %d\n", minishell->exit_code);
 	terminal_print("", 1, STDOUT_FILENO);
 	ft_tabfree(input);
 	return (0);

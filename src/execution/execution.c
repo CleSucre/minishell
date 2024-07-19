@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/19 09:32:47 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:53:22 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,23 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 
 	if (!ast)
 		return (0);
-	cmd = load_command(minishell, ast->children);
+	cmd = load_command(minishell, ast->children, input, output);
 	if (!cmd)
 		return (0);
-	// Handle builtins
-	/*
-	if (is_builtin(cmd))
+	if (is_builtin_command(cmd))
 	{
-		execute_builtin(minishell, cmd);
+		ft_fprintf(STDERR_FILENO, "executing builtin command: %s\n", cmd->cmd_name);
+		execute_builtin_command(minishell, cmd);
 		free_cmd(cmd);
-		return 1;
+		return (1);
 	}
-	 */
 	sa.sa_handler = handle_signal;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 	{
 		perror("sigaction");
-		return 1;
+		return (1);
 	}
 	pid = fork();
 	if (pid < 0)
@@ -90,10 +88,8 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 			dup2(output, STDOUT_FILENO);
 			close(output);
 		}
-
 		if (to_close != -1)
 			close(to_close);
-
 		execute_path(cmd);
 		free_cmd(cmd);
 		exit(0);
@@ -143,7 +139,6 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
 				output = STDOUT_FILENO;
 				to_close = -1;
 			}
-
 			if (!execute_cmd(minishell, ast, input, output, to_close))
 			{
 				if (input != STDIN_FILENO)
@@ -152,26 +147,20 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
 					close(output);
 				return (0);
 			}
-
 			if (input != STDIN_FILENO)
 				close(input);
 			if (output != STDOUT_FILENO)
 				close(output);
-
 			input = fd[0];
 			if (ast->prev && ast->prev->type == FULL_COMMAND)
 				close(fd[1]);
 		}
 		ast = ast->next;
 	}
-
-	// Wait for all children
 	while (wait(NULL) > 0);
 	enable_termios(minishell->term);
-
 	return (1);
 }
-
 
 /**
  * @brief Execute the command given in input

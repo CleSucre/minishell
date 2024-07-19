@@ -1683,3 +1683,18 @@ cat -e | ls | cat -e
 cat
 cat
 cat
+echo salut
+echo salut | cat -e
+echo salut | cat -e
+echo salut | cat -e
+ls
+echo salut | cat -e
+echo "comment ké va lui" | cat -e
+echo "comment ki va lui" | cat -e
+echo "comment k& va lui" | cat -e
+echo "comment k^^& va lui" | cat -e
+echo "comment k^^& va lui" | grep c | cat -e
+clear
+cat -e | echo salut
+ls
+ls
