@@ -105,23 +105,32 @@ int	interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols)
 	return (0);
 }
 
-/*
- * @brief Set tabstop every 4, will possibly be delet
+/**
+ * @brief Set tabstop every 4 columns
  */
 
 void	set_tabstop(t_minishell *minishell)
 {
 	size_t	i;
+	size_t	j;
 
 	i = 0;
+	j = 0;
+	ft_putstr_fd("\033[s", 1);
 	ft_putstr_fd("\033[3g", 1);
-	while (i < minishell->term->cols)
+	while (j < minishell->term->ws_rows)
 	{
-		i += 4;
-		ft_putstr_fd("\033[4C", 1);
-		ft_putstr_fd("\033H", 1);
+		while (i < minishell->term->ws_cols)
+		{
+			i += 4;
+			ft_putstr_fd("\033[4C", 1);
+			ft_putstr_fd("\033H", 1);
+		}
+		ft_putstr_fd("\033[B", 1);
+		j++;
+		i = 0;
 	}
-	ft_putstr_fd("\033[1G", 1);
+	ft_putstr_fd("\033[u", 1);
 }
 
 /**

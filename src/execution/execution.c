@@ -78,7 +78,7 @@ static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)
 static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
 {
 	t_cmd			*cmd;
-	int				i;
+	unsigned int	i;
 	int				fd[2];
 	unsigned int	len;
 

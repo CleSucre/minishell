@@ -19,6 +19,7 @@
 
 int		tab_completion(t_minishell *minishell, char **input);
 void	tab_print(t_minishell *minishell, t_dict *dict, char **input);
+void	stress_print(t_dict *dict);
 
 // ########################################################
 // #						DICTIONNARY					  #
@@ -41,5 +42,5 @@ t_dict	*bst_copy(t_dict *root);
 size_t	bst_size(t_dict *root);
 void	free_node(t_dict *node);
 void	free_branch(t_dict *root);
-void	print_branch(t_minishell *minishell);
+void	print_branch(t_dict *dict);
 #endif

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-void	stress_print(char *str);
 /**
  * @brief Create a new node
  * @param *key name of directory
@@ -30,6 +29,7 @@ t_dict	*create_node(char *key, char *value)
 		return (NULL);
 	node->key = key;
 	node->value = value;
+	node->position = 0;
 	node->left_branch = NULL;
 	node->right_branch = NULL;
 	node->parent = NULL;
@@ -101,6 +101,10 @@ t_dict	*bst_copy(t_dict *root)
 		new->left_branch = bst_copy(root->left_branch);
 	if (root->right_branch)
 		new->right_branch = bst_copy(root->right_branch);
+	if (new->right_branch)
+		new->right_branch->parent = new;
+	if (new->left_branch)
+		new->left_branch->parent = new;
 	return (new);
 }
 
@@ -117,6 +121,10 @@ size_t	bst_size(t_dict *root)
 	size = 0;
 	if (!root)
 		return (0);
+	if (root->parent)
+		root->position = root->parent->position + 1;
+	else
+		root->position = 0;
 	if (root->left_branch)
 		size += bst_size(root->left_branch);
 	if (root->right_branch)
@@ -128,40 +136,96 @@ size_t	bst_size(t_dict *root)
  * @brief Print the branch found
  * @param root Dict structure
  */
-void	print_branch(t_minishell *minishell)
+void	print_branch(t_dict *dict)
 {
-	if (!minishell->tab_dict)
+	if (!dict)
 	{
 		ft_putstr_fd("NULL\n", 1);
 		return ;
 	}
 	ft_putstr_fd(" key:   ", 1);
-	ft_putstr_fd(minishell->tab_dict->key, 1);
+	ft_putstr_fd(dict->key, 1);
 	ft_putstr_fd("\n", 1);
-	if (minishell->tab_dict->left_branch)
+	if (dict->left_branch)
 	{
 //		ft_putstr_fd("left: ", 1);
-		print_branch(minishell->tab_dict->left_branch);
+		print_branch(dict->left_branch);
 	}
-	if (minishell->tab_dict->right_branch)
+	if (dict->right_branch)
 	{
 //		ft_putstr_fd("right: ", 1);
-		print_branch(minishell->tab_dict->right_branch);
+		print_branch(dict->right_branch);
 	}
 //	ft_putstr_fd("end\n", 1);
+
 	return ;
 }
 
-void	stress_print(t_minishell *minishell)
+/**
+ * @brief Search in the path for a specific node
+ * @param dict Dict structure
+ * @param key position in the BST searched
+ */
+t_dict *move_in_bst(t_dict *dict, int key)
 {
-	if (ft_strlen(str) >= term->col)
+	if (!dict)
+		return (NULL);
+	while (dict->position != key)
 	{
-		ft_putstr_fd(str, 1);
-		ft_putstr_fd("    ", 1);
+		if (dict->right_branch)
+			return (move_in_bst(dict->right_branch, key));
+		if (dict->left_branch)
+			return (move_in_bst(dict->left_branch, key));
+	}
+	return (dict);
+}
+
+
+/**
+ * @brief Print string key X times
+ * @param key string to print
+ * @param x how many times to print
+ */
+void	print_key_x(char *key, int x)
+{
+	int	i;
+
+	if (x < 0 || !key)
+		return ;
+	i = 0;
+	while (i < x)
+	{
+		ft_putstr_fd(key, 1);
+		i++;
+	}
+}
+
+/**
+ * @brief Print the branch found with stress condition
+ * @param dict
+ */
+void	stress_print(t_dict *dict)
+{
+	t_term	*term;
+
+	term = ft_calloc(1, sizeof(t_term));
+	get_cursor_position(term);
+	get_terminal_size(term);
+	if (((ft_strlen(dict->key) + term->cols)
+			+ term->ws_cols / 5) < term->ws_cols)
+	{
+		ft_putstr_fd(dict->key, 1);
+		print_key_x(" ", (20 - ft_strlen(dict->key)));
 	}
 	else
 	{
-		ft_putstr_fd("\n", 1);
-		ft_putstr_fd(str, 1);
+		ft_putstr_fd("\033[E", 1);
+		ft_putstr_fd(dict->key, 1);
+		print_key_x(" ", (20 - ft_strlen(dict->key)));
 	}
+	if (dict->left_branch)
+		stress_print(dict->left_branch);
+	if (dict->right_branch)
+		stress_print(dict->right_branch);
+	free(term);
 }

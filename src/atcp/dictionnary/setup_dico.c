@@ -15,6 +15,8 @@
 /**
  * @brief Open dir with odir path and fill dict with all files in it which are executable
  * 		return a BST full with all executable files found and sort alphabetically
+ * 	@param	dict - BST
+ * 	@param	odir - path to open
  * 	@return 0 if success
  */
 int	search_in_path(t_dict *dict, char *odir)
@@ -56,9 +58,6 @@ int	search_in_path(t_dict *dict, char *odir)
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
-//	char	*search;
-//
-//	search = "app";
 
 	minishell->dict = create_node("\0", "file");
 	if (!minishell->dict)
@@ -70,23 +69,8 @@ int	creation_dict(t_minishell *minishell)
 	search_in_path(tmp, "/usr/local/bin");
 	search_in_path(tmp, "/opt/bin");
 	search_in_path(tmp, "/etc");
-
-//	ft_putstr_fd("\nBefore\n", 1);
-//	print_branch(tmp);
 	ft_putstr_fd("\n BST SIZE \n", 1);
 	ft_putnbr_fd(minishell->dict->bst_size, 1);
-
-//	ft_putstr_fd("\nSearch\n", 1);
-//	tmp = search_node(minishell->dict, search);
-
-
-//	ft_putstr_fd("CUT\n", 1);
-//	tmp = cut_node(tmp, search);
-//
-//	ft_putstr_fd("\nFound\n", 1);
-//	print_branch(tmp);
-
-
 	return (0);
 }
 
