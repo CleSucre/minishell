@@ -69,8 +69,8 @@ int	creation_dict(t_minishell *minishell)
 	search_in_path(tmp, "/usr/local/bin");
 	search_in_path(tmp, "/opt/bin");
 	search_in_path(tmp, "/etc");
-	ft_putstr_fd("\n BST SIZE \n", 1);
-	ft_putnbr_fd(minishell->dict->bst_size, 1);
+//	ft_putstr_fd("\n BST SIZE \n", 1);
+//	ft_putnbr_fd(minishell->dict->bst_size, 1);
 	return (0);
 }
 

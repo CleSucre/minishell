@@ -36,7 +36,6 @@ t_dict	*create_node(char *key, char *value)
 	return (node);
 }
 
-
 /**
  * @brief Search for a specific node in the BST
  * @param root Dict structure
@@ -107,7 +106,6 @@ t_dict	*bst_copy(t_dict *root)
 		new->left_branch->parent = new;
 	return (new);
 }
-
 
 /**
  * @brief Get the Number of Branch in the BSTn
@@ -180,7 +178,6 @@ t_dict *move_in_bst(t_dict *dict, int key)
 	return (dict);
 }
 
-
 /**
  * @brief Print string key X times
  * @param key string to print
@@ -204,7 +201,7 @@ void	print_key_x(char *key, int x)
  * @brief Print the branch found with stress condition
  * @param dict
  */
-void	stress_print(t_dict *dict)
+void	stress_print(t_minishell *minishell, t_dict *dict)
 {
 	t_term	*term;
 
@@ -214,18 +211,27 @@ void	stress_print(t_dict *dict)
 	if (((ft_strlen(dict->key) + term->cols)
 			+ term->ws_cols / 5) < term->ws_cols)
 	{
+		if (dict->position == minishell->completion->tab_count)
+			ft_putstr_fd("\033[7m", 1);
 		ft_putstr_fd(dict->key, 1);
+		if (dict->position == minishell->completion->tab_count)
+			ft_putstr_fd("\033[0m", 1);
 		print_key_x(" ", (20 - ft_strlen(dict->key)));
 	}
 	else
 	{
 		ft_putstr_fd("\033[E", 1);
+		minishell->completion->print_line++;
+		if (dict->position == minishell->completion->tab_count)
+			ft_putstr_fd("\033[7m", 1);
 		ft_putstr_fd(dict->key, 1);
+		if (dict->position == minishell->completion->tab_count)
+			ft_putstr_fd("\033[0m", 1);
 		print_key_x(" ", (20 - ft_strlen(dict->key)));
 	}
 	if (dict->left_branch)
-		stress_print(dict->left_branch);
+		stress_print(minishell, dict->left_branch);
 	if (dict->right_branch)
-		stress_print(dict->right_branch);
+		stress_print(minishell, dict->right_branch);
 	free(term);
 }

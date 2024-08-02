@@ -64,7 +64,9 @@ typedef struct s_completion
 {
 	char	*cmd;
 	char	*path;
+	int		check_len;
 	int		tab_count;
+	int		print_line;
 }			t_completion;
 
 // ########################################################

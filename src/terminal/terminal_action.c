@@ -52,11 +52,20 @@ void	ctrl_c_action(t_minishell *minishell, char **input)
 	reset_input(input);
 	print_terminal_prompt(minishell, 1);
 	minishell->history_pos = 0;
+	minishell->completion->tab_count = 0;
+	minishell->completion->check_len = 0;
+	minishell->completion->print_line = 1;
 	get_cursor_position(minishell->term);
 }
 
 void	edit_input(t_minishell *minishell, char **input, char c)
 {
+	if (minishell->completion->check_len == 1)
+	{
+		minishell->completion->check_len = 0;
+		ft_putstr_fd(*input, 1);
+		return ;
+	}
 	if (minishell->term->cols
 		!= get_prompt_len(minishell) + ft_strlen(*input) + 1)
 		*input = put_in_string(minishell, *input, c);
@@ -67,6 +76,8 @@ void	edit_input(t_minishell *minishell, char **input, char c)
 	}
 	minishell->term->cols++;
 	minishell->completion->tab_count = 0;
+	minishell->completion->check_len = 0;
+	minishell->completion->print_line = 1;
 }
 
 /**
@@ -85,12 +96,15 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		return (1);
 	else if (c == CTRL_D)
 		return (0);
-	else if (minishell->completion->tab_count == 1 && c == 'y')
-		tab_print(minishell, minishell->tab_dict, input);
+	else if (c == '\t' || (minishell->completion->tab_count == 0
+			&& (c == 'y' || c == 'n')))
+		tab_manager(minishell, input, c);
 	else if (c == CTRL_C)
 		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
 		backspace_action(minishell, input);
+	else if (c == CARRIAGE_RETURN && minishell->completion->tab_count != 0)
+		prompt_completion(minishell, input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
 		terminal_print("", ft_strlen(*input) > 0, STDOUT_FILENO);
@@ -107,8 +121,6 @@ int	process_action(t_minishell *minishell, char c, char **input)
 		if (interpret_escape_sequence(minishell, input, minishell->term->cols))
 			return (0);
 	}
-	else if (c == '\t')
-		tab_completion(minishell, input);
 	else
 		edit_input(minishell, input, c);
 	return (0);

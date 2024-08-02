@@ -87,6 +87,8 @@ static int	alloc_tab(t_minishell *minishell)
 		return (1);
 	}
 	minishell->completion->tab_count = 0;
+	minishell->completion->print_line = 1;
+	minishell->completion->check_len = 0;
 	return (0);
 }
 
@@ -110,6 +112,6 @@ t_minishell	*alloc_minishell(void)
 	if (alloc_term(minishell))
 		return (NULL);
 	if (alloc_tab(minishell))
-		return(NULL);
+		return (NULL);
 	return (minishell);
 }

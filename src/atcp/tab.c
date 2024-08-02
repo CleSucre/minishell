@@ -12,6 +12,25 @@
 
 #include "minishell.h"
 
+
+void	prompt_completion(t_minishell *minishell, char **input)
+{
+	bst_size(minishell->tab_dict);
+	ft_putstr_fd("\n", 1);
+	print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
+	minishell->tab_dict = move_in_bst(minishell->tab_dict,
+			minishell->completion->tab_count);
+	if (ft_strcmp(*input, minishell->tab_dict->key) != 0)
+	{
+		ft_trunc(input, 1);
+		*input = ft_strjoin(*input, minishell->tab_dict->key);
+	}
+	ft_putstr_fd(*input, 1);
+	get_cursor_position(minishell->term);
+	minishell->completion->tab_count = 0;
+	minishell->completion->print_line = 1;
+}
+
 /**
  * @brief print autocomplete possibilities + prompt
  * @param minishell
@@ -21,12 +40,18 @@
 void	tab_print(t_minishell *minishell, t_dict *dict, char **input)
 {
 	minishell->completion->tab_count++;
-	ft_putstr_fd("\nFound\n", 1);
-	stress_print(dict);
+	if (minishell->completion->tab_count > (int)bst_size(dict))
+		minishell->completion->tab_count = 1;
+	ft_putstr_fd("\033[s", 1);
+	ft_putstr_fd("\n", 1);
+	minishell->completion->print_line++;
+	stress_print(minishell, dict);
 	ft_putstr_fd("\n", 1);
 	print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
 	ft_putstr_fd(*input, 1);
+	minishell->completion->check_len = 0;
 }
+
 
 /**
  * @brief Take last word of input and search in the BST
@@ -39,15 +64,10 @@ void	tab_print(t_minishell *minishell, t_dict *dict, char **input)
 int	tab_completion(t_minishell *minishell, char	**input)
 {
 	char	**search;
-	t_dict	*tmp;
 	int		count_word;
-
-	(void) minishell;
-	(void) tmp;
 
 	if (ft_strlen(*input) <= 0)
 		return (1);
-	minishell->completion->tab_count++;
 	search = ft_split(*input, (const char *) " ");
 	count_word = ft_count_words(*input, (const char *) " ") - 1;
 	minishell->tab_dict = bst_copy(minishell->dict);
@@ -60,17 +80,72 @@ int	tab_completion(t_minishell *minishell, char	**input)
 		ft_putstr_fd(*input, 1);
 		return (1);
 	}
-	else if (minishell->completion->tab_count == 1
-		&& bst_size(minishell->tab_dict) > 20)
+	if (tab_action(minishell, input))
+		return (1);
+	return (0);
+}
+
+/**
+ * @brief Print the autocomplete possibilities
+ * @param minishell
+ * @param input
+ * @return
+ */
+int	tab_action(t_minishell *minishell, char **input)
+{
+	if (minishell->completion->tab_count == 0
+		&& bst_size(minishell->tab_dict) > 20 && minishell->completion->check_len == 0)
 	{
 		ft_putstr_fd("\n", 1);
 		ft_putstr_fd("do you wish to see all ", 1);
 		ft_putnbr_fd(bst_size(minishell->tab_dict), 1);
 		ft_putstr_fd(" possibilities ? [y/n]\n", 1);
 		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
+		minishell->completion->check_len = 1;
 		return (1);
 	}
 	else
+	{
+		if (minishell->completion->tab_count > 0)
+		{
+			while (minishell->completion->print_line > 1)
+			{
+				ft_putstr_fd("\033[F", 1);
+				ft_putstr_fd("\033[2K", 1);
+				minishell->completion->print_line--;
+			}
+			ft_putstr_fd("\033[F", 1);
+
+		}
 		tab_print(minishell, minishell->tab_dict, input);
+	}
+	minishell->completion->check_len = 1;
+	return (0);
+}
+
+/**
+ * @brief Manage tab key by sending it to the right function
+ * @param minishell
+ * @param input
+ * @param c
+ * @return
+ */
+int	tab_manager(t_minishell *minishell, char **input, char c)
+{
+	if (c == 'n')
+	{
+		minishell->completion->tab_count = 0;
+		minishell->completion->check_len = 0;
+		minishell->completion->print_line = 1;
+		ft_putstr_fd(*input, 1);
+		return (1);
+	}
+	if (minishell->completion->tab_count == 0 && c == 'y'
+		&& minishell->completion->check_len == 0)
+		tab_print(minishell, minishell->tab_dict, input);
+	else if (minishell->completion->tab_count == 0)
+		tab_completion(minishell, input);
+	else
+		tab_action(minishell, input);
 	return (0);
 }
