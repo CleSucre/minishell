@@ -1933,3 +1933,9 @@ ls | grep
 ls -la | grep s
 ls | sed ''
 clear
+ls
+ls -la
+clear
+ls
+clear
+clear

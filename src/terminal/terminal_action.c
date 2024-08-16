@@ -65,7 +65,7 @@ void	edit_input(t_minishell *minishell, char ***input, char *new)
 	if (minishell->completion->check_len == 1)
 	{
 		minishell->completion->check_len = 0;
-		ft_putstr_fd(*input, 1);
+		ft_putstr_fd(**input, 1);
 		return ;
 	}
 	if (minishell->term->cols
@@ -117,22 +117,26 @@ int	process_signals(t_minishell *minishell, char c, char ***input)
 
 int	process_action(t_minishell *minishell, char *new, char ***input)
 {
-	if (c == CTRL_D && ft_strlen(*input) == 0)
+    char    *str;
+    char    c;
+
+    c = new[0];
+	if (c == CTRL_D && ft_strlen(**input) == 0)
 		return (1);
 	else if (c == CTRL_D)
 		return (0);
 	else if (c == '\t' || (minishell->completion->tab_count == 0
 			&& (c == 'y' || c == 'n')))
-		tab_manager(minishell, input, c);
+		tab_manager(minishell, *input, c);
 	else if (c == CTRL_C)
 		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
-		backspace_action(minishell, input);
+		backspace_action(minishell, *input);
 	else if (c == CARRIAGE_RETURN && minishell->completion->tab_count != 0)
-		prompt_completion(minishell, input);
+		prompt_completion(minishell, *input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
-		terminal_print("", len > 0, STDOUT_FILENO);
+		terminal_print("", ft_tablen((const char **)*input) > 0, STDOUT_FILENO);
 		str = ft_utf8_tab_to_str(*input);
 		if (execute(minishell, str) == 0)
 		{
