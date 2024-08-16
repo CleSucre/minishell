@@ -984,7 +984,7 @@ ls -la
 ls -la
 ls -la
 4
-echo sÃ©l
+echo sÃÂ©l
 exit
 cd pi
 exit
@@ -1176,7 +1176,7 @@ ls -la | grep g
 ls
 echo sasasas
 history
-history | cat -Ãe
+history | cat -Ãe
 history | cat -e
 history | cat -e
 history | cat -e
@@ -1269,13 +1269,182 @@ test
 tes
 test
 `no
-history | wc -l
-history | wc -l
-history | wc -l
-history
-history | wc -l
-history | grep g | wc -l
+i
 test
+c
+clear
+ls
+cat "hello"
+ls
+echo "hi"
+ls
+ls
+test
+ls
+ls
+apml
+ml
+ml
+ml
+lazsh
+py
+py
+ay
+ay
+ay
+an ok
+ok
+test
+test ok
+ok
+sal
+a
+ac ad
+ac
+ac
+aa ad
+aa
+c
+a
+ay
+a
+clear
+clear
+clear
+test lfwlfefefewlf
+test felink
+test launfefefechctfel
+linfefk
+clear
+clear
+ml
+ml
+clear
+clear
+clear
+clear
+l
+dwdw
+dwd
+ldadad
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+launchctlaunchctl
+lol
+lol
+lol
+lol
+lol
+lol
+l
+l
+l
+l
+lpmove
+clear
+lol
+lol
+lol
+lol
+lol
+lol
+localemanager
+clear
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+lol
+lo
+lol
+clear
+lol
+lol
+lol
+lol
+test
+localtime
+clear
+fdwjeiof]
+efw
+fwqfweg
+clear
+fewg
+gwegewgew
+cupsdisable
+clear
+ls
+cacat
+clear
+clear
+ml
+link
+coder
+c
+y
+cy
+clear
+c
+clear
+c
+tesgt
+egwqk'efkw
+clear
+fkewfewefw
+eqwfewf
+c locate.rc lplpadmin
+checkgid
+c
+clear
+c
+csh.login ledled
+c
+l c c cn
+clear
+ml
+cn
+c
+c
+cm
+cm
+c
+co
+c
+c
+c
+co
+co
+cat
+cat
+checkgid
+eceef
+fjeifjewf
+cewfewf
+wefjkwefwe
+cdwdwdw
+clear
+clear
+clear
+clear
+c
+mkmkdir
+clear
+clear
+git add -A
+=======
 echo daiujsa
 norminette
 norminette
@@ -1364,7 +1533,7 @@ ls
 ls
 cat
 cat
-d�^fdddddddddddddddd
+d¹^fdddddddddddddddd
 echo "yehd"
 echo "yehd"
 cat
@@ -1463,7 +1632,7 @@ a
 lsla
 aaaaaapplplplpl
 saasasaszdepkfeifjeifjeokfekeoifekkokokkoz,dzkdozdkzokdzd
-ddlzdlz²
+ddlzdlzÂ²
 sa
 sa
 salut&
@@ -1498,7 +1667,7 @@ salut
 slaut
 spaokszopkdzd
 zkdzpofkeokz
-zfkopzekfezpééézek
+zfkopzekfezpÃ©Ã©Ã©zek
 zfkopzekfezpzek
 sapsapslasaasaalsasasussaaassssaaasats
 ssasasasalut
@@ -1689,7 +1858,7 @@ echo salut | cat -e
 echo salut | cat -e
 ls
 echo salut | cat -e
-echo "comment ké va lui" | cat -e
+echo "comment kÃ© va lui" | cat -e
 echo "comment ki va lui" | cat -e
 echo "comment k& va lui" | cat -e
 echo "comment k^^& va lui" | cat -e
@@ -1741,15 +1910,15 @@ nle signals, and man commands, hand
 clear
 ls
 clear
-gjs E2RIL.* | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3 | sort | uniqrep /s/gam/161.
+gjs E2RIL.* | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3Â |Â sortÂ |Â uniqrep /s/gam/161.
 clear
 ls
 clear
 gjsrep /s/gam/181.
 grep /s/gam/181.js /s/gam/181.
-grep /s/gam/181. sE2RIL8RPDLRNGQE | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3 | sort | uniq2RIL8RPDLRNGQ.*
-grep /s/gam/181.js E2RIL8RPDLRNGQE.* | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3 | sort | uniq
-grep /s/gam/181.js E2RIL8RPDLRNGQE.* | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3 | sort | uniq
+grep /s/gam/181. sE2RIL8RPDLRNGQE | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3Â |Â sortÂ |Â uniq2RIL8RPDLRNGQ.*
+grep /s/gam/181.js E2RIL8RPDLRNGQE.* | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3Â |Â sort | uniq
+grep /s/gam/181.js E2RIL8RPDLRNGQE.* | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3Â |Â sort | uniq
 grep /s/gam/181.js test | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3
 grep /s/gam/181.js test | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3
 grep /s/gam/181.js test | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3 | sort

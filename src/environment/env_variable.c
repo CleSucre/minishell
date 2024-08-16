@@ -59,7 +59,7 @@ char	*get_path(char *cmd, char **envp)
 		if (check_path(path, paths))
 			return (path);
 	}
-	ft_tabfree(paths);
+  ft_tabfree(paths);
 	return (NULL);
 }
 

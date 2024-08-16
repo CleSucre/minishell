@@ -47,16 +47,25 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***i
 void	set_tabstop(t_minishell *minishell)
 {
 	size_t	i;
+	size_t	j;
 
 	i = 0;
+	j = 0;
+	ft_putstr_fd("\033[s", 1);
 	ft_putstr_fd("\033[3g", 1);
-	while (i < minishell->term->cols)
+	while (j < minishell->term->ws_rows)
 	{
-		i += 4;
-		ft_putstr_fd("\033[4C", 1);
-		ft_putstr_fd("\033H", 1);
+		while (i < minishell->term->ws_cols)
+		{
+			i += 4;
+			ft_putstr_fd("\033[4C", 1);
+			ft_putstr_fd("\033H", 1);
+		}
+		ft_putstr_fd("\033[B", 1);
+		j++;
+		i = 0;
 	}
-	ft_putstr_fd("\033[1G", 1);
+	ft_putstr_fd("\033[u", 1);
 }
 
 /**
@@ -77,6 +86,7 @@ int	use_termios(t_minishell *minishell)
 		return (1);
 
 	set_tabstop(minishell);
+	creation_dict(minishell);
 	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
 	while (1)

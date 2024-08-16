@@ -81,6 +81,23 @@ static int	alloc_term(t_minishell *minishell)
 	return (0);
 }
 
+static int	alloc_tab(t_minishell *minishell)
+{
+	minishell->completion = ft_calloc(1, sizeof(t_completion));
+	if (!minishell->completion)
+	{
+		free(minishell->term);
+		free(minishell->history);
+		free(minishell->cache);
+		free(minishell);
+		return (1);
+	}
+	minishell->completion->tab_count = 0;
+	minishell->completion->print_line = 1;
+	minishell->completion->check_len = 0;
+	return (0);
+}
+
 /**
  * @brief Init minishell structure
  *
@@ -100,6 +117,8 @@ t_minishell	*alloc_minishell(void)
 	if (alloc_history(minishell))
 		return (NULL);
 	if (alloc_term(minishell))
+		return (NULL);
+	if (alloc_tab(minishell))
 		return (NULL);
 	return (minishell);
 }
