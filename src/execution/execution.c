@@ -51,7 +51,6 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		return (0);
 	if (is_builtin_command(cmd))
 	{
-		ft_fprintf(STDERR_FILENO, "executing builtin command: %s\n", cmd->cmd_name);
 		execute_builtin_command(minishell, cmd);
 		free_cmd(cmd);
 		return (1);
@@ -176,7 +175,10 @@ int	execute(t_minishell *minishell, char *input)
 	char 	*trimmed;
 
 	if (ft_strlen(input) == 0)
-		return (0);
+    {
+        terminal_print("", 1, STDOUT_FILENO);
+        return (1);
+    }
 	trimmed = ft_strtrim(input, WHITESPACES);
 	if (!trimmed)
 		return (0);

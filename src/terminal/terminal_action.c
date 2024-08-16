@@ -110,7 +110,7 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 
 	len = ft_tablen((const char **)*input);
 	if (new[0] == BACKSPACE)
-		backspace_action(minishell, *input);
+        backspace_action(minishell, *input);
 	else if (new[0] == CARRIAGE_RETURN || new[0] == NEW_LINE)
 	{
 		terminal_print("", len > 0, STDOUT_FILENO);
@@ -122,7 +122,7 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 		}
 		free(str);
 		set_tabstop(minishell);
-		print_terminal_prompt(minishell, 1);
+		print_terminal_prompt(minishell, 0);
 		reset_input(input);
 		minishell->history_pos = 0;
 		get_cursor_position(minishell->term);
