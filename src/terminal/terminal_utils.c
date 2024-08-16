@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 03:41:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/06/14 03:41:00 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/07/17 02:30:49 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	reset_stdin(t_minishell *minishell)
  */
 void	terminal_print(char *str, int nl, int fd)
 {
-	if (nl)
+	if (nl && fd == STDOUT_FILENO)
 		ft_putstr_fd("\033[100D", fd);
 	while (nl--)
 		ft_putchar_fd('\n', fd);
@@ -41,17 +41,14 @@ void	terminal_print(char *str, int nl, int fd)
 }
 
 /**
- * @brief Reset input string
+ * @brief Reset input string and realloc it
  *
- * @param char **input
+ * @param char ***input
  * @return void
  */
-void	reset_input(char **input)
+void	reset_input(char ***input)
 {
 	if (*input)
-	{
-		free(*input);
-		*input = NULL;
-	}
+		ft_tabfree(*input);
 	*input = ft_calloc(1, sizeof(char *));
 }

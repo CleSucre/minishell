@@ -6,7 +6,7 @@
 /*   By: julthoma <julthoma@student.42angouleme.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 03:58:37 by julthoma          #+#    #+#             */
-/*   Updated: 2024/06/05 03:58:37 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/17 02:59:16 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,13 @@ static int	alloc_cache(t_minishell *minishell)
 		free(minishell);
 		return (1);
 	}
-	minishell->cache->input = ft_strdup("");
+	minishell->cache->input = ft_calloc(1, sizeof(char *));
+	if (!minishell->cache->input)
+	{
+		free(minishell->cache);
+		free(minishell);
+		return (1);
+	}
 	return (0);
 }
 
@@ -105,6 +111,7 @@ t_minishell	*alloc_minishell(void)
 	if (!minishell)
 		return (NULL);
 	minishell->exit_code = 0;
+	minishell->current_cmd = NULL;
 	if (alloc_cache(minishell))
 		return (NULL);
 	if (alloc_history(minishell))
