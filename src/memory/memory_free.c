@@ -43,6 +43,9 @@ void	free_minishell(t_minishell *minishell)
 	free(minishell->cache);
 	free(minishell->term);
 	history_free(minishell->history);
+	free_branch(minishell->tab_dict);
+	free_branch(minishell->dict);
+	free(minishell->completion);
 	free(minishell);
 }
 
@@ -71,7 +74,7 @@ void	free_cmd(t_cmd *cmd)
 {
 	free(cmd->cmd_name);
 	free(cmd->cmd_exec);
-	ft_freetab(cmd->argv);
+	ft_tabfree(cmd->argv);
 	free(cmd->path);
 	free(cmd);
 }

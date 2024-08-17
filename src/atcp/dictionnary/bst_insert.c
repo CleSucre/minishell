@@ -33,7 +33,7 @@ static void	insert_l_node(t_dict *root, t_dict *node, char *key, char *value)
 		root->left_branch = node;
 	}
 	else
-		insert_node(root->left_branch, key, value);
+		insert_node(root->left_branch, node, key, value);
 }
 
 
@@ -58,7 +58,7 @@ static void	insert_r_node(t_dict *root, t_dict *node, char *key, char *value)
 		root->right_branch = node;
 	}
 	else
-		insert_node(root->right_branch, key, value);
+		insert_node(root->right_branch, node, key, value);
 }
 
 /**
@@ -68,12 +68,8 @@ static void	insert_r_node(t_dict *root, t_dict *node, char *key, char *value)
  * @param value - file/exec/..
  * @return
  */
-t_dict	*insert_node(t_dict *root, char *key, char *value)
+t_dict	*insert_node(t_dict *root, t_dict *node, char *key, char *value)
 {
-	t_dict	*node;
-
-	key = ft_strndup(key, ft_strlen(key) + 1);
-	node = create_node(key, value);
 	if (!node)
 		return (NULL);
 	if (!root)

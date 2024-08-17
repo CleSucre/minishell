@@ -42,7 +42,9 @@ void	print_key_x(char *key, int x);
 // #							BST						  #
 // ########################################################
 
-t_dict	*insert_node(t_dict *root, char *key, char *value);
+t_dict	*insert_node(t_dict *root, t_dict *node, char *key, char *value);
+
+//t_dict	*insert_node(t_dict *root, char *key, char *value);
 t_dict	*create_node(char *key, char *value);
 t_dict	*search_node(t_dict *root, char *key);
 t_dict	*move_in_bst(t_dict *dict, int key);

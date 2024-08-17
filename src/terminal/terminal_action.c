@@ -60,19 +60,16 @@ void	ctrl_c_action(t_minishell *minishell, char **input)
 
 void	edit_input(t_minishell *minishell, char **input, char c)
 {
-	if (minishell->completion->check_len == 1)
-	{
-		minishell->completion->check_len = 0;
-		ft_putstr_fd(*input, 1);
-		return ;
-	}
 	if (minishell->term->cols
 		!= get_prompt_len(minishell) + ft_strlen(*input) + 1)
 		*input = put_in_string(minishell, *input, c);
 	else
 	{
 		*input = ft_charjoin(*input, c);
-		ft_putchar_fd(c, 1);
+		if (minishell->completion->check_len == 1)
+			ft_putstr_fd(*input, 1);
+		else
+			ft_putchar_fd(c, 1);
 	}
 	minishell->term->cols++;
 	minishell->completion->tab_count = 0;
@@ -97,7 +94,7 @@ int	process_action(t_minishell *minishell, char c, char **input)
 	else if (c == CTRL_D)
 		return (0);
 	else if (c == '\t' || (minishell->completion->tab_count == 0
-			&& (c == 'y' || c == 'n')))
+						&& minishell->completion->check_len == 1 && (c == 'y' || c == 'n')))
 		tab_manager(minishell, input, c);
 	else if (c == CTRL_C)
 		ctrl_c_action(minishell, input);

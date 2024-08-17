@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:12:28 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/10 08:53:59 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/08/12 04:09:15 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,19 @@ t_dict	*create_node(char *key, char *value)
 	node = ft_calloc(1, sizeof(t_dict));
 	if (!node)
 		return (NULL);
-	node->key = key;
-	node->value = value;
+	node->key = ft_strndup(key, ft_strlen(key));
+	if (!node->key)
+	{
+		free(node);
+		return (NULL);
+	}
+	node->value = ft_strndup(value, ft_strlen(value));
+	if (!node->value)
+	{
+		free(node->key);
+		free(node);
+		return (NULL);
+	}
 	node->position = 0;
 	node->left_branch = NULL;
 	node->right_branch = NULL;
@@ -48,7 +59,7 @@ t_dict	*search_node(t_dict *root, char *key)
 	if (!root)
 		return (NULL);
 	if (ft_strncmp(key, root->key, ft_strlen(key)) == 0)
-		return (root);
+		return (bst_copy(root));
 	if (ft_strncmp(key, root->key, ft_strlen(key)) < 0)
 		return (search_node(root->left_branch, key));
 	else
@@ -66,22 +77,27 @@ t_dict	*cut_node(t_dict *root, char *key)
 		return (NULL);
 	if (ft_strncmp(key, root->key, ft_strlen(key)) != 0)
 	{
-		root->left_branch = NULL;
-		root->right_branch = NULL;
+		free_branch(root);
 		root = NULL;
-		return (root);
+		return (bst_copy(root));
 	}
 	else if (root->right_branch && ft_strncmp
 		(key, root->right_branch->key, ft_strlen(key)) != 0)
+	{
+		free_branch(root->right_branch);
 		root->right_branch = NULL;
+	}
 	else if (root->right_branch)
 		cut_node(root->right_branch, key);
 	if (root->left_branch && ft_strncmp
 		(key, root->left_branch->key, ft_strlen(key)) != 0)
+	{
+		free_branch(root->left_branch);
 		root->left_branch = NULL;
+	}
 	else if (root->left_branch)
 		cut_node(root->left_branch, key);
-	return (root);
+	return (bst_copy(root));
 }
 
 /**
@@ -96,14 +112,16 @@ t_dict	*bst_copy(t_dict *root)
 	if (!root)
 		return (NULL);
 	new = create_node(root->key, root->value);
+	if (!new)
+		return (NULL);
 	if (root->left_branch)
 		new->left_branch = bst_copy(root->left_branch);
+	if (new->left_branch)
+		new->left_branch->parent = new;
 	if (root->right_branch)
 		new->right_branch = bst_copy(root->right_branch);
 	if (new->right_branch)
 		new->right_branch->parent = new;
-	if (new->left_branch)
-		new->left_branch->parent = new;
 	return (new);
 }
 
@@ -220,11 +238,12 @@ void	stress_print(t_minishell *minishell, t_dict *dict)
 	}
 	else
 	{
-		ft_putstr_fd("\033[E", 1);
+		ft_putstr_fd("\n", 1);
 		minishell->completion->print_line++;
 		if (dict->position == minishell->completion->tab_count)
 			ft_putstr_fd("\033[7m", 1);
-		ft_putstr_fd(dict->key, 1);
+		write(1, dict->key, ft_strlen(dict->key));
+//		ft_putstr_fd(dict->key, 1);
 		if (dict->position == minishell->completion->tab_count)
 			ft_putstr_fd("\033[0m", 1);
 		print_key_x(" ", (20 - ft_strlen(dict->key)));
