@@ -24,6 +24,7 @@ int	search_in_path(t_dict *dict, char *odir)
 	struct dirent	*dir;
 	char			*name;
 	t_dict			*tmp;
+	t_dict *node;
 	DIR				*d;
 
 	d = opendir(odir);
@@ -37,12 +38,19 @@ int	search_in_path(t_dict *dict, char *odir)
 				tmp = dict;
 				name = ft_strndup(dir->d_name, (int)dir->d_reclen);
 				name = string_lower(name);
-				insert_node(tmp, name, 0);
+				node = create_node(name, "command");
+				insert_node(tmp, node, name, "command");
 				free(name);
+				name = NULL;
 			}
 			dir = readdir(d);
 		}
 		closedir(d);
+	}
+	else
+	{
+		perror("opendir");
+		return (1);
 	}
 	return (0);
 }
@@ -64,13 +72,11 @@ int	creation_dict(t_minishell *minishell)
 		return (1);
 	minishell->dict->bst_size = 0;
 	tmp = minishell->dict;
-	search_in_path(tmp, "/bin");
+//	search_in_path(tmp, "/bin");
 	search_in_path(tmp, "/usr/sbin");
-	search_in_path(tmp, "/usr/local/bin");
-	search_in_path(tmp, "/opt/bin");
-	search_in_path(tmp, "/etc");
-//	ft_putstr_fd("\n BST SIZE \n", 1);
-//	ft_putnbr_fd(minishell->dict->bst_size, 1);
+//	search_in_path(tmp, "/usr/local/bin");
+//	search_in_path(tmp, "/opt/bin");
+//	search_in_path(tmp, "/etc");
 	return (0);
 }
 

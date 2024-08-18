@@ -6,7 +6,7 @@
 /*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 04:21:45 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/09 08:43:36 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/08/12 04:06:45 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	prompt_completion(t_minishell *minishell, char **input)
 	get_cursor_position(minishell->term);
 	minishell->completion->tab_count = 0;
 	minishell->completion->print_line = 1;
+	minishell->completion->check_len = 0;
 }
 
 /**
@@ -65,19 +66,32 @@ int	tab_completion(t_minishell *minishell, char	**input)
 {
 	char	**search;
 	int		count_word;
+	t_dict *head;
 
 	if (ft_strlen(*input) <= 0)
 		return (1);
+	if (minishell->tab_dict)
+		free_branch(minishell->tab_dict);
 	search = ft_split(*input, (const char *) " ");
+	if (!search)
+		return (1);
 	count_word = ft_count_words(*input, (const char *) " ") - 1;
 	minishell->tab_dict = bst_copy(minishell->dict);
-	minishell->tab_dict = search_node(minishell->tab_dict, search[count_word]);
-	minishell->tab_dict = cut_node(minishell->tab_dict, search[count_word]);
+	head = search_node(minishell->tab_dict, search[count_word]);
+	free_branch(minishell->tab_dict);
+	minishell->tab_dict = NULL;
+	cut_node(head, search[count_word]);
+	minishell->tab_dict = bst_copy(head);
+	free_branch(head);
+	head = NULL;
+	ft_tabfree(search);
 	if (!minishell->tab_dict)
 	{
 		ft_putstr_fd("\nNo match found\n", 1);
 		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
 		ft_putstr_fd(*input, 1);
+		free_branch(head);
+		head = NULL;
 		return (1);
 	}
 	if (tab_action(minishell, input))
@@ -137,6 +151,7 @@ int	tab_manager(t_minishell *minishell, char **input, char c)
 		minishell->completion->tab_count = 0;
 		minishell->completion->check_len = 0;
 		minishell->completion->print_line = 1;
+		free_branch(minishell->tab_dict);
 		ft_putstr_fd(*input, 1);
 		return (1);
 	}
