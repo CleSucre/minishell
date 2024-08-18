@@ -76,12 +76,6 @@ int	tab_completion(t_minishell *minishell, char	**input)
 	if (!search)
 		return (1);
 	count_word = ft_count_words(*input, (const char *) " ") - 1;
-//	if (ft_strlen(search[count_word]) <= 0)
-//	{
-//		ft_tabfree(search);
-//		stress_print(minishell, minishell->dict);
-//		return (1);
-//	}
 	minishell->tab_dict = bst_copy(minishell->dict);
 	head = search_node(minishell->tab_dict, search[count_word]);
 	free_branch(minishell->tab_dict);

@@ -65,17 +65,25 @@ void	edit_input(t_minishell *minishell, char ***input, char *new)
 	if (minishell->completion->check_len == 1)
 	{
 		minishell->completion->check_len = 0;
-		ft_putstr_fd(**input, 1);
-		return ;
+		*input = ft_tabjoin(*input, ft_utf8_split_chars(new));
+		ft_putstr_fd(**input, STDOUT_FILENO);
+		ft_putstr_fd(new, STDOUT_FILENO);
+		minishell->term->cols++;
+		if (minishell->tab_dict)
+			free_branch(minishell->tab_dict);
+//		return ;
 	}
-	if (minishell->term->cols
+	else if (minishell->term->cols
 		!= get_prompt_len(minishell) + ft_tablen((const char **)*input) + 1)
         put_in_string(minishell, input, new);
 	else
 	{
+		minishell->completion->check_len = 0;
+		minishell->term->cols++;
 		*input = ft_tabjoin(*input, ft_utf8_split_chars(new));
 		ft_putstr_fd(new, STDOUT_FILENO);
 	}
+
     minishell->term->cols = ft_tablen((const char **)*input) + get_prompt_len(minishell) + 1;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
@@ -152,13 +160,6 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 	{
 		if (interpret_escape_sequence(minishell, new, input))
 			return (0);
-	}
-	else if (new[0] == '\t')
-	{
-		ft_putstr_fd("EHEIOHDFOEHBFEIOPHFIFHEIOPEFHOIEHF", 1);
-//		str = ft_utf8_tab_to_str(*input);
-//		tab_completion(minishell, &str);
-		free(*input);
 	}
 	else
 		edit_input(minishell, input, new);
