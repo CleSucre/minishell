@@ -79,26 +79,23 @@ int	tab_completion(t_minishell *minishell, char	**input)
 	minishell->tab_dict = bst_copy(minishell->dict);
 	head = search_node(minishell->tab_dict, search[count_word]);
 	free_branch(minishell->tab_dict);
-	minishell->tab_dict = cut_node(head, search[count_word]);
+	minishell->tab_dict = NULL;
+	cut_node(head, search[count_word]);
+	minishell->tab_dict = bst_copy(head);
+	free_branch(head);
+	head = NULL;
+	ft_tabfree(search);
 	if (!minishell->tab_dict)
 	{
 		ft_putstr_fd("\nNo match found\n", 1);
 		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
 		ft_putstr_fd(*input, 1);
-		ft_tabfree(search);
+		free_branch(head);
+		head = NULL;
 		return (1);
 	}
 	if (tab_action(minishell, input))
-	{
-		ft_tabfree(search);
 		return (1);
-	}
-	if (head)
-	{
-		free_branch(head);
-		head = NULL;
-	}
-	ft_tabfree(search);
 	return (0);
 }
 

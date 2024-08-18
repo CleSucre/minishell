@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:12:28 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/08/12 04:09:15 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/08/18 01:04:21 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,17 @@ t_dict	*search_node(t_dict *root, char *key)
  * @param root Dict structure
  */
 
-t_dict	*cut_node(t_dict *root, char *key)
+void	cut_node(t_dict *root, char *key)
 {
 	if (!root)
-		return (NULL);
+		return ;
 	if (ft_strncmp(key, root->key, ft_strlen(key)) != 0)
 	{
 		free_branch(root);
 		root = NULL;
-		return (bst_copy(root));
+		return ;
 	}
-	else if (root->right_branch && ft_strncmp
+	if (root->right_branch && ft_strncmp
 		(key, root->right_branch->key, ft_strlen(key)) != 0)
 	{
 		free_branch(root->right_branch);
@@ -97,7 +97,7 @@ t_dict	*cut_node(t_dict *root, char *key)
 	}
 	else if (root->left_branch)
 		cut_node(root->left_branch, key);
-	return (bst_copy(root));
+	return ;
 }
 
 /**

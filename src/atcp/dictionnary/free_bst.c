@@ -41,5 +41,5 @@ void	free_branch(t_dict *root)
 	if (root->right_branch)
 		free_branch(root->right_branch);
 	free_node(root);
-//	root = NULL;
+	root = NULL;
 }
