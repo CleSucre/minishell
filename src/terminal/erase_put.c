@@ -24,12 +24,8 @@
 void	put_in_string(t_minishell *minishell, char ***input, char *new)
 {
 	char 			*str;
-	unsigned int	cols;
 
-	cols = minishell->term->cols;
-
-
-	*input = ft_tabinsert(*input, new, cols - get_prompt_len(minishell) - 1);
+	*input = ft_tabinsert(*input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
 	ft_putstr_fd("\033[s", 1);
 	reset_stdin(minishell);
 	str = ft_utf8_tab_to_str(*input);

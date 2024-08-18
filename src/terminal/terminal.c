@@ -102,11 +102,15 @@ int	use_termios(t_minishell *minishell)
 		buffer[bits] = '\0';
 		signal = process_signals(minishell, buffer[0], &input);
 		if (signal == 1)
-			continue ;
+        {
+            ft_bzero(buffer, sizeof(buffer));
+            continue ;
+        }
 		if (signal == 2)
 			break ;
 		if (process_action(minishell, buffer, &input))
 			break ;
+        ft_bzero(buffer, sizeof(buffer));
 	}
 	terminal_print(TERMINAL_EXIT_MSG, 1, STDOUT_FILENO);
 	ft_printf("\nexit %d\n", minishell->exit_code);

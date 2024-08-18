@@ -70,14 +70,13 @@ void	edit_input(t_minishell *minishell, char ***input, char *new)
 	}
 	if (minishell->term->cols
 		!= get_prompt_len(minishell) + ft_tablen((const char **)*input) + 1)
-		put_in_string(minishell, input, new);
+        put_in_string(minishell, input, new);
 	else
 	{
 		*input = ft_tabjoin(*input, ft_utf8_split_chars(new));
 		ft_putstr_fd(new, STDOUT_FILENO);
-		ft_bzero(new, sizeof(new));
 	}
-	minishell->term->cols++;
+    minishell->term->cols = ft_tablen((const char **)*input) + get_prompt_len(minishell) + 1;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
@@ -114,7 +113,6 @@ int	process_signals(t_minishell *minishell, char c, char ***input)
  * 								read by termios from 1st to Enter
  * @return int 						1 if exit, 0 if not
  */
-
 int	process_action(t_minishell *minishell, char *new, char ***input)
 {
     char    *str;
@@ -125,9 +123,11 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 		return (1);
 	else if (c == CTRL_D)
 		return (0);
+    /*
 	else if (c == '\t' || (minishell->completion->tab_count == 0
 			&& (c == 'y' || c == 'n')))
 		tab_manager(minishell, *input, c);
+     */
 	else if (c == CTRL_C)
 		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
