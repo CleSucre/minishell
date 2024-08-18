@@ -54,6 +54,9 @@ set(SRCS
         src/commands/custom/history.c
         src/commands/custom/pwd.c
         src/commands/custom/unset.c
+        src/terminal/terminal_action.c
+        src/terminal/terminal_action.c
+        src/terminal/terminal_action.c
 )
 
 # Object files directory
@@ -65,7 +68,8 @@ add_subdirectory(${LIBFT_DIR})
 include_directories(${LIBFT_DIR}/include)
 
 # Executable
-add_executable(${PROJECT_NAME} ${SRCS})
+add_executable(${PROJECT_NAME} ${SRCS}
+        src/terminal/terminal_action.c)
 
 # Link libraries (libft)
 target_link_libraries(${PROJECT_NAME} PRIVATE libft)

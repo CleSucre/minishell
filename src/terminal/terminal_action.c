@@ -62,16 +62,17 @@ void	ctrl_c_action(t_minishell *minishell, char ***input)
 
 void	edit_input(t_minishell *minishell, char ***input, char *new)
 {
-	if (minishell->completion->check_len == 1)
+	if (minishell->completion->tab_count > 0)
 	{
-		minishell->completion->check_len = 0;
 		*input = ft_tabjoin(*input, ft_utf8_split_chars(new));
-		ft_putstr_fd(**input, STDOUT_FILENO);
 		ft_putstr_fd(new, STDOUT_FILENO);
 		minishell->term->cols++;
 		if (minishell->tab_dict)
 			free_branch(minishell->tab_dict);
-//		return ;
+		minishell->tab_dict = NULL;
+		minishell->completion->tab_count = 0;
+		minishell->completion->check_len = 0;
+		minishell->completion->print_line = 1;
 	}
 	else if (minishell->term->cols
 		!= get_prompt_len(minishell) + ft_tablen((const char **)*input) + 1)
@@ -133,7 +134,7 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 		return (0);
 	else if (c == '\t' || minishell->completion->check_len == 1
 			&& (minishell->completion->tab_count == 0 && (c == 'y' || c == 'n')))
-		tab_manager(minishell, *input, c);
+		tab_manager(minishell, input, new);
 	else if (c == CTRL_C)
 		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
