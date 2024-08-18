@@ -139,11 +139,7 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 		terminal_print("", ft_tablen((const char **)*input) > 0, STDOUT_FILENO);
 		str = ft_utf8_tab_to_str(*input);
 		if (execute(minishell, str) == 0)
-		{
-			free(str);
 			return (1);
-		}
-		free(str);
 		set_tabstop(minishell);
 		print_terminal_prompt(minishell, 0);
 		reset_input(input);
@@ -153,7 +149,7 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 	else if (new[0] == ESC_SEQ)
 	{
 		if (interpret_escape_sequence(minishell, new, input))
-			return (0);
+            return (0);
 	}
 	else if (new[0] == '\t')
 	{

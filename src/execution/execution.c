@@ -28,14 +28,16 @@ void	handle_signal(int sig)
  * @brief Execute the command given in input
  *
  * @param t_cmd *cmd
- * @return int 0 on success, 1 on failure
+ * @return int error code
  */
 static int execute_path(t_cmd *cmd) {
-	if (execve(cmd->path, cmd->argv, cmd->env) == -1) {
+    int err;
+
+    err = execve(cmd->path, cmd->argv, cmd->env);
+	if (err == -1) {
 		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n", cmd->cmd_name);
-		exit(127);
 	}
-	return 0;
+	return (err);
 }
 
 static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output, int to_close)
@@ -43,6 +45,7 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 	t_cmd				*cmd;
 	struct sigaction	sa;
 	pid_t				pid;
+    int                 err;
 
 	if (!ast)
 		return (0);
@@ -89,9 +92,11 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		}
 		if (to_close != -1)
 			close(to_close);
-		execute_path(cmd);
-		free_cmd(cmd);
-		exit(0);
+		err = execute_path(cmd);
+        free_cmd(cmd);
+        free_minishell(minishell);
+        free_ast(ast);
+        exit(err);
 	}
 	if (input != STDIN_FILENO)
 		close(input);
@@ -177,9 +182,11 @@ int	execute(t_minishell *minishell, char *input)
 	if (ft_strlen(input) == 0)
     {
         terminal_print("", 1, STDOUT_FILENO);
+        free(input);
         return (1);
     }
 	trimmed = ft_strtrim(input, WHITESPACES);
+    free(input);
 	if (!trimmed)
 		return (0);
 	debug_execution(trimmed);
