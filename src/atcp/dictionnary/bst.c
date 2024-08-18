@@ -226,6 +226,8 @@ void	stress_print(t_minishell *minishell, t_dict *dict)
 	term = ft_calloc(1, sizeof(t_term));
 	get_cursor_position(term);
 	get_terminal_size(term);
+	if (!dict)
+		return ;
 	if (((ft_strlen(dict->key) + term->cols)
 			+ term->ws_cols / 5) < term->ws_cols)
 	{

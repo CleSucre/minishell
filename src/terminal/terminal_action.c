@@ -123,11 +123,9 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 		return (1);
 	else if (c == CTRL_D)
 		return (0);
-    /*
-	else if (c == '\t' || (minishell->completion->tab_count == 0
-			&& (c == 'y' || c == 'n')))
+	else if (c == '\t' || minishell->completion->check_len == 1
+			&& (minishell->completion->tab_count == 0 && (c == 'y' || c == 'n')))
 		tab_manager(minishell, *input, c);
-     */
 	else if (c == CTRL_C)
 		ctrl_c_action(minishell, input);
 	else if (c == BACKSPACE)
@@ -157,8 +155,9 @@ int	process_action(t_minishell *minishell, char *new, char ***input)
 	}
 	else if (new[0] == '\t')
 	{
-		str = ft_utf8_tab_to_str(*input);
-		tab_completion(minishell, &str);
+		ft_putstr_fd("EHEIOHDFOEHBFEIOPHFIFHEIOPEFHOIEHF", 1);
+//		str = ft_utf8_tab_to_str(*input);
+//		tab_completion(minishell, &str);
 		free(*input);
 	}
 	else
