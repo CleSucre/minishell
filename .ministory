@@ -604,3 +604,4 @@ saelsut
 sae000lsut
 sae000ls000ut
 s000ae000ls000ut
+grep /s/gam/161.js E2RIL8RPDLRNGQ.* | cut -f 10 | cut -d / -f 3 | cut -d . -f 2,3 | sort | uniq
