@@ -54,9 +54,9 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		return (0);
 	if (is_builtin_command(cmd))
 	{
-		execute_builtin_command(minishell, cmd);
+		err = execute_builtin_command(minishell, cmd);
 		free_cmd(cmd);
-		return (1);
+		return (err);
 	}
 	sa.sa_handler = handle_signal;
 	sa.sa_flags = 0;
@@ -66,6 +66,7 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		perror("sigaction");
 		return (1);
 	}
+    err = 1;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -103,7 +104,7 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 	if (output != STDOUT_FILENO)
 		close(output);
 	free_cmd(cmd);
-	return (1);
+	return (err);
 }
 
 /**
@@ -111,67 +112,76 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
  *
  * @param t_minishell *minishell
  * @param t_ast *ast
- * @return int 1 on success, 0 on failure
+ * @return int 0 on success
  */
 static int execute_cmds(t_minishell *minishell, t_ast *ast)
 {
-	int	fd[2];
-	int input;
-	int output;
-	int to_close;
+    int	fd[2];
+    int input;
+    int output;
+    int to_close;
+    int status;
 
-	if (!ast)
-		return (0);
-	disable_termios(minishell->term);
-	input = STDIN_FILENO;
-	while (ast)
-	{
-		if (ast->type == FULL_COMMAND)
-		{
-			if (ast->next && ast->next->type == FULL_COMMAND)
-			{
-				if (pipe(fd) == -1)
-				{
-					ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
-					return (0);
-				}
-				output = fd[1];
-				to_close = fd[0];
-			}
-			else
-			{
-				output = STDOUT_FILENO;
-				to_close = -1;
-			}
-			if (!execute_cmd(minishell, ast, input, output, to_close))
-			{
-				if (input != STDIN_FILENO)
-					close(input);
-				if (output != STDOUT_FILENO)
-					close(output);
-				return (0);
-			}
-			if (input != STDIN_FILENO)
-				close(input);
-			if (output != STDOUT_FILENO)
-				close(output);
-			input = fd[0];
-			if (ast->prev && ast->prev->type == FULL_COMMAND)
-				close(fd[1]);
-		}
-		ast = ast->next;
-	}
-	while (wait(NULL) > 0);
-	enable_termios(minishell->term);
-	return (1);
+    if (!ast)
+        return (0);
+    disable_termios(minishell->term);
+    input = STDIN_FILENO;
+    while (ast)
+    {
+        if (ast->type == FULL_COMMAND)
+        {
+            if (ast->next && ast->next->type == FULL_COMMAND)
+            {
+                if (pipe(fd) == -1)
+                {
+                    ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
+                    return (0);
+                }
+                output = fd[1];
+                to_close = fd[0];
+            }
+            else
+            {
+                output = STDOUT_FILENO;
+                to_close = -1;
+            }
+            if (!execute_cmd(minishell, ast, input, output, to_close))
+            {
+                if (input != STDIN_FILENO)
+                    close(input);
+                if (output != STDOUT_FILENO)
+                    close(output);
+                return (0);
+            }
+            if (input != STDIN_FILENO)
+                close(input);
+            if (output != STDOUT_FILENO)
+                close(output);
+            input = fd[0];
+            if (ast->prev && ast->prev->type == FULL_COMMAND)
+                close(fd[1]);
+        }
+        ast = ast->next;
+    }
+    // Attend tous les processus enfants et récupère l'exit code du dernier
+    while ((wait(&status)) > 0);
+
+    enable_termios(minishell->term);
+
+    // Vérifie si le dernier processus s'est terminé correctement
+    if (WIFEXITED(status))
+        return (WEXITSTATUS(status));
+    else
+        return (-1); // Retourne -1 en cas d'erreur
 }
+
 
 /**
  * @brief Execute the command given in input
  *
  * @param t_minishell *minishell
  * @param char *input
- * @return int 1 on success, 0 on failure
+ * @return 0 on success -1 on exit request
  */
 int	execute(t_minishell *minishell, char *input)
 {
@@ -201,5 +211,6 @@ int	execute(t_minishell *minishell, char *input)
 	free(trimmed);
 	res = execute_cmds(minishell, ast);
 	free_ast(ast);
+    minishell->exit_code = res;
 	return (res);
 }

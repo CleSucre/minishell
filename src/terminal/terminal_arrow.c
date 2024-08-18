@@ -23,7 +23,6 @@ void	arrow_up_action(t_minishell *minishell,
 {
 	char	*cmd;
 
-    ft_printf("debug arrow_up_action\n");
 	if (minishell->history_pos == 0)
 	{
 		ft_tabfree(minishell->cache->input);
