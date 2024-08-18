@@ -42,11 +42,14 @@ void	print_key_x(char *key, int x);
 // #							BST						  #
 // ########################################################
 
-t_dict	*insert_node(t_dict *root, char *key, char *value);
+t_dict	*insert_node(t_dict *root, t_dict *node, char *key, char *value);
+
+//t_dict	*insert_node(t_dict *root, char *key, char *value);
 t_dict	*create_node(char *key, char *value);
 t_dict	*search_node(t_dict *root, char *key);
 t_dict	*move_in_bst(t_dict *dict, int key);
-t_dict	*cut_node(t_dict *root, char *key);
+//t_dict	*cut_node(t_dict *root, char *key);
+void	cut_node(t_dict *root, char *key);
 t_dict	*bst_copy(t_dict *root);
 size_t	bst_size(t_dict *root);
 void	free_node(t_dict *node);
