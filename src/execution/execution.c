@@ -6,11 +6,23 @@
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 09:13:44 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:53:22 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Handle the signal
+ *
+ * @param int sig
+ * @eturn void
+ */
+void	handle_signal(int sig)
+{
+	if (sig == SIGUSR1)
+		ft_putstr_fd("Received SIGUSR1 signal\n", STDOUT_FILENO);
+}
 
 /**
  * @brief Execute the command given in input
@@ -18,51 +30,74 @@
  * @param t_cmd *cmd
  * @return int 0 on success, 1 on failure
  */
-static int	execute_path(t_cmd *cmd)
-{
-	pid_t	pid;
-	int		status;
+static int execute_path(t_cmd *cmd) {
+	if (execve(cmd->path, cmd->argv, cmd->env) == -1) {
+		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n", cmd->cmd_name);
+		exit(127);
+	}
+	return 0;
+}
 
+static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output, int to_close)
+{
+	t_cmd				*cmd;
+	struct sigaction	sa;
+	pid_t				pid;
+
+	if (!ast)
+		return (0);
+	cmd = load_command(minishell, ast->children, input, output);
+	if (!cmd)
+		return (0);
+	if (is_builtin_command(cmd))
+	{
+		execute_builtin_command(minishell, cmd);
+		free_cmd(cmd);
+		return (1);
+	}
+	sa.sa_handler = handle_signal;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		return (1);
+	}
 	pid = fork();
 	if (pid < 0)
 	{
 		ft_putstr_fd("Error: fork failed\n", STDERR_FILENO);
-		cmd->exit_status = 1;
+		free_cmd(cmd);
 		return (0);
 	}
 	else if (pid == 0)
 	{
-		dup2(cmd->input, STDIN_FILENO);
-		dup2(cmd->output, STDOUT_FILENO);
-		if (cmd->input != STDIN_FILENO)
-			close(cmd->input);
-		if (cmd->output != STDOUT_FILENO)
-			close(cmd->output);
-		if (cmd->fd_to_close != -1)
-			close(cmd->fd_to_close);
-		if (execve(cmd->cmd_exec, cmd->argv, cmd->env) == -1)
+		if (sigaction(SIGUSR1, &sa, NULL) == -1)
 		{
-			ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
-				cmd->cmd_name);
-			cmd->exit_status = 127;
-			return (1);
+			perror("sigaction");
+			exit(EXIT_FAILURE);
 		}
+		if (input != STDIN_FILENO)
+		{
+			dup2(input, STDIN_FILENO);
+			close(input);
+		}
+		if (output != STDOUT_FILENO)
+		{
+			dup2(output, STDOUT_FILENO);
+			close(output);
+		}
+		if (to_close != -1)
+			close(to_close);
+		execute_path(cmd);
+		free_cmd(cmd);
+		exit(0);
 	}
-	waitpid(pid, &status, 0);
-	cmd->exit_status = WEXITSTATUS(status);
-	return (0);
-}
-
-static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)
-{
-	int	custom_cmd_res;
-
-	if (!cmd)
-		return (0);
-	custom_cmd_res = execute_custom_command(minishell, cmd);
-	if (custom_cmd_res)
-		return (custom_cmd_res);
-	execute_path(cmd);
+	if (input != STDIN_FILENO)
+		close(input);
+	if (output != STDOUT_FILENO)
+		close(output);
+	free_cmd(cmd);
 	return (1);
 }
 
@@ -71,68 +106,59 @@ static int	execute_cmd(t_minishell *minishell, t_cmd *cmd)
  *
  * @param t_minishell *minishell
  * @param t_ast *ast
- * @param int *pipe_fd
- * @param int fd_to_close
  * @return int 1 on success, 0 on failure
  */
-static int	execute_cmds(t_minishell *minishell, t_ast *ast, int *pipe_fd)
+static int execute_cmds(t_minishell *minishell, t_ast *ast)
 {
-	t_cmd			*cmd;
-	unsigned int	i;
-	int				fd[2];
-	unsigned int	len;
+	int	fd[2];
+	int input;
+	int output;
+	int to_close;
 
 	if (!ast)
 		return (0);
-	len = ast_count_type(ast, FULL_COMMAND);
-	i = 0;
+	disable_termios(minishell->term);
+	input = STDIN_FILENO;
 	while (ast)
 	{
 		if (ast->type == FULL_COMMAND)
 		{
-			if (i < len - 1)
+			if (ast->next && ast->next->type == FULL_COMMAND)
 			{
-				pipe(fd);
-				pipe_fd[1] = fd[1];
-				cmd = load_command(minishell, ast->children, pipe_fd, fd[0]);
-				if (cmd)
+				if (pipe(fd) == -1)
 				{
-					execute_cmd(minishell, cmd);
-					free_cmd(cmd);
-					close(fd[1]);
+					ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
+					return (0);
 				}
-				if (pipe_fd[0] != STDIN_FILENO)
-					close(pipe_fd[0]);
-				pipe_fd[0] = fd[0];
+				output = fd[1];
+				to_close = fd[0];
 			}
 			else
 			{
-				pipe_fd[1] = STDOUT_FILENO;
-				if (len > 1)
-					cmd = load_command(minishell, ast->children, pipe_fd,
-							fd[1]);
-				else
-					cmd = load_command(minishell, ast->children, pipe_fd, -1);
-				if (cmd)
-				{
-					execute_cmd(minishell, cmd);
-					free_cmd(cmd);
-				}
-				if (len > 1)
-				{
-					close(fd[0]);
-					close(fd[1]);
-				}
-				if (pipe_fd[0] != STDIN_FILENO)
-					close(pipe_fd[0]);
-				if (pipe_fd[1] != STDOUT_FILENO)
-					close(pipe_fd[1]);
+				output = STDOUT_FILENO;
+				to_close = -1;
 			}
-			i++;
+			if (!execute_cmd(minishell, ast, input, output, to_close))
+			{
+				if (input != STDIN_FILENO)
+					close(input);
+				if (output != STDOUT_FILENO)
+					close(output);
+				return (0);
+			}
+			if (input != STDIN_FILENO)
+				close(input);
+			if (output != STDOUT_FILENO)
+				close(output);
+			input = fd[0];
+			if (ast->prev && ast->prev->type == FULL_COMMAND)
+				close(fd[1]);
 		}
 		ast = ast->next;
 	}
-	return (0);
+	while (wait(NULL) > 0);
+	enable_termios(minishell->term);
+	return (1);
 }
 
 /**
@@ -146,26 +172,27 @@ int	execute(t_minishell *minishell, char *input)
 {
 	t_ast	*ast;
 	int		res;
-	int		pipe_fd[2];
+	char 	*trimmed;
 
 	if (ft_strlen(input) == 0)
+    {
+        terminal_print("", 1, STDOUT_FILENO);
+        return (1);
+    }
+	trimmed = ft_strtrim(input, WHITESPACES);
+	if (!trimmed)
 		return (0);
-	input = ft_strtrim(input, WHITESPACES);
-	if (!input)
-		return (0);
-	debug_execution(input);
-	if (ft_isprint(*input))
-		history_add(minishell, input, 1);
-	ast = parse_input(minishell, input);
+	debug_execution(trimmed);
+	if (ft_isprint(*trimmed))
+		history_add(minishell, trimmed, 1);
+	ast = parse_input(minishell, trimmed);
 	if (!ast)
 	{
-		free(input);
+		free(trimmed);
 		return (0);
 	}
-	pipe_fd[0] = STDIN_FILENO;
-	pipe_fd[1] = STDOUT_FILENO;
-	res = execute_cmds(minishell, ast, pipe_fd);
+	free(trimmed);
+	res = execute_cmds(minishell, ast);
 	free_ast(ast);
-	free(input);
 	return (res);
 }

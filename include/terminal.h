@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:34:45 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@
 // #						TERMINAL					  #
 // ########################################################
 
-int				interpret_escape_sequence(t_minishell *minishell, char **input, size_t cols);
-char        	*put_in_string(t_minishell *minishell, char *input, char c);
-char			*erase_in_string(t_minishell *minishell, char *input);
+int				interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input);
 int				use_termios(t_minishell *minishell);
 
 // ########################################################
@@ -58,9 +56,10 @@ int				use_termios(t_minishell *minishell);
 // ########################################################
 
 void			set_tabstop(t_minishell *minishell);
-void			reset_input(char **input);
+void			reset_input(char ***input);
 void			move_cursor_back(size_t position);
-int				process_action(t_minishell *minishell, char c, char **input);
+int				process_signals(t_minishell *minishell, char c, char ***input);
+int				process_action(t_minishell *minishell, char *new, char ***input);
 
 // ########################################################
 // #				TERMINAL-INFORMATION				  #
@@ -78,7 +77,6 @@ void			move_cursor(t_term *term, int x, int y);
 
 void			terminal_print(char *str, int nl, int fd);
 void			reset_stdin(t_minishell *minishell);
-void			reset_input(char **input);
 
 // ########################################################
 // #					TERMINAL-CURSOR					  #
@@ -91,8 +89,8 @@ void			move_cursor_back(size_t position);
 // #						ERASE_PUT					  #
 // ########################################################
 
-char			*put_in_string(t_minishell *minishell, char *input, char c);
-char			*erase_in_string(t_minishell *minishell, char *input);
+void			put_in_string(t_minishell *minishell, char ***input, char *new);
+void			erase_in_string(t_minishell *minishell, char ***input);
 void			erase_term(size_t len);
 
 // ########################################################
@@ -100,9 +98,9 @@ void			erase_term(size_t len);
 // ########################################################
 
 void			arrow_up_action(t_minishell *minishell,
-					char **input, t_history *new_history);
+					char ***input, t_history *new_history);
 void			arrow_down_action(t_minishell *minishell,
-					char **input, t_history *new_history);
+					char ***input, t_history *new_history);
 void			arrow_left_action(t_minishell *minishell);
 void			arrow_right_action(t_minishell *minishell);
 
