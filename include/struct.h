@@ -88,6 +88,7 @@ typedef struct s_minishell
 	t_completion	*completion;
 	t_dict			*dict;
 	t_dict			*tab_dict;
+    char            **input;
 	char			**env;
 	int				exit_code;
 	unsigned int	history_pos;

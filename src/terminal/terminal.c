@@ -76,13 +76,12 @@ void	set_tabstop(t_minishell *minishell)
  */
 int	use_termios(t_minishell *minishell)
 {
-	char	**input;
 	char	buffer[256];
 	int		signal;
 	ssize_t bits;
 
-	input = ft_calloc(1, sizeof(char *));
-	if (input == NULL)
+    minishell->input = ft_calloc(1, sizeof(char *));
+	if (minishell->input == NULL)
 		return (1);
 
 	set_tabstop(minishell);
@@ -92,7 +91,7 @@ int	use_termios(t_minishell *minishell)
 	while (1)
 	{
 		get_terminal_size(minishell->term);
-		minishell->term->begin_rows = ft_tablen((const char **)input) % 4294967295;
+		minishell->term->begin_rows = ft_tablen((const char **)minishell->input) % 4294967295;
 		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 		if (bits == -1)
 		{
@@ -100,7 +99,7 @@ int	use_termios(t_minishell *minishell)
 			return (1);
 		}
 		buffer[bits] = '\0';
-		signal = process_signals(minishell, buffer[0], &input);
+		signal = process_signals(minishell, buffer[0], &minishell->input);
 		if (signal == 1)
         {
             ft_bzero(buffer, sizeof(buffer));
@@ -108,13 +107,13 @@ int	use_termios(t_minishell *minishell)
         }
 		if (signal == 2)
 			break ;
-		if (process_action(minishell, buffer, &input))
+		if (process_action(minishell, buffer, &minishell->input))
 			break ;
         ft_bzero(buffer, sizeof(buffer));
 	}
 	terminal_print(TERMINAL_EXIT_MSG, 1, STDOUT_FILENO);
 	ft_printf("\nexit %d\n", minishell->exit_code);
 	terminal_print("", 1, STDOUT_FILENO);
-	ft_tabfree(input);
+	ft_tabfree(minishell->input);
 	return (0);
 }
