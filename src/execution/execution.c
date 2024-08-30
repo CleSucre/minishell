@@ -95,7 +95,6 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 			close(to_close);
 		err = execute_path(cmd);
         free_cmd(cmd);
-        ft_tabfree(minishell->input);
         free_minishell(minishell);
         free_ast(ast);
         exit(err);

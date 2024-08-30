@@ -48,7 +48,7 @@
 // #						TERMINAL					  #
 // ########################################################
 
-int				interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input);
+int				interpret_escape_sequence(t_minishell *minishell, const char *seq);
 int				use_termios(t_minishell *minishell);
 
 // ########################################################
@@ -58,8 +58,8 @@ int				use_termios(t_minishell *minishell);
 void			set_tabstop(t_minishell *minishell);
 void			reset_input(char ***input);
 void			move_cursor_back(size_t position);
-int				process_signals(t_minishell *minishell, char c, char ***input);
-int				process_action(t_minishell *minishell, char *new, char ***input);
+int				process_signals(t_minishell *minishell, char c);
+int				process_action(t_minishell *minishell, char *new);
 
 // ########################################################
 // #				TERMINAL-INFORMATION				  #
@@ -84,23 +84,22 @@ void			reset_stdin(t_minishell *minishell);
 
 void			move_cursor_forward(size_t position);
 void			move_cursor_back(size_t position);
+void            move_cursor_down(size_t position);
 
 // ########################################################
 // #						ERASE_PUT					  #
 // ########################################################
 
-void			put_in_string(t_minishell *minishell, char ***input, char *new);
-void			erase_in_string(t_minishell *minishell, char ***input);
+void			put_in_string(t_minishell *minishell, char *new);
+void			erase_in_string(t_minishell *minishell);
 void			erase_term(size_t len);
 
 // ########################################################
 // #					TERMINAL_ARROW					  #
 // ########################################################
 
-void			arrow_up_action(t_minishell *minishell,
-					char ***input, t_history *new_history);
-void			arrow_down_action(t_minishell *minishell,
-					char ***input, t_history *new_history);
+void			arrow_up_action(t_minishell *minishell, t_history *new_history);
+void			arrow_down_action(t_minishell *minishell, t_history *new_history);
 void			arrow_left_action(t_minishell *minishell);
 void			arrow_right_action(t_minishell *minishell);
 

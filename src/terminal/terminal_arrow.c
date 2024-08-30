@@ -16,24 +16,23 @@
  * @brief Process action of cursor up
  *
  * @param t_minishell *minishell
- * @param char **input
+ * @param t_history *new_history
  */
-void	arrow_up_action(t_minishell *minishell,
-		char ***input, t_history *new_history)
+void	arrow_up_action(t_minishell *minishell, t_history *new_history)
 {
 	char	*cmd;
 
 	if (minishell->history_pos == 0)
 	{
 		ft_tabfree(minishell->cache->input);
-		minishell->cache->input = ft_tabdup((const char **)*input);
+		minishell->cache->input = ft_tabdup((const char **)minishell->input);
 	}
 	cmd = ft_utf8_tab_to_str(minishell->cache->input);
 	new_history = history_find_up(minishell, cmd);
 	if (new_history && new_history->cmd)
 	{
-		ft_tabfree(*input);
-		*input = ft_utf8_split_chars(new_history->cmd);
+		ft_tabfree(minishell->input);
+        minishell->input = ft_utf8_split_chars(new_history->cmd);
 		ft_putstr_fd("\033[1000D", STDOUT_FILENO);
 		terminal_print("\033[2K", 0, STDOUT_FILENO);
 		print_terminal_prompt(minishell, 0);
@@ -49,8 +48,7 @@ void	arrow_up_action(t_minishell *minishell,
  * @param t_minishell *minishell
  * @param char **input
  */
-void	arrow_down_action(t_minishell *minishell,
-			char ***input, t_history *new_history)
+void	arrow_down_action(t_minishell *minishell, t_history *new_history)
 {
 	char	*cmd;
 
@@ -58,7 +56,7 @@ void	arrow_down_action(t_minishell *minishell,
 	if (minishell->history_pos == 0)
 	{
 		ft_tabfree(minishell->cache->input);
-		minishell->cache->input = ft_tabdup((const char **)*input);
+		minishell->cache->input = ft_tabdup((const char **)minishell->input);
 	}
 	cmd = ft_utf8_tab_to_str(minishell->cache->input);
 	new_history = history_find_down(minishell, cmd);
@@ -67,8 +65,8 @@ void	arrow_down_action(t_minishell *minishell,
 		free(cmd);
 		cmd = ft_strdup(new_history->cmd);
 	}
-	ft_tabfree(*input);
-	*input = ft_utf8_split_chars(cmd);
+	ft_tabfree(minishell->input);
+    minishell->input = ft_utf8_split_chars(cmd);
 	ft_putstr_fd("\033[1000D", 1);
 	terminal_print("\033[2K", 0, STDOUT_FILENO);
 	print_terminal_prompt(minishell, 0);
