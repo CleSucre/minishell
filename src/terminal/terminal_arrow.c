@@ -71,6 +71,7 @@ void	arrow_down_action(t_minishell *minishell, t_history *new_history)
 	terminal_print("\033[2K", 0, STDOUT_FILENO);
 	print_terminal_prompt(minishell, 0);
 	terminal_print(cmd, 0, STDOUT_FILENO);
+
 	free(cmd);
 	get_cursor_position(minishell->term);
 }
