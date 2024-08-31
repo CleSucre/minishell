@@ -16,20 +16,17 @@
  * @brief Add a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
  *
- * @param char *input	string to add char
- * @param char c		char to add
- * @param cols			Position to add char
  * @return void
  */
-void	put_in_string(t_minishell *minishell, char ***input, char *new)
+void	put_in_string(t_minishell *minishell, char *new)
 {
 	char	*str;
 
-	*input = ft_tabinsert(*input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
+    minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
 	ft_putstr_fd("\033[s", 1);
 	reset_stdin(minishell);
-	str = ft_utf8_tab_to_str(*input);
-	terminal_print(str, 0, STDOUT_FILENO);
+	str = ft_utf8_tab_to_str(minishell->input);
+	ft_fprintf(STDOUT_FILENO, str );
 	free(str);
 	ft_putstr_fd("\033[u\033[1C", 1);
 }
@@ -42,7 +39,7 @@ void	put_in_string(t_minishell *minishell, char ***input, char *new)
  * @param size_t cols	Position to delete char
  * @return void
  */
-void	erase_in_string(t_minishell *minishell, char ***input)
+void	erase_in_string(t_minishell *minishell)
 {
 	char			*res;
 	unsigned int	cols;
@@ -51,9 +48,9 @@ void	erase_in_string(t_minishell *minishell, char ***input)
 	if (cols <= get_prompt_len(minishell))
 		return ;
 	ft_putstr_fd("\033[s", 1);
-	ft_tabdel(*input, (unsigned int)cols - get_prompt_len(minishell) - 2);
+	ft_tabdel(minishell->input, (unsigned int)cols - get_prompt_len(minishell) - 2);
 	reset_stdin(minishell);
-	res = ft_utf8_tab_to_str(*input);
+	res = ft_utf8_tab_to_str(minishell->input);
 	terminal_print(res, 0, STDOUT_FILENO);
 	free(res);
 	ft_putstr_fd("\033[u", 1);

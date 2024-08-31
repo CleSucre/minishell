@@ -39,13 +39,14 @@ static void	history_free(t_history *history)
  */
 void	free_minishell(t_minishell *minishell)
 {
-	free(minishell->cache->input);
+    ft_tabfree(minishell->cache->input);
 	free(minishell->cache);
 	free(minishell->term);
 	history_free(minishell->history);
 	free_branch(minishell->tab_dict);
 	free_branch(minishell->dict);
 	free(minishell->completion);
+    ft_tabfree(minishell->input);
 	free(minishell);
 }
 
@@ -73,7 +74,6 @@ void	free_ast(t_ast *ast)
 void	free_cmd(t_cmd *cmd)
 {
 	free(cmd->cmd_name);
-	//free(cmd->cmd_exec);
 	ft_tabfree(cmd->argv);
 	free(cmd->path);
 	free(cmd);
