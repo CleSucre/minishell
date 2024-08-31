@@ -158,9 +158,9 @@ int	tab_action(t_minishell *minishell, char **input)
  * @param c
  * @return
  */
-int	tab_manager(t_minishell *minishell, char ***input, char *new)
+int	tab_manager(t_minishell *minishell, char *new)
 {
-	if(new[0] == '\t' && !*input)
+	if(new[0] == '\t' && !minishell->input)
 		return (1);
 	if (new[0] == 'n')
 	{
@@ -168,17 +168,17 @@ int	tab_manager(t_minishell *minishell, char ***input, char *new)
 		minishell->completion->check_len = 0;
 		minishell->completion->print_line = 1;
 		free_branch(minishell->tab_dict);
-		ft_putstr_fd(**input, 1);
+		ft_putstr_fd(*minishell->input, 1);
 		return (1);
 	}
 	else
-		*input = ft_tabjoin(*input, ft_utf8_split_chars(new));
+        minishell->input = ft_tabjoin(minishell->input, ft_utf8_split_chars(new));
 	if (minishell->completion->tab_count == 0 && new[0] == 'y'
 		&& minishell->completion->check_len == 0)
-		tab_print(minishell, minishell->tab_dict, *input);
+		tab_print(minishell, minishell->tab_dict, minishell->input);
 	else if (minishell->completion->tab_count == 0)
-		tab_completion(minishell, *input);
+		tab_completion(minishell, minishell->input);
 	else
-		tab_action(minishell, *input);
+		tab_action(minishell, minishell->input);
 	return (0);
 }
