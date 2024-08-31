@@ -74,28 +74,31 @@ static void	ctrl_c_action(t_minishell *minishell)
 
 static void	edit_input(t_minishell *minishell, char *new)
 {
-	if (minishell->completion->check_len == 1)
+	if (minishell->completion->tab_count > 0)
 	{
+		*input = ft_tabjoin(*input, ft_utf8_split_chars(new));
+		ft_putstr_fd(new, STDOUT_FILENO);
+		minishell->term->cols++;
+		if (minishell->tab_dict)
+			free_branch(minishell->tab_dict);
+		minishell->tab_dict = NULL;
+		minishell->completion->tab_count = 0;
 		minishell->completion->check_len = 0;
-		ft_putstr_fd(minishell->input[0], STDOUT_FILENO);
-		return ;
+
+		minishell->completion->print_line = 1;
 	}
-	if (minishell->term->cols
-		!= get_prompt_len(minishell) + ft_tablen((const char **)minishell->input) + 1)
-    {
-        get_terminal_size(minishell->term);
-        if (minishell->term->cols == minishell->term->ws_cols) {
-            minishell->term->cols = 0;
-            move_cursor_down(1);
-        }
-        put_in_string(minishell, new);
-    }
+	else if (minishell->term->cols
+		!= get_prompt_len(minishell) + ft_tablen((const char **)*input) + 1)
+        put_in_string(minishell, input, new);
 	else
 	{
-        minishell->input = ft_tabjoin(minishell->input, ft_utf8_split_chars(new));
+		minishell->completion->check_len = 0;
+		minishell->term->cols++;
+		*input = ft_tabjoin(*input, ft_utf8_split_chars(new));
 		ft_putstr_fd(new, STDOUT_FILENO);
 	}
-    get_cursor_position(minishell->term);
+
+    minishell->term->cols = ft_tablen((const char **)*input) + get_prompt_len(minishell) + 1;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
@@ -139,12 +142,10 @@ int	process_action(t_minishell *minishell, char *new)
     char    c;
 
     c = new[0];
-    /*
-	else if (c == '\t' || (minishell->completion->tab_count == 0
-			&& (c == 'y' || c == 'n')))
-		tab_manager(minishell, *input, c);
-     */
-	if (c == BACKSPACE)
+  if (c == '\t' || minishell->completion->check_len == 1
+			&& (minishell->completion->tab_count == 0 && (c == 'y' || c == 'n')))
+		tab_manager(minishell, input, new);
+	else if (c == BACKSPACE)
 		backspace_action(minishell);
 	else if (c == CARRIAGE_RETURN && minishell->completion->tab_count != 0)
 		prompt_completion(minishell, minishell->input);

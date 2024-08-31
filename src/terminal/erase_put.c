@@ -20,7 +20,7 @@
  */
 void	put_in_string(t_minishell *minishell, char *new)
 {
-	char 			*str;
+	char	*str;
 
     minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
 	ft_putstr_fd("\033[s", 1);

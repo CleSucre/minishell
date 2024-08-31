@@ -140,7 +140,7 @@ size_t	bst_size(t_dict *root)
 	if (root->parent)
 		root->position = root->parent->position + 1;
 	else
-		root->position = 0;
+		root->position = 1;
 	if (root->left_branch)
 		size += bst_size(root->left_branch);
 	if (root->right_branch)
@@ -226,6 +226,12 @@ void	stress_print(t_minishell *minishell, t_dict *dict)
 	term = ft_calloc(1, sizeof(t_term));
 	get_cursor_position(term);
 	get_terminal_size(term);
+	if (!dict)
+	{
+		free(term);
+		term = NULL;
+		return ;
+	}
 	if (((ft_strlen(dict->key) + term->cols)
 			+ term->ws_cols / 5) < term->ws_cols)
 	{
@@ -253,4 +259,5 @@ void	stress_print(t_minishell *minishell, t_dict *dict)
 	if (dict->right_branch)
 		stress_print(minishell, dict->right_branch);
 	free(term);
+	term = NULL;
 }
