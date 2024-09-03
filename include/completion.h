@@ -17,7 +17,7 @@
 // #					TAB_COMPLETION					  #
 // ########################################################
 
-int		tab_manager(t_minishell *minishell, char **input, char c);
+int		tab_manager(t_minishell *minishell, char *new);
 int		tab_completion(t_minishell *minishell, char **input);
 void	tab_print(t_minishell *minishell, t_dict *dict, char **input);
 //void	stress_print(t_dict *dict);

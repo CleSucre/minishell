@@ -21,7 +21,7 @@
  * @param input			Current input from user
  * @return int			1 if an action is done, 0 if not
  */
-int	interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***input)
+int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 {
 	t_history	*new_history;
 
@@ -29,10 +29,10 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq, char ***i
 	{
 		new_history = NULL;
 		if (seq[2] == U_ARROW)
-			arrow_up_action(minishell, input, new_history);
+			arrow_up_action(minishell, new_history);
 		else if (seq[2] == D_ARROW)
-			arrow_down_action(minishell, input, new_history);
-		else if (seq[2] == R_ARROW && minishell->term->cols < ft_tablen((const char **)*input) + get_prompt_len(minishell) + 1)
+			arrow_down_action(minishell, new_history);
+		else if (seq[2] == R_ARROW && minishell->term->cols < ft_tablen((const char **)minishell->input) + get_prompt_len(minishell) + 1)
 			arrow_right_action(minishell);
 		else if (seq[2] == L_ARROW && minishell->term->cols > get_prompt_len(minishell) + 1)
 			arrow_left_action(minishell);
@@ -55,16 +55,16 @@ void	set_tabstop(t_minishell *minishell)
 	ft_putstr_fd("\033[3g", 1);
 	while (j < minishell->term->ws_rows)
 	{
-		while (i < minishell->term->ws_cols)
-		{
-			i += 4;
-			ft_putstr_fd("\033[4C", 1);
-			ft_putstr_fd("\033H", 1);
-		}
-		ft_putstr_fd("\033[B", 1);
-		j++;
-		i = 0;
-	}
+        while (i < minishell->term->ws_cols)
+        {
+            i += 4;
+            ft_putstr_fd("\033[4C", 1);
+            ft_putstr_fd("\033H", 1);
+        }
+        ft_putstr_fd("\033[B", 1);
+        j++;
+        i = 0;
+    }
 	ft_putstr_fd("\033[u", 1);
 }
 
@@ -80,18 +80,16 @@ int	use_termios(t_minishell *minishell)
 	int		signal;
 	ssize_t bits;
 
-    minishell->input = ft_calloc(1, sizeof(char *));
-	if (minishell->input == NULL)
-		return (1);
-
 	set_tabstop(minishell);
-	creation_dict(minishell);
-	print_terminal_prompt(minishell, 1);
-	get_cursor_position(minishell->term);
-	while (1)
+    creation_dict(minishell);
+
+    print_terminal_prompt(minishell, 1);
+    get_cursor_position(minishell->term);
+    while (1)
 	{
 		get_terminal_size(minishell->term);
-		minishell->term->begin_rows = ft_tablen((const char **)minishell->input) % 4294967295;
+		minishell->term->begin_rows = ft_tablen((const char **)minishell->input) % 4294967295; //TODO: what is this magic number?
+
 		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 		if (bits == -1)
 		{
@@ -99,21 +97,18 @@ int	use_termios(t_minishell *minishell)
 			return (1);
 		}
 		buffer[bits] = '\0';
-		signal = process_signals(minishell, buffer[0], &minishell->input);
+		signal = process_signals(minishell, buffer[0]);
 		if (signal == 1)
         {
             ft_bzero(buffer, sizeof(buffer));
             continue ;
         }
-		if (signal == 2)
-			break ;
-		if (process_action(minishell, buffer, &minishell->input))
+		if (signal == 2 || process_action(minishell, buffer))
 			break ;
         ft_bzero(buffer, sizeof(buffer));
 	}
-	terminal_print(TERMINAL_EXIT_MSG, 1, STDOUT_FILENO);
-	ft_printf("\nexit %d\n", minishell->exit_code);
-	terminal_print("", 1, STDOUT_FILENO);
-	ft_tabfree(minishell->input);
+    ft_fprintf(STDOUT_FILENO, "\n");
+    ft_fprintf(STDOUT_FILENO, TERMINAL_EXIT_MSG);
+    ft_fprintf(STDOUT_FILENO, "\n");
 	return (0);
 }
