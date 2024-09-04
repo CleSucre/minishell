@@ -88,7 +88,7 @@ static void	edit_input(t_minishell *minishell, char *new)
 		minishell->tab_dict = NULL;
 	}
 	minishell->term->cols = ft_tablen((const char **)minishell->input) + get_prompt_len(minishell) + 1;
-	get_cursor_position(minishell->term);
+	//get_cursor_position(minishell->term);
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
