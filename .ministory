@@ -116,3 +116,46 @@ cd li
 exit
 las
 exit
+echo "s"alut
+ls
+ls
+ls -la
+ls
+ls -la
+echo "salut"
+echo '"salut"'
+exit
+ls
+ls -la
+echo "s"alut
+echo "salut"
+echo '"salut"'
+echo '"sal'ut"'
+echo '"s'al'ut"''
+echo '"s'a'l'ut"''
+echo '"s'a'l'u't"''
+echo '"s'a'l'u't"'
+exit
+ls
+exit
+ls
+ls
+echo '"s'a'l'u't"'
+ls
+echo '"s'a'l'u't"'
+ls
+echo '"s'a'l'u't"'
+ls
+ls
+ls -la
+echo "s"alut
+ls
+exit
+ls
+clear
+exit
+ls
+exit
+ls
+ls
+exit

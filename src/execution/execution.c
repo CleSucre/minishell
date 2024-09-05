@@ -128,6 +128,7 @@ static int	execute_cmds(t_minishell *minishell, t_ast *ast)
 	if (!ast)
 		return (0);
 	disable_termios(minishell->term);
+	status = 0;
 	input = STDIN_FILENO;
 	while (ast)
 	{

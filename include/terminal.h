@@ -49,7 +49,7 @@
 // ########################################################
 
 int				interpret_escape_sequence(t_minishell *minishell, const char *seq);
-int				use_termios(t_minishell *minishell);
+void			use_termios(t_minishell *minishell);
 
 // ########################################################
 // #					TERMINAL-ACTION					  #

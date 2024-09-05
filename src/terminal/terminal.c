@@ -45,72 +45,62 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 }
 
 /**
- * @brief Set tabstop every 4, will possibly be deleted
+ * @brief Initialize terminal and set tabstop before processing user input
+ *
+ * @param t_minishell *minishell
  */
-void	set_tabstop(t_minishell *minishell)
+static void	begin_user_input(t_minishell *minishell)
 {
-	size_t	i;
-	size_t	j;
+	set_tabstop(minishell);
+	creation_dict(minishell);
+	print_terminal_prompt(minishell, 1);
+	get_cursor_position(minishell->term);
+}
 
-	i = 0;
-	j = 0;
-	ft_putstr_fd("\033[s", 1);
-	ft_putstr_fd("\033[3g", 1);
-	while (j < minishell->term->ws_rows)
+/**
+ * @brief Process user input using termios
+ *
+ * @param t_minishell *minishell
+ * @return int 0 if no error, 1 if error
+ */
+int	process_user_input(t_minishell *minishell,
+				int signal, ssize_t bits)
+{
+	char	buffer[32];
+
+	get_terminal_size(minishell->term);
+	minishell->term->begin_rows
+		= ft_tablen((const char **)minishell->input) % MAX_32_BIT;
+	bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
+	if (bits == -1)
 	{
-		while (i < minishell->term->ws_cols)
-		{
-			i += 4;
-			ft_putstr_fd("\033[4C", 1);
-			ft_putstr_fd("\033H", 1);
-		}
-		ft_putstr_fd("\033[B", 1);
-		j++;
-		i = 0;
+		perror("read");
+		return (0);
 	}
-	ft_putstr_fd("\033[u", 1);
+	buffer[bits] = '\0';
+	signal = process_signals(minishell, buffer[0]);
+	if (signal == 1)
+		return (1);
+	if (signal == 2 || process_action(minishell, buffer))
+		return (0);
+	return (1);
 }
 
 /**
  * @brief Use termios to get input from user and process it
  *
  * @param t_minishell *minishell
- * @return int 0 if no error, 1 if error
+ * @return void
  */
-int	use_termios(t_minishell *minishell)
+void	use_termios(t_minishell *minishell)
 {
-	char	buffer[256];
 	int		signal;
 	ssize_t	bits;
 
-	set_tabstop(minishell);
-	creation_dict(minishell);
-	print_terminal_prompt(minishell, 1);
-	get_cursor_position(minishell->term);
-	while (1)
-	{
-		get_terminal_size(minishell->term);
-		minishell->term->begin_rows
-			= ft_tablen((const char **)minishell->input) % MAX_32_BIT;
-		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
-		if (bits == -1)
-		{
-			perror("read");
-			return (1);
-		}
-		buffer[bits] = '\0';
-		signal = process_signals(minishell, buffer[0]);
-		if (signal == 1)
-		{
-			ft_bzero(buffer, sizeof(buffer));
-			continue ;
-		}
-		if (signal == 2 || process_action(minishell, buffer))
-			break ;
-		ft_bzero(buffer, sizeof(buffer));
-	}
-	ft_fprintf(STDOUT_FILENO, "\n");
-	ft_fprintf(STDOUT_FILENO, TERMINAL_EXIT_MSG);
-	ft_fprintf(STDOUT_FILENO, "\n");
-	return (0);
+	signal = 0;
+	bits = 0;
+	begin_user_input(minishell);
+	while (process_user_input(minishell, signal, bits))
+		continue ;
+	ft_fprintf(STDOUT_FILENO, "\n%s\n", TERMINAL_EXIT_MSG);
 }

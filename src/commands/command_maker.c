@@ -28,7 +28,6 @@ static char	**get_argv(t_minishell *minishell, t_ast *cmd)
 	unsigned int	size;
 	int				i;
 
-	(void)minishell;
 	size = ast_len(cmd);
 	args = ft_calloc(size + 2, sizeof(char *));
 	if (!args)

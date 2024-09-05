@@ -14,7 +14,8 @@
 
 /**
  * @brief Move cursor backward from cols to n positions
- * @param position
+ *
+ * @param size_t position
  */
 void	move_cursor_back(size_t position)
 {
@@ -27,7 +28,8 @@ void	move_cursor_back(size_t position)
 
 /**
  * @brief Move cursor forward from cols to n positions
- * @param position
+ *
+ * @param size_t position
  */
 void	move_cursor_forward(size_t position)
 {
@@ -38,6 +40,11 @@ void	move_cursor_forward(size_t position)
 		ft_printf(CURSOR_RIGHT, 1);
 }
 
+/**
+ * @brief Move cursor up from cols to n positions
+ *
+ * @param size_t position
+ */
 void	move_cursor_down(size_t position)
 {
 	size_t	i;
