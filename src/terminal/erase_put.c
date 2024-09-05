@@ -22,11 +22,12 @@ void	put_in_string(t_minishell *minishell, char *new)
 {
 	char	*str;
 
-    minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
+	minishell->input = ft_tabinsert(minishell->input, new,
+			minishell->term->cols - get_prompt_len(minishell) - 1);
 	ft_putstr_fd("\033[s", 1);
 	reset_stdin(minishell);
 	str = ft_utf8_tab_to_str(minishell->input);
-	ft_fprintf(STDOUT_FILENO, str );
+	ft_fprintf(STDOUT_FILENO, str);
 	free(str);
 	ft_putstr_fd("\033[u\033[1C", 1);
 }
@@ -48,7 +49,8 @@ void	erase_in_string(t_minishell *minishell)
 	if (cols <= get_prompt_len(minishell))
 		return ;
 	ft_putstr_fd("\033[s", 1);
-	ft_tabdel(minishell->input, (unsigned int)cols - get_prompt_len(minishell) - 2);
+	ft_tabdel(minishell->input,
+		(unsigned int)cols - get_prompt_len(minishell) - 2);
 	reset_stdin(minishell);
 	res = ft_utf8_tab_to_str(minishell->input);
 	terminal_print(res, 0, STDOUT_FILENO);

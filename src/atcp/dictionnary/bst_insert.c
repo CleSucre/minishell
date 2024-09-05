@@ -36,7 +36,6 @@ static void	insert_l_node(t_dict *root, t_dict *node, char *key, char *value)
 		insert_node(root->left_branch, node, key, value);
 }
 
-
 /**
  * @brief Insert a new node in the BST as the right child of the root
  * @param root - parent node

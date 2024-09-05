@@ -32,9 +32,12 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 			arrow_up_action(minishell, new_history);
 		else if (seq[2] == D_ARROW)
 			arrow_down_action(minishell, new_history);
-		else if (seq[2] == R_ARROW && minishell->term->cols < ft_tablen((const char **)minishell->input) + get_prompt_len(minishell) + 1)
+		else if (seq[2] == R_ARROW && minishell->term->cols
+			< ft_tablen((const char **)minishell->input)
+			+ get_prompt_len(minishell) + 1)
 			arrow_right_action(minishell);
-		else if (seq[2] == L_ARROW && minishell->term->cols > get_prompt_len(minishell) + 1)
+		else if (seq[2] == L_ARROW && minishell->term->cols
+			> get_prompt_len(minishell) + 1)
 			arrow_left_action(minishell);
 		return (1);
 	}
@@ -55,16 +58,16 @@ void	set_tabstop(t_minishell *minishell)
 	ft_putstr_fd("\033[3g", 1);
 	while (j < minishell->term->ws_rows)
 	{
-        while (i < minishell->term->ws_cols)
-        {
-            i += 4;
-            ft_putstr_fd("\033[4C", 1);
-            ft_putstr_fd("\033H", 1);
-        }
-        ft_putstr_fd("\033[B", 1);
-        j++;
-        i = 0;
-    }
+		while (i < minishell->term->ws_cols)
+		{
+			i += 4;
+			ft_putstr_fd("\033[4C", 1);
+			ft_putstr_fd("\033H", 1);
+		}
+		ft_putstr_fd("\033[B", 1);
+		j++;
+		i = 0;
+	}
 	ft_putstr_fd("\033[u", 1);
 }
 
@@ -78,18 +81,17 @@ int	use_termios(t_minishell *minishell)
 {
 	char	buffer[256];
 	int		signal;
-	ssize_t bits;
+	ssize_t	bits;
 
 	set_tabstop(minishell);
-    creation_dict(minishell);
-
-    print_terminal_prompt(minishell, 1);
-    get_cursor_position(minishell->term);
-    while (1)
+	creation_dict(minishell);
+	print_terminal_prompt(minishell, 1);
+	get_cursor_position(minishell->term);
+	while (1)
 	{
 		get_terminal_size(minishell->term);
-		minishell->term->begin_rows = ft_tablen((const char **)minishell->input) % 4294967295; //TODO: what is this magic number?
-
+		minishell->term->begin_rows
+			= ft_tablen((const char **)minishell->input) % MAX_32_BIT;
 		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 		if (bits == -1)
 		{
@@ -99,16 +101,16 @@ int	use_termios(t_minishell *minishell)
 		buffer[bits] = '\0';
 		signal = process_signals(minishell, buffer[0]);
 		if (signal == 1)
-        {
-            ft_bzero(buffer, sizeof(buffer));
-            continue ;
-        }
+		{
+			ft_bzero(buffer, sizeof(buffer));
+			continue ;
+		}
 		if (signal == 2 || process_action(minishell, buffer))
 			break ;
-        ft_bzero(buffer, sizeof(buffer));
+		ft_bzero(buffer, sizeof(buffer));
 	}
-    ft_fprintf(STDOUT_FILENO, "\n");
-    ft_fprintf(STDOUT_FILENO, TERMINAL_EXIT_MSG);
-    ft_fprintf(STDOUT_FILENO, "\n");
+	ft_fprintf(STDOUT_FILENO, "\n");
+	ft_fprintf(STDOUT_FILENO, TERMINAL_EXIT_MSG);
+	ft_fprintf(STDOUT_FILENO, "\n");
 	return (0);
 }

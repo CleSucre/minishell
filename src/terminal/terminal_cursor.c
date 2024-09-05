@@ -38,11 +38,11 @@ void	move_cursor_forward(size_t position)
 		ft_printf(CURSOR_RIGHT, 1);
 }
 
-void    move_cursor_down(size_t position)
+void	move_cursor_down(size_t position)
 {
-    size_t	i;
+	size_t	i;
 
-    i = 0;
-    while (i++ < position)
-        ft_printf(CURSOR_DOWN, 1);
+	i = 0;
+	while (i++ < position)
+		ft_printf(CURSOR_DOWN, 1);
 }

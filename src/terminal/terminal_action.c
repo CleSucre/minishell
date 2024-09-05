@@ -20,7 +20,7 @@
  */
 static void	backspace_action(t_minishell *minishell)
 {
-	size_t len;
+	size_t	len;
 
 	len = ft_tablen((const char **)minishell->input);
 	if (minishell->term->cols != minishell->term->ws_cols
@@ -58,37 +58,35 @@ static void	backspace_action(t_minishell *minishell)
  */
 static void	ctrl_c_action(t_minishell *minishell)
 {
-    ft_fprintf(STDOUT_FILENO, "^C");
-
+	ft_fprintf(STDOUT_FILENO, "^C");
 	reset_input(&minishell->input);
-
-    print_terminal_prompt(minishell, 1);
-
-    minishell->history_pos = 0;
+	print_terminal_prompt(minishell, 1);
+	minishell->history_pos = 0;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
-
-    get_cursor_position(minishell->term);
+	get_cursor_position(minishell->term);
 }
 
 static void	edit_input(t_minishell *minishell, char *new)
 {
 	if (minishell->term->cols
-		!= get_prompt_len(minishell) + ft_tablen((const char **)minishell->input) + 1)
-        put_in_string(minishell, new);
+		!= get_prompt_len(minishell)
+		+ ft_tablen((const char **)minishell->input) + 1)
+		put_in_string(minishell, new);
 	else
 	{
 		minishell->completion->check_len = 0;
 		minishell->term->cols++;
-		minishell->input = ft_tabjoin(minishell->input, ft_utf8_split_chars(new));
+		minishell->input = ft_tabjoin(minishell->input,
+				ft_utf8_split_chars(new));
 		ft_putstr_fd(new, STDOUT_FILENO);
 		if (minishell->tab_dict)
 			free_branch(minishell->tab_dict);
 		minishell->tab_dict = NULL;
 	}
-	minishell->term->cols = ft_tablen((const char **)minishell->input) + get_prompt_len(minishell) + 1;
-	//get_cursor_position(minishell->term);
+	minishell->term->cols = ft_tablen((const char **)minishell->input)
+		+ get_prompt_len(minishell) + 1;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
@@ -105,11 +103,11 @@ static void	edit_input(t_minishell *minishell, char *new)
 int	process_signals(t_minishell *minishell, char c)
 {
 	if (c == CTRL_D)
-    {
-        if (ft_tablen((const char **)minishell->input) == 0)
-            return (2);
-        return (1);
-    }
+	{
+		if (ft_tablen((const char **)minishell->input) == 0)
+			return (2);
+		return (1);
+	}
 	else if (c == CTRL_C)
 	{
 		ctrl_c_action(minishell);
@@ -128,12 +126,13 @@ int	process_signals(t_minishell *minishell, char c)
  */
 int	process_action(t_minishell *minishell, char *new)
 {
-    char    *str;
-    char    c;
+	char	*str;
+	char	c;
 
-    c = new[0];
-  if (c == '\t' || (minishell->completion->check_len == 1
-			&& (minishell->completion->tab_count == 0 && (c == 'y' || c == 'n'))))
+	c = new[0];
+	if (c == '\t' || (minishell->completion->check_len == 1
+			&& (minishell->completion->tab_count == 0
+				&& (c == 'y' || c == 'n'))))
 		tab_manager(minishell, new);
 	else if (c == BACKSPACE)
 		backspace_action(minishell);
@@ -141,7 +140,8 @@ int	process_action(t_minishell *minishell, char *new)
 		prompt_completion(minishell, minishell->input);
 	else if (c == CARRIAGE_RETURN || c == NEW_LINE)
 	{
-		terminal_print("", ft_tablen((const char **)minishell->input) > 0, STDOUT_FILENO);
+		terminal_print("", ft_tablen((const char **)minishell->input) > 0,
+			STDOUT_FILENO);
 		str = ft_utf8_tab_to_str(minishell->input);
 		if (execute(minishell, str) == -1)
 			return (1);
@@ -154,7 +154,7 @@ int	process_action(t_minishell *minishell, char *new)
 	else if (new[0] == ESC_SEQ)
 	{
 		if (interpret_escape_sequence(minishell, new))
-            return (0);
+			return (0);
 	}
 	else if (new[0] == '\t')
 	{

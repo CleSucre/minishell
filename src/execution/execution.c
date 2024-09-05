@@ -30,22 +30,24 @@ void	handle_signal(int sig)
  * @param t_cmd *cmd
  * @return int error code
  */
-static int execute_path(t_cmd *cmd) {
-    int err;
+static int	execute_path(t_cmd *cmd)
+{
+	int	err;
 
-    err = execve(cmd->path, cmd->argv, cmd->env);
-	if (err == -1) {
-		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n", cmd->cmd_name);
-	}
+	err = execve(cmd->path, cmd->argv, cmd->env);
+	if (err == -1)
+		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
+			cmd->cmd_name);
 	return (err);
 }
 
-static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output, int to_close)
+static int	execute_cmd(t_minishell *minishell, t_ast *ast,
+			int input, int output, int to_close)
 {
 	t_cmd				*cmd;
 	struct sigaction	sa;
 	pid_t				pid;
-    int                 err;
+	int					err;
 
 	if (!ast)
 		return (1);
@@ -66,7 +68,7 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		perror("sigaction");
 		return (1);
 	}
-    err = 0;
+	err = 0;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -94,10 +96,10 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		if (to_close != -1)
 			close(to_close);
 		err = execute_path(cmd);
-        free_cmd(cmd);
-        free_minishell(minishell);
-        free_ast(ast);
-        exit(err);
+		free_cmd(cmd);
+		free_minishell(minishell);
+		free_ast(ast);
+		exit(err);
 	}
 	if (input != STDIN_FILENO)
 		close(input);
@@ -114,77 +116,73 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
  * @param t_ast *ast
  * @return int 0 on success
  */
-static int execute_cmds(t_minishell *minishell, t_ast *ast)
+static int	execute_cmds(t_minishell *minishell, t_ast *ast)
 {
-    int	fd[2];
-    int input;
-    int output;
-    int to_close;
-    int status;
-    int result;
+	int	fd[2];
+	int	input;
+	int	output;
+	int	to_close;
+	int	status;
+	int	result;
 
-    if (!ast)
-        return (0);
-    disable_termios(minishell->term);
-    input = STDIN_FILENO;
-    while (ast)
-    {
-        if (ast->type == FULL_COMMAND)
-        {
-            if (ast->next && ast->next->type == FULL_COMMAND)
-            {
-                if (pipe(fd) == -1)
-                {
-                    ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
-                    enable_termios(minishell->term);
-                    return (0);
-                }
-                output = fd[1];
-                to_close = fd[0];
-            }
-            else
-            {
-                output = STDOUT_FILENO;
-                to_close = -1;
-            }
-            result = execute_cmd(minishell, ast, input, output, to_close);
-            if (result)
-            {
-                if (input != STDIN_FILENO)
-                    close(input);
-                if (output != STDOUT_FILENO)
-                    close(output);
-                if (result == 2)
-                {
-                    enable_termios(minishell->term);
-                    return (-1);
-                }
-                ft_printf("Error: command failed\n");
-                enable_termios(minishell->term);
-                return (0);
-            }
-            if (input != STDIN_FILENO)
-                close(input);
-            if (output != STDOUT_FILENO)
-                close(output);
-            input = fd[0];
-            if (ast->prev && ast->prev->type == FULL_COMMAND)
-                close(fd[1]);
-        }
-        ast = ast->next;
-    }
-    // Attend tous les processus enfants et récupère l'exit code du dernier
-    while ((wait(&status)) > 0);
-
-    enable_termios(minishell->term);
-
-    // Vérifie si le dernier processus s'est terminé correctement
-    if (WIFEXITED(status))
-        return (WEXITSTATUS(status));
-    else
-        return (0); // Retourne -1 en cas d'erreur
+	if (!ast)
+		return (0);
+	disable_termios(minishell->term);
+	input = STDIN_FILENO;
+	while (ast)
+	{
+		if (ast->type == FULL_COMMAND)
+		{
+			if (ast->next && ast->next->type == FULL_COMMAND)
+			{
+				if (pipe(fd) == -1)
+				{
+					ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
+					enable_termios(minishell->term);
+					return (0);
+				}
+				output = fd[1];
+				to_close = fd[0];
+			}
+			else
+			{
+				output = STDOUT_FILENO;
+				to_close = -1;
+			}
+			result = execute_cmd(minishell, ast, input, output, to_close);
+			if (result)
+			{
+				if (input != STDIN_FILENO)
+					close(input);
+				if (output != STDOUT_FILENO)
+					close(output);
+				if (result == 2)
+				{
+					enable_termios(minishell->term);
+					return (-1);
+				}
+				ft_printf("Error: command failed\n");
+				enable_termios(minishell->term);
+				return (0);
+			}
+			if (input != STDIN_FILENO)
+				close(input);
+			if (output != STDOUT_FILENO)
+				close(output);
+			input = fd[0];
+			if (ast->prev && ast->prev->type == FULL_COMMAND)
+				close(fd[1]);
+		}
+		ast = ast->next;
+	}
+	while ((wait(&status)) > 0)
+		;
+	enable_termios(minishell->term);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else
+		return (0);
 }
-
 
 /**
  * @brief Execute the command given in input
@@ -197,16 +195,16 @@ int	execute(t_minishell *minishell, char *input)
 {
 	t_ast	*ast;
 	int		res;
-	char 	*trimmed;
+	char	*trimmed;
 
 	if (ft_strlen(input) == 0)
-    {
-        terminal_print("", 1, STDOUT_FILENO);
-        free(input);
-        return (1);
-    }
+	{
+		terminal_print("", 1, STDOUT_FILENO);
+		free(input);
+		return (1);
+	}
 	trimmed = ft_strtrim(input, WHITESPACES);
-    free(input);
+	free(input);
 	if (!trimmed)
 		return (0);
 	debug_execution(trimmed);
@@ -221,6 +219,6 @@ int	execute(t_minishell *minishell, char *input)
 	free(trimmed);
 	res = execute_cmds(minishell, ast);
 	free_ast(ast);
-    minishell->exit_code = res;
+	minishell->exit_code = res;
 	return (res);
 }
