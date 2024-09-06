@@ -12,6 +12,27 @@
 
 #include "minishell.h"
 
+void	print_tab_from_start_to_end(char **table, int start, int end)
+{
+	while (table[start] && start < end)
+	{
+		ft_putstr_fd(table[start], 1);
+		start++;
+	}
+}
+
+void	print_tab_to_end(char **table, int end)
+{
+	size_t i;
+
+	i = 0;
+	while (table[i] && i < end)
+	{
+		ft_putstr_fd(table[i], 1);
+		i++;
+	}
+}
+
 /**
  * @brief Add a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
@@ -21,14 +42,17 @@
 void	put_in_string(t_minishell *minishell, char *new)
 {
 	char	*str;
-
-    minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
 	ft_putstr_fd("\033[s", 1);
-	reset_stdin(minishell);
-	str = ft_utf8_tab_to_str(minishell->input);
-	ft_fprintf(STDOUT_FILENO, str );
-	free(str);
+	ft_putstr_fd("\033[K", 1);
+//	reset_stdin(minishell);
+//	str = ft_utf8_tab_to_str(minishell->input);
+	print_tab_from_start_to_end(minishell->input, minishell->term->cols - get_prompt_len(minishell) - 1, minishell->term->cols - ft_strlen(new));
+	ft_putstr_fd(new, 1);
+//	print_tab_to_end(minishell->input, minishell->term->cols - get_prompt_len(minishell) - 1);
+	minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
 	ft_putstr_fd("\033[u\033[1C", 1);
+//	free(str);
+//	ft_printf("\033[%dD\033[1C", (int)ft_tablen((const char **)minishell->input) - minishell->term->cols + get_prompt_len(minishell) + 1);
 }
 
 /**

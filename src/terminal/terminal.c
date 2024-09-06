@@ -70,7 +70,7 @@ void	set_tabstop(t_minishell *minishell)
 
 /**
  * @brief Use termios to get input from user and process it
- *
+ *			4294967295 is the biggest number in 32bits
  * @param t_minishell *minishell
  * @return int 0 if no error, 1 if error
  */
@@ -88,7 +88,7 @@ int	use_termios(t_minishell *minishell)
     while (1)
 	{
 		get_terminal_size(minishell->term);
-		minishell->term->begin_rows = ft_tablen((const char **)minishell->input) % 4294967295; //TODO: what is this magic number?
+		minishell->term->begin_rows = ft_tablen((const char **)minishell->input) % 4294967295;
 
 		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 		if (bits == -1)
