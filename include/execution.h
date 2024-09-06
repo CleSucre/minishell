@@ -22,10 +22,4 @@
 
 int		execute(t_minishell *minishell, char *input);
 
-// ########################################################
-// #						PIPE						  #
-// ########################################################
-
-void	close_pipe(int cmds_len, int fd[2], int input, int output);
-
 #endif

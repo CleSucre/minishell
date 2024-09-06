@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 /**
  * @brief Action when ctrl + c is pressed
  *          - reset input
