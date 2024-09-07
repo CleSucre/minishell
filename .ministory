@@ -191,3 +191,28 @@ clear
 ls
 ls
 ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls -la
+ls -la | grep s
+clear
+exit
+echo -n "salut"
+exit
+history
+ls
+history
+exirt
+exit
+exit
+history
+exit
+history | grep 110
+exit

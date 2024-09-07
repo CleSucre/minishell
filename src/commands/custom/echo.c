@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+static void	print_n_flag(int output)
+{
+	ft_putstr_fd(BACKGROUND_WHITE, output);
+	ft_putstr_fd(TEXT_BLACK, output);
+	terminal_print("%", 0, output);
+	ft_putstr_fd(RESET, output);
+}
+
 int	command_echo(t_cmd *cmd)
 {
 	int		i;
@@ -32,12 +40,7 @@ int	command_echo(t_cmd *cmd)
 		i++;
 	}
 	if (n_flag)
-	{
-		ft_putstr_fd(BACKGROUND_WHITE, cmd->output);
-		ft_putstr_fd(TEXT_BLACK, cmd->output);
-		terminal_print("%", 0, cmd->output);
-		ft_putstr_fd(RESET, cmd->output);
-	}
+		print_n_flag(cmd->output);
 	terminal_print("", 1, cmd->output);
 	return (0);
 }
