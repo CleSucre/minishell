@@ -76,7 +76,9 @@ static void	edit_input(t_minishell *minishell, char *new)
 {
 	if (minishell->term->cols
 		!= get_prompt_len(minishell) + ft_tablen((const char **)minishell->input) + 1)
+	{
 		put_in_string(minishell, new);
+	}
 	else
 	{
 		minishell->input = ft_tabjoin(minishell->input, ft_utf8_split_chars(new));
@@ -85,7 +87,6 @@ static void	edit_input(t_minishell *minishell, char *new)
 			free_branch(minishell->tab_dict);
 		minishell->tab_dict = NULL;
 	}
-//	minishell->term->cols = ft_tablen((const char **)minishell->input) + get_prompt_len(minishell) + 1;
 	minishell->term->cols++;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
