@@ -48,10 +48,10 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
     int                 err;
 
 	if (!ast)
-		return (0);
+		return (1);
 	cmd = load_command(minishell, ast->children, input, output);
 	if (!cmd)
-		return (0);
+		return (1);
 	if (is_builtin_command(cmd))
 	{
 		err = execute_builtin_command(minishell, cmd);
@@ -66,13 +66,13 @@ static int	execute_cmd(t_minishell *minishell, t_ast *ast, int input, int output
 		perror("sigaction");
 		return (1);
 	}
-    err = 1;
+    err = 0;
 	pid = fork();
 	if (pid < 0)
 	{
 		ft_putstr_fd("Error: fork failed\n", STDERR_FILENO);
 		free_cmd(cmd);
-		return (0);
+		return (1);
 	}
 	else if (pid == 0)
 	{
@@ -121,6 +121,7 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
     int output;
     int to_close;
     int status;
+    int result;
 
     if (!ast)
         return (0);
@@ -135,6 +136,7 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
                 if (pipe(fd) == -1)
                 {
                     ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
+                    enable_termios(minishell->term);
                     return (0);
                 }
                 output = fd[1];
@@ -145,12 +147,20 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
                 output = STDOUT_FILENO;
                 to_close = -1;
             }
-            if (!execute_cmd(minishell, ast, input, output, to_close))
+            result = execute_cmd(minishell, ast, input, output, to_close);
+            if (result)
             {
                 if (input != STDIN_FILENO)
                     close(input);
                 if (output != STDOUT_FILENO)
                     close(output);
+                if (result == 2)
+                {
+                    enable_termios(minishell->term);
+                    return (-1);
+                }
+                ft_printf("Error: command failed\n");
+                enable_termios(minishell->term);
                 return (0);
             }
             if (input != STDIN_FILENO)
@@ -172,7 +182,7 @@ static int execute_cmds(t_minishell *minishell, t_ast *ast)
     if (WIFEXITED(status))
         return (WEXITSTATUS(status));
     else
-        return (-1); // Retourne -1 en cas d'erreur
+        return (0); // Retourne -1 en cas d'erreur
 }
 
 
