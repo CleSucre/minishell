@@ -109,6 +109,5 @@ int	execute_cmd(t_minishell *minishell, t_ast *ast, int in_out[2], int to_close)
 	if (!cmd)
 		return (1);
 	res = pre_execute(minishell, cmd, ast);
-	ft_fprintf(STDERR_FILENO, "Result: %d\n", res);
 	return (res);
 }
