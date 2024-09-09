@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   command_maker.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,21 +13,68 @@
 #include "minishell.h"
 
 /**
+ * @brief Allocate memory for the argument array
+ *
+ * @param t_ast *cmd
+ * @return char**
+ */
+static char	**allocate_args(t_ast *cmd)
+{
+	char	**args;
+
+	args = ft_calloc(ast_len(cmd) + 2, sizeof(char *));
+	if (!args)
+		return (NULL);
+	return (args);
+}
+
+/**
+ * @brief Handle different types of AST nodes for argument extraction
+ *
+ * @param minishell
+ * @param tmp
+ * @return char*
+ */
+static char	*process_node(t_minishell *minishell, t_ast *tmp)
+{
+	char	*arg;
+
+	arg = NULL;
+	if (tmp->type == TEXT_SINGLE_QUOTE)
+	{
+		if (tmp->children->type == TEXT)
+			arg = ft_strdup(tmp->children->value);
+	}
+	else if (tmp->type == TEXT_DOUBLE_QUOTE)
+	{
+		if (tmp->children->type == TEXT)
+			arg = replace_variables(minishell->env, tmp->children->value);
+	}
+	else if (tmp->type == VARIABLE)
+		arg = get_var_value(minishell->env, tmp->value + 1);
+	else if (tmp->type == TEXT)
+		arg = replace_variables(minishell->env, tmp->value);
+	else
+		arg = ft_strdup(tmp->value);
+	return (arg);
+}
+
+/**
  * @brief Extract the arguments from the AST node
  *
  * TODO: handle the case where there is commands in a child node
  *
- * @param minishell
- * @param cmd
- * @return
+ * @param t_minishell *minishell
+ * @param t_ast *cmd
+ * @return char**
  */
 static char	**get_argv(t_minishell *minishell, t_ast *cmd)
 {
-	char			**args;
-	t_ast			*tmp;
-	int				i;
+	char	**args;
+	t_ast	*tmp;
+	int		i;
 
-	args = ft_calloc(ast_len(cmd) + 2, sizeof(char *));
+	args = allocate_args(cmd);
 	if (!args)
 		return (NULL);
 	i = 0;
@@ -35,23 +82,7 @@ static char	**get_argv(t_minishell *minishell, t_ast *cmd)
 	tmp = cmd->next;
 	while (tmp)
 	{
-		if (tmp->type == TEXT_SINGLE_QUOTE)
-		{
-			if (tmp->children->type == TEXT)
-				args[i] = ft_strdup(tmp->children->value);
-		}
-		else if (tmp->type == TEXT_DOUBLE_QUOTE)
-		{
-			if (tmp->children->type == TEXT)
-				args[i] = replace_variables(minishell->env,
-						tmp->children->value);
-		}
-		else if (tmp->type == VARIABLE)
-			args[i] = get_var_value(minishell->env, tmp->value + 1);
-		else if (tmp->type == TEXT)
-			args[i] = replace_variables(minishell->env, tmp->value);
-		else
-			args[i] = ft_strdup(tmp->value);
+		args[i] = process_node(minishell, tmp);
 		tmp = tmp->next;
 		i++;
 	}

@@ -620,3 +620,24 @@ clear
 make norm
 make norm
 make norm
+ls
+history
+ls -la | grep a
+ls -la
+echo -n salut
+make norm
+make norm
+make norm
+ls
+ls -la
+echo -n salut
+echo 's'a'l'u't'
+exit 21
+ls
+ls -la | grep a
+history | grep s'a'l'u't
+clear
+ls
+ls
+ls
+ls -la
