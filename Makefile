@@ -29,7 +29,7 @@ SRCS_ENVIRONMENT		= env_variable.c
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
-SRCS_EXECUTION			= execution.c
+SRCS_EXECUTION			= execute_cmd.c execute_cmds.c execute_path.c execution.c signal_handler.c
 
 SRCS_COMMANDS			= command_maker.c flags_utils.c command_manager.c
 

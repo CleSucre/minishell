@@ -25,11 +25,9 @@ static char	**get_argv(t_minishell *minishell, t_ast *cmd)
 {
 	char			**args;
 	t_ast			*tmp;
-	unsigned int	size;
 	int				i;
 
-	size = ast_len(cmd);
-	args = ft_calloc(size + 2, sizeof(char *));
+	args = ft_calloc(ast_len(cmd) + 2, sizeof(char *));
 	if (!args)
 		return (NULL);
 	i = 0;
@@ -57,7 +55,7 @@ static char	**get_argv(t_minishell *minishell, t_ast *cmd)
 		tmp = tmp->next;
 		i++;
 	}
-	args[size] = NULL;
+	args[ast_len(cmd)] = NULL;
 	return (args);
 }
 
@@ -68,9 +66,11 @@ static char	**get_argv(t_minishell *minishell, t_ast *cmd)
  * @param t_ast *cmd
  * @param int input
  * @param int output
+ * @param int to_close
  * @return t_cmd *
  */
-t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int input, int output)
+t_cmd	*load_command(t_minishell *minishell, t_ast *ast_cmd,
+		const int in_out[2], int to_close)
 {
 	t_cmd	*new_cmd;
 	char	*path;
@@ -78,16 +78,17 @@ t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, int input, int output)
 	new_cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!new_cmd)
 		return (NULL);
-	new_cmd->cmd_name = ft_strdup(cmd->value);
-	path = get_path(cmd->value, minishell->env);
+	new_cmd->cmd_name = ft_strdup(ast_cmd->value);
+	path = get_path(ast_cmd->value, minishell->env);
 	if (!path)
-		path = ft_strdup(cmd->value);
+		path = ft_strdup(ast_cmd->value);
 	new_cmd->path = path;
-	new_cmd->argv = get_argv(minishell, cmd);
-	new_cmd->argc = (int)ast_len(cmd);
+	new_cmd->argv = get_argv(minishell, ast_cmd);
+	new_cmd->argc = (int)ast_len(ast_cmd);
 	new_cmd->env = minishell->env;
-	new_cmd->input = input;
-	new_cmd->output = output;
+	new_cmd->input = in_out[0];
+	new_cmd->output = in_out[1];
+	new_cmd->to_close = to_close;
 	new_cmd->exit_status = 0;
 	new_cmd->pid = -1;
 	return (new_cmd);

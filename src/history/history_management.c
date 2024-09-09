@@ -114,7 +114,7 @@ void	history_print(t_minishell *minishell, int fd)
 {
 	t_history		*history;
 	char			*tmp;
-	int	i;
+	int				i;
 	unsigned int	j;
 
 	history = minishell->history;
