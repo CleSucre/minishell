@@ -641,3 +641,10 @@ ls
 ls
 ls
 ls -la
+l
+history
+history
+history
+history
+history
+history | grep 10

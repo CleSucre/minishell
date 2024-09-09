@@ -21,7 +21,7 @@
  * @param int *to_close
  * @return int 0 on success, -1 on failure
  */
-static int	setup_pipes(t_ast *ast, int fd[2], int in_out[2], int *to_close)
+static int	setup_pipes(t_ast *ast, int *fd, int in_out[2], int *to_close)
 {
 	if (ast->next && ast->next->type == FULL_COMMAND)
 	{
@@ -47,7 +47,7 @@ static int	setup_pipes(t_ast *ast, int fd[2], int in_out[2], int *to_close)
  * @param int in_out[]
  * @param int fd[]
  */
-static void	close_fds(int in_out[2], int fd[2])
+static void	close_fds(int in_out[2], int *fd)
 {
 	if (in_out[0] != STDIN_FILENO)
 		close(in_out[0]);
@@ -92,7 +92,7 @@ static int	execute_single_cmd(t_minishell *minishell, t_ast *ast,
  * @return int 0 on success, -1 on failure
  */
 static int	execute_commands_loop(t_minishell *minishell, t_ast *ast,
-		int in_out[2], int fd[2])
+		int in_out[2], int *fd)
 {
 	int	to_close;
 	int	result;
@@ -134,12 +134,15 @@ int	execute_cmds(t_minishell *minishell, t_ast *ast)
 	disable_termios(minishell->term);
 	in_out[0] = STDIN_FILENO;
 	in_out[1] = STDOUT_FILENO;
+	fd[0] = -1;
+	fd[1] = -1;
 	result = execute_commands_loop(minishell, ast, in_out, fd);
 	if (result == -1)
 	{
 		enable_termios(minishell->term);
 		return (-1);
 	}
+	status = 0;
 	status = wait_for_processes(&status);
 	enable_termios(minishell->term);
 	return (status);
