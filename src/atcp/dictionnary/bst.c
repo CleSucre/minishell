@@ -173,7 +173,6 @@ void	print_branch(t_dict *dict)
 		print_branch(dict->right_branch);
 	}
 //	ft_putstr_fd("end\n", 1);
-
 	return ;
 }
 
@@ -182,7 +181,7 @@ void	print_branch(t_dict *dict)
  * @param dict Dict structure
  * @param key position in the BST searched
  */
-t_dict *move_in_bst(t_dict *dict, int key)
+t_dict	*move_in_bst(t_dict *dict, int key)
 {
 	if (!dict)
 		return (NULL);

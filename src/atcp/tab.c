@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void	prompt_completion(t_minishell *minishell, char **input)
 {
 	bst_size(minishell->tab_dict);
@@ -55,7 +54,6 @@ void	tab_print(t_minishell *minishell, t_dict *dict, char **input)
 	minishell->completion->check_len = 0;
 }
 
-
 /**
  * @brief Take last word of input and search in the BST
  * 			- if found, cut the BST, if not, print error
@@ -69,7 +67,7 @@ int	tab_completion(t_minishell *minishell, char	**input)
 	char	*str;
 	char	**search;
 	int		count_word;
-	t_dict *head;
+	t_dict	*head;
 
 	ft_tabdel(input, ft_tablen((const char **)input) - 1);
 	str = ft_utf8_tab_to_str(input);
@@ -121,7 +119,8 @@ int	tab_completion(t_minishell *minishell, char	**input)
 int	tab_action(t_minishell *minishell, char **input)
 {
 	if (minishell->completion->tab_count == 0
-		&& bst_size(minishell->tab_dict) > 20 && minishell->completion->check_len == 0)
+		&& bst_size(minishell->tab_dict) > 20
+		&& minishell->completion->check_len == 0)
 	{
 		ft_putstr_fd("\n", 1);
 		ft_putstr_fd("do you wish to see all ", 1);
@@ -143,7 +142,6 @@ int	tab_action(t_minishell *minishell, char **input)
 				minishell->completion->print_line--;
 			}
 			ft_putstr_fd("\033[F", 1);
-
 		}
 		tab_print(minishell, minishell->tab_dict, input);
 	}
@@ -160,7 +158,7 @@ int	tab_action(t_minishell *minishell, char **input)
  */
 int	tab_manager(t_minishell *minishell, char *new)
 {
-	if(new[0] == '\t' && !minishell->input)
+	if (new[0] == '\t' && !minishell->input)
 		return (1);
 	if (new[0] == 'n')
 	{
@@ -172,7 +170,8 @@ int	tab_manager(t_minishell *minishell, char *new)
 		return (1);
 	}
 	else
-        minishell->input = ft_tabjoin(minishell->input, ft_utf8_split_chars(new));
+		minishell->input = ft_tabjoin(minishell->input,
+				ft_utf8_split_chars(new));
 	if (minishell->completion->tab_count == 0 && new[0] == 'y'
 		&& minishell->completion->check_len == 0)
 		tab_print(minishell, minishell->tab_dict, minishell->input);

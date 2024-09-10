@@ -52,3 +52,30 @@ void	reset_input(char ***input)
 		ft_tabfree(*input);
 	*input = ft_calloc(1, sizeof(char *));
 }
+
+/**
+ * @brief Set tabstop every 4, will possibly be deleted
+ */
+void	set_tabstop(t_minishell *minishell)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	ft_putstr_fd("\033[s", 1);
+	ft_putstr_fd("\033[3g", 1);
+	while (j < minishell->term->ws_rows)
+	{
+		while (i < minishell->term->ws_cols)
+		{
+			i += 4;
+			ft_putstr_fd("\033[4C", 1);
+			ft_putstr_fd("\033H", 1);
+		}
+		ft_putstr_fd("\033[B", 1);
+		j++;
+		i = 0;
+	}
+	ft_putstr_fd("\033[u", 1);
+}

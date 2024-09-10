@@ -28,18 +28,14 @@ int	main(int argc, char **args, char **env)
 
 	(void)argc;
 	(void)args;
-
-    minishell = alloc_minishell();
-
-    minishell->term->original_termios = &original_termios;
+	minishell = alloc_minishell();
+	minishell->term->original_termios = &original_termios;
 	minishell->env = env;
-
 	enable_termios(minishell->term);
-    use_termios(minishell);
-    disable_termios(minishell->term);
-
-    exit_code = minishell->exit_code;
-    free_minishell(minishell);
-
+	use_termios(minishell);
+	disable_termios(minishell->term);
+	exit_code = minishell->exit_code;
+	free_minishell(minishell);
+	ft_printf("exit code: %d\n", exit_code);
 	return (exit_code);
 }

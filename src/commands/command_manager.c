@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	 execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
+int	execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->cmd_name, "cd") == 0)
 		command_cd(cmd);
@@ -36,7 +36,7 @@ int	 execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
 	return (0);
 }
 
-int is_builtin_command(t_cmd *cmd)
+int	is_builtin_command(t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->cmd_name, "cd") == 0)
 		return (1);

@@ -13,7 +13,7 @@ include_directories(include)
 set(SRCS
         src/main.c
 
-        src/terminal/erase_put.c
+        src/terminal/input_utils.c
         src/terminal/terminal.c
         src/terminal/terminal_action.c
         src/terminal/terminal_arrow.c

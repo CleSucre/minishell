@@ -13,8 +13,9 @@
 #include "minishell.h"
 
 /**
- * @brief Open dir with odir path and fill dict with all files in it which are executable
- * 		return a BST full with all executable files found and sort alphabetically
+ * @brief Open dir with odir path and fill dict with all files in it
+ * 		which are executable return a BST full with all
+ * 		executable files found and sort alphabetically
  * 	@param	dict - BST
  * 	@param	odir - path to open
  * 	@return 0 if success
@@ -24,7 +25,7 @@ int	search_in_path(t_dict *dict, char *odir)
 	struct dirent	*dir;
 	char			*name;
 	t_dict			*tmp;
-	t_dict *node;
+	t_dict			*node;
 	DIR				*d;
 
 	d = opendir(odir);

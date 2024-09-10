@@ -16,9 +16,8 @@ void	command_exit(t_cmd *cmd)
 {
 	int		status;
 
+	status = 0;
 	if (cmd->argc > 1)
-		status = ft_atoi(cmd->argv[0]);
-	else
-		status = 0;
+		status = ft_atoi(cmd->argv[1]);
 	cmd->exit_status = status % 256;
 }

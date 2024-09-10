@@ -32,7 +32,7 @@ void	arrow_up_action(t_minishell *minishell, t_history *new_history)
 	if (new_history && new_history->cmd)
 	{
 		ft_tabfree(minishell->input);
-        minishell->input = ft_utf8_split_chars(new_history->cmd);
+		minishell->input = ft_utf8_split_chars(new_history->cmd);
 		ft_putstr_fd("\033[1000D", STDOUT_FILENO);
 		terminal_print("\033[2K", 0, STDOUT_FILENO);
 		print_terminal_prompt(minishell, 0);
@@ -66,22 +66,31 @@ void	arrow_down_action(t_minishell *minishell, t_history *new_history)
 		cmd = ft_strdup(new_history->cmd);
 	}
 	ft_tabfree(minishell->input);
-    minishell->input = ft_utf8_split_chars(cmd);
+	minishell->input = ft_utf8_split_chars(cmd);
 	ft_putstr_fd("\033[1000D", 1);
 	terminal_print("\033[2K", 0, STDOUT_FILENO);
 	print_terminal_prompt(minishell, 0);
 	terminal_print(cmd, 0, STDOUT_FILENO);
-
 	free(cmd);
 	get_cursor_position(minishell->term);
 }
 
+/**
+ * @brief Process action of cursor left
+ *
+ * @param t_minishell *minishell
+ */
 void	arrow_left_action(t_minishell *minishell)
 {
 	minishell->term->cols--;
 	ft_putstr_fd("\033[1D", 1);
 }
 
+/**
+ * @brief Process action of cursor right
+ *
+ * @param t_minishell *minishell
+ */
 void	arrow_right_action(t_minishell *minishell)
 {
 	minishell->term->cols++;
