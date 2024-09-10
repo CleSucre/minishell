@@ -36,5 +36,6 @@ int	main(int argc, char **args, char **env)
 	disable_termios(minishell->term);
 	exit_code = minishell->exit_code;
 	free_minishell(minishell);
+	ft_printf("exit code: %d\n", exit_code);
 	return (exit_code);
 }

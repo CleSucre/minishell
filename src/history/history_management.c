@@ -114,7 +114,7 @@ void	history_print(t_minishell *minishell, int fd)
 {
 	t_history		*history;
 	char			*tmp;
-	unsigned int	i;
+	int				i;
 	unsigned int	j;
 
 	history = minishell->history;
@@ -127,12 +127,9 @@ void	history_print(t_minishell *minishell, int fd)
 		tmp = ft_itoa(i);
 		terminal_print(tmp, 0, fd);
 		free(tmp);
-		j = 0;
-		while (j < 4 - ft_nbrlen(i))
-		{
+		j = -1;
+		while (++j < 4 - ft_nbrlen(i))
 			terminal_print(" ", 0, fd);
-			j++;
-		}
 		terminal_print(history->cmd, 0, fd);
 		history = history->newer;
 		i++;

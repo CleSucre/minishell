@@ -20,8 +20,6 @@
 char			*get_path(char *cmd, char **envp);
 char			*get_var_value(char **env, char *var);
 const char		*get_var_value_const(char **env, char *var);
-int				get_var_len(char **env, char *var);
 char			*replace_variables(char **env, char *str);
-char			**extract_variables(t_minishell *minishell, char *str);
 
 #endif

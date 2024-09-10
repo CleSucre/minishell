@@ -114,61 +114,6 @@ const char	*get_var_value_const(char **env, char *var)
 }
 
 /**
- * @brief Get a variable value length without any allocation
- *
- * @param char **env environment variables
- * @param char *var variable to get the length
- * @return int length of the variable
- */
-int	get_var_len(char **env, char *var)
-{
-	int		i;
-	int		len;
-
-	i = 0;
-	len = ft_strlen(var);
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], var, len) == 0 && env[i][len] == '=')
-			return (ft_strlen(env[i] + len + 1));
-		i++;
-	}
-	return (len);
-}
-
-/**
- * @brief Join a string with a char
- *
- * TODO: move to libft
- *
- * @param char *s1
- * @param char c
- * @return
- */
-static char	*ft_strjoin_char(char *s1, char c)
-{
-	char	*res;
-	int		i;
-
-	if (!s1)
-	{
-		res = ft_calloc(2, sizeof(char));
-		res[0] = c;
-		return (res);
-	}
-	res = ft_calloc(ft_strlen(s1) + 2, sizeof(char));
-	i = 0;
-	while (s1[i])
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	res[i] = c;
-	free(s1);
-	return (res);
-}
-
-/**
  * @brief Replace the variables in a string by their values
  * 			using the env variables (only for the $VARNAME format)
  *

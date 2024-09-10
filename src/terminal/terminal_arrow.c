@@ -75,12 +75,22 @@ void	arrow_down_action(t_minishell *minishell, t_history *new_history)
 	get_cursor_position(minishell->term);
 }
 
+/**
+ * @brief Process action of cursor left
+ *
+ * @param t_minishell *minishell
+ */
 void	arrow_left_action(t_minishell *minishell)
 {
 	minishell->term->cols--;
 	ft_putstr_fd("\033[1D", 1);
 }
 
+/**
+ * @brief Process action of cursor right
+ *
+ * @param t_minishell *minishell
+ */
 void	arrow_right_action(t_minishell *minishell)
 {
 	minishell->term->cols++;

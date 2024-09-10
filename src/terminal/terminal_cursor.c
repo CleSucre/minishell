@@ -14,35 +14,40 @@
 
 /**
  * @brief Move cursor backward from cols to n positions
- * @param position
+ *
+ * @param size_t position
  */
-void	move_cursor_back(size_t position)
+void	move_cursor_back(size_t n)
 {
-	size_t	i;
-
-	i = 0;
-	while (i++ < position)
-		ft_printf(CURSOR_LEFT, 1);
+	ft_printf(CURSOR_LEFT, n);
 }
 
 /**
  * @brief Move cursor forward from cols to n positions
- * @param position
+ *
+ * @param size_t position
  */
-void	move_cursor_forward(size_t position)
+void	move_cursor_forward(size_t n)
 {
-	size_t	i;
-
-	i = 0;
-	while (i++ < position)
-		ft_printf(CURSOR_RIGHT, 1);
+	ft_printf(CURSOR_RIGHT, n);
 }
 
-void	move_cursor_down(size_t position)
+/**
+ * @brief Move cursor up from cols to n positions
+ *
+ * @param size_t position
+ */
+void	move_cursor_up(size_t n)
 {
-	size_t	i;
+	ft_printf(CURSOR_UP, n);
+}
 
-	i = 0;
-	while (i++ < position)
-		ft_printf(CURSOR_DOWN, 1);
+/**
+ * @brief Move cursor down from cols to n positions
+ *
+ * @param size_t position
+ */
+void	move_cursor_down(size_t n)
+{
+	ft_printf(CURSOR_DOWN, n);
 }
