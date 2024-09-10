@@ -88,7 +88,7 @@ int	process_user_input(t_minishell *minishell,
 
 /**
  * @brief Use termios to get input from user and process it
- *
+ *			4294967295 is the biggest number in 32bits
  * @param t_minishell *minishell
  * @return void
  */
