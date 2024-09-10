@@ -23,6 +23,7 @@
  *	static int setpwd PARAMS((char *));
  *	static char *resetpwd PARAMS((char *));
  *	static int change_to_directory PARAMS((char *, int, int));
+ *	@return 0 if success, 1 if fail
  */
 
 void	command_pwd(t_cmd *cmd)

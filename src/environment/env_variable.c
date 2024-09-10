@@ -41,7 +41,7 @@ char	*get_path(char *cmd, char **envp)
 {
 	int		i;
 	char	*path;
-	char	**paths;
+	char	**paths; // TODO: Change le nom d une des deux variable je t en pris mdrrr path et paths quoi xD
 	char	*tmp;
 
 	if (access(cmd, X_OK) == 0)
