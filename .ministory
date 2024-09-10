@@ -1,37 +1,12 @@
 ls
 ls -la
-md
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaabaaabbbbbbbbbbbbb
-clear
+history
+history
+history
 ls
 ls
-man ls
-a
-aaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaabbabcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccdddddddddddddddaa
-md
-abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccccccca
-abbbbbbaaa
-abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbsaa
-abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbhhhhjgaa
-clear
 ls
-cd include
 ls
-<<<<<<< HEAD
-aaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaa
-aaabbbbbbbbbbbbabbbbb
-aabbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaa
-md
-aaaaaaaaaaaaaaabbbbbbaaal
-avvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvcvvvaaaa
-history clear
-clear history
-pwd
-pwd
-pwd
-pwd
-=======
 ls
 ping clesucre.fr
 ping clesucre.fr
@@ -709,4 +684,3 @@ history | grep lma
 history | grep m
 ls
 history | grep m
->>>>>>> norm
