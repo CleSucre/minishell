@@ -12,6 +12,21 @@
 
 #include "minishell.h"
 
+void	send_to_bst(struct dirent *dir, t_dict *dict)
+{
+	char			*name;
+	t_dict			*tmp;
+	t_dict			*node;
+
+	tmp = dict;
+	name = ft_strndup(dir->d_name, (int)dir->d_reclen);
+	name = string_lower(name);
+	node = create_node(name, "command");
+	insert_node(tmp, node, name, "command");
+	free(name);
+	name = NULL;
+}
+
 /**
  * @brief Open dir with odir path and fill dict with all files in it
  * 		which are executable return a BST full with all
@@ -23,9 +38,6 @@
 int	search_in_path(t_dict *dict, char *odir)
 {
 	struct dirent	*dir;
-	char			*name;
-	t_dict			*tmp;
-	t_dict			*node;
 	DIR				*d;
 
 	d = opendir(odir);
@@ -35,15 +47,7 @@ int	search_in_path(t_dict *dict, char *odir)
 		while (dir != NULL)
 		{
 			if (access(dir->d_name, X_OK) != 0)
-			{
-				tmp = dict;
-				name = ft_strndup(dir->d_name, (int)dir->d_reclen);
-				name = string_lower(name);
-				node = create_node(name, "command");
-				insert_node(tmp, node, name, "command");
-				free(name);
-				name = NULL;
-			}
+				send_to_bst(dir, dict);
 			dir = readdir(d);
 		}
 		closedir(d);
