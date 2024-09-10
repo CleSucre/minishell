@@ -684,3 +684,26 @@ history | grep lma
 history | grep m
 ls
 history | grep m
+ls
+make
+ls
+history | grep ls
+clear
+exit
+ls
+ls -la | grep l
+history | grep 0
+history | grep 197
+clear
+pwd
+echo "$USER"
+pwd
+aba
+abbabbbbb
+airbase-ng
+clear
+history
+history
+ls
+clear
+ls
