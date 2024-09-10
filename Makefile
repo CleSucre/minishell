@@ -41,7 +41,8 @@ SRCS_PARSING			= ast_management.c parsing.c parsing_args.c tokenizer.c
 
 SRCS_TERMINAL			= input_utils.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_signals.c terminal_utils.c
 
-SRCS_ATCP				= tab.c dictionnary/setup_dico.c dictionnary/bst.c dictionnary/bst_insert.c dictionnary/free_bst.c
+SRCS_ATCP				= tab.c dictionnary/setup_dico.c dictionnary/bst.c dictionnary/bst_insert.c dictionnary/free_bst.c dictionnary/print_bst.c \
+							dictionnary/copy_cut_bst.c
 
 #############################################################################
 #									FOLDERS									#

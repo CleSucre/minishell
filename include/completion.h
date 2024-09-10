@@ -19,11 +19,18 @@
 
 int		tab_manager(t_minishell *minishell, char *new);
 int		tab_completion(t_minishell *minishell, char **input);
-void	tab_print(t_minishell *minishell, t_dict *dict, char **input);
+void	autocomplete_print(t_minishell *minishell, t_dict *dict, char **input);
 //void	stress_print(t_dict *dict);
-void	stress_print(t_minishell *minishell, t_dict *dict);
 void	prompt_completion(t_minishell *minishell, char **input);
 int		tab_action(t_minishell *minishell, char **input);
+int	creation_tab_dict(t_minishell *minishell, char *str);
+
+
+// ########################################################
+// #					PRINT_BRANCH					  #
+// ########################################################
+void	print_branch(t_dict *dict);
+void	stress_print(t_minishell *minishell, t_dict *dict);
 
 // ########################################################
 // #						DICTIONNARY					  #
@@ -36,7 +43,7 @@ int		creation_dict(t_minishell *minishell);
 // ########################################################
 // #					NEED IN LIB						  #
 // ########################################################
-void	print_key_x(char *key, int x);
+void	repeat_str(char *key, int x);
 
 // ########################################################
 // #							BST						  #
@@ -54,6 +61,6 @@ t_dict	*bst_copy(t_dict *root);
 size_t	bst_size(t_dict *root);
 void	free_node(t_dict *node);
 void	free_branch(t_dict *root);
-void	print_branch(t_dict *dict);
+//void	print_branch(t_dict *dict);
 
 #endif

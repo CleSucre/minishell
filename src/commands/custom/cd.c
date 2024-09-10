@@ -41,6 +41,7 @@
  *
  *  cd [-L|[-P [-e]] [-@]] [dir]
  *
+ * flags utils
  *
  * @return int 0 if the command was executed successfully, 1 otherwise.
  */
