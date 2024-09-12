@@ -718,3 +718,59 @@ pwd
 md
 pwd
 pwd
+cd src
+pwd
+cd ..
+pwd
+cd ..
+ls
+cd _
+pwd
+cd -
+pwd
+cd ..
+pwd
+clear
+cd src
+pwd
+cd ..
+pwd
+cd src
+pwd
+cd src
+cd -
+pwd
+cd src
+pwd
+cd src
+cd src
+cd src
+pwd
+cd src
+pwd
+cd -
+pwd
+cd -
+pwd
+cd -
+cd -
+pwd
+cd -\
+pwd
+cd -
+cd src
+pwd
+cd src
+ls
+pwd
+cd -
+cd ../../Cercle_3/minishell/src
+pwd
+cd ../../../Cercle_3/minishell/../minishell/src
+pwd
+cd ../../../Cercle_3/minishell/../minishell/src
+pwd
+cd salut/les/reufs
+cd salut/les/reufs
+cd salut/les/reufs ok
+cd ../../../src/cercle3

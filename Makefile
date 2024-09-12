@@ -35,7 +35,7 @@ SRCS_COMMANDS			= command_maker.c flags_utils.c command_manager.c
 
 SRCS_COMMANDS_CUSTOM	= cd.c echo.c env.c export.c exit.c history.c pwd.c unset.c
 
-SRCS_MEMORY				= memory_alloc.c memory_free.c
+SRCS_MEMORY				= memory_alloc.c memory_free.c builtins_alloc.c
 
 SRCS_PARSING			= ast_management.c parsing.c parsing_args.c tokenizer.c
 

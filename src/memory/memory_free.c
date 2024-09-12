@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+static void	free_dirinfo(t_dirinfo *dirinfo);
+
 /**
  * @brief Free history linked list
  *
@@ -47,6 +49,7 @@ void	free_minishell(t_minishell *minishell)
 	free_branch(minishell->dict);
 	free(minishell->completion);
 	ft_tabfree(minishell->input);
+	free_dirinfo(minishell->dirinfo);
 	free(minishell);
 }
 
@@ -77,4 +80,10 @@ void	free_cmd(t_cmd *cmd)
 	ft_tabfree(cmd->argv);
 	free(cmd->path);
 	free(cmd);
+}
+
+static void	free_dirinfo(t_dirinfo *dirinfo)
+{
+
+	free(dirinfo);
 }

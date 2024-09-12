@@ -23,6 +23,10 @@
  *	static int setpwd PARAMS((char *));
  *	static char *resetpwd PARAMS((char *));
  *	static int change_to_directory PARAMS((char *, int, int));
+ *
+ *	flags :
+ *		-L (logical) : by default, return logical path with symlink in the result
+ *		-P (physical) : resolve symlink and give real path
  *	@return 0 if success, 1 if fail
  */
 
