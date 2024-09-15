@@ -26,3 +26,19 @@ int	alloc_dirinfo(t_minishell *minishell)
 	}
 	return (0);
 }
+
+int	alloc_currentcmd(t_minishell *minishell)
+{
+	minishell->current_cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!minishell->dirinfo)
+	{
+		free(minishell->term);
+		free(minishell->history);
+		free(minishell->cache);
+		free(minishell->tab_dict);
+		free(minishell->dirinfo);
+		free(minishell);
+		return (1);
+	}
+	return (0);
+}

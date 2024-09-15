@@ -21,6 +21,7 @@
 
 t_minishell	*alloc_minishell(void);
 int			alloc_dirinfo(t_minishell *minishell);
+int			alloc_currentcmd(t_minishell *minishell);
 
 // ########################################################
 // #						FREE						  #
