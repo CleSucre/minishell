@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+/*
+ * Delet args from env
+ */
+
+/**
+ * @brief
+ * @param cmd
+ * @param minishell
+ */
+
 void	command_unset(t_cmd *cmd, t_minishell *minishell)
 {
 	(void)cmd;

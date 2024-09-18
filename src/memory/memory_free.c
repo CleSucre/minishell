@@ -84,6 +84,5 @@ void	free_cmd(t_cmd *cmd)
 
 static void	free_dirinfo(t_dirinfo *dirinfo)
 {
-
 	free(dirinfo);
 }

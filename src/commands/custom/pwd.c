@@ -32,10 +32,10 @@
 
 void	command_pwd(t_cmd *cmd)
 {
-	(void)cmd;
-	char *path;
-	char buffer[BUFFER_SIZE];
+	char	*path;
+	char	buffer[BUFFER_SIZE];
 
+	(void)cmd;
 	path = getcwd(buffer, BUFFER_SIZE);
 	if (!path)
 	{
