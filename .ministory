@@ -116,3 +116,21 @@ pwd
 cd -
 cd ../../..
 echo $?
+cd ../../..
+cd -
+cd ..
+pwd
+cd ../../../..
+pwd
+cd -
+cd ../../../..
+pwd
+cd -
+cd src
+pwd
+cd src
+cd src
+pwd
+cd ../../../..
+cd src
+pwd

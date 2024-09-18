@@ -122,8 +122,8 @@ t_minishell	*alloc_minishell(void)
 		return (NULL);
 	if (alloc_dirinfo(minishell))
 		return (NULL);
-	if (alloc_currentcmd(minishell))
-		return (NULL);
+//	if (alloc_currentcmd(minishell))	TODO: Make sure if i need to alloc it or not (Maxime)
+//		return (NULL);
 	minishell->input = ft_calloc(1, sizeof(char *));
 	if (minishell->input == NULL)
 		return (NULL);
