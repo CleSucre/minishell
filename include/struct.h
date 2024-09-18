@@ -101,6 +101,7 @@ typedef struct s_minishell
 	t_dirinfo		*dirinfo;
     char            **input;
 	char			**env;
+	char			*starting_path;
 	int				exit_code;
 	unsigned int	history_pos;
 	unsigned int	history_size;

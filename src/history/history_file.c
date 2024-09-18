@@ -13,12 +13,11 @@
 #include "minishell.h"
 
 /**
- * @brief Get ministory file fd for reading and writing
- * 			If the file does not exist, it will be created
+ * @brief Create ministory file fd at the beginning
  *
  * @return int fd if success, -1 if failed
  */
-int	history_get_file(void)
+int	history_create_file(void)
 {
 	int	fd;
 
@@ -27,6 +26,31 @@ int	history_get_file(void)
 	{
 		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed",
 			1, STDOUT_FILENO);
+		return (-1);
+	}
+	return (fd);
+}
+
+/**
+ * @brief Get ministory file fd for reading and writing
+ * 			If the file does not exist, it will be created
+ *
+ * @return int fd if success, -1 if failed
+ */
+int	history_goto_file(t_minishell *minishell)
+{
+	int	fd;
+	char *name;
+
+	name = ft_strjoin(minishell->starting_path, "/.ministory");
+	if (!name)
+		return (-1);
+	fd = open(name, O_RDWR | O_APPEND | O_CREAT, 0644);
+	free(name);
+	if (fd < 0)
+	{
+		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed",
+					   1, STDOUT_FILENO);
 		return (-1);
 	}
 	return (fd);
@@ -43,7 +67,7 @@ int	history_load(t_minishell *minishell)
 	int		fd;
 	char	*line;
 
-	fd = history_get_file();
+	fd = history_create_file();
 	if (fd < 0)
 		return (-1);
 	line = get_next_line(fd);

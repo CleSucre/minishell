@@ -44,6 +44,8 @@ static int	alloc_cache(t_minishell *minishell)
  */
 static int	alloc_history(t_minishell *minishell)
 {
+	char	buffer[BUFFER_SIZE];
+
 	minishell->history = ft_calloc(1, sizeof(t_history));
 	if (!minishell->history)
 	{
@@ -106,6 +108,8 @@ static int	alloc_tab(t_minishell *minishell)
 t_minishell	*alloc_minishell(void)
 {
 	t_minishell	*minishell;
+	char		*name;
+	char 		buffer[BUFFER_SIZE];
 
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!minishell)
@@ -122,10 +126,14 @@ t_minishell	*alloc_minishell(void)
 		return (NULL);
 	if (alloc_dirinfo(minishell))
 		return (NULL);
-//	if (alloc_currentcmd(minishell))	TODO: Make sure if i need to alloc it or not (Maxime)
-//		return (NULL);
 	minishell->input = ft_calloc(1, sizeof(char *));
 	if (minishell->input == NULL)
 		return (NULL);
+	//Need to split that in another function
+	name = getcwd(buffer, BUFFER_SIZE+1);
+	minishell->starting_path = ft_calloc(ft_strlen(name) + 1, sizeof(char *));
+	if (!minishell->starting_path)
+		return (NULL);
+	ft_strlcpy(minishell->starting_path, name, ft_strlen(name)+1);
 	return (minishell);
 }

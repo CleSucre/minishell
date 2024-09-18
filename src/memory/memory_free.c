@@ -50,6 +50,7 @@ void	free_minishell(t_minishell *minishell)
 	free(minishell->completion);
 	ft_tabfree(minishell->input);
 	free_dirinfo(minishell->dirinfo);
+	free(minishell->starting_path);
 	free(minishell);
 }
 

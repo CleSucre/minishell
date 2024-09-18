@@ -19,7 +19,8 @@
 // #					HISTORY_FILE					  #
 // ########################################################
 
-int			history_get_file(void);
+int			history_create_file(void);
+int			history_goto_file(t_minishell *minishell);
 int			history_load(t_minishell *minishell);
 
 // ########################################################
