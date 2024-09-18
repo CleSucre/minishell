@@ -159,13 +159,13 @@ int	find_args(char **table, char *search)
  */
 char	*strcpy_passing_char(char *str, int nb)
 {
-	char *dst;
 	int		i;
+	char 	*dst;
 
-	i = 0;
-	dst = ft_calloc(sizeof(char *) * ft_strlen(str), 1);
+	dst = ft_calloc(sizeof(char *) * ft_strlen(str) - nb, 1);
 	if (!dst)
 		return (NULL);
+	i = 0;
 	while(str[nb])
 	{
 		dst[i] = str[nb];
@@ -176,7 +176,7 @@ char	*strcpy_passing_char(char *str, int nb)
 }
 
 /**
- * @brief function to change olwdpwd and pwd
+ * @brief function to invert olwdpwd and pwd when cd - is used
  * @param minishell
  * @param search
  */
@@ -189,7 +189,7 @@ static void	invert_oldpwd(t_minishell *minishell)
 
 	oldpwd = find_args(minishell->env, "OLDPWD");
 	pwd = find_args(minishell->env, "PWD");//					Search tabs pwd && oldpwd
-	ft_fprintf(2, "oldpwd [%s], pwd [%s]\n", minishell->env[oldpwd], minishell->env[pwd]);
+	ft_fprintf(2, "oldpwd [%s], pwd [%s]\n\n\n\n", minishell->env[oldpwd], minishell->env[pwd]);
 	if (oldpwd == -1 || pwd == -1)
 		return ;
 	name = strcpy_passing_char(minishell->env[oldpwd], 7);
@@ -202,9 +202,12 @@ static void	invert_oldpwd(t_minishell *minishell)
 	name = getcwd(buffer, BUFFER_SIZE);//							get new name about cwd
 	ft_strlcpy(minishell->env[pwd], ft_strjoin("PWD=", name), (int)ft_strlen(name) + 5);
 	ft_fprintf(2, "AFTER oldpwd [%s], pwd [%s]\n", minishell->env[oldpwd], minishell->env[pwd]);
-
 	return ;
 }
+
+
+//getcwd, chdir, getcwd
+
 
 static void	change_oldpwd(t_minishell *minishell)
 {
@@ -220,11 +223,13 @@ static void	change_oldpwd(t_minishell *minishell)
 		ft_putstr_fd("not find\n", 2);
 		return ;
 	}
+	ft_fprintf(2, "BEFORE CHANGE\noldpwd [%s], pwd [%s]\n\n\n\n", minishell->env[oldpwd], minishell->env[pwd]);	
 	clear_string(minishell->env[oldpwd]);
 	ft_strlcpy(minishell->env[oldpwd], ft_strjoin("OLD", minishell->env[pwd]), (int)ft_strlen(minishell->env[pwd]) + 4);
 	clear_string(minishell->env[pwd]);
 	name = getcwd(buffer, BUFFER_SIZE);
 	ft_strlcpy(minishell->env[pwd], ft_strjoin("PWD=", name), (int)ft_strlen(name) + 5);
+	ft_fprintf(2, "AFTER CHANGE\noldpwd [%s], pwd [%s]\n", minishell->env[oldpwd], minishell->env[pwd]);
 	return ;
 }
 //Ancien - > avant chgmt
@@ -246,22 +251,24 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 
 	if (ft_strcmp(cmd->argv[1], "-") == 0)
 	{
-		ft_putstr_fd("OKOKOKOK", 2);
-		if (getenv("OLDPWD"))
+		if (access(getenv("OLDPWD"), R_OK | X_OK) == 0)
 			invert_oldpwd(minishell);
 		else
 		{
 			ft_putstr_fd("error, oldpwd can't be established\n", 2);
+			minishell->exit_code = 126;
 			return (1);
 		}
 	}
-	else if (chdir(cmd->argv[1]) == -1)
+	else if (chdir(cmd->argv[1]) == -1 || access(cmd->argv[1], R_OK | X_OK) != 0)
 	{
 		ft_fprintf(2, "minishell: cd: %s: No such file or directory\n", cmd->argv[1]);
 		minishell->exit_code = 1;
 		return (1);
 	}
-	change_oldpwd(minishell);
+	else
+		change_oldpwd(minishell);
+	minishell->exit_code = 0;
 //	change_oldpwd(minishell, "OLDPWD=");
 //	minishell->dirinfo->old_path = minishell->dirinfo->path;
 //	minishell->dirinfo->path = getcwd(buffer, BUFFER_SIZE);

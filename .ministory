@@ -57,3 +57,62 @@ exit
 cd -
 cd -
 cd -
+cd -
+cd -
+cd -
+cd -
+c
+c
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+pwd
+cd -
+pwd
+cd -
+pwd
+cd ..
+pwd
+cd -
+pwd
+cd ../../..
+pwd
+cd -
+pwd
+cd -
+pwd
+cd -
+pwd
+cd ../../..
+cd ../../..
+cd ../../..
+pwd
+cd -
+pwd
+cd ../../../../..
+pwd
+cd -
+cd -/Dev
+pwd
+cd ../fjeioejf
+pwd
+cd -
+cd ../../..
+git log
+cd ../../../../..
+pwd
+cd ..
+pwd
+cd ../../../..
+pwd
+cd -
+pwd
+cd -
+cd ../../..
+echo $?
