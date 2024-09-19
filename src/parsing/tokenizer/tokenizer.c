@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.h                                           :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,24 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MEMORY_H
-# define MEMORY_H
+#include "minishell.h"
 
-# include "parsing.h"
+t_token_type	token_type(char *str)
+{
 
-// ########################################################
-// #						ALLOC						  #
-// ########################################################
+}
 
-t_minishell	*alloc_minishell(void);
+t_token	*tokenize(char *input)
+{
+	t_token			*token;
+	t_token			*head;
+	t_token_type	type;
+	char 			**splited;
+	int				i;
 
-// ########################################################
-// #						FREE						  #
-// ########################################################
-
-void		free_minishell(t_minishell *minishell);
-void		free_tokens(t_token *tokens);
-void		free_ast(t_ast_node *ast);
-void		free_cmd(t_cmd *cmd);
-
-#endif
+	splited = ft_split(input, WHITESPACES);
+	if (splited == NULL)
+		return (NULL);
+	i = 0;
+	head = NULL;
+	while (splited[i])
+	{
+		type = token_type(splited[i]);
+		token = new_token(splited[i], type);
+		add_token(&head, token);
+		i++;
+	}
+	return (head);
+}

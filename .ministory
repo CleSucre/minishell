@@ -716,3 +716,91 @@ history | grep 197
 pwd
 pwd
 md
+ls
+ls -la
+history | grep 197
+history | grep ls
+make norm
+ls
+ls
+history | grep ls
+ls
+make norm
+make norm
+make norm
+make norm
+make norm
+make norm
+make norm
+history | grep ls
+clear
+ls
+ls
+clear
+ls
+ls
+ls && azsa
+ls & sa
+ls && cat
+ls && cat
+ls && cat
+ls && cat || ls
+ls && cat || ls
+ls && cat
+ls
+ls
+ls && cat || ls
+ls && cat || ls
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat
+ls && cat && cat
+ls && cat && cat && ls
+ls && cat && cat && ls && ls
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo "&&"
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ls
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo '&&'
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ls
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo '&&'
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ls
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo '&&'
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ls
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo '&&'
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo '&&'
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ls
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo '&&'
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ""
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ()
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo &&
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo "
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo ""
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat && echo "&&"
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat
+ls
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat
+ls && cat && cat && ls && ls && cat && ls && cat && ls && cat
+ls && cat && echo

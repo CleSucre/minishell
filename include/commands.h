@@ -47,7 +47,7 @@ void	command_unset(t_cmd *cmd, t_minishell *minishell);
 // #						UTILS						  #
 // ########################################################
 
-t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, const int in_out[2], int to_close);
+t_cmd	*load_command(t_minishell *minishell, t_ast_node *cmd, const int in_out[2], int to_close);
 
 // ########################################################
 // #						FLAGS_UTILS					  #

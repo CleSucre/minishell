@@ -52,7 +52,7 @@ static char	*check_input(t_minishell *minishell, char *input)
  */
 int	execute(t_minishell *minishell, char *input)
 {
-	t_ast	*ast;
+	t_ast_node	*ast;
 	int		res;
 	char	*trimmed;
 
@@ -66,8 +66,9 @@ int	execute(t_minishell *minishell, char *input)
 		return (0);
 	}
 	free(trimmed);
-	res = execute_cmds(minishell, ast);
+	//res = execute_cmds(minishell, ast);
 	free_ast(ast);
+	res = 0;
 	minishell->exit_code = res;
 	return (res);
 }

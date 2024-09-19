@@ -56,17 +56,20 @@ void	free_minishell(t_minishell *minishell)
  * @param t_ast *ast
  * @return void
  */
-void	free_ast(t_ast *ast)
+void	free_ast(t_ast_node *ast)
 {
-	t_ast	*tmp;
+	t_ast_node	*tmp;
 
 	while (ast)
 	{
 		tmp = ast;
 		ast = ast->next;
-		if (tmp->children)
-			free_ast(tmp->children);
-		free(tmp->value);
+		free_ast(tmp->left);
+		free_ast(tmp->right);
+		if (!tmp->value)
+			free(tmp->value);
+		if (tmp->next)
+			free_ast(tmp->next);
 		free(tmp);
 	}
 }

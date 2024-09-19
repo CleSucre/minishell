@@ -21,9 +21,9 @@
  * @param int *to_close
  * @return int 0 on success, -1 on failure
  */
-static int	setup_pipes(t_ast *ast, int *fd, int in_out[2], int *to_close)
+static int	setup_pipes(t_ast_node *ast, int *fd, int in_out[2], int *to_close)
 {
-	if (ast->next && ast->next->type == FULL_COMMAND)
+	if (ast->next && ast->next->type == TOKEN_WORD)
 	{
 		if (pipe(fd) == -1)
 		{
@@ -66,7 +66,7 @@ static void	close_fds(int in_out[2], int *fd)
  * @param int to_close
  * @return int 0 on success, 1 on failure
  */
-static int	execute_single_cmd(t_minishell *minishell, t_ast *ast,
+static int	execute_single_cmd(t_minishell *minishell, t_ast_node *ast,
 		int in_out[2], int to_close)
 {
 	int	result;
@@ -91,7 +91,7 @@ static int	execute_single_cmd(t_minishell *minishell, t_ast *ast,
  * @param int fd[]
  * @return int 0 on success, -1 on failure
  */
-static int	execute_commands_loop(t_minishell *minishell, t_ast *ast,
+static int	execute_commands_loop(t_minishell *minishell, t_ast_node *ast,
 		int in_out[2], int *fd)
 {
 	int	to_close;
@@ -100,7 +100,7 @@ static int	execute_commands_loop(t_minishell *minishell, t_ast *ast,
 	to_close = -1;
 	while (ast)
 	{
-		if (ast->type == FULL_COMMAND)
+		if (ast->type == TOKEN_WORD)
 		{
 			if (setup_pipes(ast, fd, in_out, &to_close) == -1)
 				return (0);
@@ -122,7 +122,7 @@ static int	execute_commands_loop(t_minishell *minishell, t_ast *ast,
  * @param t_ast *ast
  * @return int 0 on success
  */
-int	execute_cmds(t_minishell *minishell, t_ast *ast)
+int	execute_cmds(t_minishell *minishell, t_ast_node *ast)
 {
 	int	fd[2];
 	int	in_out[2];

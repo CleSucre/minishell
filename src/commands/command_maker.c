@@ -18,7 +18,7 @@
  * @param t_ast *cmd
  * @return char**
  */
-static char	**allocate_args(t_ast *cmd)
+static char	**allocate_args(t_ast_node *cmd)
 {
 	char	**args;
 
@@ -35,24 +35,24 @@ static char	**allocate_args(t_ast *cmd)
  * @param tmp
  * @return char*
  */
-static char	*process_node(t_minishell *minishell, t_ast *tmp)
+static char	*process_node(t_minishell *minishell, t_ast_node *tmp)
 {
 	char	*arg;
 
 	arg = NULL;
-	if (tmp->type == TEXT_SINGLE_QUOTE)
+	if (tmp->type == TOKEN_DQUOTE)
 	{
-		if (tmp->children->type == TEXT)
-			arg = ft_strdup(tmp->children->value);
+		if (tmp->next->type == TOKEN_WORD)
+			arg = ft_strdup(tmp->next->value);
 	}
-	else if (tmp->type == TEXT_DOUBLE_QUOTE)
+	else if (tmp->type == TOKEN_DQUOTE)
 	{
-		if (tmp->children->type == TEXT)
-			arg = replace_variables(minishell->env, tmp->children->value);
+		if (tmp->next->type == TOKEN_WORD)
+			arg = replace_variables(minishell->env, tmp->next->value);
 	}
-	else if (tmp->type == VARIABLE)
+	else if (tmp->type == TOKEN_VARIABLE)
 		arg = get_var_value(minishell->env, tmp->value + 1);
-	else if (tmp->type == TEXT)
+	else if (tmp->type == TOKEN_WORD)
 		arg = replace_variables(minishell->env, tmp->value);
 	else
 		arg = ft_strdup(tmp->value);
@@ -62,16 +62,16 @@ static char	*process_node(t_minishell *minishell, t_ast *tmp)
 /**
  * @brief Extract the arguments from the AST node
  *
- * TODO: handle the case where there is commands in a child node
+ * TODO: handle the case where there is commands in a next node
  *
  * @param t_minishell *minishell
  * @param t_ast *cmd
  * @return char**
  */
-static char	**get_argv(t_minishell *minishell, t_ast *cmd)
+static char	**get_argv(t_minishell *minishell, t_ast_node *cmd)
 {
 	char	**args;
-	t_ast	*tmp;
+	t_ast_node	*tmp;
 	int		i;
 
 	args = allocate_args(cmd);
@@ -100,7 +100,7 @@ static char	**get_argv(t_minishell *minishell, t_ast *cmd)
  * @param int to_close
  * @return t_cmd *
  */
-t_cmd	*load_command(t_minishell *minishell, t_ast *ast_cmd,
+t_cmd	*load_command(t_minishell *minishell, t_ast_node *ast_cmd,
 		const int in_out[2], int to_close)
 {
 	t_cmd	*new_cmd;

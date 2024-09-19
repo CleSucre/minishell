@@ -28,9 +28,9 @@ static void	setup_signals(struct sigaction *sa)
 }
 
 /**
- * @brief Handle the child process after fork
+ * @brief Handle the next process after fork
  */
-static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, t_ast *ast
+static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, t_ast_node *ast
 		, struct sigaction *sa)
 {
 	int	err;
@@ -59,7 +59,7 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, t_ast *ast
 	exit(err);
 }
 
-static int	execution(t_minishell *minishell, t_cmd *cmd, t_ast *ast)
+static int	execution(t_minishell *minishell, t_cmd *cmd, t_ast_node *ast)
 {
 	struct sigaction	sa;
 	pid_t				pid;
@@ -82,7 +82,7 @@ static int	execution(t_minishell *minishell, t_cmd *cmd, t_ast *ast)
 }
 
 static int	pre_execute(t_minishell *minishell, t_cmd *cmd,
-		t_ast *ast)
+						  t_ast_node *ast)
 {
 	int	res;
 
@@ -98,14 +98,14 @@ static int	pre_execute(t_minishell *minishell, t_cmd *cmd,
 /**
  * @brief Main function for executing a command
  */
-int	execute_cmd(t_minishell *minishell, t_ast *ast, int in_out[2], int to_close)
+int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int in_out[2], int to_close)
 {
 	t_cmd	*cmd;
 	int		res;
 
 	if (!ast)
 		return (1);
-	cmd = load_command(minishell, ast->children, in_out, to_close);
+	cmd = load_command(minishell, ast->next, in_out, to_close);
 	if (!cmd)
 		return (1);
 	res = pre_execute(minishell, cmd, ast);

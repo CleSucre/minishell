@@ -23,8 +23,8 @@
 void	handle_signal(int sig);
 int		wait_for_processes(int *status);
 int		execute_path(t_cmd *cmd);
-int		execute_cmds(t_minishell *minishell, t_ast *ast);
-int		execute_cmd(t_minishell *minishell, t_ast *ast, int in_out[2], int to_close);
+int		execute_cmds(t_minishell *minishell, t_ast_node *ast);
+int		execute_cmd(t_minishell *minishell, t_ast_node *ast, int in_out[2], int to_close);
 int		execute(t_minishell *minishell, char *input);
 
 #endif

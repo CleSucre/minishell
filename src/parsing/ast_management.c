@@ -18,7 +18,7 @@
  * @param t_ast *ast
  * @return unsigned int
  */
-unsigned int	ast_len(t_ast *ast)
+unsigned int	ast_len(t_ast_node *ast)
 {
 	unsigned int	len;
 
@@ -38,7 +38,7 @@ unsigned int	ast_len(t_ast *ast)
  * @param t_type type
  * @return unsigned int
  */
-unsigned int	ast_count_type(t_ast *ast, t_type type)
+unsigned int	ast_count_type(t_ast_node *ast, t_ast_node_type type)
 {
 	unsigned int	count;
 
@@ -59,18 +59,21 @@ unsigned int	ast_count_type(t_ast *ast, t_type type)
  * @param char *value value of ast
  * @return t_ast *
  */
-t_ast	*create_ast(t_type type, char *value)
+t_ast_node	*create_ast(t_ast_node_type type, char *value)
 {
-	t_ast	*ast;
+	t_ast_node	*ast;
 
-	ast = ft_calloc(1, sizeof(t_ast));
+	ast = malloc(sizeof(t_ast_node));
 	if (!ast)
 		return (NULL);
+
 	ast->type = type;
-	ast->value = value;
-	ast->children = NULL;
+	ast->value = ft_strdup(value);
+	ast->left = NULL;
+	ast->right = NULL;
 	ast->next = NULL;
-	ast->prev = NULL;
+	ast->args = NULL;
+	ast->redirs = NULL;
 	return (ast);
 }
 
@@ -80,13 +83,13 @@ t_ast	*create_ast(t_type type, char *value)
  * @param t_ast *head
  * @return t_ast *
  */
-t_ast	*ast_get_last(t_ast *head)
+t_ast_node	*ast_get_last(t_ast_node *head)
 {
-	t_ast	*tmp;
+	t_ast_node	*tmp;
 
 	tmp = head;
-	while (tmp->next)
-		tmp = tmp->next;
+	while (tmp->right)
+		tmp = tmp->right;
 	return (tmp);
 }
 
@@ -97,18 +100,19 @@ t_ast	*ast_get_last(t_ast *head)
  * @param t_ast *ast ast to add
  * @return void
  */
-void	ast_add_last(t_ast **head, t_ast *ast)
+void	ast_add_last(t_ast_node **head, t_ast_node *ast)
 {
-	t_ast	*tmp;
+	t_ast_node	*tmp;
 
 	if (!*head)
 	{
+		ft_printf("head is null\n");
 		*head = ast;
 		return ;
 	}
 	tmp = ast_get_last(*head);
-	tmp->next = ast;
-	ast->prev = tmp;
+	tmp->right = ast;
+	ast->left = tmp;
 }
 
 /**
@@ -118,12 +122,12 @@ void	ast_add_last(t_ast **head, t_ast *ast)
  * @param t_ast *ast ast to add
  * @return void
  */
-void	ast_add_children(t_ast *ast, t_ast *children)
+void	ast_add_children(t_ast_node *ast, t_ast_node *children)
 {
-	t_ast	*tmp;
+	t_ast_node	*tmp;
 
 	tmp = ast;
-	while (tmp->children)
-		tmp = tmp->children;
-	tmp->children = children;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = children;
 }

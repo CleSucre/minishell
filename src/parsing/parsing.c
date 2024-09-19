@@ -5,95 +5,114 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/10 09:14:24 by julthoma         ###   ########.fr       */
+/*   Created: 2024/09/11 19:27:00 by julthoma          #+#    #+#             */
+/*   Updated: 2024/09/11 19:27:00 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Extract full custom from input by splitting it with '|'
- * 			It also handle single and double quotes
- *
- * @param char *input
- * @return t_ast *
- */
-static t_ast	*extract_full_commands(char *input)
+static	char **ft_taballoc(size_t size)
 {
-	char	**commands;
-	void	*tmp;
-	t_ast	*ast;
-	int		i;
+	char	**res;
 
-	commands = ft_split_quote(input, "|", "\"'");
-	if (!commands)
+	res = ft_calloc(size, sizeof(char *));
+	if (!res)
 		return (NULL);
-	i = 0;
-	ast = create_ast(FULL_COMMAND, commands[i]);
-	while (commands[++i])
+
+	while (size--)
 	{
-		tmp = ft_strtrim(commands[i], " ");
-		free(commands[i]);
-		commands[i] = tmp;
-		tmp = create_ast(FULL_COMMAND, commands[i]);
-		if (!tmp)
+		res[size] = ft_calloc(1, sizeof(char));
+		if (!res[size])
 		{
-			free_ast(ast);
+			ft_tabfree(res);
 			return (NULL);
 		}
-		ast_add_last(&ast, tmp);
 	}
-	free(commands);
-	return (ast);
+	return (res);
 }
 
-/**
- * @brief Extract arguments from a full commands by splitting it with WHITESPACES
- *
- * @param t_ast *ast ast containing all full commands
- * @return void * NULL on failure or ast on success
- */
-static void	*parse_full_commands(t_ast *ast)
+static void	ft_extract_or(t_ast_node *ast, char *str)
 {
-	t_ast	*tmp;
-	char	**args;
+	char 		**tmp;
+	int 		index;
 
+	index = ft_str_locate(str, 0, "||");
+	while (index != -1)
+	{
+		ft_printf("or_current_index: %d\n", index);
+		if (
+				!ft_is_between(str, index, '"', '"')
+				&& !ft_is_between(str, index, '\'', '\'')
+				&& !ft_is_between(str, index, '(', ')')
+				)
+		{
+			tmp = ft_split_index(str, index);
+
+		}
+		index = ft_str_locate(str, index + 1, "||");
+	}
+}
+
+void	ft_extract_and(t_ast_node *ast)
+{
+	char		**splited;
+	int			index;
+	char 		*str;
+
+	str = ast->value;
+	index = ft_str_locate(str, 0, "&&");
+	while (index > 0)
+	{
+		ft_printf("and_current_index: %d\n", index);
+		if (
+				!ft_is_between(str, index, '"', '"')
+				&& !ft_is_between(str, index, '\'', '\'')
+				&& !ft_is_between(str, index, '(', ')')
+				)
+		{
+			splited = ft_split_index(str, index);
+			if (ft_tablen((const char **)splited) == 2)
+			{
+				ft_printf("splited[0]: %s\n", splited[0]);
+				ft_printf("splited[1]: %s\n", splited[1]);
+				ast->left = create_ast(AST_COMMAND, splited[0]);
+				ast->right = create_ast(AST_COMMAND, splited[1]);
+				ast = ast->right;
+			}
+			ft_tabfree(splited);
+		}
+		index = ft_str_locate(str, index + 1, "&&");
+	}
+}
+
+t_ast_node			*parsing_bonus(char *input)
+{
+	t_ast_node	*ast;
+
+	ast = create_ast(AST_COMMAND, input);
+	ft_extract_and(ast);
 	if (!ast)
 		return (NULL);
-	tmp = ast;
-	while (tmp)
-	{
-		if (tmp->type == FULL_COMMAND)
-		{
-			args = ft_split_quote(tmp->value, WHITESPACES, "\"'");
-			if (!args)
-				return (NULL);
-			parse_args(tmp, args);
-			free(args);
-		}
-		tmp = tmp->next;
-	}
 	return (ast);
 }
 
 /**
- * @brief Parse the input and create ast
+ * @brief Parses the input string and creates an AST.
  *
- * @param char *input string to parse
- * @return t_ast *
+ * @param char *input Input string to parse.
+ * @return t_ast * AST created from the input.
  */
-t_ast	*parse_input(t_minishell *minishell, char *input)
+t_ast_node	*parse_input(t_minishell *minishell, char *input)
 {
-	t_ast	*ast;
+	t_ast_node	*ast;
 
 	(void)minishell;
 	if (!input)
 		return (NULL);
-	ast = extract_full_commands(input);
+	ast = parsing_bonus(input);
 	if (!ast)
 		return (NULL);
-	parse_full_commands(ast);
 	debug_ast(ast);
 	return (ast);
 }
