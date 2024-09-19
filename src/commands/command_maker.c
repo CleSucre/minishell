@@ -18,6 +18,7 @@
  * @param t_ast *cmd
  * @return char**
  */
+ /*
 static char	**allocate_args(t_ast_node *cmd)
 {
 	char	**args;
@@ -27,6 +28,7 @@ static char	**allocate_args(t_ast_node *cmd)
 		return (NULL);
 	return (args);
 }
+  */
 
 /**
  * @brief Handle different types of AST nodes for argument extraction
@@ -35,6 +37,7 @@ static char	**allocate_args(t_ast_node *cmd)
  * @param tmp
  * @return char*
  */
+ /*
 static char	*process_node(t_minishell *minishell, t_ast_node *tmp)
 {
 	char	*arg;
@@ -42,22 +45,23 @@ static char	*process_node(t_minishell *minishell, t_ast_node *tmp)
 	arg = NULL;
 	if (tmp->type == TOKEN_DQUOTE)
 	{
-		if (tmp->next->type == TOKEN_WORD)
+		if (tmp->next->type == TOKEN_COMMAND)
 			arg = ft_strdup(tmp->next->value);
 	}
 	else if (tmp->type == TOKEN_DQUOTE)
 	{
-		if (tmp->next->type == TOKEN_WORD)
+		if (tmp->next->type == TOKEN_COMMAND)
 			arg = replace_variables(minishell->env, tmp->next->value);
 	}
 	else if (tmp->type == TOKEN_VARIABLE)
 		arg = get_var_value(minishell->env, tmp->value + 1);
-	else if (tmp->type == TOKEN_WORD)
+	else if (tmp->type == TOKEN_COMMAND)
 		arg = replace_variables(minishell->env, tmp->value);
 	else
 		arg = ft_strdup(tmp->value);
 	return (arg);
 }
+  */
 
 /**
  * @brief Extract the arguments from the AST node
@@ -68,6 +72,7 @@ static char	*process_node(t_minishell *minishell, t_ast_node *tmp)
  * @param t_ast *cmd
  * @return char**
  */
+ /*
 static char	**get_argv(t_minishell *minishell, t_ast_node *cmd)
 {
 	char	**args;
@@ -89,6 +94,7 @@ static char	**get_argv(t_minishell *minishell, t_ast_node *cmd)
 	args[ast_len(cmd)] = NULL;
 	return (args);
 }
+  */
 
 /**
  * @brief Generate a command structure from an AST node
@@ -100,6 +106,7 @@ static char	**get_argv(t_minishell *minishell, t_ast_node *cmd)
  * @param int to_close
  * @return t_cmd *
  */
+ /*
 t_cmd	*load_command(t_minishell *minishell, t_ast_node *ast_cmd,
 		const int in_out[2], int to_close)
 {
@@ -114,8 +121,8 @@ t_cmd	*load_command(t_minishell *minishell, t_ast_node *ast_cmd,
 	if (!path)
 		path = ft_strdup(ast_cmd->value);
 	new_cmd->path = path;
-	new_cmd->argv = get_argv(minishell, ast_cmd);
-	new_cmd->argc = (int)ast_len(ast_cmd);
+	//new_cmd->argv = get_argv(minishell, ast_cmd);
+	//new_cmd->argc = (int)ast_len(ast_cmd);
 	new_cmd->env = minishell->env;
 	new_cmd->input = in_out[0];
 	new_cmd->output = in_out[1];
@@ -124,3 +131,4 @@ t_cmd	*load_command(t_minishell *minishell, t_ast_node *ast_cmd,
 	new_cmd->pid = -1;
 	return (new_cmd);
 }
+*/

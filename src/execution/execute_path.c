@@ -11,20 +11,3 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Execute the command given in input
- *
- * @param t_cmd *cmd
- * @return int error code
- */
-int	execute_path(t_cmd *cmd)
-{
-	int	err;
-
-	err = execve(cmd->path, cmd->argv, cmd->env);
-	if (err == -1)
-		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
-			cmd->cmd_name);
-	return (err);
-}

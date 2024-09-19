@@ -19,7 +19,7 @@ t_token	*new_token(char *str, int type)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->str = ft_strdup(str);
+	token->value = ft_strdup(str);
 	token->type = type;
 	token->next = NULL;
 	return (token);
@@ -44,7 +44,7 @@ void	free_token(t_token *token)
 {
 	if (token)
 	{
-		free(token->str);
+		free(token->value);
 		free(token);
 	}
 }

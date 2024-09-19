@@ -12,90 +12,62 @@
 
 #include "minishell.h"
 
-static	char **ft_taballoc(size_t size)
+/**
+ * @brief Build a new AST node based on tokens given.
+ *
+ * @param t_token **tokens List of tokens to build the node from.
+ * @return t_ast_node* New AST node created.
+ */
+t_ast_node	*build_ast(t_token **tokens)
 {
-	char	**res;
+	t_token *current;
+	t_ast_node *root;
+	t_ast_node *last_command;
 
-	res = ft_calloc(size, sizeof(char *));
-	if (!res)
-		return (NULL);
-
-	while (size--)
+	current = *tokens;
+	root = NULL;
+	last_command = NULL;
+	while (current != NULL)
 	{
-		res[size] = ft_calloc(1, sizeof(char));
-		if (!res[size])
+		if (current->type == TOKEN_COMMAND)
+			process_command(&current, &root, &last_command);
+		else if (current->type == TOKEN_ARGUMENT)
 		{
-			ft_tabfree(res);
-			return (NULL);
+			process_argument(current, last_command);
+			current = current->next;
+			continue ;
 		}
-	}
-	return (res);
-}
-
-static void	ft_extract_or(t_ast_node *ast, char *str)
-{
-	char 		**tmp;
-	int 		index;
-
-	index = ft_str_locate(str, 0, "||");
-	while (index != -1)
-	{
-		ft_printf("or_current_index: %d\n", index);
-		if (
-				!ft_is_between(str, index, '"', '"')
-				&& !ft_is_between(str, index, '\'', '\'')
-				&& !ft_is_between(str, index, '(', ')')
-				)
+		else if (current->type == TOKEN_PIPE)
+			return process_pipe(&current, &root);
+		else if (current->type == TOKEN_AND_OPERATOR || current->type == TOKEN_OR_OPERATOR)
+			return process_operator(&current, &root, &last_command);
+		else if (current->type == TOKEN_PARENTHESIS_OPEN)
+			process_subshell(&current, &root, &last_command);
+		else if (current->type == TOKEN_REDIR_OUT || current->type == TOKEN_REDIR_OUT_APPEND ||
+				 current->type == TOKEN_REDIR_IN || current->type == TOKEN_HEREDOC)
+			root = process_redirection(&current, &root);
+		else if (current->type == TOKEN_ASSIGNMENT)
 		{
-			tmp = ft_split_index(str, index);
-
+			t_ast_node *assignment_node = process_assignment(&current);
+			if (root == NULL)
+				root = assignment_node;
+			else
+				last_command->right = assignment_node;
 		}
-		index = ft_str_locate(str, index + 1, "||");
-	}
-}
-
-void	ft_extract_and(t_ast_node *ast)
-{
-	char		**splited;
-	int			index;
-	char 		*str;
-
-	str = ast->value;
-	index = ft_str_locate(str, 0, "&&");
-	while (index > 0)
-	{
-		ft_printf("and_current_index: %d\n", index);
-		if (
-				!ft_is_between(str, index, '"', '"')
-				&& !ft_is_between(str, index, '\'', '\'')
-				&& !ft_is_between(str, index, '(', ')')
-				)
+		else if (current->type == TOKEN_VARIABLE)
 		{
-			splited = ft_split_index(str, index);
-			if (ft_tablen((const char **)splited) == 2)
-			{
-				ft_printf("splited[0]: %s\n", splited[0]);
-				ft_printf("splited[1]: %s\n", splited[1]);
-				ast->left = create_ast(AST_COMMAND, splited[0]);
-				ast->right = create_ast(AST_COMMAND, splited[1]);
-				ast = ast->right;
-			}
-			ft_tabfree(splited);
+			t_ast_node *variable_node = process_variable(&current);
+			if (root == NULL)
+				root = variable_node;
+			else
+				last_command->right = variable_node;
 		}
-		index = ft_str_locate(str, index + 1, "&&");
+		else
+			current = current->next;
 	}
+	return (root);
 }
 
-t_ast_node			*parsing_bonus(char *input)
-{
-	t_ast_node	*ast;
-
-	ast = create_ast(AST_COMMAND, input);
-	ft_extract_and(ast);
-	if (!ast)
-		return (NULL);
-	return (ast);
-}
 
 /**
  * @brief Parses the input string and creates an AST.
@@ -106,11 +78,16 @@ t_ast_node			*parsing_bonus(char *input)
 t_ast_node	*parse_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
+    t_token     *tokens;
 
 	(void)minishell;
 	if (!input)
 		return (NULL);
-	ast = parsing_bonus(input);
+    tokens = tokenize(input);
+    if (!tokens)
+        return (NULL);
+    debug_tokens(tokens);
+    ast = build_ast(&tokens);
 	if (!ast)
 		return (NULL);
 	debug_ast(ast);

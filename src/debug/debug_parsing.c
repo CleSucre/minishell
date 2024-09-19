@@ -13,57 +13,36 @@
 #include "minishell.h"
 
 /**
- * @brief Get token type as string (secondary)
- *
- * @param type Token type ID
- * @return char* Token type as string
- */
-static char	*get_token_type_secondary(t_token_type type)
-{
-	if (type == TOKEN_REDIR_OUT)
-		return ("TOKEN_REDIR_OUT");
-	else if (type == TOKEN_REDIR_OUT_APPEND)
-		return ("TOKEN_REDIR_OUT_APPEND");
-	else if (type == TOKEN_HEREDOC)
-		return ("TOKEN_HEREDOC");
-	else if (type == TOKEN_ASSIGNMENT)
-		return ("TOKEN_ASSIGNMENT");
-	else if (type == TOKEN_VARIABLE)
-		return ("TOKEN_VARIABLE");
-	else if (type == TOKEN_ASTERISK)
-		return ("TOKEN_ASTERISK");
-	else if (type == TOKEN_EOF)
-		return ("TOKEN_EOF");
-	return ("UNKNOWN");
-}
-
-/**
  * @brief Get token type as string (primary)
  *
  * @param type Token type ID
  * @return char* Token type as string
  */
-static char	*get_token_type_primary(t_token_type type)
+static char	*get_token_type(t_token_type type)
 {
-	if (type == TOKEN_WORD)
-		return ("TOKEN_WORD");
-	else if (type == TOKEN_AND)
-		return ("TOKEN_AND");
-	else if (type == TOKEN_OR)
-		return ("TOKEN_OR");
+	if (type == TOKEN_COMMAND)
+		return ("TOKEN_COMMAND");
+	else if (type == TOKEN_ARGUMENT)
+		return ("TOKEN_ARGUMENT");
+	else if (type == TOKEN_AND_OPERATOR)
+		return ("TOKEN_AND_OPERATOR");
+	else if (type == TOKEN_OR_OPERATOR)
+		return ("TOKEN_OR_OPERATOR");
 	else if (type == TOKEN_PIPE)
 		return ("TOKEN_PIPE");
-	else if (type == TOKEN_LPAREN)
-		return ("TOKEN_LPAREN");
-	else if (type == TOKEN_RPAREN)
-		return ("TOKEN_RPAREN");
-	else if (type == TOKEN_DQUOTE)
-		return ("TOKEN_DQUOTE");
-	else if (type == TOKEN_SQUOTE)
-		return ("TOKEN_SQUOTE");
+	else if (type == TOKEN_REDIR_OUT)
+		return ("TOKEN_REDIR_OUT");
+	else if (type == TOKEN_REDIR_OUT_APPEND)
+		return ("TOKEN_REDIR_OUT_APPEND");
 	else if (type == TOKEN_REDIR_IN)
 		return ("TOKEN_REDIR_IN");
-	return (get_token_type_secondary(type));
+	else if (type == TOKEN_HEREDOC)
+		return ("TOKEN_HEREDOC");
+	else if (type == TOKEN_PARENTHESIS_OPEN)
+		return ("TOKEN_PARENTHESIS_OPEN");
+	else if (type == TOKEN_PARENTHESIS_CLOSE)
+		return ("TOKEN_PARENTHESIS_CLOSE");
+	return ("UNKNOWN");
 }
 
 /**
@@ -74,8 +53,14 @@ static char	*get_token_type_primary(t_token_type type)
  */
 static char	*get_ast_node_type_secondary(t_ast_node_type type)
 {
-	if (type == AST_REDIRECTION)
-		return ("AST_REDIRECTION");
+	if (type == AST_REDIR_OUT)
+		return ("AST_REDIR_OUT");
+	else if (type == AST_REDIR_OUT_APPEND)
+		return ("AST_REDIR_OUT_APPEND");
+	else if (type == AST_REDIR_IN)
+		return ("AST_REDIR_IN");
+	else if (type == AST_HEREDOC)
+		return ("AST_HEREDOC");
 	else if (type == AST_ASSIGNMENT)
 		return ("AST_ASSIGNMENT");
 	else if (type == AST_VARIABLE)
@@ -123,7 +108,7 @@ void	debug_tokens(t_token *tokens)
 		ft_printf("\n%s[DEBUG] ====== tokens [%d] ======%s\n", BLUE, i, RESET);
 		ft_printf("token: %s%s%s\n", YELLOW, tokens->value, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
-				  BOLDWHITE, get_token_type_primary(tokens->type),
+				  BOLDWHITE, get_token_type(tokens->type),
 				  RESET, tokens->type);
 		tokens = tokens->next;
 		i++;
@@ -139,31 +124,43 @@ void	debug_tokens(t_token *tokens)
 static void	debug_ast_node(t_ast_node *ast, int level)
 {
 	char	*space;
+	int		i;
 
 	space = ft_calloc((level * 4) + 1, sizeof(char));
 	if (!space)
 		return ;
 	ft_memset(space, ' ', level * 4);
+
 	ft_printf("\n%s%s[DEBUG] ====== NODE ======%s\n", space, BLUE, RESET);
 	ft_printf("%stype str: %s%s%s (id: %d)\n", space, BOLDWHITE,
 			  get_ast_node_type_primary(ast->type), RESET, ast->type);
-	ft_printf("%svalue: %s|%s%s%s|%s\n", space, CYAN, YELLOW,
-			  ast->value ? ast->value : "NULL", CYAN, RESET);
+
+	// Print the command and its arguments if it's a command node
+	if (ast->value && ast->type == AST_COMMAND)
+	{
+		ft_printf("%scommand and args:\n", space);
+		i = 0;
+		while (ast->value[i])
+		{
+			ft_printf("%s- %s%s%s\n", space, CYAN, ast->value[i], RESET);
+			i++;
+		}
+	}
 	free(space);
 }
 
 /**
- * @brief Helper function to print next nodes
+ * @brief Helper function to print child AST nodes
  *
  * @param child Child AST node
  * @param level Indentation level
- * @param label Label to print before the next nodes
+ * @param label Label to print before the child node
  */
 static void	debug_ast_child(t_ast_node *child, int level, const char *label)
 {
 	if (child)
 	{
-		ft_printf("%s", label);
+		ft_printf("%s\n", label);
 		debug_children(child, level + 1);
 	}
 }
@@ -178,13 +175,13 @@ void	debug_children(t_ast_node *ast, int level)
 {
 	if (!DEBUG || !ast)
 		return ;
+
+	// Afficher les informations du nœud courant
 	debug_ast_node(ast, level);
-	debug_ast_child(ast->args, level, "Arguments:");
-	debug_ast_child(ast->redirs, level, "Redirections:");
+
+	// Afficher les enfants (gauche et droite)
 	debug_ast_child(ast->left, level, "Left next:");
 	debug_ast_child(ast->right, level, "Right next:");
-	if (ast->next)
-		debug_children(ast->next, level);
 }
 
 /**
@@ -196,18 +193,20 @@ void	debug_ast(t_ast_node *ast)
 {
 	if (!DEBUG)
 		return ;
-	while (ast)
+
+	ft_printf("\n%s[DEBUG] ====== AST NODE ======%s\n", BLUE, RESET);
+	ft_printf("type: %s%s%s (id: %d)\n", BOLDWHITE, get_ast_node_type_primary(ast->type), RESET, ast->type);
+
+	// Imprimer les arguments de la commande (si c'est un nœud de commande)
+	if (ast->type == AST_COMMAND)
 	{
-		ft_printf("\n%s[DEBUG] ====== AST NODE ======%s\n", BLUE, RESET);
-		ft_printf("type str: %s%s%s (id: %d)\n",
-				  BOLDWHITE, get_ast_node_type_primary(ast->type),
-				  RESET, ast->type);
-		ft_printf("value: %s|%s%s%s|%s\n", CYAN, YELLOW,
-				  ast->value ? ast->value : "NULL", CYAN, RESET);
-		debug_ast_child(ast->args, 1, "Arguments:");
-		debug_ast_child(ast->redirs, 1, "Redirections:");
-		debug_ast_child(ast->left, 1, "Left next:");
-		debug_ast_child(ast->right, 1, "Right next:");
-		ast = ast->next;
+		ft_printf("command and args: ");
+		for (int i = 0; ast->value && ast->value[i]; i++)
+			ft_printf("%s%s ", YELLOW, ast->value[i]);
+		ft_printf("%s\n", RESET);
 	}
+
+	// Imprimer les enfants
+	debug_ast_child(ast->left, 1, "Left next:");
+	debug_ast_child(ast->right, 1, "Right next:");
 }

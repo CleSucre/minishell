@@ -58,20 +58,11 @@ void	free_minishell(t_minishell *minishell)
  */
 void	free_ast(t_ast_node *ast)
 {
-	t_ast_node	*tmp;
-
-	while (ast)
-	{
-		tmp = ast;
-		ast = ast->next;
-		free_ast(tmp->left);
-		free_ast(tmp->right);
-		if (!tmp->value)
-			free(tmp->value);
-		if (tmp->next)
-			free_ast(tmp->next);
-		free(tmp);
-	}
+	ft_tabfree(ast->value);
+	if (ast->left)
+		free_ast(ast->left);
+	if (ast->right)
+		free_ast(ast->right);
 }
 
 void	free_cmd(t_cmd *cmd)

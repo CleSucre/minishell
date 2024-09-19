@@ -68,21 +68,21 @@ SRCS_COMMANDS_CUSTOM	:= $(addprefix commands$(DIRSEP), $(addprefix custom$(DIRSE
 
 SRCS_MEMORY				:= $(addprefix memory$(DIRSEP), $(SRCS_MEMORY))
 
-SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(SRCS_PARSING_TOKENIZER))
+SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(SRCS_PARSING))
 
-SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(addprefix tokenizer$(DIRSEP), $(SRCS_PARSING_TOKENIZER)))
+SRCS_TOKENIZER			:= $(addprefix parsing$(DIRSEP), $(addprefix tokenizer$(DIRSEP), $(SRCS_PARSING_TOKENIZER)))
 
 SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
 SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL) $(SRCS_ATCP)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_ATCP)
 
 SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
 
 SRCS_TESTS				= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL) $(SRCS_ATCP)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_ATCP)
 
 SRCS_TESTS				:= $(addprefix src$(DIRSEP), $(SRCS_TESTS))
 
