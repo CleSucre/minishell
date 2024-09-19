@@ -27,10 +27,14 @@ int	alloc_dirinfo(t_minishell *minishell)
 	return (0);
 }
 
-int	alloc_currentcmd(t_minishell *minishell)
+int	alloc_starting_path(t_minishell *minishell)
 {
-	minishell->current_cmd = ft_calloc(1, sizeof(t_cmd));
-	if (!minishell->dirinfo)
+	char	buffer[BUFFER_SIZE];
+	char	*name;
+
+	name = getcwd(buffer, BUFFER_SIZE + 1);
+	minishell->starting_path = ft_calloc(ft_strlen(name) + 1, sizeof(char *));
+	if (!minishell->starting_path)
 	{
 		free(minishell->term);
 		free(minishell->history);
@@ -38,7 +42,8 @@ int	alloc_currentcmd(t_minishell *minishell)
 		free(minishell->tab_dict);
 		free(minishell->dirinfo);
 		free(minishell);
-		return (1);
+		return (-1);
 	}
+	ft_strlcpy(minishell->starting_path, name, ft_strlen(name)+1);
 	return (0);
 }

@@ -39,8 +39,8 @@ int	history_create_file(void)
  */
 int	history_goto_file(t_minishell *minishell)
 {
-	int	fd;
-	char *name;
+	int		fd;
+	char	*name;
 
 	name = ft_strjoin(minishell->starting_path, "/.ministory");
 	if (!name)
@@ -50,7 +50,7 @@ int	history_goto_file(t_minishell *minishell)
 	if (fd < 0)
 	{
 		terminal_print(BOLDRED"Error: "RESET""HISTORY_FILE" open failed",
-					   1, STDOUT_FILENO);
+			1, STDOUT_FILENO);
 		return (-1);
 	}
 	return (fd);

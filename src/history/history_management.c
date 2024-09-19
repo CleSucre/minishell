@@ -53,7 +53,7 @@ int	history_add(t_minishell *minishell, char *cmd, int fs)
 		|| ft_strcmp(minishell->history->older->cmd, cmd) != 0)
 	{
 		new = history_create(ft_strdup(cmd),
-			minishell->history->older, minishell->history);
+				minishell->history->older, minishell->history);
 		if (minishell->history->older)
 			minishell->history->older->newer = new;
 		minishell->history->older = new;
