@@ -985,3 +985,11 @@ echo bite
 clear
 yey || (grep x | wc -l) < src/main.c | cat -e >> out
 ls -la | wc -l
+yey || (grep x | wc -l) < src/main.c | cat -e >> out
+ls
+ls
+clear
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+yey || (grep x | wc -l) < src/main.c | cat -e >> out
