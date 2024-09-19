@@ -1,150 +1,28 @@
-cd
-
-.
-../..
-..
-d -
+clear
+echo -nnnnnnnnnnnnnnnnnnn -np la
+echo -nnnnnnnnnnnnnnnnnnn -np la
+echo -n -np la
+env
+env -l
+cd ..
+cd minishell
+cd lslsls
+env
 pwd
-cd -
-pwd
+pwd -l
+exit 1
 cd ..
 cd -
-pwd
-cd -
-pwd
-cd -
-pwd
-cd -
-cd -
-cd src
-cd src
-cd src
-pwd
-cd -
-pwd
-cd src
-cd -
-cd src
-cd src
-pwd
-cd -
-pwd
-cd ..
-pwd
-cd -
-cd src
-pwd
-cd -
-pwd
-cd -
-pwd
-cd -
-pwd
-cd src
-pwd
-cd -
-pwd
-cd src
-cd ..
-pwd
-cd ..
-cd src
-cd -
-cd -
-cd -
-pwd
-cd -
-pwd
-exit
-cd -
-cd -
-cd -
-cd -
-cd -
-cd -
-cd -
-c
-c
-cd -
-cd -
-cd -
-cd -
-cd -
-cd -
-cd -
-cd -
-cd -
-pwd
-cd -
-pwd
-cd -
-pwd
-cd ..
-pwd
-cd -
-pwd
-cd ../../..
-pwd
-cd -
-pwd
-cd -
-pwd
-cd -
-pwd
-cd ../../..
-cd ../../..
-cd ../../..
-pwd
-cd -
-pwd
 cd ../../../../..
-pwd
 cd -
-cd -/Dev
-pwd
-cd ../fjeioejf
-pwd
-cd -
-cd ../../..
-git log
-cd ../../../../..
-pwd
+cd .
 cd ..
-pwd
-cd ../../../..
-pwd
-cd -
-pwd
-cd -
-cd ../../..
-echo $?
-cd ../../..
-cd -
 cd ..
-pwd
-cd ../../../..
-pwd
-cd -
-cd ../../../..
-pwd
-cd -
-cd src
-pwd
-cd src
-cd src
-pwd
-cd ../../../..
-cd src
-pwd
 cd ..
-cd ../../../../../..
-cd ../../../../..
-cd ../../../..
-cd ../../../../..
-cd ../../../../
-ls
-cd ../../../../..
-cd ../../../..
-cd ../../../../../..
-pwd
-cd -
+cdaaaaaaaaaadc
+cd lslsls
+cd lslsls
+emv -l
+env -l
+cd ..
+cd ..
