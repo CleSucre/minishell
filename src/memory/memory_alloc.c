@@ -44,8 +44,6 @@ static int	alloc_cache(t_minishell *minishell)
  */
 static int	alloc_history(t_minishell *minishell)
 {
-	char	buffer[BUFFER_SIZE];
-
 	minishell->history = ft_calloc(1, sizeof(t_history));
 	if (!minishell->history)
 	{
