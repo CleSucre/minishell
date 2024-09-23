@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Complete the input with autocompletion after pressing enter
+ * @param minishell
+ * @param input
+ */
 void	prompt_completion(t_minishell *minishell, char **input)
 {
 	bst_size(minishell->tab_dict);
@@ -39,18 +44,17 @@ void	prompt_completion(t_minishell *minishell, char **input)
  * @param dict
  * @param input
  */
-void	tab_print(t_minishell *minishell, t_dict *dict, char **input)
+void	autocomplete_print(t_minishell *minishell, t_dict *dict, char **input)
 {
 	minishell->completion->tab_count++;
 	if (minishell->completion->tab_count > (int)bst_size(dict))
 		minishell->completion->tab_count = 1;
-	ft_putstr_fd("\033[s", 1);
-	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("\033[s\n", STDIN_FILENO);
 	minishell->completion->print_line++;
 	stress_print(minishell, dict);
-	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("\n", STDIN_FILENO);
 	print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
-	ft_putstr_fd(*input, 1);
+	ft_putstr_fd(*input, STDIN_FILENO);
 	minishell->completion->check_len = 0;
 }
 
@@ -65,9 +69,6 @@ void	tab_print(t_minishell *minishell, t_dict *dict, char **input)
 int	tab_completion(t_minishell *minishell, char	**input)
 {
 	char	*str;
-	char	**search;
-	int		count_word;
-	t_dict	*head;
 
 	ft_tabdel(input, ft_tablen((const char **)input) - 1);
 	str = ft_utf8_tab_to_str(input);
@@ -75,31 +76,15 @@ int	tab_completion(t_minishell *minishell, char	**input)
 		return (1);
 	if (minishell->tab_dict)
 		free_branch(minishell->tab_dict);
-	search = ft_split(str, (const char *) " ");
-	if (!search)
+	if (creation_tab_dict(minishell, str))
 		return (1);
-	count_word = ft_count_words(str, (const char *) " ") - 1;
-	minishell->tab_dict = bst_copy(minishell->dict);
-	head = search_node(minishell->tab_dict, search[count_word]);
-	free_branch(minishell->tab_dict);
-	minishell->tab_dict = NULL;
-	cut_node(head, search[count_word]);
-	minishell->tab_dict = bst_copy(head);
-	free_branch(head);
-	head = NULL;
-	ft_tabfree(search);
 	if (!minishell->tab_dict)
 	{
 		ft_putstr_fd("\nNo match found\n", 1);
 		print_terminal_prompt(minishell, ft_strlen(str) <= 0);
-		ft_putstr_fd(str, 1);
-		free_branch(head);
-		free(str);
-		str = NULL;
-		head = NULL;
-		return (1);
+		ft_putstr_fd(str, STDIN_FILENO);
 	}
-	if (tab_action(minishell, &str))
+	if (!minishell->tab_dict || tab_action(minishell, &str))
 	{
 		free(str);
 		str = NULL;
@@ -122,29 +107,23 @@ int	tab_action(t_minishell *minishell, char **input)
 		&& bst_size(minishell->tab_dict) > 20
 		&& minishell->completion->check_len == 0)
 	{
-		ft_putstr_fd("\n", 1);
-		ft_putstr_fd("do you wish to see all ", 1);
-		ft_putnbr_fd(bst_size(minishell->tab_dict), 1);
-		ft_putstr_fd(" possibilities ? [y/n]\n", 1);
+		ft_printf("\ndo you wish to see all %d possibilities ? [y/n]\n",
+			bst_size(minishell->tab_dict));
 		print_terminal_prompt(minishell, ft_strlen(*input) <= 0);
-		ft_putstr_fd(*input, 1);
+		ft_putstr_fd(*input, STDIN_FILENO);
 		minishell->completion->check_len = 1;
 		return (1);
 	}
-	else
+	else if (minishell->completion->tab_count > 0)
 	{
-		if (minishell->completion->tab_count > 0)
+		while (minishell->completion->print_line > 1)
 		{
-			while (minishell->completion->print_line > 1)
-			{
-				ft_putstr_fd("\033[F", 1);
-				ft_putstr_fd("\033[2K", 1);
-				minishell->completion->print_line--;
-			}
-			ft_putstr_fd("\033[F", 1);
+			ft_putstr_fd("\033[F\033[2K", STDIN_FILENO);
+			minishell->completion->print_line--;
 		}
-		tab_print(minishell, minishell->tab_dict, input);
+		ft_putstr_fd("\033[F", STDIN_FILENO);
 	}
+	autocomplete_print(minishell, minishell->tab_dict, input);
 	minishell->completion->check_len = 1;
 	return (0);
 }
@@ -174,7 +153,7 @@ int	tab_manager(t_minishell *minishell, char *new)
 				ft_utf8_split_chars(new));
 	if (minishell->completion->tab_count == 0 && new[0] == 'y'
 		&& minishell->completion->check_len == 0)
-		tab_print(minishell, minishell->tab_dict, minishell->input);
+		autocomplete_print(minishell, minishell->tab_dict, minishell->input);
 	else if (minishell->completion->tab_count == 0)
 		tab_completion(minishell, minishell->input);
 	else

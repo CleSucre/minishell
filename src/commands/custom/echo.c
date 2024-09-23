@@ -6,7 +6,7 @@
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 06:52:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/19 09:40:45 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/09/20 02:26:14 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	command_echo(t_cmd *cmd)
 
 	i = 1;
 	n_flag = 0;
-	if (cmd->argc > 1 && ft_strcmp(cmd->argv[1], "-n") == 0)
+	if (cmd->argc > 1 && ft_strncmp(cmd->argv[1], "-n", 2) == 0)
 	{
 		n_flag = 1;
 		i++;

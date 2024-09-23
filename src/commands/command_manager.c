@@ -15,7 +15,7 @@
 int	execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->cmd_name, "cd") == 0)
-		command_cd(cmd);
+		command_cd(minishell, cmd);
 	else if (ft_strcmp(cmd->cmd_name, "echo") == 0)
 		command_echo(cmd);
 	else if (ft_strcmp(cmd->cmd_name, "env") == 0)
