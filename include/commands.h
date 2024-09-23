@@ -16,19 +16,17 @@
 # include "parsing.h"
 # include "struct.h"
 
-typedef struct s_cmd
-{
-	char			*cmd_name;
-	int				argc;
-	char			**argv;
-	char			**env;
-	char			*path;
-	int 			input;
-	int 			output;
-	int 			to_close;
-	int				exit_status;
-	int 			pid;
-}	t_cmd;
+typedef struct s_cmd {
+	char	*name;			// Command name (e.g., "ls", "echo")
+	char	**args;			// Command arguments (e.g., ["ls", "-la", NULL])
+	int 	argc;			// Number of arguments
+	int		input_fd;		// Input file descriptor (default: STDIN_FILENO)
+	int		output_fd;		// Output file descriptor (default: STDOUT_FILENO)
+	char	**env;			// Environment variables (e.g., ["PATH=/usr/bin", ...])
+	char	*path;			// Full path of the executable (e.g., "/bin/ls")
+	int		exit_code;		// Exit code of the command
+} t_cmd;
+
 
 // ########################################################
 // #						COMMANDS					  #
@@ -47,7 +45,8 @@ void	command_unset(t_cmd *cmd, t_minishell *minishell);
 // #						UTILS						  #
 // ########################################################
 
-t_cmd	*load_command(t_minishell *minishell, t_ast *cmd, const int in_out[2], int to_close);
+void	destroy_cmd(t_cmd *cmd);
+t_cmd	*create_cmd(t_ast_node *ast, char **envp, int input_fd, int output_fd);
 
 // ########################################################
 // #						FLAGS_UTILS					  #

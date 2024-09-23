@@ -22,9 +22,9 @@ int	execute_path(t_cmd *cmd)
 {
 	int	err;
 
-	err = execve(cmd->path, cmd->argv, cmd->env);
+	err = execve(cmd->path, cmd->args, cmd->env);
 	if (err == -1)
 		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
-			cmd->cmd_name);
+				   cmd->name);
 	return (err);
 }

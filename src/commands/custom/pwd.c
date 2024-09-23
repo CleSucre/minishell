@@ -27,9 +27,18 @@
 
 void	command_pwd(t_cmd *cmd)
 {
-	char *path;
-
-	path = getenv("PWD");
-	ft_printf("Le path : [%s]\n", path);
 	(void)cmd;
+	char *path;
+	char buffer[BUFFER_SIZE];
+
+	path = getcwd(buffer, BUFFER_SIZE);
+	if (!path)
+	{
+		ft_fprintf(2, "Cannot get current directory path\n");
+		if (errno == ERANGE)
+			ft_fprintf(2, "Buffer size is too small\n");
+		exit(EXIT_FAILURE);
+	}
+	else
+		ft_fprintf(1, "%s\n", path);
 }

@@ -19,13 +19,10 @@
  * @param char **paths
  * @return int 1 if the path is correct, 0 otherwise
  */
-static int	check_path(char *path, char **paths)
+static int	check_path(char *path)
 {
 	if (access(path, X_OK) == 0)
-	{
-		ft_tabfree(paths);
 		return (1);
-	}
 	free(path);
 	return (0);
 }
@@ -56,8 +53,11 @@ char	*get_path(char *cmd, char **envp)
 		tmp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (check_path(path, paths))
+		if (check_path(path))
+		{
+			ft_tabfree(paths);
 			return (path);
+		}
 	}
 	ft_tabfree(paths);
 	return (NULL);
