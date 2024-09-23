@@ -12,32 +12,6 @@
 
 #include "minishell.h"
 
-static int	execute_external(t_minishell *minishell, t_cmd *cmd)
-{
-	(void)minishell;
-	(void)cmd;
-	return (0);
-}
-
-/**
- * @brief Main function for executing a command
- */
-int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int input_fd, int output_fd)
-{
-	t_cmd	*cmd;
-	int		res;
-
-	cmd = create_cmd(ast, minishell->env, input_fd, output_fd);
-	if (!cmd)
-		return (1);
-	if (is_builtin_command(cmd))
-		res = execute_builtin_command(minishell, cmd);
-	else
-		res = execute_external(minishell, cmd);
-	destroy_cmd(cmd);
-	return (res);
-}
-
 /**
  * @brief Execute the ast, minishell->exit_code will be set to
  * 			the return value of the last command

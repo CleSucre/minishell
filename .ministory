@@ -1072,3 +1072,7 @@ history -e
 history
 history -n 1
 history 10
+ls
+ls | cat -e
+ls | cat -e
+ls
