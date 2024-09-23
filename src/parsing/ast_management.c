@@ -13,117 +13,21 @@
 #include "minishell.h"
 
 /**
- * @brief Get length of ast
- *
- * @param t_ast *ast
- * @return unsigned int
+ * @brief Créer un nouveau nœud AST
+ * @param type Le type du nœud
+ * @param value La commande ou les arguments (peut être NULL pour certains nœuds)
+ * @return t_ast_node* Le nœud AST créé
  */
-unsigned int	ast_len(t_ast *ast)
+t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 {
-	unsigned int	len;
+	t_ast_node *node;
 
-	len = 0;
-	while (ast)
-	{
-		len++;
-		ast = ast->next;
-	}
-	return (len);
-}
-
-/**
- * @brief Count number of ast with given type
- *
- * @param t_ast *ast
- * @param t_type type
- * @return unsigned int
- */
-unsigned int	ast_count_type(t_ast *ast, t_type type)
-{
-	unsigned int	count;
-
-	count = 0;
-	while (ast)
-	{
-		if (ast->type == type)
-			count++;
-		ast = ast->next;
-	}
-	return (count);
-}
-
-/**
- * @brief Create ast object
- *
- * @param t_type type of ast
- * @param char *value value of ast
- * @return t_ast *
- */
-t_ast	*create_ast(t_type type, char *value)
-{
-	t_ast	*ast;
-
-	ast = ft_calloc(1, sizeof(t_ast));
-	if (!ast)
+	node = (t_ast_node *)malloc(sizeof(t_ast_node));
+	if (!node)
 		return (NULL);
-	ast->type = type;
-	ast->value = value;
-	ast->children = NULL;
-	ast->next = NULL;
-	ast->prev = NULL;
-	return (ast);
-}
-
-/**
- * @brief Get last ast of the list
- *
- * @param t_ast *head
- * @return t_ast *
- */
-t_ast	*ast_get_last(t_ast *head)
-{
-	t_ast	*tmp;
-
-	tmp = head;
-	while (tmp->next)
-		tmp = tmp->next;
-	return (tmp);
-}
-
-/**
- * @brief Add ast to the end of the list
- *
- * @param t_ast *head head of the list
- * @param t_ast *ast ast to add
- * @return void
- */
-void	ast_add_last(t_ast **head, t_ast *ast)
-{
-	t_ast	*tmp;
-
-	if (!*head)
-	{
-		*head = ast;
-		return ;
-	}
-	tmp = ast_get_last(*head);
-	tmp->next = ast;
-	ast->prev = tmp;
-}
-
-/**
- * @brief Add ast as a children of given ast
- *
- * @param t_ast *head head of the list
- * @param t_ast *ast ast to add
- * @return void
- */
-void	ast_add_children(t_ast *ast, t_ast *children)
-{
-	t_ast	*tmp;
-
-	tmp = ast;
-	while (tmp->children)
-		tmp = tmp->children;
-	tmp->children = children;
+	node->type = type;
+	node->value = value;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
 }

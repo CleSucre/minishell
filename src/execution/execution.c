@@ -13,34 +13,25 @@
 #include "minishell.h"
 
 /**
- * @brief Check the following things:
- * 	- If the input is empty, print a new line and return NULL
- * 	- Trim the input
- * 	- Add the input to the history
- * 	- Print the input in debug mode if needed
+ * @brief Execute the ast, minishell->exit_code will be set to
+ * 			the return value of the last command
  *
  * @param t_minishell *minishell
- * @param char *input
- * @return char* the trimmed input
+ * @param t_ast_node *ast
+ * @return int return 1 if the command is an exit request, 0 otherwise
  */
-static char	*check_input(t_minishell *minishell, char *input)
+static int	execute_ast(t_minishell *minishell, t_ast_node *ast)
 {
-	char	*trimmed;
+	int input_fd;
+	int output_fd;
 
-	if (ft_strlen(input) == 0)
-	{
-		terminal_print("", 1, STDOUT_FILENO);
-		free(input);
-		return (NULL);
-	}
-	trimmed = ft_strtrim(input, WHITESPACES);
-	free(input);
-	if (!trimmed)
-		return (NULL);
-	debug_execution(trimmed);
-	if (ft_isprint(*trimmed))
-		history_add(minishell, trimmed, 1);
-	return (trimmed);
+	input_fd = STDIN_FILENO;
+	output_fd = STDOUT_FILENO;
+	if (ast == NULL)
+		return (0);
+	if (ast->type == AST_COMMAND)
+		return (execute_cmd(minishell, ast, input_fd, output_fd));
+	return (0);
 }
 
 /**
@@ -50,23 +41,17 @@ static char	*check_input(t_minishell *minishell, char *input)
  * @param char *input
  * @return 0 on success -1 on exit request
  */
-int	execute(t_minishell *minishell, char *input)
+int	execute_input(t_minishell *minishell, char *input)
 {
-	t_ast	*ast;
+	t_ast_node	*ast;
 	int		res;
-	char	*trimmed;
 
-	trimmed = check_input(minishell, input);
-	if (!trimmed)
-		return (0);
-	ast = parse_input(minishell, trimmed);
+	ast = parse_input(minishell, input);
 	if (!ast)
-	{
-		free(trimmed);
 		return (0);
-	}
-	free(trimmed);
-	res = execute_cmds(minishell, ast);
+	disable_termios(minishell->term);
+	res = execute_ast(minishell, ast);
+	enable_termios(minishell->term);
 	free_ast(ast);
 	minishell->exit_code = res;
 	return (res);

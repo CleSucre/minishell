@@ -12,115 +12,40 @@
 
 #include "minishell.h"
 
-/**
- * @brief Allocate memory for the argument array
- *
- * @param t_ast *cmd
- * @return char**
- */
-static char	**allocate_args(t_ast *cmd)
+void	destroy_cmd(t_cmd *cmd)
 {
-	char	**args;
-
-	args = ft_calloc(ast_len(cmd) + 2, sizeof(char *));
-	if (!args)
-		return (NULL);
-	return (args);
-}
-
-/**
- * @brief Handle different types of AST nodes for argument extraction
- *
- * @param minishell
- * @param tmp
- * @return char*
- */
-static char	*process_node(t_minishell *minishell, t_ast *tmp)
-{
-	char	*arg;
-
-	arg = NULL;
-	if (tmp->type == TEXT_SINGLE_QUOTE)
-	{
-		if (tmp->children->type == TEXT)
-			arg = ft_strdup(tmp->children->value);
-	}
-	else if (tmp->type == TEXT_DOUBLE_QUOTE)
-	{
-		if (tmp->children->type == TEXT)
-			arg = replace_variables(minishell->env, tmp->children->value);
-	}
-	else if (tmp->type == VARIABLE)
-		arg = get_var_value(minishell->env, tmp->value + 1);
-	else if (tmp->type == TEXT)
-		arg = replace_variables(minishell->env, tmp->value);
-	else
-		arg = ft_strdup(tmp->value);
-	return (arg);
-}
-
-/**
- * @brief Extract the arguments from the AST node
- *
- * TODO: handle the case where there is commands in a child node
- *
- * @param t_minishell *minishell
- * @param t_ast *cmd
- * @return char**
- */
-static char	**get_argv(t_minishell *minishell, t_ast *cmd)
-{
-	char	**args;
-	t_ast	*tmp;
-	int		i;
-
-	args = allocate_args(cmd);
-	if (!args)
-		return (NULL);
-	i = 0;
-	args[i++] = ft_strdup(cmd->value);
-	tmp = cmd->next;
-	while (tmp)
-	{
-		args[i] = process_node(minishell, tmp);
-		tmp = tmp->next;
-		i++;
-	}
-	args[ast_len(cmd)] = NULL;
-	return (args);
+	if (cmd->name)
+		free(cmd->name);
+	if (cmd->path)
+		free(cmd->path);
+	free(cmd);
 }
 
 /**
  * @brief Generate a command structure from an AST node
  *
- * @param t_minishell *minishell
- * @param t_ast *cmd
- * @param int input
- * @param int output
- * @param int to_close
- * @return t_cmd *
+ * @param t_ast_node *ast: AST node representing the command
+ * @param char **envp: Environment variables
  */
-t_cmd	*load_command(t_minishell *minishell, t_ast *ast_cmd,
-		const int in_out[2], int to_close)
+t_cmd	*create_cmd(t_ast_node *ast, char **envp, int input_fd, int output_fd)
 {
-	t_cmd	*new_cmd;
+	t_cmd	*cmd;
 	char	*path;
 
-	new_cmd = ft_calloc(1, sizeof(t_cmd));
-	if (!new_cmd)
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
 		return (NULL);
-	new_cmd->cmd_name = ft_strdup(ast_cmd->value);
-	path = get_path(ast_cmd->value, minishell->env);
+	cmd->name = strdup(ast->value[0]);
+	cmd->args = ast->value;
+	cmd->argc = (int)ft_tablen((const char **)ast->value);
+	cmd->input_fd = input_fd;
+	cmd->output_fd = output_fd;
+	cmd->env = envp;
+	cmd->path = NULL;
+	cmd->exit_code = 0;
+	path = get_path(ast->value[0], envp);
 	if (!path)
-		path = ft_strdup(ast_cmd->value);
-	new_cmd->path = path;
-	new_cmd->argv = get_argv(minishell, ast_cmd);
-	new_cmd->argc = (int)ast_len(ast_cmd);
-	new_cmd->env = minishell->env;
-	new_cmd->input = in_out[0];
-	new_cmd->output = in_out[1];
-	new_cmd->to_close = to_close;
-	new_cmd->exit_status = 0;
-	new_cmd->pid = -1;
-	return (new_cmd);
+		path = ft_strdup(ast->value[0]);
+	cmd->path = path;
+	return (cmd);
 }

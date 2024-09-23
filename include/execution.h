@@ -20,11 +20,9 @@
 // #						EXECUTOR					  #
 // ########################################################
 
-void	handle_signal(int sig);
-int		wait_for_processes(int *status);
+int		execute_cmd(t_minishell *minishell, t_ast_node *ast, int input_fd, int output_fd);
+int		execute_input(t_minishell *minishell, char *input);
+
 int		execute_path(t_cmd *cmd);
-int		execute_cmds(t_minishell *minishell, t_ast *ast);
-int		execute_cmd(t_minishell *minishell, t_ast *ast, int in_out[2], int to_close);
-int		execute(t_minishell *minishell, char *input);
 
 #endif

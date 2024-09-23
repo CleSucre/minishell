@@ -27,20 +27,20 @@ int	command_echo(t_cmd *cmd)
 
 	i = 1;
 	n_flag = 0;
-	if (cmd->argc > 1 && ft_strncmp(cmd->argv[1], "-n", 2) == 0)
+	if (cmd->argc > 1 && ft_strncmp(cmd->args[1], "-n", 2) == 0)
 	{
 		n_flag = 1;
 		i++;
 	}
 	while (i < cmd->argc)
 	{
-		terminal_print(cmd->argv[i], 0, cmd->output);
+		terminal_print(cmd->args[i], 0, cmd->output_fd);
 		if (i + 1 < cmd->argc)
-			ft_putchar_fd(' ', cmd->output);
+			ft_putchar_fd(' ', cmd->output_fd);
 		i++;
 	}
 	if (n_flag)
-		print_n_flag(cmd->output);
-	terminal_print("", 1, cmd->output);
+		print_n_flag(cmd->output_fd);
+	terminal_print("", 1, cmd->output_fd);
 	return (0);
 }

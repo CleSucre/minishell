@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /**
- * @brief Insert a new node in the BST as the left child of the root
+ * @brief Insert a new node in the BST as the left next of the root
  * @param root - parent node
  * @param key - name of directory
  * @param value - file/exec/..
@@ -37,7 +37,7 @@ static void	insert_l_node(t_dict *root, t_dict *node, char *key, char *value)
 }
 
 /**
- * @brief Insert a new node in the BST as the right child of the root
+ * @brief Insert a new node in the BST as the right next of the root
  * @param root - parent node
  * @param key - name of directory
  * @param value - file/exec/..
