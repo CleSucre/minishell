@@ -1058,3 +1058,17 @@ lsaplda
 ls -la | wc -l
 lsaplda
 yey || (grep x | wc -l) < src/main.c | cat -e >> out
+history
+history
+history
+history
+history
+history
+history
+exit
+cd
+exit
+history -e
+history
+history -n 1
+history 10

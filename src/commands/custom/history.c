@@ -25,6 +25,7 @@ void	command_history(t_cmd *cmd, t_minishell *minishell)
 {
 	char	*tmp;
 
+	ft_printf("argc: %d\n", cmd->argc);
 	if (cmd->argc == 1)
 		history_print(minishell, cmd->output_fd);
 	else if (contain_flag(cmd->args, 'c'))

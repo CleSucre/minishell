@@ -37,7 +37,7 @@ t_cmd	*create_cmd(t_ast_node *ast, char **envp, int input_fd, int output_fd)
 		return (NULL);
 	cmd->name = strdup(ast->value[0]);
 	cmd->args = ast->value;
-	cmd->argc = (int)ft_tablen((const char **)ast->value) - 1;
+	cmd->argc = (int)ft_tablen((const char **)ast->value);
 	cmd->input_fd = input_fd;
 	cmd->output_fd = output_fd;
 	cmd->env = envp;
