@@ -13,6 +13,37 @@
 #include "minishell.h"
 
 /**
+ * @brief Check the following things:
+ * 	- If the input is empty, print a new line and return NULL
+ * 	- Trim the input
+ * 	- Add the input to the history
+ * 	- Print the input in debug mode if needed
+ *
+ * @param t_minishell *minishell
+ * @param char *input
+ * @return char* the trimmed input
+ */
+static char	*check_input(t_minishell *minishell, char *input)
+{
+	char	*trimmed;
+
+	if (ft_strlen(input) == 0)
+	{
+		terminal_print("", 1, STDOUT_FILENO);
+		free(input);
+		return (NULL);
+	}
+	trimmed = ft_strtrim(input, WHITESPACES);
+	free(input);
+	if (!trimmed)
+		return (NULL);
+	debug_execution(trimmed);
+	if (ft_isprint(*trimmed))
+		history_add(minishell, trimmed, 1);
+	return (trimmed);
+}
+
+/**
  * @brief Build a new AST node based on tokens given.
  *
  * @param t_token **tokens List of tokens to build the node from.
@@ -79,15 +110,20 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
     t_token     *tokens;
+	char		*trimmed;
 
-	(void)minishell;
 	if (!input)
 		return (NULL);
-    tokens = tokenize(input);
+	trimmed = check_input(minishell, input);
+	if (!trimmed)
+		return (0);
+    tokens = tokenize(trimmed);
+	free(trimmed);
     if (!tokens)
         return (NULL);
     debug_tokens(tokens);
     ast = build_ast(&tokens);
+	free_tokens(tokens);
 	if (!ast)
 		return (NULL);
 	debug_ast(ast);

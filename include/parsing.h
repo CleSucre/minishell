@@ -88,7 +88,6 @@ t_ast_node			*process_redirection(t_token **tokens, t_ast_node **root);
 
 t_token				*new_token(char *str, int type);
 void				add_token(t_token **head, t_token *new);
-void				free_tokens(t_token *head);
 
 // ########################################################
 // #						TOKENIZER					  #

@@ -79,11 +79,20 @@ void	free_ast(t_ast_node *ast)
 	free(ast);
 }
 
-
-void	free_cmd(t_cmd *cmd)
+/**
+ * @brief Free tokens linked list
+ *
+ * @param t_token *tokens
+ */
+void	free_tokens(t_token *tokens)
 {
-	free(cmd->cmd_name);
-	ft_tabfree(cmd->argv);
-	free(cmd->path);
-	free(cmd);
+	t_token	*tmp;
+
+	while (tokens)
+	{
+		tmp = tokens;
+		tokens = tokens->next;
+		free(tmp->value);
+		free(tmp);
+	}
 }

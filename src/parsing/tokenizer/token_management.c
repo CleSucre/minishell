@@ -39,12 +39,3 @@ void	add_token(t_token **head, t_token *new)
 		tmp = tmp->next;
 	tmp->next = new;
 }
-
-void	free_token(t_token *token)
-{
-	if (token)
-	{
-		free(token->value);
-		free(token);
-	}
-}
