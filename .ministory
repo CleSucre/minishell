@@ -126,3 +126,119 @@ ls -la | grep M | wc -l | cat -e
 ls -la | grep M | wc -l | cat -e
 ls -la | grep M | wc -l | cat -e
 ls -la | grep M | wc -l | cat -e
+ls | wc -l > test.txt
+cat test.txt
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls
+ls
+ls
+ls -la | grep M | wc -l | cat -e
+ls | wc -l > test.txt
+cat test.txt
+ls | wc -l > test.txt
+ls | wc -l > test.txt
+ls | wc -l
+cat -e | wc -l < src/main.c
+cat -e | wc -l < src/main.c
+< src/main.c cat -e | wc -l
+< Makefile cat -e | wc -l
+< Makefile | cat -e | wc -l
+< Makefile | cat -e
+< Makefile | cat -e | wc -l
+cat Makefile
+cat Makefile | wc -l
+cat < Makefile
+cat < Makefile | wc -l
+cat Makefile <
+chier.txtat << EOF > fic
+cat << EOF > fichier.txt
+ls | wc -l
+ls | grep M
+ls | grep M | wc -l
+ls | grep M | wc -l | cat -e
+ls | wc -l > test.txt
+cat < test.txt
+cat -e < test.txt
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+ls
+ls
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+ls
+ls
+ls
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+path
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+VAR=salut
+ls
+clear
+clear
+VAR=salut

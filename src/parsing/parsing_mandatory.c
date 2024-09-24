@@ -81,9 +81,21 @@ t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root)
  */
 t_ast_node	*process_assignment(t_token **tokens)
 {
+	char	**tmp;
 	char	**assignment_tokens;
 
-	assignment_tokens = extract_command_tokens(tokens);
+
+	tmp = ft_split((*tokens)->value, "=");
+	if (!tmp)
+		return (NULL);
+	assignment_tokens = ft_calloc(4, sizeof(char *));
+	if (!assignment_tokens)
+		return (NULL);
+	assignment_tokens[0] = ft_strdup(tmp[0]);
+	assignment_tokens[1] = ft_strdup("=");
+	assignment_tokens[2] = ft_strdup(tmp[1]);
+	ft_tabfree(tmp);
+	*tokens = (*tokens)->next;
 	return (new_ast_node(AST_ASSIGNMENT, assignment_tokens));
 }
 

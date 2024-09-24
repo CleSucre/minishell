@@ -83,6 +83,66 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 		if (res == 1)
 			return (1);
 	}
+	else if (ast->type == AST_AND)
+	{
+
+	}
+	else if (ast->type == AST_OR)
+	{
+	}
+	else if (ast->type == AST_SEQUENCE)
+	{
+	}
+	else if (ast->type == AST_SUBSHELL)
+	{
+	}
+	else if (ast->type == AST_REDIR_IN)
+	{
+		if (ast->right->value[0] == NULL)
+		{
+			ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
+			return (1);
+		}
+		in_out[0] = open(ast->right->value[0], O_RDONLY);
+		if (in_out[0] == -1)
+		{
+			ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
+			return (1);
+		}
+		execute_ast(minishell, ast->left, pipes, in_out);
+		close(in_out[0]);
+	}
+	else if (ast->type == AST_REDIR_OUT)
+	{
+		if (ast->right->value[0] == NULL)
+		{
+			ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
+			return (1);
+		}
+		in_out[1] = open(ast->right->value[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (in_out[1] == -1)
+		{
+			ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
+			return (1);
+		}
+		execute_ast(minishell, ast->left, pipes, in_out);
+		close(in_out[1]);
+	}
+	else if (ast->type == AST_REDIR_OUT_APPEND)
+	{
+		//TODO: find a way to append to the file
+	}
+	else if (ast->type == AST_ASSIGNMENT)
+	{
+		//TODO: call the function to set the variable in the path
+		return (0);
+	}
+	else if (ast->type == AST_HEREDOC)
+	{
+	}
+	else if (ast->type == AST_VARIABLE)
+	{
+	}
 	//execute the node corresponding to type
 	return (0);
 }
@@ -104,12 +164,13 @@ int	execute_input(t_minishell *minishell, char *input)
 	in_out[0] = STDIN_FILENO;
 	in_out[1] = STDOUT_FILENO;
 	in_out[2] = -1;
+	pipes[0] = -1;
+	pipes[1] = -1;
 	ast = parse_input(minishell, input);
 	if (!ast)
 		return (0);
 	disable_termios(minishell->term);
 	minishell->ast = ast;
-	//setup pipes
 	res = execute_ast(minishell, ast, pipes, in_out);
 	close_fds(in_out, pipes);
 	enable_termios(minishell->term);

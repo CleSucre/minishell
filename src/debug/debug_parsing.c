@@ -42,6 +42,8 @@ static char	*get_token_type(t_token_type type)
 		return ("TOKEN_PARENTHESIS_OPEN");
 	else if (type == TOKEN_PARENTHESIS_CLOSE)
 		return ("TOKEN_PARENTHESIS_CLOSE");
+	else if (type == TOKEN_ASSIGNMENT)
+		return ("TOKEN_ASSIGNMENT");
 	return ("UNKNOWN");
 }
 
