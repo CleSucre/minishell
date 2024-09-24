@@ -25,7 +25,8 @@ set(SRCS
         src/parsing/parsing_args.c
         src/parsing/ast_management.c
         src/parsing/parsing.c
-        src/parsing/tokenizer.c
+        src/parsing/parsing_bonus.c
+        src/parsing/tokenizer/tokenizer.c
 
         src/memory/memory_alloc.c
         src/memory/memory_free.c

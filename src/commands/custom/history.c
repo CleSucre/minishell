@@ -25,20 +25,21 @@ void	command_history(t_cmd *cmd, t_minishell *minishell)
 {
 	char	*tmp;
 
+	ft_printf("argc: %d\n", cmd->argc);
 	if (cmd->argc == 1)
-		history_print(minishell, cmd->output);
-	else if (contain_flag(cmd->argv, 'c'))
+		history_print(minishell, cmd->output_fd);
+	else if (contain_flag(cmd->args, 'c'))
 	{
-		terminal_print("History cleared\n", 1, cmd->output);
+		terminal_print("History cleared\n", 1, cmd->output_fd);
 		history_reset(minishell);
 	}
-	if (contain_flag(cmd->argv, 's') && cmd->argc >= 3)
+	if (contain_flag(cmd->args, 's') && cmd->argc >= 3)
 	{
-		tmp = ft_strjoin_list((const char **)(cmd->argv + 2), " ");
+		tmp = ft_strjoin_list((const char **)(cmd->args + 2), " ");
 		if (!tmp)
 			return ;
 		history_add(minishell, tmp, 1);
 		free(tmp);
-		terminal_print("", 1, cmd->output);
+		terminal_print("", 1, cmd->output_fd);
 	}
 }

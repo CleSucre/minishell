@@ -51,9 +51,9 @@
 
 void	command_export(t_cmd *cmd, t_minishell *minishell)
 {
-	if (!cmd->argv[1])
+	if (!cmd->args[1])
 		ft_printf("Je dois print toutes les variables exportees\n");
-	if (find_table_args(minishell->env, cmd->argv[1]) == -1)
+	if (find_table_args(minishell->env, cmd->args[1]) == -1)
 		ft_printf("Go function to create new node in env");
 	(void)cmd;
 	(void)minishell;

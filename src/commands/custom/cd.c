@@ -83,7 +83,7 @@ static void	change_oldpwd(t_minishell *minishell)
  */
 int	command_cd(t_minishell *minishell, t_cmd *cmd)
 {
-	if (ft_strcmp(cmd->argv[1], "-") == 0)
+	if (ft_strcmp(cmd->args[1], "-") == 0)
 	{
 		if (access(getenv("OLDPWD"), R_OK | X_OK) == 0)
 			invert_oldpwd(minishell);
@@ -94,11 +94,11 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 			return (1);
 		}
 	}
-	else if (access(cmd->argv[1], R_OK | X_OK) != 0
-		|| chdir(cmd->argv[1]) == -1)
+	else if (access(cmd->args[1], R_OK | X_OK) != 0
+		|| chdir(cmd->args[1]) == -1)
 	{
 		ft_fprintf(2, "minishell: cd: %s: No such file or directory\n",
-			cmd->argv[1]);
+			cmd->args[1]);
 		minishell->exit_code = 1;
 		return (1);
 	}

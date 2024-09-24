@@ -28,8 +28,7 @@ int			alloc_starting_path(t_minishell *minishell);
 // ########################################################
 
 void		free_minishell(t_minishell *minishell);
+void		free_ast(t_ast_node *ast);
 void		free_tokens(t_token *tokens);
-void		free_ast(t_ast *ast);
-void		free_cmd(t_cmd *cmd);
 
 #endif
