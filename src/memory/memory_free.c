@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+static void	free_dirinfo(t_dirinfo *dirinfo);
+
 /**
  * @brief Free history linked list
  *
@@ -47,34 +49,59 @@ void	free_minishell(t_minishell *minishell)
 	free_branch(minishell->dict);
 	free(minishell->completion);
 	ft_tabfree(minishell->input);
+	free_dirinfo(minishell->dirinfo);
+	free(minishell->starting_path);
 	free(minishell);
 }
 
 /**
- * @brief Free ast linked list
+ * @brief Free ast tree
  *
  * @param t_ast *ast
  * @return void
  */
-void	free_ast(t_ast *ast)
+void	free_ast(t_ast_node *ast)
 {
-	t_ast	*tmp;
+	int i;
 
-	while (ast)
+	if (ast == NULL)
+		return ;
+	if (ast->left != NULL)
+		free_ast(ast->left);
+	if (ast->right != NULL)
+		free_ast(ast->right);
+	if (ast->value != NULL)
 	{
-		tmp = ast;
-		ast = ast->next;
-		if (tmp->children)
-			free_ast(tmp->children);
+		i = 0;
+		while (ast->value[i] != NULL)
+		{
+			free(ast->value[i]);
+			i++;
+		}
+		free(ast->value);
+	}
+	free(ast);
+}
+
+/**
+ * @brief Free tokens linked list
+ *
+ * @param t_token *tokens
+ */
+void	free_tokens(t_token *tokens)
+{
+	t_token	*tmp;
+
+	while (tokens)
+	{
+		tmp = tokens;
+		tokens = tokens->next;
 		free(tmp->value);
 		free(tmp);
 	}
 }
 
-void	free_cmd(t_cmd *cmd)
+static void	free_dirinfo(t_dirinfo *dirinfo)
 {
-	free(cmd->cmd_name);
-	ft_tabfree(cmd->argv);
-	free(cmd->path);
-	free(cmd);
+	free(dirinfo);
 }

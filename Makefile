@@ -35,9 +35,11 @@ SRCS_COMMANDS			= command_maker.c flags_utils.c command_manager.c
 
 SRCS_COMMANDS_CUSTOM	= cd.c echo.c env.c export.c exit.c history.c pwd.c unset.c
 
-SRCS_MEMORY				= memory_alloc.c memory_free.c
+SRCS_MEMORY				= memory_alloc.c memory_free.c builtins_alloc.c
 
-SRCS_PARSING			= ast_management.c parsing.c parsing_args.c tokenizer.c
+SRCS_PARSING			= ast_management.c parsing.c parsing_args.c parsing_mandatory.c parsing_bonus.c var_creation.c
+
+SRCS_PARSING_TOKENIZER	= tokenizer.c token_management.c
 
 SRCS_TERMINAL			= input_utils.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_signals.c terminal_utils.c
 
@@ -68,17 +70,19 @@ SRCS_MEMORY				:= $(addprefix memory$(DIRSEP), $(SRCS_MEMORY))
 
 SRCS_PARSING			:= $(addprefix parsing$(DIRSEP), $(SRCS_PARSING))
 
+SRCS_TOKENIZER			:= $(addprefix parsing$(DIRSEP), $(addprefix tokenizer$(DIRSEP), $(SRCS_PARSING_TOKENIZER)))
+
 SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
 SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL) $(SRCS_ATCP)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_ATCP)
 
 SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
 
 SRCS_TESTS				= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TERMINAL) $(SRCS_ATCP)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_ATCP)
 
 SRCS_TESTS				:= $(addprefix src$(DIRSEP), $(SRCS_TESTS))
 

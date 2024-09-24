@@ -64,13 +64,23 @@ typedef struct s_dict
 
 typedef struct s_completion
 {
-	char	*cmd;
-	char	*path;
+//	char	*cmd;
+//	char	*path;		TODO: Not used???
 	int		check_len;
 	int		tab_count;
 	int		print_line;
 }			t_completion;
 
+// ########################################################
+// #						CD_PATHS					  #
+// ########################################################
+
+typedef struct s_dirinfo
+{
+	char	*path;
+	char	*old_path;
+
+}			t_dirinfo;
 // ########################################################
 // #						MINISHELL					  #
 // ########################################################
@@ -88,8 +98,10 @@ typedef struct s_minishell
 	t_completion	*completion;
 	t_dict			*dict;
 	t_dict			*tab_dict;
+	t_dirinfo		*dirinfo;
     char            **input;
 	char			**env;
+	char			*starting_path;
 	int				exit_code;
 	unsigned int	history_pos;
 	unsigned int	history_size;

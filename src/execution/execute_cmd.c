@@ -3,111 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: votre_nom <votre_email@example.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:13:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/09/09 18:13:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:00:00 by votre_nom        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include <string.h>
 
 /**
- * @brief Set up signal handling for SIGUSR1
+ * @brief Exécute une commande externe en utilisant fork et execve
  */
-static void	setup_signals(struct sigaction *sa)
+static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
-	sa->sa_handler = handle_signal;
-	sa->sa_flags = 0;
-	sigemptyset(&sa->sa_mask);
-	if (sigaction(SIGUSR1, sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
-	}
-}
+	pid_t	pid;
+	int		status;
+	char	*cmd_path;
 
-/**
- * @brief Handle the child process after fork
- */
-static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, t_ast *ast
-		, struct sigaction *sa)
-{
-	int	err;
-
-	if (sigaction(SIGUSR1, sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
-	}
-	if (cmd->input != STDIN_FILENO)
-	{
-		dup2(cmd->input, STDIN_FILENO);
-		close(cmd->input);
-	}
-	if (cmd->output != STDOUT_FILENO)
-	{
-		dup2(cmd->output, STDOUT_FILENO);
-		close(cmd->output);
-	}
-	if (cmd->to_close != -1)
-		close(cmd->to_close);
-	err = execute_path(cmd);
-	free_cmd(cmd);
-	free_minishell(minishell);
-	free_ast(ast);
-	exit(err);
-}
-
-static int	execution(t_minishell *minishell, t_cmd *cmd, t_ast *ast)
-{
-	struct sigaction	sa;
-	pid_t				pid;
-
-	setup_signals(&sa);
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_putstr_fd("Error: fork failed\n", STDERR_FILENO);
-		free_cmd(cmd);
-		return (1);
+		perror("fork");
+		return (errno);
 	}
 	else if (pid == 0)
-		handle_child_process(cmd, minishell, ast, &sa);
-	if (cmd->input != STDIN_FILENO)
-		close(cmd->input);
-	if (cmd->output != STDOUT_FILENO)
-		close(cmd->output);
+	{
+		// Processus enfant
+		// Redirection des entrées/sorties si nécessaire
+		if (cmd->input_fd != STDIN_FILENO)
+		{
+			dup2(cmd->input_fd, STDIN_FILENO);
+			close(cmd->input_fd);
+		}
+		if (cmd->output_fd != STDOUT_FILENO)
+		{
+			dup2(cmd->output_fd, STDOUT_FILENO);
+			close(cmd->output_fd);
+		}
+		execute_path(cmd);
+		destroy_cmd(cmd);
+		free_minishell(minishell);
+		// Si execve échoue
+		perror("execve");
+		exit(errno);
+	}
+	else
+	{
+		// Processus parent
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			return (128 + WTERMSIG(status));
+	}
 	return (0);
 }
 
-static int	pre_execute(t_minishell *minishell, t_cmd *cmd,
-		t_ast *ast)
-{
-	int	res;
-
-	res = 0;
-	if (is_builtin_command(cmd))
-		res = execute_builtin_command(minishell, cmd);
-	else if (cmd->path)
-		res = execution(minishell, cmd, ast);
-	free_cmd(cmd);
-	return (res);
-}
-
 /**
- * @brief Main function for executing a command
+ * @brief Fonction principale pour exécuter une commande
  */
-int	execute_cmd(t_minishell *minishell, t_ast *ast, int in_out[2], int to_close)
+int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int input_fd, int output_fd)
 {
 	t_cmd	*cmd;
 	int		res;
 
-	if (!ast)
-		return (1);
-	cmd = load_command(minishell, ast->children, in_out, to_close);
+	cmd = create_cmd(ast, minishell->env, input_fd, output_fd);
 	if (!cmd)
 		return (1);
-	res = pre_execute(minishell, cmd, ast);
+	if (is_builtin_command(cmd))
+		res = execute_builtin_command(minishell, cmd);
+	else
+		res = execute_external(minishell, cmd);
+	destroy_cmd(cmd);
 	return (res);
 }
