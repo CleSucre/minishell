@@ -23,7 +23,6 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
-	char	*cmd_path;
 
 	pid = fork();
 	if (pid < 0)
@@ -45,6 +44,8 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 			dup2(cmd->output_fd, STDOUT_FILENO);
 			close(cmd->output_fd);
 		}
+		if (cmd->to_close != -1)
+			close(cmd->to_close);
 		execute_path(cmd);
 		destroy_cmd(cmd);
 		free_minishell(minishell);
@@ -67,12 +68,12 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 /**
  * @brief Fonction principale pour exécuter une commande
  */
-int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int input_fd, int output_fd)
+int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int in_out[3])
 {
 	t_cmd	*cmd;
 	int		res;
 
-	cmd = create_cmd(ast, minishell->env, input_fd, output_fd);
+	cmd = create_cmd(ast, minishell->env, in_out);
 	if (!cmd)
 		return (1);
 	if (is_builtin_command(cmd))

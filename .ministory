@@ -3,3 +3,126 @@ ls -la | wc -l
 clear
 histyroy
 cd ..
+ls
+history
+history
+echo "salut"
+echo "salu't"
+echo 'sa"lut'
+echo 'sa"lu"t'
+echo $USER
+echo test
+echo test sa dz fzf
+echo test 'sa' dz" fzf"
+echo test 'sa' dz "fzf"
+echo test 'sa' "dz fzf"
+echo test 'sa' dz" fzf"
+echo test 'sa' "dz fzf"
+echo 'test' 'sa' "dz fzf"
+echo 'test' \'sa' "dz fzf"
+echo 'test' 'sa' \"dz fzf"
+echo 'test' 'sa' "dz fzf"
+clear
+ls -la | grep M
+ls -la
+cd ..
+cd ..
+cd ~
+cd /home
+cd clesucer
+cd clesucre
+ls
+ls
+cd projects/minishell
+ls
+cd ..
+cd -
+cd ..
+cd ..
+cd -
+cd -
+cd -
+cd minishell
+pwd
+export
+history
+ls
+clear
+7875
+k445
+45
+akosad
+oizjhge
+7858$
+4
+azdazd*
+azdazd*
+78ad
+asad
+8
+az8d
+azd8
+d8az
+dza
+az8d7
+ls
+ls | wc -l
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd clesucre/projects/minishell
+cd -
+cd -
+pwd
+cd /home/clesucre/projects/minishell
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+ls
+ls
+ls | wc -l
+ls | wc -l > test.txt
+ls | wc -l > test.txt
+ls | wc -l
+ls | wc -l
+ls
+ls -la
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la
+ls -la
+ls
+ls -la | wc -l
+ls -la | wc -l
+ls
+ls -la | wc -l
+ls -la | wc -l
+ls
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | wc -l
+ls -la | grep M
+ls -la | grep M
+ls -la | grep M | wc -l
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e
+ls -la | grep M | wc -l | cat -e

@@ -24,6 +24,7 @@ typedef struct s_cmd {
 	int		output_fd;		// Output file descriptor (default: STDOUT_FILENO)
 	char	**env;			// Environment variables (e.g., ["PATH=/usr/bin", ...])
 	char	*path;			// Full path of the executable (e.g., "/bin/ls")
+	int 	to_close;		// File descriptors to close after execution in fork
 	int		exit_code;		// Exit code of the command
 } t_cmd;
 
@@ -46,7 +47,7 @@ void	command_unset(t_cmd *cmd, t_minishell *minishell);
 // ########################################################
 
 void	destroy_cmd(t_cmd *cmd);
-t_cmd	*create_cmd(t_ast_node *ast, char **envp, int input_fd, int output_fd);
+t_cmd	*create_cmd(t_ast_node *ast, char **envp, int in_out[2]);
 
 // ########################################################
 // #						FLAGS_UTILS					  #

@@ -127,5 +127,6 @@ t_minishell	*alloc_minishell(void)
 	minishell->input = ft_calloc(1, sizeof(char *));
 	if (minishell->input == NULL)
 		return (NULL);
+	minishell->ast = NULL;
 	return (minishell);
 }

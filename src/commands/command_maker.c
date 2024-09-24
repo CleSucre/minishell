@@ -27,7 +27,7 @@ void	destroy_cmd(t_cmd *cmd)
  * @param t_ast_node *ast: AST node representing the command
  * @param char **envp: Environment variables
  */
-t_cmd	*create_cmd(t_ast_node *ast, char **envp, int input_fd, int output_fd)
+t_cmd	*create_cmd(t_ast_node *ast, char **envp, int in_out[3])
 {
 	t_cmd	*cmd;
 	char	*path;
@@ -38,8 +38,9 @@ t_cmd	*create_cmd(t_ast_node *ast, char **envp, int input_fd, int output_fd)
 	cmd->name = strdup(ast->value[0]);
 	cmd->args = ast->value;
 	cmd->argc = (int)ft_tablen((const char **)ast->value);
-	cmd->input_fd = input_fd;
-	cmd->output_fd = output_fd;
+	cmd->input_fd = in_out[0];
+	cmd->output_fd = in_out[1];
+	cmd->to_close = in_out[2];
 	cmd->env = envp;
 	cmd->path = NULL;
 	cmd->exit_code = 0;
