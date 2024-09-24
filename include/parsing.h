@@ -52,11 +52,22 @@ typedef struct s_ast
 	struct s_ast	*prev;
 }	t_ast;
 
+
+typedef struct	s_var
+{
+	char	*name;
+	int		action;
+	int 	value;
+
+}			t_var;
+
+
 // ########################################################
 // #						PARSER						  #
 // ########################################################
 
 t_ast			*parse_input(t_minishell *minishell, char *input);
+void			get_input_converter(t_minishell *minishell, t_var *input);
 
 // ########################################################
 // #						TOKENIZER					  #

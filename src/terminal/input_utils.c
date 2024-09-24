@@ -24,6 +24,7 @@ void	put_in_string(t_minishell *minishell, char *new)
 	ft_printf("\033[s\033[1@%s\033[4l\033[0m", new);
 	minishell->input = ft_tabinsert(minishell->input, new,
 			minishell->term->cols - get_prompt_len(minishell) - 1);
+//	get_cursor_position(minishell->term);
 }
 
 /**
@@ -66,7 +67,10 @@ void	edit_input(t_minishell *minishell, char *new)
 	if (minishell->term->cols
 		!= get_prompt_len(minishell)
 		+ ft_tablen((const char **)minishell->input) + 1)
-		put_in_string(minishell, new);
+		{
+			put_in_string(minishell, new);
+//			get_cursor_position(minishell->term);
+		}
 	else
 	{
 		minishell->input = ft_tabjoin(minishell->input,
@@ -77,6 +81,8 @@ void	edit_input(t_minishell *minishell, char *new)
 		minishell->tab_dict = NULL;
 	}
 	minishell->term->cols++;
+//	get_cursor_position(minishell->term);
+
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
