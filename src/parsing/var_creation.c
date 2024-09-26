@@ -25,7 +25,7 @@
 
 /**
 * @brief function that take input, check presence in env
-		if exit, modify input env by new value;
+		if exit, clear old value, modify input env by new value;
 		else return -1
 	@return 0 if ok, 1 if doesn't exist in env
 */
@@ -47,7 +47,20 @@
 		return (0);
 	}
 
-	void	get_input_converter(t_minishell *minishell, t_var *input)
+	int	add_value_arg(t_minishell *minishell, char *input, char *value)
+	{
+		//Old value, new value, concatenate both of them using modify env input
+		int is_here;
+
+		is_here = find_table_args(minishell->env, input);
+		if (is_here == -1)
+			ft_printf("Create a new env variable\n");
+
+
+		return (0);
+	}
+
+	void	get_input_converter(t_minishell *minishell, t_cmd *input)
 	{
 		char	**cut_name;
 		char	quote_set[3];
@@ -62,12 +75,17 @@
 			ft_fprintf(2, "Error in parsing input converter\n");
 			return ;
 		}
-		int i = 0;
-		while (cut_name[i])
+		if (ft_is_charset('+', cut_name[0]))
 		{
-			ft_printf("cut_name [%s]\n", cut_name[i]);
-			i++;
+			ft_fprintf(2, "join env to value\n");
+			return ;
 		}
+//		int i = 0;
+//		while (cut_name[i])
+//		{
+//			ft_printf("cut_name [%s]\n", cut_name[i]);
+//			i++;
+//		}
 		if (modify_env_input(minishell, cut_name[0], cut_name[1]) == -1)
 		{
 			clear_string(input->name);

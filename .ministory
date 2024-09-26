@@ -3,3 +3,21 @@ ls -la | wc -l
 clear
 histyroy
 cd ..
+cd ../../../../..
+cd -
+pwd
+cd -
+pwd
+cd -
+export
+env
+env | grep PWD
+env | grep PWD
+cd ../../../..
+cd -
+cd -
+cd -
+cd -
+ls
+cd ../../..
+cd -
