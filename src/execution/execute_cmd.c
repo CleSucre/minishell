@@ -17,7 +17,11 @@
 #include <string.h>
 
 /**
- * @brief Exécute une commande externe en utilisant fork et execve
+ * @brief Execute a command in a child process and manage input/output redirection.
+ *
+ * @param t_minishell *minishell
+ * @param t_cmd *cmd
+ * @return int Exit status of the command
  */
 static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
@@ -66,7 +70,12 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 }
 
 /**
- * @brief Fonction principale pour exécuter une commande
+ * @brief Executes a command represented by an abstract syntax tree node
+ *
+ * @param minishell The minishell context
+ * @param ast The abstract syntax tree node representing the command
+ * @param in_out Array holding file descriptors for input/output redirection
+ * @return int Exit status of the command execution
  */
 int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int in_out[3])
 {

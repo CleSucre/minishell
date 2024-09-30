@@ -47,7 +47,7 @@ void	command_unset(t_cmd *cmd, t_minishell *minishell);
 // ########################################################
 
 void	destroy_cmd(t_cmd *cmd);
-t_cmd	*create_cmd(t_ast_node *ast, char **envp, int in_out[2]);
+t_cmd	*create_cmd(t_ast_node *ast, char **envp, int in_out[3]);
 
 // ########################################################
 // #						FLAGS_UTILS					  #

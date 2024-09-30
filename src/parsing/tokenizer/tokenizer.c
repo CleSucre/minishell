@@ -21,7 +21,7 @@
 t_token_type	token_type(char *str)
 {
 	if (str[0] == '$')
-		return TOKEN_VARIABLE;  // Variable référencée dans une commande
+		return (TOKEN_VARIABLE);  // Variable référencée dans une commande
 	else if (ft_strchr(str, '=') != NULL)
 		return (TOKEN_ASSIGNMENT);  // Assignation de variable
 	else if (ft_strcmp(str, "&&") == 0)
