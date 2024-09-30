@@ -21,7 +21,8 @@
  */
 void	put_in_string(t_minishell *minishell, char *new)
 {
-	ft_printf("\033[s\033[1@%s\033[4l\033[0m", new);
+	ft_printf("\033[s\033[4h%s\033[4l\033[0m", new);
+//	ft_printf("\033[4h\033[s%s\033[0m", new);
 	minishell->input = ft_tabinsert(minishell->input, new,
 			minishell->term->cols - get_prompt_len(minishell) - 1);
 //	get_cursor_position(minishell->term);
@@ -108,3 +109,4 @@ void	erase_term(size_t len)
 	}
 	ft_putchar_fd(' ', 1);
 }
+
