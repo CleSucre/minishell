@@ -92,20 +92,21 @@ typedef struct s_cache
 
 typedef struct s_minishell
 {
-	t_cache			*cache;
-	t_history		*history;
-	t_term			*term;
-	t_completion	*completion;
-	t_dict			*dict;
-	t_dict			*tab_dict;
-	t_dirinfo		*dirinfo;
-    char            **input;
-	char			**env;
-	char			*starting_path;
-	int				exit_code;
-	unsigned int	history_pos;
-	unsigned int	history_size;
-	struct s_cmd	*current_cmd;
+	t_cache				*cache;
+	t_history			*history;
+	t_term				*term;
+	t_completion		*completion;
+	t_dict				*dict;
+	t_dict				*tab_dict;
+	t_dirinfo			*dirinfo;
+	struct s_ast_node	*ast;
+    char            	**input;
+	char				**env;
+	char				*starting_path;
+	int					exit_code;
+	unsigned int		history_pos;
+	unsigned int		history_size;
+	struct s_cmd		*current_cmd;
 }		t_minishell;
 
 #endif

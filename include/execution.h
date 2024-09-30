@@ -20,7 +20,7 @@
 // #						EXECUTOR					  #
 // ########################################################
 
-int		execute_cmd(t_minishell *minishell, t_ast_node *ast, int input_fd, int output_fd);
+int		execute_cmd(t_minishell *minishell, t_ast_node *ast, int in_out[3]);
 int		execute_input(t_minishell *minishell, char *input);
 
 int		execute_path(t_cmd *cmd);

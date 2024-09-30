@@ -51,10 +51,10 @@ typedef enum s_ast_node_type
 	AST_SEQUENCE,           // Sequence of commands
 	AST_SUBSHELL,           // A subshell '(...)'
 	AST_REDIR_OUT,          // Output redirection
-	AST_REDIR_OUT_APPEND,   // Output redirection in append mode
+	AST_REDIR_OUT_APPEND,   // Output redirection in append mode (>>)
 	AST_REDIR_IN,           // Input redirection
 	AST_ASSIGNMENT,         // Variable assignment
-	AST_HEREDOC,            // Heredoc redirection
+	AST_HEREDOC,            // Heredoc redirection (<<)
 	AST_VARIABLE,           // Variable usage
 }   t_ast_node_type;
 
