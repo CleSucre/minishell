@@ -47,6 +47,7 @@
 		return (0);
 	}
 
+/*
 	int	add_value_arg(t_minishell *minishell, char *input, char *value)
 	{
 		//Old value, new value, concatenate both of them using modify env input
@@ -59,6 +60,7 @@
 
 		return (0);
 	}
+*/
 
 	void	get_input_converter(t_minishell *minishell, t_cmd *input)
 	{

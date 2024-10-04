@@ -74,18 +74,37 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 	{
 		setup_pipes(pipes, in_out, 0);
 		res = execute_ast(minishell, ast->left, pipes, in_out);
+		ft_fprintf(STDOUT_FILENO, "res 1 = %d\n", res);
 		if (res == 1)
-			return (1);
+			return (res);
+
 		close_fds(in_out, pipes);
 		in_out[0] = pipes[0];
 		setup_pipes(pipes, in_out, 1);
 		res = execute_ast(minishell, ast->right, pipes, in_out);
+		ft_fprintf(STDOUT_FILENO, "res 2 = %d\n", res);
 		if (res == 1)
-			return (1);
+			return (res);
+
 	}
 	else if (ast->type == AST_AND)
 	{
-		
+		setup_pipes(pipes, in_out, 0);
+		execute_ast(minishell, ast->left, pipes, in_out);
+		close_fds(in_out, pipes);
+		in_out[0] = pipes[0];
+		in_out[1] = STDOUT_FILENO;
+		res = execute_ast(minishell, ast->right, pipes, in_out);
+		if (res != 0)
+		{
+			close_fds(in_out, pipes);
+
+			in_out[1] = STDIN_FILENO;
+			return (res);
+		}
+		close_fds(in_out, pipes);
+		in_out[1] = STDIN_FILENO;
+		in_out[1] = STDOUT_FILENO;
 	}
 	else if (ast->type == AST_OR)
 	{
@@ -134,7 +153,6 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 	}
 	else if (ast->type == AST_ASSIGNMENT)
 	{
-		ast->value
 		//TODO: call the function to set the variable in the path
 		return (0);
 	}
