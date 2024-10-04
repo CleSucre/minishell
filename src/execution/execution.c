@@ -134,7 +134,6 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 	}
 	else if (ast->type == AST_ASSIGNMENT)
 	{
-		ast->value
 		//TODO: call the function to set the variable in the path
 		return (0);
 	}

@@ -28,6 +28,7 @@ typedef struct s_term
 	unsigned int	cols;
 	unsigned int	rows;
 	unsigned int	begin_rows;
+	unsigned int	input_starting_row;
 	struct termios	*original_termios;
 }		t_term;
 

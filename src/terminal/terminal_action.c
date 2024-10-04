@@ -84,6 +84,7 @@ int	process_action(t_minishell *minishell, char *new)
 		reset_input(&minishell->input);
 		minishell->history_pos = 0;
 		get_cursor_position(minishell->term);
+		minishell->term->input_starting_row = minishell->term->rows;
 	}
 	else if (new[0] == ESC_SEQ)
 		return (!interpret_escape_sequence(minishell, new));

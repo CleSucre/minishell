@@ -55,6 +55,7 @@ static void	begin_user_input(t_minishell *minishell)
 	creation_dict(minishell);
 	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
+	minishell->term->input_starting_row = minishell->term->rows;
 }
 
 /**
