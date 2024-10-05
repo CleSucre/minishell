@@ -134,8 +134,8 @@ static void	debug_ast_node(t_ast_node *ast, int level)
 	ft_memset(space, ' ', level * 4);
 
 	ft_printf("\n%s%s[DEBUG] ====== NODE ======%s\n", space, BLUE, RESET);
-	ft_printf("%stype str: %s%s%s (id: %d)\n", space, BOLDWHITE,
-			  get_ast_node_type_primary(ast->type), RESET, ast->type);
+	ft_printf("%stype str: %s%s%s (id: %d | is_last: %d)\n", space, BOLDWHITE,
+			  get_ast_node_type_primary(ast->type), RESET, ast->type, ast->is_last);
 
 	// Print the command and its arguments if it's a command node
 	if (ast->value && ast->type == AST_COMMAND)

@@ -25,13 +25,17 @@ void	process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_comm
 	t_ast_node	*command_node;
 
 	command_tokens = extract_command_tokens(tokens);
+	if (!command_tokens)
+		return ;
 	command_node = new_ast_node(AST_COMMAND, command_tokens);
-	if (!command_tokens || !command_node)
+	if (!command_node)
 		return ;
 	if (*last_command == NULL)
 		*root = command_node;
 	else if ((*last_command)->right == NULL)
 		(*last_command)->right = command_node;
+	if (!is_token(*tokens, TOKEN_PIPE))
+		command_node->is_last = 1;
 	*last_command = command_node;
 }
 

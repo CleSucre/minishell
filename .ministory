@@ -174,3 +174,105 @@ true && ls
 ls
 ls
 ls
+ls
+ls
+ls
+ls
+ls
+palsa
+ls
+true
+osaodlad
+ls
+ls
+skaidijz
+exit 34
+exit
+plas
+true
+false
+false
+ls -la
+ls -la | grep m
+ls -la | grep m | cat -e
+cat | cat | cat | ls
+ls
+clear
+ls
+ls | grep m
+ls | grep m
+ls | grep m
+ls
+cat | cat | cat | ls
+cat | cat | cat | ls
+cat | cat | cat | ls
+cat | cat | cat | ls
+cat | cat | cat | ls
+cat | cat | cat | ls
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+sa
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+ls
+ls | cat -e
+ls | cat -e
+ls | cat -e
+ls | cat -e | grep m
+cat | cat | cat | ls && ls -la | grep m
+cat | cat | cat | ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls
+ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls && ls -la | grep m
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+cat | cat | cat | ls
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+ls && ls -la
+ls -la | grep m
+true && ls
+false && ls
+false || ls
+true || ls
+true || ls | grep m | cat -e
+false || ls -la | grep m | cat -e
+zokfd || ls -la | grep m | cat -e
+history
+history | grep m
+history && ls
+history | grep m&& ls
+history | grep m && ls
+ls > test.txt

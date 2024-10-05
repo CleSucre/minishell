@@ -26,6 +26,6 @@ int		execute_input(t_minishell *minishell, char *input);
 int		execute_path(t_cmd *cmd);
 
 void	handle_signal(int sig);
-int		wait_for_processes(int *status);
+int		wait_for_processes();
 
 #endif

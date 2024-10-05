@@ -34,18 +34,17 @@ t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 }
 
 /**
- * @brief Check if the AST contains a command from the given node
+ * @brief Check if the node corresponds to type variable given
  *
- * @param ast The AST node to check
- * @return int 1 if the AST contains a command, 0 otherwise
+ * @param t_ast_node		*node
+ * @param t_ast_node_type	*type
+ * @return int 1 if the next node is a command, 0 otherwise
  */
-int contain_command(t_ast_node *ast)
+int	is_node(t_ast_node *node, t_ast_node_type type)
 {
-	if (ast->type == AST_COMMAND)
-		return (1);
-	if (ast->left && contain_command(ast->left))
-		return (1);
-	if (ast->right && contain_command(ast->right))
+	if (!node)
+		return (0);
+	if (node->type == type)
 		return (1);
 	return (0);
 }

@@ -89,6 +89,7 @@ t_ast_node			*process_redirection(t_token **tokens, t_ast_node **root);
 
 t_token				*new_token(char *str, int type);
 void				add_token(t_token **head, t_token *new);
+int					is_token(t_token *token, t_token_type type);
 
 // ########################################################
 // #						TOKENIZER					  #
@@ -128,7 +129,7 @@ void			parse_args(t_ast_node *ast, char **args);
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
-int				contain_command(t_ast_node *ast);
+int				is_node(t_ast_node *node, t_ast_node_type type);
 
 // ########################################################
 // #						DEBUG						  #

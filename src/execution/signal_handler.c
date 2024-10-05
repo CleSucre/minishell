@@ -30,12 +30,14 @@ void	handle_signal(int sig)
  * @param int *status
  * @return int WEXITSTATUS on success
  */
-int	wait_for_processes(int *status)
+int	wait_for_processes()
 {
-	while ((wait(status)) > 0)
+	int status;
+
+	while ((wait(&status)) > 0)
 		;
-	if (WIFEXITED(*status))
-		return (WEXITSTATUS(*status));
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	else
 		return (0);
 }

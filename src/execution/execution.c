@@ -61,11 +61,12 @@ static int setup_pipes(int *pipes, int *in_out, int final_out)
  *
  * @param t_minishell *minishell
  * @param t_ast_node *ast
- * @return int return 1 if the command is an exit request, 0 otherwise
+ * @return Last command exit code
  */
 static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
 {
 	int	res;
+	int status;
 
 	if (!ast)
 		return (0);
@@ -73,10 +74,10 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 	{
 		if (setup_pipes(pipes, in_out, ast->is_last) == -1)
 			return (1);
-		minishell->exit_code = execute_cmd(minishell, ast, in_out);
-		ft_fprintf(STDERR_FILENO, "exit code = %d\n", minishell->exit_code);
-		if (minishell->exit_code < 0)
-			return (minishell->exit_code);
+		res = execute_cmd(minishell, ast, in_out);
+		ft_fprintf(STDERR_FILENO, "res = %d\n", res);
+		if (res == 1)
+			return (res);
 		close_fds(in_out, pipes);
 		in_out[0] = pipes[0];
 	}
@@ -92,12 +93,22 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 	else if (ast->type == AST_AND)
 	{
 		res = execute_ast(minishell, ast->left, pipes, in_out);
+		status = wait_for_processes();
+		if (status != 0)
+			return (status);
 		if (res == 1)
 			return (res);
 		execute_ast(minishell, ast->right, pipes, in_out);
 	}
 	else if (ast->type == AST_OR)
 	{
+		res = execute_ast(minishell, ast->left, pipes, in_out);
+		status = wait_for_processes();
+		if (status == 0)
+			return (status); //TODO: check if this is the correct behavior, should it return 0 or res?
+		if (res == 1)
+			return (res);
+		execute_ast(minishell, ast->right, pipes, in_out);
 	}
 	else if (ast->type == AST_SEQUENCE)
 	{
@@ -166,8 +177,6 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 int	execute_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
-	int 		status;
-	int			res;
 	int 		in_out[3];
 	int 		pipes[2];
 
@@ -183,16 +192,12 @@ int	execute_input(t_minishell *minishell, char *input)
 
 	disable_termios(minishell->term);
 
-	res = execute_ast(minishell, ast, pipes, in_out);
-
-	status = 0;
-	status = wait_for_processes(&status);
-
+	execute_ast(minishell, ast, pipes, in_out);
+	minishell->exit_code = wait_for_processes();
 	enable_termios(minishell->term);
 
-	ft_fprintf(STDERR_FILENO, "final exit code = %d\n", res);
+	ft_fprintf(STDERR_FILENO, "final exit code = %d\n", minishell->exit_code);
 	free_ast(ast);
 	minishell->ast = NULL;
-	minishell->exit_code = res;
-	return (res);
+	return (minishell->exit_code);
 }
