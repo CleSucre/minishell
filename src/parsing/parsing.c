@@ -96,6 +96,9 @@ t_ast_node	*build_ast(t_token **tokens)
 		else
 			current = current->next;
 	}
+	//set is_last to 1 for the last command in a sequence
+	if (last_command)
+		last_command->is_last = 1;
 	return (root);
 }
 

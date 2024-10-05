@@ -48,3 +48,129 @@ echo salut
 zdok | ls -la
 zdok | echo salut
 ls
+ls
+clear
+make
+clear
+make fclean
+make
+ls
+make
+ls$
+ls
+./minishell
+ls
+lms
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+clear
+ls
+clear
+ls
+ls
+ls
+ls
+ls
+clear
+s
+clear
+ls
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m && ls
+ls -la | grep m
+ls -la | grep m |  cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls -la | grep m
+ls
+ls | grep m
+ls
+ls | grep m
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls -la | grep m | cat -e
+ls
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls | grep m
+ls
+ls
+ls | grep m
+ls
+ls
+ls | cat -e
+cat -e
+ls
+ls
+ls | cat -e
+ls | grep m
+ls | grep m
+ls | grep m
+ls
+ls | grep m
+ls
+ls | grep m
+ls
+ls
+ls | grep m
+ls | grep m
+ls | grep m
+ls | grep m
+ls | grep m
+ls | cat -e
+ls -la | grep m | cat -e
+false && ls
+false && ls
+true && ls
+true && ls
+false && ls
+false && ls
+true && ls
+true && ls
+ls
+ls
+ls

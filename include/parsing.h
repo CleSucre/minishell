@@ -61,6 +61,7 @@ typedef enum s_ast_node_type
 typedef struct s_ast_node {
 	t_ast_node_type     type;           // Node type (command, operator, redirection)
 	char                **value;        // Command and arguments (for nodes of type NODE_COMMAND)
+	int 				is_last;		// Is the last command in a sequence
 	struct s_ast_node   *left;          // Left subtree (command or sub-command)
 	struct s_ast_node   *right;         // Right subtree (command or sub-command)
 } t_ast_node;
@@ -127,6 +128,7 @@ void			parse_args(t_ast_node *ast, char **args);
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
+int				contain_command(t_ast_node *ast);
 
 // ########################################################
 // #						DEBUG						  #

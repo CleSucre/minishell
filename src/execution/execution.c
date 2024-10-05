@@ -34,21 +34,24 @@ static void	close_fds(int in_out[2], int *fd)
  *
  * @param int *pipes pipe[0] = read, pipe[1] = write
  * @param int *in_out in_out[0] = read, in_out[1] = write, in_out[2] = to_close
+ * @return int 0 on success, -1 on failure
  */
-static void setup_pipes(int *pipes, int *in_out, int final_out)
+static int setup_pipes(int *pipes, int *in_out, int final_out)
 {
-	if (final_out)
+	if (!final_out)
 	{
+		if (pipe(pipes) == -1)
+		{
+			ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
+			return (-1);
+		}
+		in_out[1] = pipes[1];
+		in_out[2] = pipes[0];
+	} else {
 		in_out[1] = STDOUT_FILENO;
 		in_out[2] = -1;
 	}
-	else if (pipe(pipes) == -1)
-	{
-		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	in_out[1] = pipes[1];
-	in_out[2] = pipes[0];
+	return (0);
 }
 
 /**
@@ -68,43 +71,30 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 		return (0);
 	if (ast->type == AST_COMMAND)
 	{
+		if (setup_pipes(pipes, in_out, ast->is_last) == -1)
+			return (1);
 		minishell->exit_code = execute_cmd(minishell, ast, in_out);
+		ft_fprintf(STDERR_FILENO, "exit code = %d\n", minishell->exit_code);
+		if (minishell->exit_code < 0)
+			return (minishell->exit_code);
+		close_fds(in_out, pipes);
+		in_out[0] = pipes[0];
 	}
 	else if (ast->type == AST_PIPE)
 	{
-		setup_pipes(pipes, in_out, 0);
 		res = execute_ast(minishell, ast->left, pipes, in_out);
-		ft_fprintf(STDOUT_FILENO, "res 1 = %d\n", res);
 		if (res == 1)
 			return (res);
-
-		close_fds(in_out, pipes);
-		in_out[0] = pipes[0];
-		setup_pipes(pipes, in_out, 1);
 		res = execute_ast(minishell, ast->right, pipes, in_out);
-		ft_fprintf(STDOUT_FILENO, "res 2 = %d\n", res);
 		if (res == 1)
 			return (res);
-
 	}
 	else if (ast->type == AST_AND)
 	{
-		setup_pipes(pipes, in_out, 0);
-		execute_ast(minishell, ast->left, pipes, in_out);
-		close_fds(in_out, pipes);
-		in_out[0] = pipes[0];
-		in_out[1] = STDOUT_FILENO;
-		res = execute_ast(minishell, ast->right, pipes, in_out);
-		if (res != 0)
-		{
-			close_fds(in_out, pipes);
-
-			in_out[1] = STDIN_FILENO;
+		res = execute_ast(minishell, ast->left, pipes, in_out);
+		if (res == 1)
 			return (res);
-		}
-		close_fds(in_out, pipes);
-		in_out[1] = STDIN_FILENO;
-		in_out[1] = STDOUT_FILENO;
+		execute_ast(minishell, ast->right, pipes, in_out);
 	}
 	else if (ast->type == AST_OR)
 	{
@@ -176,6 +166,7 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 int	execute_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
+	int 		status;
 	int			res;
 	int 		in_out[3];
 	int 		pipes[2];
@@ -188,11 +179,18 @@ int	execute_input(t_minishell *minishell, char *input)
 	ast = parse_input(minishell, input);
 	if (!ast)
 		return (0);
-	disable_termios(minishell->term);
 	minishell->ast = ast;
+
+	disable_termios(minishell->term);
+
 	res = execute_ast(minishell, ast, pipes, in_out);
-	close_fds(in_out, pipes);
+
+	status = 0;
+	status = wait_for_processes(&status);
+
 	enable_termios(minishell->term);
+
+	ft_fprintf(STDERR_FILENO, "final exit code = %d\n", res);
 	free_ast(ast);
 	minishell->ast = NULL;
 	minishell->exit_code = res;
