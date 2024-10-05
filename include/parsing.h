@@ -31,7 +31,6 @@ typedef enum s_token_type
 	TOKEN_PARENTHESIS_OPEN,     // Opening parenthesis
 	TOKEN_PARENTHESIS_CLOSE,    // Closing parenthesis
 	TOKEN_VARIABLE,             // Variable
-	TOKEN_ASSIGNMENT,           // Variable assignment
 }   t_token_type;
 
 typedef struct s_token

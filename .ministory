@@ -276,3 +276,277 @@ history && ls
 history | grep m&& ls
 history | grep m && ls
 ls > test.txt
+history | grep m && ls
+zokfd || ls -la | grep m | cat -e
+history | grep m && ls
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+ls > test.txt
+ls > test.txt
+ls > test.txt
+cat | cat | cat | ls && ls -la
+ls > test.txt
+ls > test.txt
+ls > test.txt
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+ls | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m | cat -e
+cat | cat | cat | ls && ls -la
+cat | cat | cat | ls && ls -la
+ls > test.txt
+ls -la > test.txt
+cat | cat | cat | ls && ls -la
+zokfd || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+dalse || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt && cat test.txt
+cat src/main.c
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt && cat test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+true || ls -la | grep m | cat -e
+dalse || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt && ls > text.txt
+clear
+clear
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt && ls > text.txt
+ls
+ls
+ls -la > test.txt && ls > text.txt
+ls -la > test.txt
+ls -la > test.txt
+ls
+ls | grep m
+ls
+ls
+ls | grep m
+ls -la > test.txt
+ls
+ls
+ls | grep m
+false || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+ls | grep m
+true || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+cat > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+false || ls -la | grep m | cat -e
+ls -la > test.txt
+ls -la | grep m > test.txt
+ls -la | grep m | cat -e > test.txt
+ls -la | grep m | cat -e > test.txt
+ls -la | grep m | cat -e > test.txt
+ls -la | grep m > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+ls -la > test.txt
+cleart
+clear
+clear
+ls -la > test.txt
+ls -la > text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+git status
+rm -rf text.txt
+git status
+git add -A

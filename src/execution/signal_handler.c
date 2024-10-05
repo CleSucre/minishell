@@ -34,6 +34,7 @@ int	wait_for_processes()
 {
 	int status;
 
+	status = 0;
 	while ((wait(&status)) > 0)
 		;
 	if (WIFEXITED(status))

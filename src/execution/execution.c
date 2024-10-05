@@ -26,6 +26,7 @@ static void	close_fds(int in_out[2], int *fd)
 		close(in_out[1]);
 	if (fd[1] != -1)
 		close(fd[1]);
+	in_out[0] = fd[0];
 }
 
 /**
@@ -34,11 +35,12 @@ static void	close_fds(int in_out[2], int *fd)
  *
  * @param int *pipes pipe[0] = read, pipe[1] = write
  * @param int *in_out in_out[0] = read, in_out[1] = write, in_out[2] = to_close
+ * @param int state 0 if pipe, 1 if last command, 2 if redirection
  * @return int 0 on success, -1 on failure
  */
-static int setup_pipes(int *pipes, int *in_out, int final_out)
+static int setup_pipes(int *pipes, int *in_out, int is_last)
 {
-	if (!final_out)
+	if (!is_last)
 	{
 		if (pipe(pipes) == -1)
 		{
@@ -50,6 +52,33 @@ static int setup_pipes(int *pipes, int *in_out, int final_out)
 	} else {
 		in_out[1] = STDOUT_FILENO;
 		in_out[2] = -1;
+	}
+	return (0);
+}
+
+/**
+ * @brief Execute the command given in input
+ *
+ * //TODO: move the function to the correct file, where? IDK :)
+ *
+ * @param t_minishell *minishell
+ * @param t_ast_node *ast
+ * @param int *in_out
+ * @return 0 on success -1 on exit request
+ */
+ssize_t copy_fd_contents(int fd_from, int fd_to)
+{
+	char	buf[BUFFER_SIZE];
+	ssize_t	bytes_read;
+	ssize_t	bytes_written;
+
+	bytes_read = read(fd_from, buf, BUFFER_SIZE);
+	while (bytes_read > 0)
+	{
+		bytes_written = write(fd_to, buf, bytes_read);
+		if (bytes_written == -1)
+			return (-1);
+		bytes_read = read(fd_from, buf, BUFFER_SIZE);
 	}
 	return (0);
 }
@@ -67,25 +96,27 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 {
 	int	res;
 	int status;
+	int file_fd;
 
 	if (!ast)
 		return (0);
 	if (ast->type == AST_COMMAND)
 	{
 		if (setup_pipes(pipes, in_out, ast->is_last) == -1)
+		{
+			ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
 			return (1);
+		}
 		res = execute_cmd(minishell, ast, in_out);
-		ft_fprintf(STDERR_FILENO, "res = %d\n", res);
-		if (res == 1)
-			return (res);
 		close_fds(in_out, pipes);
-		in_out[0] = pipes[0];
+		if (res == 1) //TODO: check if this is the correct behavior, should it return 0 or res?
+			return (res);
 	}
 	else if (ast->type == AST_PIPE)
 	{
 		res = execute_ast(minishell, ast->left, pipes, in_out);
 		if (res == 1)
-			return (res);
+			return (res); //TODO:
 		res = execute_ast(minishell, ast->right, pipes, in_out);
 		if (res == 1)
 			return (res);
@@ -139,23 +170,46 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 			ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
 			return (1);
 		}
-		in_out[1] = open(ast->right->value[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (in_out[1] == -1)
+		if (access(ast->right->value[0], W_OK) != 0)
 		{
-			ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
-			return (1);
+			ft_fprintf(STDERR_FILENO, "minishell: %s: Permission denied\n", ast->right->value[0]);
+			return (1); //TODO: dont stop the all execution
 		}
 		execute_ast(minishell, ast->left, pipes, in_out);
-		close(in_out[1]);
+		file_fd = open(ast->right->value[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (file_fd == -1)
+		{
+			ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
+			return (1); //TODO: dont stop the all execution
+		}
+		copy_fd_contents(in_out[0], file_fd);
+		close(file_fd);
+		close_fds(in_out, pipes);
+		wait_for_processes();
 	}
 	else if (ast->type == AST_REDIR_OUT_APPEND)
 	{
-		//TODO: find a way to append to the file
-	}
-	else if (ast->type == AST_ASSIGNMENT)
-	{
-		//TODO: call the function to set the variable in the path
-		return (0);
+		if (ast->right->value[0] == NULL)
+		{
+			ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
+			return (1);
+		}
+		if (access(ast->right->value[0], W_OK) != 0)
+		{
+			ft_fprintf(STDERR_FILENO, "minishell: %s: Permission denied\n", ast->right->value[0]);
+			return (1); //TODO: dont stop the all execution
+		}
+		execute_ast(minishell, ast->left, pipes, in_out);
+		file_fd = open(ast->right->value[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (file_fd == -1)
+		{
+			ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
+			return (1); //TODO: dont stop the all execution
+		}
+		copy_fd_contents(in_out[0], file_fd);
+		close(file_fd);
+		close_fds(in_out, pipes);
+		wait_for_processes();
 	}
 	else if (ast->type == AST_HEREDOC)
 	{

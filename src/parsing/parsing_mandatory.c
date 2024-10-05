@@ -34,8 +34,6 @@ void	process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_comm
 		*root = command_node;
 	else if ((*last_command)->right == NULL)
 		(*last_command)->right = command_node;
-	if (!is_token(*tokens, TOKEN_PIPE))
-		command_node->is_last = 1;
 	*last_command = command_node;
 }
 
@@ -75,32 +73,6 @@ t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root)
 	*tokens = (*tokens)->next;
 	pipe_node->right = build_ast(tokens);
 	return (pipe_node);
-}
-
-/**
- * @brief Process an assignment token and create an AST assignment node.
- *
- * @param t_token **tokens Pointer to the current list of tokens.
- * @return t_ast_node* The assignment node created.
- */
-t_ast_node	*process_assignment(t_token **tokens)
-{
-	char	**tmp;
-	char	**assignment_tokens;
-
-
-	tmp = ft_split((*tokens)->value, "=");
-	if (!tmp)
-		return (NULL);
-	assignment_tokens = ft_calloc(4, sizeof(char *));
-	if (!assignment_tokens)
-		return (NULL);
-	assignment_tokens[0] = ft_strdup(tmp[0]);
-	assignment_tokens[1] = ft_strdup("=");
-	assignment_tokens[2] = ft_strdup(tmp[1]);
-	ft_tabfree(tmp);
-	*tokens = (*tokens)->next;
-	return (new_ast_node(AST_ASSIGNMENT, assignment_tokens));
 }
 
 /**

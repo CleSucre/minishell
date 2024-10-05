@@ -27,7 +27,7 @@ t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 		return (NULL);
 	node->type = type;
 	node->value = value;
-	node->is_last = 0;
+	node->is_last = 1;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);

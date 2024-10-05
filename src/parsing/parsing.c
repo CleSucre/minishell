@@ -69,36 +69,24 @@ t_ast_node	*build_ast(t_token **tokens)
 			continue ;
 		}
 		else if (current->type == TOKEN_PIPE)
-			return process_pipe(&current, &root);
+		{
+			last_command->is_last = 0;
+			return (process_pipe(&current, &root));
+		}
 		else if (current->type == TOKEN_AND_OPERATOR || current->type == TOKEN_OR_OPERATOR)
-			return process_operator(&current, &root, &last_command);
+			return (process_operator(&current, &root, &last_command));
 		else if (current->type == TOKEN_PARENTHESIS_OPEN)
 			process_subshell(&current, &root, &last_command);
-		else if (current->type == TOKEN_REDIR_OUT || current->type == TOKEN_REDIR_OUT_APPEND ||
-				 current->type == TOKEN_REDIR_IN || current->type == TOKEN_HEREDOC)
+		else if (current->type == TOKEN_REDIR_OUT || current->type == TOKEN_REDIR_OUT_APPEND)
+		{
+			last_command->is_last = 0;
 			root = process_redirection(&current, &root);
-		else if (current->type == TOKEN_ASSIGNMENT)
-		{
-			t_ast_node *assignment_node = process_assignment(&current);
-			if (root == NULL)
-				root = assignment_node;
-			else
-				last_command->right = assignment_node;
 		}
-		else if (current->type == TOKEN_VARIABLE)
-		{
-			t_ast_node *variable_node = process_variable(&current);
-			if (root == NULL)
-				root = variable_node;
-			else
-				last_command->right = variable_node;
-		}
+		else if (current->type == TOKEN_REDIR_IN || current->type == TOKEN_HEREDOC)
+			root = process_redirection(&current, &root);
 		else
 			current = current->next;
 	}
-	//set is_last to 1 for the last command in a sequence
-	if (last_command)
-		last_command->is_last = 1;
 	return (root);
 }
 
