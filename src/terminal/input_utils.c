@@ -44,8 +44,7 @@ void clear_term(t_minishell *minishell)
 			ft_putstr_fd("\033[K\033[1A", 1);
 			minishell->term->rows--;
 		}
-					ft_putstr_fd("\033[K\033[1A", 1);
-
+	ft_putstr_fd("\033[K\033[1A", 1);
 }
 
 /**
@@ -79,15 +78,11 @@ void print_str_from_s_to_e_term(t_minishell *minishell, char *input, int start, 
 		if ((rows == minishell->term->input_starting_row && (i + get_prompt_len(minishell)) % minishell->term->ws_cols == 0)
 			|| (rows > minishell->term->input_starting_row && (i % minishell->term->ws_cols == 0)))
 			{
-
-                ft_putstr_fd("\n", 1);
+//                ft_putstr_fd("\033[E", 1);
                 rows++;
             }
-
 	}
-	// tentative de truc qui sert a rien
-//	if (i % term->ws_rows > start)
-//	ft_putstr_fd("\n", 1);
+
 }
 
 /**
@@ -97,53 +92,73 @@ void print_str_from_s_to_e_term(t_minishell *minishell, char *input, int start, 
 *	then print from position to end of input
 *	Restore position, check if needed to go to next line or move to right
 */
+//void    put_in_string(t_minishell *minishell, char *new)
+//{
+//    char    *str;
+//	unsigned int current_pos;
+//	unsigned int cols;
+//	unsigned int rows;
+//
+//	cols = minishell->term->cols;
+//	rows = minishell->term->rows;
+//
+//
+//	// insertion dans l input
+//    minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
+//	// sauvegarde position + clear term
+//    ft_putstr_fd("\033[s\033[J", 1);
+//    str = ft_utf8_tab_to_str(minishell->input);
+//
+//	// Position du curseur : si row == starting alors juste cols - prompt len sinon calcul
+//	if (minishell->term->rows == minishell->term->input_starting_row)
+//        current_pos = minishell->term->cols - get_prompt_len(minishell) - 1;
+//    else
+//	current_pos = minishell->term->cols * (minishell->term->rows -
+//		minishell->term->input_starting_row) - get_prompt_len(minishell) - 1;
+//
+//	// print de position jusqua fin de l input
+//	print_str_from_s_to_e_term(minishell, str, current_pos, ft_strlen(str));
+//
+//    free(str);
+//
+//	// restauration de base du curseur avec U
+//    ft_putstr_fd("\033[u", 1);
+//	if (minishell->term->cols % minishell->term->ws_cols == 0)
+//    {
+//        ft_putstr_fd("\033[E", 1);
+//        minishell->term->rows++;
+//        minishell->term->cols = 1;
+//    }
+//	else
+//			ft_putstr_fd("\033[1C", 1);
+//
+//
+//}
+
 void    put_in_string(t_minishell *minishell, char *new)
 {
-    char    *str;
-	unsigned int current_pos;
-	unsigned int cols;
-	unsigned int rows;
+	char	*str;
 
-	cols = minishell->term->cols;
-	rows = minishell->term->rows;
-
-//	printf("DEBUG %u %u\n", cols, rows);
-
-	// insertion dans l input
-    minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
-	// sauvegarde position + clear term
-    ft_putstr_fd("\033[s\033[J", 1);
-    str = ft_utf8_tab_to_str(minishell->input);
-
-	// Position du curseur : si row == starting alors juste cols - prompt len sinon calcul
-	if (minishell->term->rows == minishell->term->input_starting_row)
-        current_pos = minishell->term->cols - get_prompt_len(minishell) - 1;
-    else
-	current_pos = minishell->term->cols * (minishell->term->rows -
-		minishell->term->input_starting_row) - get_prompt_len(minishell) - 1;
-//	ft_fprintf(2, "\nDEBUG : %d\n", current_pos);
-
-	// print de position jusqua fin de l input
-	print_str_from_s_to_e_term(minishell, str, current_pos, ft_strlen(str));
-
-    free(str);
-
-	// restauration de base du curseur avec U
-    ft_putstr_fd("\033[u", 1);
-
-	//tentative de restaurer le curseur non pas avec U mais avec les variables cols et rows que j ai creer qui devaient prendre
-	//les valeurs de cols et rows de depart, mais ca marche pas comme je veux et clc
-//	ft_fprintf(1, "\033[%d;%dH", (int)rows, (int)cols);
-
-	// tentative de gerer saut de ligne si au bout de la fenetre mais jcrois ca sert a rien
-//	if (minishell->term->cols + 1 % minishell->term->ws_cols == 0)
-//		ft_putstr_fd("\033[E", 1);
-//	else
-
-	// 1C obligatoire pour deplacer le curseur apres avoir ecrit le caractere
-//	ft_putstr_fd("\033[1C", 1);
-
+	ft_putstr_fd("\033[s\033[J", 1);
+	minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
+	reset_stdin(minishell);
+	str = ft_utf8_tab_to_str(minishell->input);
+	terminal_print(str, 0, STDOUT_FILENO);
+	free(str);
+	if (minishell->term->rows - minishell->term->input_starting_row > 0)
+		ft_printf("\033[%dB\033[G", minishell->term->rows - minishell->term->input_starting_row);
+	ft_putstr_fd("\033[u", 1);
+		if (minishell->term->cols % minishell->term->ws_cols == 0)
+    {
+        ft_putstr_fd("\033[E", 1);
+        minishell->term->rows++;
+        minishell->term->cols = 1;
+    }
+	else if (minishell->term->cols > get_prompt_len(minishell) + 1)
+        ft_putstr_fd("\033[1C", 1);
 }
+
+
 
 /**
  * @brief Delete a char in string at "cols" (n) position
@@ -187,8 +202,6 @@ void	edit_input(t_minishell *minishell, char *new)
 		+ ft_tablen((const char **)minishell->input) + 1)
 		{
 			put_in_string(minishell, new);
-
-//			get_cursor_position(minishell->term);
 		}
 	else
 	{
@@ -199,7 +212,7 @@ void	edit_input(t_minishell *minishell, char *new)
 			free_branch(minishell->tab_dict);
 		minishell->tab_dict = NULL;
 	}
-	minishell->term->cols++;
+	minishell->term->cols ++;
 	// incrementation de rows si a la fin de ligne apres input
 	minishell->term->rows = (ft_tablen((const char **)minishell->input) + get_prompt_len(minishell))
         / minishell->term->ws_cols + minishell->term->input_starting_row;

@@ -4,9 +4,10 @@
 # compilation
 .clang-format
 minishell
+.ministory
+
 #.ministory
 obj/
-.ministory
 
 # IDE
 
