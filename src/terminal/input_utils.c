@@ -32,6 +32,12 @@
 *			minishell->term->cols - get_prompt_len(minishell) - 1);
 */
 
+void put_in_string(t_minishell *minishell, char *new)
+{
+		ft_printf("\033[s\033[4h%s\033[4l\033[0m", new);
+		minishell->input = ft_tabinsert(minishell->input, new,
+			minishell->term->cols - get_prompt_len(minishell) - 1);
+}
 
 /**
 * @brief Clear term from cursor to end
@@ -97,53 +103,6 @@ void print_str_from_s_to_e_term(t_minishell *minishell, char *input, int start, 
 *	then print from position to end of input
 *	Restore position, check if needed to go to next line or move to right
 */
-void    put_in_string(t_minishell *minishell, char *new)
-{
-    char    *str;
-	unsigned int current_pos;
-	unsigned int cols;
-	unsigned int rows;
-
-	cols = minishell->term->cols;
-	rows = minishell->term->rows;
-
-//	printf("DEBUG %u %u\n", cols, rows);
-
-	// insertion dans l input
-    minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
-	// sauvegarde position + clear term
-    ft_putstr_fd("\033[s\033[J", 1);
-    str = ft_utf8_tab_to_str(minishell->input);
-
-	// Position du curseur : si row == starting alors juste cols - prompt len sinon calcul
-	if (minishell->term->rows == minishell->term->input_starting_row)
-        current_pos = minishell->term->cols - get_prompt_len(minishell) - 1;
-    else
-	current_pos = minishell->term->cols * (minishell->term->rows -
-		minishell->term->input_starting_row) - get_prompt_len(minishell) - 1;
-//	ft_fprintf(2, "\nDEBUG : %d\n", current_pos);
-
-	// print de position jusqua fin de l input
-	print_str_from_s_to_e_term(minishell, str, current_pos, ft_strlen(str));
-
-    free(str);
-
-	// restauration de base du curseur avec U
-    ft_putstr_fd("\033[u", 1);
-
-	//tentative de restaurer le curseur non pas avec U mais avec les variables cols et rows que j ai creer qui devaient prendre
-	//les valeurs de cols et rows de depart, mais ca marche pas comme je veux et clc
-//	ft_fprintf(1, "\033[%d;%dH", (int)rows, (int)cols);
-
-	// tentative de gerer saut de ligne si au bout de la fenetre mais jcrois ca sert a rien
-//	if (minishell->term->cols + 1 % minishell->term->ws_cols == 0)
-//		ft_putstr_fd("\033[E", 1);
-//	else
-
-	// 1C obligatoire pour deplacer le curseur apres avoir ecrit le caractere
-//	ft_putstr_fd("\033[1C", 1);
-
-}
 
 /**
  * @brief Delete a char in string at "cols" (n) position

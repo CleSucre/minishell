@@ -1,0 +1,13 @@
+export
+export
+export
+export
+export
+export PWD
+export ok
+export ok
+export PWD
+export
+export
+env
+env | wc -l
