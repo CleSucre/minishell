@@ -550,3 +550,461 @@ git status
 rm -rf text.txt
 git status
 git add -A
+ls -la >> text.txt
+touch text.txt
+ls -la >> text.txt
+ls -la >> text.txt
+ls > text.txt
+ls -la | grep m | cat -e > test.txt
+ls -la | grep m | cat -e > test.txt
+ls -la | grep m | cat -e > text.txt
+false || ls -la | grep m | cat -e
+true || ls -la | grep m | cat -e
+history && ls > text.txt
+history | grep m && ls > text.txt
+history | grep x && ls > text.txt
+history | grep x && ls -la | grep m | wc -l > text.txt
+ls -la | grep m | wc -l > text.txt
+history | grep x && ls -la | grep m | wc -l > text.txt
+history | grep x && ls -la | grep m > text.txt
+history | grep x && ls -la > text.txt
+history | grep x && ls -la | grep m > text.txt
+history | grep x && ls -la | grep m | wc -l
+history | grep x && ls -la | grep m | wc -l
+cat | grep x && ls -la | grep m | wc -l
+ls | wc -l && ls -la | grep m | wc -l
+ls | wc -l && ls -la | grep m | wc -l
+ls | wc -l && ls -la | grep m | wc -l
+ls -la | grep m | wc -l
+ls -la
+ls -la | grep m
+ls -la | grep m | wc -l
+ls -la | grep m
+ls
+ls && (cd .. && ls -la)
+ls && (cd .. && ls -la | grep m)
+ls -a && (cd .. && ls -la | grep m)
+ls -a && (cd .. && ls -la | grep m)
+ls
+ls
+ls -a && (cd .. && ls -la | grep m)
+ls -la && (cd .. && ls -la | grep m)
+ls -la && (cd .. && ls -la | grep m)
+ls -la && (cd .. && ls -la | grep m)
+ls -la && (cd .. && ls -la | grep m)
+ls -la && ls && ls
+ls -la && ls && ls
+ls -la && ls && ls
+ls -la && ls && ls
+ls -la && ls && ls
+ls -la && ls && ls
+ls -la && ls && ls
+ls -la && ls && ls
+ls
+ls
+ls
+ls
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e && ls
+ls -la | grep m | cat -e && ls
+ls -la | grep m | cat -e && ls
+ls -la | grep m | cat -e && ls
+(ls -la | grep m | cat -e && ls)
+(ls -la | grep m | cat -e && ls)
+(ls -la | grep m | cat -e && ls)
+(ls -la | grep m | cat -e && ls)
+(ls -la | grep m | cat -e && ls)
+(ls -la | grep m | cat -e && ls)
+(ls -la | grep m | cat -e && ls)
+ls -la | grep m | cat -e && ls
+ls -la | grep m | cat -e && ls
+ls -la | grep m | cat -e && ls
+ls -la | grep m | cat -e && ls && ls -la
+ls -la | grep m | cat -e && ls && ls -la
+ls -la | grep m | cat -e && ls && ls -la
+ls -la | grep m | cat -e && ls && ls -la
+cat | cat | cat | ls
+cat | cat | cat && ls
+ls -la | (ls -la | grep m | cat -e)
+ls -la | (cd .. && ls -la | grep m | cat -e)
+ls -la | (cd .. && ls -la | grep m)
+ls -la && (cd .. && ls -la | grep m)
+true && ls
+false && ls
+false || ls
+true || ls
+ls -la && (cd .. && ls -la | grep m)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la | grep m && echo salut
+history
+clear
+ls -la && (cd .. && ls -la | grep m | cat -e)
+clear
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+cd ..
+ls
+cd
+cd ..
+cd ..
+cd ..
+cd ..
+cd minishell
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && cd .. && ls -la | grep m | cat -e
+ls -la && (cd .. && ls -la | grep m | cat -e)
+cd ..
+cd minishell
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && ls -la | grep m | cat -e
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls
+ls
+ls
+ls
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls -la && (cd .. && ls -la | grep m | cat -e)
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+pwd
+pwd
+pwd
+pw
+pwd
+pwd
+pwd
+pwd
+env
+env | grep projects
+cd ..
+env | grep projects
+env | grep projects
+env | grep projects
+cd ..
+env | grep projects
+ls -la && (cd .. && ls -la | grep m | cat -e)
+env | grep projects
+(cd .. && ls)
+ls
+pwd
+env | grep projects
+pwd
+cd minishell
+ls
+(cd .. && ls)
+(cd .. && ls)
+clear
+ls
+ls
+pwd
+env | grep projects
+ls
+ls
+env | grep projects
+pw
+pwd
+cd ..
+ls
+ls
+ls
+ls
+ls
+ls
+cd ..
+ls
+env | grep projects
+env | grep projects
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+(cd .. && ls)
+ls && (cd .. && ls)
+ls && (cd .. && ls)
+ls && (cd .. && ls)
+ls && (cd .. && ls)
+ls
+l
+ls
+ls
+l
+l
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+cd ..
+ls
+ls
+ls && (cd .. && ls)
+ls
+ls
+ls
+ls
+ls
+ls
+pwd
+env
+env | grep projects
+ls
+ls
+ls
+ls && (cd .. && ls)
+ls
+ls
+ls && (cd .. && ls)
+ls && (cd .. && ls)
+ls && (cd .. && ls)
+ls
+ls
+ls && (cd .. && ls)
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ss
+s
+s
+s
+sl
+ls
+ss
+ll
+ss
+clear
+ss
+ss
+ss
+ss
+ss
+ss
+ss
+ss
+ss
+ss
+cleat
+clear
+clear
+l
+ls
+clear
+clear
+ls && (cd .. && ls)
+ls && (cd .. && ls)
+ls
+ls && (cd .. && ls)
+pwd
+ls
+ls
+l
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ss
+cd ..
+pwd
+cd minishell
+pwd
+(cd ..)
+pwd
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+env | grep
+env | grep proje
+cd ..
+l
+env | grep
+env | grep m
+env | grep m
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls
+cd ..
+cd minishell
+pwd
+(cd ..)
+pwd
+pwd
+pwd
+pwd
+pwd
+pwd
+pwd
+pwd
+pwd
+pwd
+pwd
+pwd
+(cd ..)
+(cd ..)
+pwd
+pwd
+git add -A
