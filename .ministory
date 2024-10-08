@@ -1203,3 +1203,8 @@ make
 make fclean
 git status
 git add -A
+git commit -m "update comments on functions"
+git push
+clear
+git status
+git add -A

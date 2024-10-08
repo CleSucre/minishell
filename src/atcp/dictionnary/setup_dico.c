@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Add a new node in the BST
+ *
+ * @param struct dirent *dir - directory
+ * @param t_dict *dict - BST
+ */
 void	send_to_bst(struct dirent *dir, t_dict *dict)
 {
 	char			*name;
@@ -31,9 +37,10 @@ void	send_to_bst(struct dirent *dir, t_dict *dict)
  * @brief Open dir with odir path and fill dict with all files in it
  * 		which are executable return a BST full with all
  * 		executable files found and sort alphabetically
- * 	@param	dict - BST
- * 	@param	odir - path to open
- * 	@return 0 if success
+ *
+ * 	@param t_dict *dict - BST
+ * 	@param char *odir - path to open
+ * 	@return int 0 if success
  */
 int	search_in_path(t_dict *dict, char *odir)
 {
@@ -61,11 +68,13 @@ int	search_in_path(t_dict *dict, char *odir)
 }
 
 /**
- * @brief 	Create first BST node (root)
+ * @brief Create first BST node (root)
  *			Fill it with search in path
  *			Search for a specific node
  *			Print the branch found
- * 	@return 0 if success
+ *
+ * @param t_minishell *minishell
+ * @return int 0 if success
  */
 
 int	creation_dict(t_minishell *minishell)

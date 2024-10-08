@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 /**
  * @brief Main function of the minishell
  *

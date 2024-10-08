@@ -14,8 +14,9 @@
 
 /**
  * @brief Complete the input with autocompletion after pressing enter
- * @param minishell
- * @param input
+ *
+ * @param t_minishell *minishell
+ * @param char **input
  */
 void	prompt_completion(t_minishell *minishell, char **input)
 {
@@ -40,9 +41,10 @@ void	prompt_completion(t_minishell *minishell, char **input)
 
 /**
  * @brief print autocomplete possibilities + prompt
- * @param minishell
- * @param dict
- * @param input
+ *
+ * @param t_minishell *minishell
+ * @param t_dict *dict
+ * @param char **input
  */
 void	autocomplete_print(t_minishell *minishell, t_dict *dict, char **input)
 {
@@ -62,9 +64,10 @@ void	autocomplete_print(t_minishell *minishell, t_dict *dict, char **input)
  * @brief Take last word of input and search in the BST
  * 			- if found, cut the BST, if not, print error
  * 			- if too many possibilities, ask user if he wants to see all
- * @param minishell
- * @param input
- * @return 1 if error, 0 if success
+ *
+ * @param t_minishell *minishell
+ * @param char **input
+ * @return int 1 if error, 0 if success
  */
 int	tab_completion(t_minishell *minishell, char	**input)
 {
@@ -97,9 +100,10 @@ int	tab_completion(t_minishell *minishell, char	**input)
 
 /**
  * @brief Print the autocomplete possibilities
- * @param minishell
- * @param input
- * @return
+ *
+ * @param t_minishell *minishell
+ * @param char **input
+ * @return int 1 if error, 0 if success
  */
 int	tab_action(t_minishell *minishell, char **input)
 {
@@ -130,10 +134,10 @@ int	tab_action(t_minishell *minishell, char **input)
 
 /**
  * @brief Manage tab key by sending it to the right function
- * @param minishell
- * @param input
- * @param c
- * @return
+ *
+ * @param t_minishell *minishell
+ * @param char *new
+ * @return int 1 if error, 0 if success
  */
 int	tab_manager(t_minishell *minishell, char *new)
 {

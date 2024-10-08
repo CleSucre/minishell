@@ -14,7 +14,8 @@
 
 /**
  * @brief Print the branch found
- * @param root Dict structure
+ *
+ * @param t_dict *dict Dict structure
  */
 void	print_branch(t_dict *dict)
 {
@@ -35,8 +36,9 @@ void	print_branch(t_dict *dict)
 
 /**
  * @brief Print the branch found but
- * @param minishell
- * @param dict
+ *
+ * @param t_minishell *minishell
+ * @param t_dict *dict
  */
 static void	stress_print_with_nl(t_minishell *minishell, t_dict *dict)
 {
@@ -52,7 +54,9 @@ static void	stress_print_with_nl(t_minishell *minishell, t_dict *dict)
 
 /**
  * @brief Print the branch found with stress condition
- * @param dict
+ *
+ * @param t_minishell *minishell
+ * @param t_dict *dict
  */
 void	stress_print(t_minishell *minishell, t_dict *dict)
 {
@@ -86,9 +90,10 @@ void	stress_print(t_minishell *minishell, t_dict *dict)
 /**
  * @brief Create the temporary dictionnary which would be used
  * 				as long as we press tab
- * @param minishell
- * @param search
- * @param str
+ *
+ * @param t_minishell *minishell
+ * @param char *str
+ * @return int 0 if success, 1 if fail
  */
 int	creation_tab_dict(t_minishell *minishell, char *str)
 {
