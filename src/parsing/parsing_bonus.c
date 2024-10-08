@@ -62,11 +62,13 @@ void	process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_com
 	while (*tokens != NULL && (*tokens)->type != TOKEN_PARENTHESIS_CLOSE)
 		*tokens = (*tokens)->next;
 	if (*tokens != NULL && (*tokens)->type == TOKEN_PARENTHESIS_CLOSE)
+	{
 		*tokens = (*tokens)->next;
+	}
 	if (*root == NULL)
 		*root = subshell_node;
 	else if (*last_command != NULL)
-		(*last_command)->right = subshell_node;
+		subshell_node->right = subshell_node;
 }
 
 /**

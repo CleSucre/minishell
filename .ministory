@@ -1008,3 +1008,169 @@ pwd
 pwd
 pwd
 git add -A
+(cd ..)
+(cd ..)
+(cd ..)
+pwd
+ls
+ls
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+ls
+ls
+ls
+ls
+(cd ..)
+(cd ..)
+ls
+(cd ..)
+ls
+ls
+ls
+cd ..
+(cd ..)
+ls
+(cd ..)
+(cd ..)
+ls
+ls
+(cd ..)
+ls
+ls
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+ls
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+ls
+pwd
+(cd ..)
+(cd ..)
+(cd ..)
+pwd
+ls
+ls
+ls
+ls
+(cd ..)
+ls
+(cd ..)
+pwd
+ls
+(cd  .. && chmod -R -r minishell)
+ls
+ls
+ls
+(cd  .. && ls && chmod -R -r minishell) && chmod -R +r ../minishell && ls
+(cd  .. && ls) && ls
+(cd  .. && ls) && ls -la
+(cd  .. && ls) && ls -la
+(cd  .. && ls) && ls -la
+(cd  .. && ls) && ls -la
+(cd  .. && ls && ss) && ls -la
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+pwd
+(pwd)
+(pwd)
+(pwd)
+(cd ..)
+(pwd)
+(pwd)
+(pwd)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(cd ..)
+(pwd)
+(pwd)
+(pwd)
+(pwd)
+(pwd)
+(pwd)
+(pwd)
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la && ls
+(cd  .. && ls) && ls -la
+(cd  .. && ls) && ls -la
+(cd  .. && ls) && ls -la
+ls && (cd  .. && ls) && ls -la
+ls && (cd  .. && ls) && ls -la
+ls && (cd  .. && ls) && ls -la
+(cd  .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la
+ls && (cd .. && ls) && ls -la

@@ -47,20 +47,23 @@ static char	*check_input(t_minishell *minishell, char *input)
  * @brief Build a new AST node based on tokens given.
  *
  * @param t_token **tokens List of tokens to build the node from.
+ * @param t_ast_node *subshell_root Root of the subshell node if any.
  * @return t_ast_node* New AST node created.
  */
 t_ast_node	*build_ast(t_token **tokens)
 {
-	t_token *current;
-	t_ast_node *root;
-	t_ast_node *last_command;
+	t_token		*current;
+	t_ast_node	*root;
+	t_ast_node	*last_command;
 
 	current = *tokens;
 	root = NULL;
 	last_command = NULL;
 	while (current != NULL)
 	{
-		if (current->type == TOKEN_COMMAND)
+		if (current->type == TOKEN_PARENTHESIS_CLOSE)
+			return (root);
+		else if (current->type == TOKEN_COMMAND)
 			process_command(&current, &root, &last_command);
 		else if (current->type == TOKEN_ARGUMENT)
 		{

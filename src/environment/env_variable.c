@@ -149,3 +149,22 @@ char	*replace_variables(char **env, char *str)
 		res = ft_strdup("");
 	return (res);
 }
+
+int reload_env(char **env)
+{
+	const char	*pwd;
+
+	pwd = get_var_value_const(env, "PWD");
+	if (pwd == NULL)
+	{
+		ft_putstr_fd("Error accessing PWD\n", STDERR_FILENO);
+		return (1);
+	}
+	if (chdir(pwd) == -1)
+	{
+		ft_putstr_fd("Error accessing PWD\n", STDERR_FILENO);
+		return (1);
+	}
+	return (0);
+
+}

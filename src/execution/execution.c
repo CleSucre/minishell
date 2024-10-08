@@ -85,6 +85,7 @@ int execute_subshell(t_minishell *minishell, t_ast_node *ast, int *pipes, int *i
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	minishell->env = old_env;
 	ft_tabfree(tmp_env);
+	reload_env(minishell->env);
 	wait_for_processes();
 	return (res);
 }
