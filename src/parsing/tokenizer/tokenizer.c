@@ -23,23 +23,23 @@ t_token_type	token_type(char *str)
 	if (str[0] == '$')
 		return (TOKEN_VARIABLE);  // Variable reference (e.g., $HOME)
 	else if (ft_strcmp(str, "&&") == 0)
-        return (TOKEN_AND_OPERATOR);
-    else if (ft_strcmp(str, "||") == 0)
-        return (TOKEN_OR_OPERATOR);
-    else if (ft_strcmp(str, "|") == 0)
-        return (TOKEN_PIPE);
-    else if (ft_strcmp(str, ">") == 0)
-        return (TOKEN_REDIR_OUT);
-    else if (ft_strcmp(str, ">>") == 0)
-        return (TOKEN_REDIR_OUT_APPEND);
-    else if (ft_strcmp(str, "<") == 0)
-        return (TOKEN_REDIR_IN);
-    else if (ft_strncmp(str, "(", 1) == 0)
-        return (TOKEN_PARENTHESIS_OPEN);
-    else if (ft_strncmp(str, ")", 1) == 0)
-        return (TOKEN_PARENTHESIS_CLOSE);
-    else
-        return (TOKEN_COMMAND);
+		return (TOKEN_AND_OPERATOR);
+	else if (ft_strcmp(str, "||") == 0)
+		return (TOKEN_OR_OPERATOR);
+	else if (ft_strcmp(str, "|") == 0)
+		return (TOKEN_PIPE);
+	else if (ft_strcmp(str, ">") == 0)
+		return (TOKEN_REDIR_OUT);
+	else if (ft_strcmp(str, ">>") == 0)
+		return (TOKEN_REDIR_OUT_APPEND);
+	else if (ft_strcmp(str, "<") == 0)
+		return (TOKEN_REDIR_IN);
+	else if (ft_strncmp(str, "(", 1) == 0)
+		return (TOKEN_PARENTHESIS_OPEN);
+	else if (ft_strncmp(str, ")", 1) == 0)
+		return (TOKEN_PARENTHESIS_CLOSE);
+	else
+		return (TOKEN_COMMAND);
 }
 
 /**
@@ -110,27 +110,27 @@ char	*extract_token(char *input, int *index)
  */
 t_token	*tokenize(char *input)
 {
-    t_token			*head;
-    int				i;
-    char			*token_value;
-    t_token_type	type;
+	t_token			*head;
+	int				i;
+	char			*token_value;
+	t_token_type	type;
 
-    head = NULL;
-    i = 0;
-    while (input[i] != '\0')
+	head = NULL;
+	i = 0;
+	while (input[i] != '\0')
 	{
-        if (ft_isspace(input[i]))
+		if (ft_isspace(input[i]))
 		{
-            i++;
-            continue ;
-        }
-        token_value = extract_token(input, &i);
-        type = token_type(token_value);
-        t_token *token = new_token(token_value, type);
-        add_token(&head, token);
-        free(token_value);
-    }
-    return (head);
+			i++;
+			continue ;
+		}
+		token_value = extract_token(input, &i);
+		type = token_type(token_value);
+		t_token *token = new_token(token_value, type);
+		add_token(&head, token);
+		free(token_value);
+	}
+	return (head);
 }
 
 /**
@@ -151,7 +151,7 @@ char	**extract_command_tokens(t_token **tokens)
 	token_count = 0;
 	current = *tokens;
 	while (current != NULL &&
-			(current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
+		   (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;

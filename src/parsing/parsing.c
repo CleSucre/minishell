@@ -103,7 +103,7 @@ t_ast_node	*build_ast(t_token **tokens)
 t_ast_node	*parse_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
-    t_token     *tokens;
+	t_token     *tokens;
 	char		*trimmed;
 
 	if (!input)
@@ -111,12 +111,12 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	trimmed = check_input(minishell, input);
 	if (!trimmed)
 		return (0);
-    tokens = tokenize(trimmed);
+	tokens = tokenize(trimmed);
 	free(trimmed);
-    if (!tokens)
-        return (NULL);
-    debug_tokens(tokens);
-    ast = build_ast(&tokens);
+	if (!tokens)
+		return (NULL);
+	debug_tokens(tokens);
+	ast = build_ast(&tokens);
 	free_tokens(tokens);
 	if (!ast)
 		return (NULL);
