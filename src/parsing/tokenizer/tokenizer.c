@@ -15,13 +15,13 @@
 /**
  * @brief Identify the type of token from the string
  *
- * @param char *str
- * @return t_token_type
+ * @param char *str The string to analyze
+ * @return t_token_type The type of the token
  */
 t_token_type	token_type(char *str)
 {
 	if (str[0] == '$')
-		return (TOKEN_VARIABLE);  // Variable référencée dans une commande
+		return (TOKEN_VARIABLE);  // Variable reference (e.g., $HOME)
 	else if (ft_strcmp(str, "&&") == 0)
         return (TOKEN_AND_OPERATOR);
     else if (ft_strcmp(str, "||") == 0)
@@ -45,9 +45,9 @@ t_token_type	token_type(char *str)
 /**
  * @brief Manage quoted tokens
  *
- * @param char *input
- * @param int *index
- * @return char*
+ * @param char *input The input string
+ * @param int *index The current index in the input string
+ * @return char * The extracted token
  */
 char	*extract_quoted_token(char *input, int *index)
 {
@@ -72,8 +72,8 @@ char	*extract_quoted_token(char *input, int *index)
 /**
  * @brief Manage quotes and parentheses
  *
- * @param char *input
- * @param int *index
+ * @param char *input The input string
+ * @param int *index The current index in the input string
  * @return char*
  */
 char	*extract_token(char *input, int *index)

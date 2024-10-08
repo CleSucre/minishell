@@ -52,19 +52,3 @@ void	add_token(t_token **head, t_token *new)
 		tmp = tmp->next;
 	tmp->next = new;
 }
-
-/**
- * @brief Check if the token corresponds to type variable given
- *
- * @param t_token		*token
- * @param t_token_type	*type
- * @return int 1 if the next token is a command, 0 otherwise
- */
-int is_token(t_token *token, t_token_type type)
-{
-	if (!token)
-		return (0);
-	if (token->type == type)
-		return (1);
-	return (0);
-}

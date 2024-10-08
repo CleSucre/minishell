@@ -16,7 +16,6 @@
  * @brief Erase a char in string
  *
  * @param minishell
- * @param input
  */
 static void	backspace_action(t_minishell *minishell)
 {
@@ -39,6 +38,12 @@ static void	backspace_action(t_minishell *minishell)
 	}
 }
 
+/**
+ * @brief Edit input string
+ *
+ * @param t_minishell *minishell
+ * @param char *new
+ */
 static int	process_tab(t_minishell *minishell, char *new)
 {
 	char	*str;
@@ -62,8 +67,7 @@ static int	process_tab(t_minishell *minishell, char *new)
  * @brief Sort inputs && act in consequence
  *
  * @param t_minishell *minishell 	struct which access history
- * @param char c					char read by use_termios
- * 								read by termios from 1st to Enter
+ * @param char *new					input to process
  * @return int 						1 if exit, 0 if not
  */
 int	process_action(t_minishell *minishell, char *new)

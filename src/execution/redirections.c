@@ -16,8 +16,8 @@
 /**
  * @brief Close unnecessary file descriptors after command execution
  *
- * @param int in_out[]
- * @param int fd[]
+ * @param int in_out[2]
+ * @param int *fd
  */
 void	close_fds(int in_out[2], int *fd)
 {
@@ -36,7 +36,7 @@ void	close_fds(int in_out[2], int *fd)
  *
  * @param int *pipes pipe[0] = read, pipe[1] = write
  * @param int *in_out in_out[0] = read, in_out[1] = write, in_out[2] = to_close
- * @param int state 0 if pipe, 1 if last command, 2 if redirection
+ * @param int is_last 1 if its the last command, 0 otherwise
  * @return int 0 on success, -1 on failure
  */
 int setup_pipes(int *pipes, int *in_out, int is_last)
@@ -58,14 +58,13 @@ int setup_pipes(int *pipes, int *in_out, int is_last)
 }
 
 /**
- * @brief Execute the command given in input
+ * @brief Copy the contents of a file descriptor to another
  *
  * //TODO: move the function to libft
  *
- * @param t_minishell *minishell
- * @param t_ast_node *ast
- * @param int *in_out
- * @return 0 on success -1 on exit request
+ * @param int fd_from file descriptor to read from
+ * @param int fd_to file descriptor to write to
+ * @return ssize_t number of bytes written on success, -1 on failure
  */
 ssize_t copy_fd_contents(int fd_from, int fd_to)
 {
@@ -81,7 +80,7 @@ ssize_t copy_fd_contents(int fd_from, int fd_to)
 			return (-1);
 		bytes_read = read(fd_from, buf, BUFFER_SIZE);
 	}
-	return (0);
+	return (bytes_written);
 }
 
 /**

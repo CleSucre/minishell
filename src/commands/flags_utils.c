@@ -13,9 +13,9 @@
 /**
  * @brief Check if a flag is present in the argv
  *
- * @param argv
- * @param flag
- * @return
+ * @param char **argv Arguments
+ * @param char flag Flag to search
+ * @return int 1 if the flag is present, 0 otherwise
  */
 int	contain_flag(char **argv, char flag)
 {

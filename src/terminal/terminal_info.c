@@ -14,8 +14,8 @@
 
 /**
  * @brief Get the terminal size
- * @param rows
- * @param cols
+ *
+ * @param t_term *term
  */
 void	get_terminal_size(t_term *term)
 {
@@ -31,8 +31,8 @@ void	get_terminal_size(t_term *term)
  * 			Ask for it
  * 			Read terms answer
  * 			Analyse it
- * @param rows position y
- * @param cols position x
+ *
+ * @param t_term *term
  */
 void	get_cursor_position(t_term *term)
 {

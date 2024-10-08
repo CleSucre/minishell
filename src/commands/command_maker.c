@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Free a command structure
+ *
+ * @param t_cmd *cmd Command structure to free
+ */
 void	destroy_cmd(t_cmd *cmd)
 {
 	if (cmd->name)
@@ -25,9 +30,11 @@ void	destroy_cmd(t_cmd *cmd)
  * @brief Generate a command structure from an AST node
  *
  * @param t_ast_node *ast: AST node representing the command
- * @param char **envp: Environment variables
+ * @param char **envp Environment variables
+ * @param int in_out[3] File descriptors for input, output and to close
+ * @return t_cmd* Command structure generated
  */
-t_cmd	*create_cmd(t_ast_node *ast, char **envp, int in_out[3])
+t_cmd	*create_cmd(t_ast_node *ast, char **envp, const int in_out[3])
 {
 	t_cmd	*cmd;
 	char	*path;

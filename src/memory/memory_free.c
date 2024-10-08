@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-static void	free_dirinfo(t_dirinfo *dirinfo);
-
 /**
  * @brief Free history linked list
  *
@@ -31,6 +29,12 @@ static void	history_free(t_history *history)
 		free(tmp->cmd);
 		free(tmp);
 	}
+}
+
+//TODO: remove !!!!!!!!
+static void	free_dirinfo(t_dirinfo *dirinfo)
+{
+	free(dirinfo);
 }
 
 /**
@@ -58,7 +62,7 @@ void	free_minishell(t_minishell *minishell)
 /**
  * @brief Free ast tree
  *
- * @param t_ast *ast
+ * @param t_ast_node *ast
  * @return void
  */
 void	free_ast(t_ast_node *ast)
@@ -100,9 +104,4 @@ void	free_tokens(t_token *tokens)
 		free(tmp->value);
 		free(tmp);
 	}
-}
-
-static void	free_dirinfo(t_dirinfo *dirinfo)
-{
-	free(dirinfo);
 }

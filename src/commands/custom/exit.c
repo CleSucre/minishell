@@ -12,12 +12,18 @@
 
 #include "minishell.h"
 
-void	command_exit(t_cmd *cmd)
+/**
+ * @brief Exit the shell with a status code (default 0)
+ *
+ * @param t_cmd *cmd Command structure
+ * @return int Exit code
+ */
+int	command_exit(t_cmd *cmd)
 {
-	int		status;
+	int	status;
 
 	status = 0;
 	if (cmd->argc > 1)
 		status = ft_atoi(cmd->args[1]);
-	cmd->exit_code = status % 256;
+	return (status % 256);
 }

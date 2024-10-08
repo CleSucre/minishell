@@ -28,7 +28,7 @@ void	handle_signal(int sig)
  * @brief Handle the waiting for child processes
  *
  * @param int *status
- * @return int WEXITSTATUS on success
+ * @return int WEXITSTATUS of the child process (0 if no child process)
  */
 int	wait_for_processes()
 {

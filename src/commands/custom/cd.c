@@ -81,7 +81,7 @@ static void	change_oldpwd(t_cmd *cmd)
  * By default, as if -L is used
  * @return int 0 if the command was executed successfully, 1 otherwise.
  */
-int	command_cd(t_minishell *minishell, t_cmd *cmd)
+int	command_cd(t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->args[1], "-") == 0)
 	{
@@ -90,8 +90,7 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 		else
 		{
 			ft_putstr_fd("error, oldpwd can't be established\n", 2);
-			minishell->exit_code = 126;
-			return (1);
+			return (126);
 		}
 	}
 	else if (access(cmd->args[1], R_OK | X_OK) != 0
@@ -99,11 +98,9 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 	{
 		ft_fprintf(2, "minishell: cd: %s: No such file or directory\n",
 			cmd->args[1]);
-		minishell->exit_code = 1;
 		return (1);
 	}
 	else
 		change_oldpwd(cmd);
-	minishell->exit_code = 0;
 	return (0);
 }

@@ -17,11 +17,11 @@
  *
  * TODO: avoid saving history -s command in history
  *
- * @param t_cmd *cmd
- * @param t_minishell *minishell
- * @return void
+ * @param t_cmd *cmd Command structure
+ * @param t_minishell *minishell Minishell structure (it contain history chain list)
+ * @return int Exit code
  */
-void	command_history(t_cmd *cmd, t_minishell *minishell)
+int	command_history(t_cmd *cmd, t_minishell *minishell)
 {
 	char	*tmp;
 
@@ -37,9 +37,10 @@ void	command_history(t_cmd *cmd, t_minishell *minishell)
 	{
 		tmp = ft_strjoin_list((const char **)(cmd->args + 2), " ");
 		if (!tmp)
-			return ;
+			return (1);
 		history_add(minishell, tmp, 1);
 		free(tmp);
 		terminal_print("", 1, cmd->output_fd);
 	}
+	return (0);
 }

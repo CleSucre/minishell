@@ -37,7 +37,6 @@ static void	ctrl_c_action(t_minishell *minishell)
  *
  * @param minishell
  * @param c
- * @param input
  * @return int 0 if not found, 1 if found and 2 if found and exit
  */
 int	process_signals(t_minishell *minishell, char c)

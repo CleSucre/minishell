@@ -1174,3 +1174,32 @@ ls && (cd .. && ls) && ls -la
 ls && (cd .. && ls) && ls -la
 ls && (cd .. && ls) && ls -la
 ls && (cd .. && ls) && ls -la
+clear
+echo "salut"
+echo "sa'l'ut"
+echo "sa ' l ' ut"
+echo "sa ' l ' ut"
+echo "sa 'l 'ut"
+echo "sa' l'ut"
+echo "sa' l'ut $HOME"
+echo "sa' l'ut $HOME "
+echo $HOME
+echo $USER
+echo $USER
+history
+ls
+ls
+ls
+ls
+ls
+ls
+echo
+echo salut
+echo saluz ze z z z
+clrear
+clear
+make fclean
+make
+make fclean
+git status
+git add -A

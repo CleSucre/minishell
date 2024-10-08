@@ -13,10 +13,11 @@
 #include "minishell.h"
 
 /**
- * @brief Créer un nouveau nœud AST
- * @param type Le type du nœud
- * @param value La commande ou les arguments (peut être NULL pour certains nœuds)
- * @return t_ast_node* Le nœud AST créé
+ * @brief Create a new AST node
+ *
+ * @param t_ast_node_type type AST node type
+ * @param char **value The value of the node (e.g., command name, parameter, etc.)
+ * @return t_ast_node* The new AST node
  */
 t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 {

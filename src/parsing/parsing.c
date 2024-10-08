@@ -44,11 +44,10 @@ static char	*check_input(t_minishell *minishell, char *input)
 }
 
 /**
- * @brief Build a new AST node based on tokens given.
+ * @brief Generate the AST from the list of tokens given.
  *
  * @param t_token **tokens List of tokens to build the node from.
- * @param t_ast_node *subshell_root Root of the subshell node if any.
- * @return t_ast_node* New AST node created.
+ * @return t_ast_node* The generated AST node.
  */
 t_ast_node	*build_ast(t_token **tokens)
 {
@@ -97,7 +96,8 @@ t_ast_node	*build_ast(t_token **tokens)
 /**
  * @brief Parses the input string and creates an AST.
  *
- * @param char *input Input string to parse.
+ * @param t_minishell *minishell The minishell structure.
+ * @param char *input The input string to parse.
  * @return t_ast * AST created from the input.
  */
 t_ast_node	*parse_input(t_minishell *minishell, char *input)

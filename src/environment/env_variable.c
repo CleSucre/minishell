@@ -150,6 +150,13 @@ char	*replace_variables(char **env, char *str)
 	return (res);
 }
 
+/**
+ * @brief Reload the environment variables.
+ * 			Used to update the PWD variable with chdir.
+ *
+ * @param char **env Environment variables to reload
+ * @return int 0 if success, 1 otherwise
+ */
 int reload_env(char **env)
 {
 	const char	*pwd;

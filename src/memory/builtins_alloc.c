@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Allocate the t_dirinfo structure
+ *
+ * TODO: Remove this functiion and t_dirinfo structure
+ *
+ * @param t_minishell *minishell
+ * @return int 0 on success, 1 on error
+ */
 int	alloc_dirinfo(t_minishell *minishell)
 {
 	minishell->dirinfo = ft_calloc(1, sizeof(t_dirinfo));
@@ -27,6 +35,12 @@ int	alloc_dirinfo(t_minishell *minishell)
 	return (0);
 }
 
+/**
+ * @brief Allocate the starting_path variable
+ *
+ * @param t_minishell *minishell
+ * @return int 0 on success, 1 on error
+ */
 int	alloc_starting_path(t_minishell *minishell)
 {
 	char	buffer[BUFFER_SIZE];

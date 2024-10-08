@@ -15,8 +15,8 @@
 /**
  * @brief Get the current history command depending on the history_pos
  *
- * @param t_minishell *minishell
- * @return t_history *
+ * @param t_minishell *minishell Minishell structure
+ * @return t_history * Current history command
  */
 static t_history	*history_get_current(t_minishell *minishell)
 {
@@ -40,8 +40,8 @@ static t_history	*history_get_current(t_minishell *minishell)
  * 			Increment history_pos by 1 and return the command
  * 			Return current command if history_pos is already at the end
  *
- * @param t_minishell *minishell
- * @return t_history *
+ * @param t_minishell *minishell Minishell structure
+ * @return t_history * Next history command
  */
 static t_history	*history_up(t_minishell *minishell)
 {
@@ -54,7 +54,8 @@ static t_history	*history_up(t_minishell *minishell)
  * @brief Get the previous command in history, depending on history_pos
  * 			Decrement history_pos by 1 and return the command
  * 			Return current command if history_pos is already at the beginning
- * @param t_minishell *minishell
+ *
+ * @param t_minishell *minishell Minishell structure
  * @return t_history *
  */
 static t_history	*history_down(t_minishell *minishell)
@@ -67,10 +68,9 @@ static t_history	*history_down(t_minishell *minishell)
 /**
  * @brief Search in history a command that start with cmd, return the first one
  *
- * @param t_history *history
- * @param char *cmd
- * @param int direction 1 for newer, -1 for older
- * @return char *
+ * @param t_minishell *minishell Minishell structure
+ * @param char *cmd Command to search
+ * @return t_history * History command
  */
 t_history	*history_find_up(t_minishell *minishell, char *cmd)
 {

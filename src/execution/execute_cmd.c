@@ -18,6 +18,8 @@
 
 /**
  * @brief Set up signal handling for SIGUSR1
+ *
+ * @param struct sigaction *sa Signal action structure
  */
 static void	setup_signals(struct sigaction *sa)
 {
@@ -33,6 +35,10 @@ static void	setup_signals(struct sigaction *sa)
 
 /**
  * @brief Handle the child process after fork
+ *
+ * @param t_cmd *cmd Command structure
+ * @param t_minishell *minishell Minishell context
+ * @param struct sigaction *sa Signal action structure
  */
 static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, struct sigaction *sa)
 {
@@ -64,9 +70,9 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, struct siga
 /**
  * @brief Execute a command in a child process and manage input/output redirection.
  *
- * @param t_minishell *minishell
- * @param t_cmd *cmd
- * @return int Exit status of the command
+ * @param t_minishell *minishell Minishell context
+ * @param t_cmd *cmd Command structure
+ * @return int Exit code
  */
 static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
@@ -93,10 +99,10 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 /**
  * @brief Executes a command represented by an abstract syntax tree node
  *
- * @param minishell The minishell context
- * @param ast The abstract syntax tree node representing the command
- * @param in_out Array holding file descriptors for input/output redirection
- * @return int Exit status of the command execution
+ * @param t_minishell *minishell The minishell context
+ * @param t_ast_node *ast The abstract syntax tree node representing the command
+ * @param int in_out[3] Array holding file descriptors for input/output redirection
+ * @return int Exit code of the command execution
  */
 int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int in_out[3])
 {
