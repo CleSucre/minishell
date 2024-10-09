@@ -51,6 +51,8 @@
  */
 int	command_export(t_cmd *cmd)
 {
+	ft_fprintf(STDERR_FILENO, "args[0] = %s\n", cmd->args[0]);
+	ft_fprintf(STDERR_FILENO, "args[1] = %s\n", cmd->args[1]);
 	if (!cmd->args[1])
 		ft_printf("Je dois print toutes les variables exportees\n");
 	if (find_table_args(cmd->env, cmd->args[1]) == -1)

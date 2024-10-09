@@ -150,6 +150,21 @@ char	*replace_variables(char **env, char *str)
 	return (res);
 }
 
+void	replace_variables_in_tab(char **env, char **strs)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (strs[i])
+	{
+		tmp = replace_variables(env, strs[i]);
+		free(strs[i]);
+		strs[i] = tmp;
+		i++;
+	}
+}
+
 /**
  * @brief Reload the environment variables.
  * 			Used to update the PWD variable with chdir.

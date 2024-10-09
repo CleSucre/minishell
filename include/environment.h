@@ -21,6 +21,7 @@ char			*get_path(char *cmd, char **envp);
 char			*get_var_value(char **env, char *var);
 const char		*get_var_value_const(char **env, char *var);
 char			*replace_variables(char **env, char *str);
+void			replace_variables_in_tab(char **env, char **strs);
 int				reload_env(char **env);
 
 #endif

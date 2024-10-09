@@ -20,9 +20,7 @@
  */
 t_token_type	token_type(char *str)
 {
-	if (str[0] == '$')
-		return (TOKEN_VARIABLE);  // Variable reference (e.g., $HOME)
-	else if (ft_strcmp(str, "&&") == 0)
+	if (ft_strcmp(str, "&&") == 0)
 		return (TOKEN_AND_OPERATOR);
 	else if (ft_strcmp(str, "||") == 0)
 		return (TOKEN_OR_OPERATOR);
@@ -34,6 +32,8 @@ t_token_type	token_type(char *str)
 		return (TOKEN_REDIR_OUT_APPEND);
 	else if (ft_strcmp(str, "<") == 0)
 		return (TOKEN_REDIR_IN);
+	else if (ft_strcmp(str, "<<") == 0)
+		return (TOKEN_HEREDOC);
 	else if (ft_strncmp(str, "(", 1) == 0)
 		return (TOKEN_PARENTHESIS_OPEN);
 	else if (ft_strncmp(str, ")", 1) == 0)

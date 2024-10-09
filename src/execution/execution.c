@@ -114,8 +114,9 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out
 		}
 		res = execute_cmd(minishell, ast, in_out);
 		close_fds(in_out, pipes);
-		if (res == 1) //TODO: check if this is the correct behavior, should it return 0 or res?
-			return (res);
+		ft_fprintf(STDERR_FILENO, "exit code = %d\n", res);
+		minishell->exit_code = res;
+		return (res);
 	}
 	else if (ast->type == AST_PIPE)
 		return (execute_pipe(minishell, ast, pipes, in_out));
@@ -128,16 +129,11 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out
 	else if (ast->type == AST_REDIR_IN)
 		return (execute_redirect_input(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_HEREDOC)
-	{
-	}
+		return (execute_heredoc(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_REDIR_OUT)
 		return (execute_redirect_output(minishell, ast, pipes, in_out, 0));
 	else if (ast->type == AST_REDIR_OUT_APPEND)
 		return (execute_redirect_output(minishell, ast, pipes, in_out, 1));
-	else if (ast->type == AST_VARIABLE)
-	{
-	}
-	//execute the node corresponding to type
 	return (0);
 }
 

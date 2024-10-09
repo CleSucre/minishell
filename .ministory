@@ -1208,3 +1208,115 @@ git push
 clear
 git status
 git add -A
+ls
+clear
+ls
+ls && ls
+clear
+ls
+make
+./mi
+ls
+ls
+l
+ls
+exit
+exit 2
+exit
+exit 2
+exit 1928
+exit
+ls
+ls
+ls
+ls
+ls
+ls
+ls -la
+sort
+sort
+ls
+ls
+exit 12
+$TEST
+export test=salut
+export test=salut
+export test=salut
+$TEST
+$TEST
+$TEST
+export test=salut
+export test=salut
+export test=salut
+export test=salut
+export test=salut
+$TEST
+export test=salut
+export test=salut
+export test=salut
+export test=
+TEST=yey
+$TEST
+Makefile >> cat -e
+Makefile << cat -e
+cat -e < Makefile
+ls && cat -e < Makefile
+clear
+ls && cat -e < Makefile
+ls && cat -e < Makefile
+ls && cat -e < Makefile
+ls && cat -e < Makefile
+ls && cat -e < Makefile
+ls && cat -e < Makefile
+ls && cat -e < Makefile
+$HOME
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+mlsad
+$USER
+ls
+ls
+ls
+aszofzfo
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER
+$USER fils de pute
+$USER
+Makefile << EOF
+Makefile >> EOF
+cat -e << EOF
+Makefile -e << EOF
+Makefile -e <<
+cat -e << Makefile
+cat << END
+cat << END
+cat << END
+ls | cat -e
+cat << END
+cat << END
+cat << END

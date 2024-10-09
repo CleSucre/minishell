@@ -61,10 +61,6 @@ static char	*get_ast_node_type_secondary(t_ast_node_type type)
 		return ("AST_REDIR_IN");
 	else if (type == AST_HEREDOC)
 		return ("AST_HEREDOC");
-	else if (type == AST_ASSIGNMENT)
-		return ("AST_ASSIGNMENT");
-	else if (type == AST_VARIABLE)
-		return ("AST_VARIABLE");
 	return ("UNKNOWN");
 }
 
@@ -84,8 +80,6 @@ static char	*get_ast_node_type_primary(t_ast_node_type type)
 		return ("AST_AND");
 	else if (type == AST_OR)
 		return ("AST_OR");
-	else if (type == AST_SEQUENCE)
-		return ("AST_SEQUENCE");
 	else if (type == AST_SUBSHELL)
 		return ("AST_SUBSHELL");
 	return (get_ast_node_type_secondary(type));

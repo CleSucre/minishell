@@ -42,6 +42,7 @@ t_cmd	*create_cmd(t_ast_node *ast, char **envp, const int in_out[3])
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
+	replace_variables_in_tab(envp, ast->value);
 	cmd->name = ft_strdup(ast->value[0]);
 	cmd->args = ast->value;
 	cmd->argc = (int)ft_tablen((const char **)ast->value);

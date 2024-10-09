@@ -74,17 +74,3 @@ t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root)
 	pipe_node->right = build_ast(tokens);
 	return (pipe_node);
 }
-
-/**
- * @brief Process a variable token and create an AST variable node.
- *
- * @param t_token **tokens Pointer to the current list of tokens.
- * @return t_ast_node* The variable node created.
- */
-t_ast_node	*process_variable(t_token **tokens)
-{
-	char	**variable_tokens;
-
-	variable_tokens = extract_command_tokens(tokens);
-	return (new_ast_node(AST_VARIABLE, variable_tokens));
-}

@@ -30,7 +30,6 @@ typedef enum s_token_type
 	TOKEN_HEREDOC,              // Heredoc redirection (<<)
 	TOKEN_PARENTHESIS_OPEN,     // Opening parenthesis
 	TOKEN_PARENTHESIS_CLOSE,    // Closing parenthesis
-	TOKEN_VARIABLE,             // Variable
 }   t_token_type;
 
 typedef struct s_token
@@ -44,17 +43,13 @@ typedef enum s_ast_node_type
 {
 	AST_COMMAND,            // A simple command
 	AST_PIPE,               // A pipe '|'
-
 	AST_AND,                // Logical AND '&&'
 	AST_OR,                 // Logical OR '||'
-	AST_SEQUENCE,           // Sequence of commands
 	AST_SUBSHELL,           // A subshell '(...)'
 	AST_REDIR_OUT,          // Output redirection
 	AST_REDIR_OUT_APPEND,   // Output redirection in append mode (>>)
 	AST_REDIR_IN,           // Input redirection
-	AST_ASSIGNMENT,         // Variable assignment
 	AST_HEREDOC,            // Heredoc redirection (<<)
-	AST_VARIABLE,           // Variable usage
 }   t_ast_node_type;
 
 typedef struct s_ast_node {
@@ -75,8 +70,6 @@ t_ast_node			*parse_input(t_minishell *minishell, char *input);
 void				process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
 void				process_argument(t_token *current, t_ast_node *last_command);
 t_ast_node			*process_pipe(t_token **tokens, t_ast_node **root);
-t_ast_node			*process_assignment(t_token **tokens);
-t_ast_node			*process_variable(t_token **tokens);
 
 t_ast_node			*process_operator(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
 void				process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_command);

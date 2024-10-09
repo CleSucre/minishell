@@ -135,6 +135,24 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast, int *pipes, 
 }
 
 /**
+ * @brief Execute the ast respecting heredoc logic
+ *
+ * @param t_minishell *minishell
+ * @param t_ast_node *ast
+ * @param int *pipes
+ * @param int *in_out
+ * @return int 0 on success, -1 on failure
+ */
+int	execute_heredoc(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+{
+	(void)minishell;
+	(void)pipes;
+	(void)in_out;
+	ft_fprintf(STDERR_FILENO, "heredoc: %s\n", ast->right->value[0]);
+	return (0);
+}
+
+/**
  * @brief Redirect the output of the command to a file
  *
  * @param t_minishell *minishell

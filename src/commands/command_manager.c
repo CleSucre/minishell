@@ -28,18 +28,15 @@ int	execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
 	else if (ft_strcmp(cmd->name, "env") == 0)
 		return (command_env(cmd));
 	else if (ft_strcmp(cmd->name, "exit") == 0)
-	{
-		command_exit(cmd);
-		return (2);
-	}
+		return (command_exit(cmd));
 	else if (ft_strcmp(cmd->name, "export") == 0)
-		command_export(cmd);
+		return (command_export(cmd));
 	else if (ft_strcmp(cmd->name, "history") == 0)
-		command_history(cmd, minishell);
+		return (command_history(cmd, minishell));
 	else if (ft_strcmp(cmd->name, "pwd") == 0)
-		command_pwd(cmd);
+		return (command_pwd(cmd));
 	else if (ft_strcmp(cmd->name, "unset") == 0)
-		command_unset(cmd);
+		return (command_unset(cmd));
 	return (0);
 }
 
