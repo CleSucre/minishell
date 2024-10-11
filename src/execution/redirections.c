@@ -96,6 +96,8 @@ int execute_pipe(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_ou
 {
 	int res;
 
+	ast->left->in_pipe = 1;
+	ast->right->in_pipe = 1;
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	if (res == 1)
 		return (res); //TODO: check if this is the correct behavior, should it return 0 or res?

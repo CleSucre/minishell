@@ -62,6 +62,7 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, struct siga
 	if (cmd->to_close != -1)
 		close(cmd->to_close);
 	err = execute_path(cmd);
+	ft_fprintf(STDERR_FILENO, "err: %d\n", err);
 	destroy_cmd(cmd);
 	free_minishell(minishell);
 	exit(err);
@@ -78,6 +79,7 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
 	struct sigaction	sa;
 	pid_t				pid;
+	int					err;
 
 	setup_signals(&sa);
 	pid = fork();
@@ -88,12 +90,34 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 		return (1);
 	}
 	else if (pid == 0)
-		handle_child_process(cmd, minishell, &sa);
+	{
+		if (is_builtin_command(cmd))
+		{
+			err = execute_builtin_command(minishell, cmd);
+			if (cmd->input_fd != STDIN_FILENO)
+			{
+				dup2(cmd->input_fd, STDIN_FILENO);
+				close(cmd->input_fd);
+			}
+			if (cmd->output_fd != STDOUT_FILENO)
+			{
+				dup2(cmd->output_fd, STDOUT_FILENO);
+				close(cmd->output_fd);
+			}
+			if (cmd->to_close != -1)
+				close(cmd->to_close);
+			destroy_cmd(cmd);
+			free_minishell(minishell);
+			exit(err);
+		}
+		else
+			handle_child_process(cmd, minishell, &sa);
+	}
 	if (cmd->input_fd != STDIN_FILENO)
 		close(cmd->input_fd);
 	if (cmd->output_fd != STDOUT_FILENO)
 		close(cmd->output_fd);
-	return (0);
+	return (pid);
 }
 
 /**
@@ -108,7 +132,9 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int pipes[2], int in_ou
 {
 	t_cmd	*cmd;
 	int		res;
+	int		pid;
 
+	res = 1536;
 	if (!ast)
 		return (1);
 	if (setup_pipes(pipes, in_out, ast->is_last) == -1)
@@ -119,14 +145,18 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int pipes[2], int in_ou
 	cmd = create_cmd(ast, minishell, in_out);
 	if (!cmd)
 		return (1);
-	if (is_builtin_command(cmd))
+	if (is_builtin_command(cmd) && !ast->in_pipe)
 		res = execute_builtin_command(minishell, cmd);
 	else
 	{
-		res = execute_external(minishell, cmd);
-		ft_fprintf(STDERR_FILENO, "res: %d\n", res);
+		pid = execute_external(minishell, cmd);
+		ft_fprintf(STDERR_FILENO, "is_last: %d\n", ast->is_last);
+		ft_fprintf(STDERR_FILENO, "PID: %d\n", getpid());
 		if (ast->is_last)
-			res = wait_for_processes();
+		{
+			waitpid(pid, &res, 0);
+			res = WEXITSTATUS(res);
+		}
 	}
 	destroy_cmd(cmd);
 	close_fds(in_out, pipes);

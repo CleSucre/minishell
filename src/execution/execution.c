@@ -101,14 +101,10 @@ int execute_subshell(t_minishell *minishell, t_ast_node *ast, int *pipes, int *i
  */
 int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
 {
-	int	res;
-
 	if (!ast)
 		return (0);
 	if (ast->type == AST_COMMAND)
-	{
 		return (execute_cmd(minishell, ast, pipes, in_out));
-	}
 	else if (ast->type == AST_PIPE)
 		return (execute_pipe(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_AND)
