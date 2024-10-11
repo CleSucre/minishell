@@ -114,7 +114,6 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out
 		}
 		res = execute_cmd(minishell, ast, in_out);
 		close_fds(in_out, pipes);
-		ft_fprintf(STDERR_FILENO, "exit code = %d\n", res);
 		minishell->exit_code = res;
 		return (res);
 	}
@@ -166,7 +165,6 @@ int	execute_input(t_minishell *minishell, char *input)
 	minishell->exit_code = wait_for_processes();
 	enable_termios(minishell->term);
 
-	ft_fprintf(STDERR_FILENO, "final exit code = %d\n", minishell->exit_code);
 	free_ast(ast);
 	minishell->ast = NULL;
 	return (minishell->exit_code);

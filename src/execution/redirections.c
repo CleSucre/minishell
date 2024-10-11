@@ -145,11 +145,45 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast, int *pipes, 
  */
 int	execute_heredoc(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
 {
-	(void)minishell;
-	(void)pipes;
-	(void)in_out;
-	ft_fprintf(STDERR_FILENO, "heredoc: %s\n", ast->right->value[0]);
-	return (0);
+	char	*line;
+	char	*tmp;
+	char	*delimiter;
+	int		status = 0;
+
+	if (ast->right->value[0] == NULL)
+	{
+		ft_putstr_fd("Error: no delimiter specified\n", STDERR_FILENO);
+		return (1);
+	}
+	delimiter = ast->right->value[0];
+
+	if (pipe(pipes) == -1)
+	{
+		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
+		return (-1);
+	}
+	while (1)
+	{
+		ft_putstr_fd("> ", STDOUT_FILENO);
+		line = get_next_line(STDIN_FILENO);
+		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+			break ;
+		tmp = replace_variables(minishell->env, line);
+		free(line);
+		if (write(pipes[1], tmp, strlen(tmp)) == -1)
+		{
+			ft_putstr_fd("Error: write failed\n", STDERR_FILENO);
+			free(tmp);
+			close_fds(in_out, pipes);
+			return (-1);
+		}
+		free(tmp);
+	}
+	free(line);
+	in_out[0] = pipes[0];
+	close(pipes[1]);
+	status = execute_ast(minishell, ast->left, pipes, in_out);
+	return (status);
 }
 
 /**
