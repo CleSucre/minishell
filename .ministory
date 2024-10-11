@@ -1407,3 +1407,235 @@ cat -e << END
 cat -e << END
 cat -e << END
 cat -e << END
+echo "salut"
+echo "salu't"
+echo "s'al'ut"
+echo "s 'al 'ut"
+echo "s' al' ut"
+echo "s ' al ' ut"
+echo "s " ' al ' "ut"
+echo "$USER"
+echo " $USER "
+echo " $USER |"
+echo "' '$USER |"
+echo "'$USER' |"
+echo "'$USER ' |"
+echo "' $USER ' |"
+echo "' $USER ' |"
+ls
+ls
+clear
+cd .. | ls
+cd miin
+clear
+echo $0
+echo $1
+echo $2
+echo $3
+echo $1
+echo $0
+echo $BASH
+echo $-
+echo $@
+echo $$
+ls
+ls
+ls
+ls
+echo $USER
+echo $?
+echo $?
+echo $?
+echo $?l
+echo $?asokd
+exit 172
+echo $?asokd
+exit 172
+exit 172
+echo $?
+echo $?
+echo $?
+echo $?
+exit 172
+echo $?
+kijas
+echo $?
+echo $?
+kijas
+echo $?salk
+exit 172
+echo $?salk
+exit 172
+echo $?salk
+exit 172
+echo $?salk
+echo $?salk
+echo $?
+exit 172
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+echo $?
+ls
+echo $?
+ls
+ls
+ls
+ls -l
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+ls -la | grep m
+echo $?
+ls -la | grepas m
+echo $?
+ls -la | grepas m
+echo $?
+ls -la | grepas m
+ls -la | grepas m
+echo $?
+echo $?
+ls -la | grepas m
+echo $?
+ls -la | grepas
+ls -la | grepasa as
+las -la | grepasa as
+las -la | grepasa
+las -la | grepasa
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa
+las -la | grepasa
+las -la | grepasa
+las -la | grepasa
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grepasa | oaks
+las -la | grep m
+ls -la | grep m
+las -la | grep m
+echo $?
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la | grep m
+las -la && grep m
+las -la && greps
+echo $?
+las -la && grep m
+las -la | grep m
+echo $?
+las -la | grep m
+las -la | grep m
+ls -la | grep m
+ls -la | grepm m
+ls -la | grepm m
+ls -la | grepm m
+ls -la | grepm m
+ls -la | invalidcmd
+ls -la | invalidcmd
+ls -la | invalidcmd
+ls -la | invalidcmd
+ls -la | invalidcmd
+ls -la | invalidcmd
+ls -la | invalidcmd
+ls -la | invalidcmd
+invalidcmd
+ls -la | invalidcmd

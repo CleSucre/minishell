@@ -168,7 +168,7 @@ int	execute_heredoc(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in
 		line = get_next_line(STDIN_FILENO);
 		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 			break ;
-		tmp = replace_variables(minishell->env, line);
+		tmp = replace_variables(minishell, line);
 		free(line);
 		if (write(pipes[1], tmp, strlen(tmp)) == -1)
 		{

@@ -107,15 +107,7 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out
 		return (0);
 	if (ast->type == AST_COMMAND)
 	{
-		if (setup_pipes(pipes, in_out, ast->is_last) == -1)
-		{
-			ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
-			return (1);
-		}
-		res = execute_cmd(minishell, ast, in_out);
-		close_fds(in_out, pipes);
-		minishell->exit_code = res;
-		return (res);
+		return (execute_cmd(minishell, ast, pipes, in_out));
 	}
 	else if (ast->type == AST_PIPE)
 		return (execute_pipe(minishell, ast, pipes, in_out));
@@ -162,7 +154,6 @@ int	execute_input(t_minishell *minishell, char *input)
 	disable_termios(minishell->term);
 
 	execute_ast(minishell, ast, pipes, in_out);
-	minishell->exit_code = wait_for_processes();
 	enable_termios(minishell->term);
 
 	free_ast(ast);

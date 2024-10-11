@@ -121,7 +121,7 @@ const char	*get_var_value_const(char **env, char *var)
  * @param char *str
  * @return char* string with replaced variables
  */
-char	*replace_variables(char **env, char *str)
+char	*replace_variables(t_minishell *minishell, char *str)
 {
 	size_t	i;
 	int		j;
@@ -134,11 +134,18 @@ char	*replace_variables(char **env, char *str)
 	{
 		if (str[i] == '$')
 		{
+			if (str[i + 1] == '?')
+			{
+				tmp = ft_itoa(minishell->exit_code);
+				res = ft_strjoin_free(res, tmp);
+				i += 2;
+				continue ;
+			}
 			j = i + 1;
 			while (ft_isalnum(str[j]))
 				j++;
 			tmp = ft_substr(str, i + 1, j - i - 1);
-			res = ft_strjoin_free(res, get_var_value(env, tmp));
+			res = ft_strjoin_free(res, get_var_value(minishell->env, tmp));
 			free(tmp);
 			i = j;
 		}
@@ -150,7 +157,7 @@ char	*replace_variables(char **env, char *str)
 	return (res);
 }
 
-void	replace_variables_in_tab(char **env, char **strs)
+void	replace_variables_in_tab(t_minishell *minishell, char **strs)
 {
 	char	*tmp;
 	int		i;
@@ -158,7 +165,7 @@ void	replace_variables_in_tab(char **env, char **strs)
 	i = 0;
 	while (strs[i])
 	{
-		tmp = replace_variables(env, strs[i]);
+		tmp = replace_variables(minishell, strs[i]);
 		free(strs[i]);
 		strs[i] = tmp;
 		i++;

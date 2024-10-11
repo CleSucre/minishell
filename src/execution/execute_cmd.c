@@ -104,20 +104,33 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
  * @param int in_out[3] Array holding file descriptors for input/output redirection
  * @return int Exit code of the command execution
  */
-int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int in_out[3])
+int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int pipes[2], int in_out[3])
 {
 	t_cmd	*cmd;
 	int		res;
 
 	if (!ast)
 		return (1);
-	cmd = create_cmd(ast, minishell->env, in_out);
+	if (setup_pipes(pipes, in_out, ast->is_last) == -1)
+	{
+		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
+		return (1);
+	}
+	cmd = create_cmd(ast, minishell, in_out);
 	if (!cmd)
 		return (1);
 	if (is_builtin_command(cmd))
 		res = execute_builtin_command(minishell, cmd);
 	else
+	{
 		res = execute_external(minishell, cmd);
+		ft_fprintf(STDERR_FILENO, "res: %d\n", res);
+		if (ast->is_last)
+			res = wait_for_processes();
+	}
 	destroy_cmd(cmd);
+	close_fds(in_out, pipes);
+	ft_fprintf(STDERR_FILENO, "exit code: %d\n", res);
+	minishell->exit_code = res;
 	return (res);
 }
