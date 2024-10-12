@@ -61,7 +61,7 @@ int	search_in_path(t_dict *dict, char *odir)
 	}
 	else
 	{
-		perror("opendir");
+		perror("warning: opendir bst");
 		return (1);
 	}
 	return (0);
@@ -79,16 +79,23 @@ int	search_in_path(t_dict *dict, char *odir)
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
+	char	**paths;
+	int 	i;
 
 	minishell->dict = create_node("\0", "file");
 	if (!minishell->dict)
 		return (1);
 	minishell->dict->bst_size = 0;
 	tmp = minishell->dict;
-	search_in_path(tmp, "/bin");
-	search_in_path(tmp, "/usr/sbin");
-	search_in_path(tmp, "/usr/local/bin");
-	search_in_path(tmp, "/opt/bin");
-	search_in_path(tmp, "/etc");
+	paths = ft_split(get_var_value_const(minishell->env, "PATH"), ":");
+	if (!paths)
+		return (1);
+	i = 0;
+	while (paths[i])
+	{
+		search_in_path(tmp, paths[i]);
+		i++;
+	}
+	ft_tabfree(paths);
 	return (0);
 }

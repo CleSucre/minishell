@@ -37,7 +37,7 @@ static int	check_path(char *path)
 char	*get_path(char *cmd, char **envp)
 {
 	int		i;
-	char	*path;
+	char	*cmd_path;
 	char	**paths;
 	char	*tmp;
 
@@ -51,12 +51,12 @@ char	*get_path(char *cmd, char **envp)
 	while (paths[++i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(tmp, cmd);
+		cmd_path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (check_path(path))
+		if (check_path(cmd_path))
 		{
 			ft_tabfree(paths);
-			return (path);
+			return (cmd_path);
 		}
 	}
 	ft_tabfree(paths);

@@ -51,7 +51,7 @@ int	wait_for_processes(void)
  */
 int	wait_for_pid(int pid)
 {
-	int status;
+	int	status;
 
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))

@@ -70,6 +70,34 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
 }
 
 /**
+ * @brief Handle the parent process after fork
+ *
+ * @param t_cmd *cmd Command structure
+ * @param t_minishell *minishell Minishell context
+ */
+static void	handle_builtins_child_process(t_cmd *cmd, t_minishell *minishell)
+{
+	int	err;
+
+	err = execute_builtin_command(minishell, cmd);
+	if (cmd->input_fd != STDIN_FILENO)
+	{
+		dup2(cmd->input_fd, STDIN_FILENO);
+		close(cmd->input_fd);
+	}
+	if (cmd->output_fd != STDOUT_FILENO)
+	{
+		dup2(cmd->output_fd, STDOUT_FILENO);
+		close(cmd->output_fd);
+	}
+	if (cmd->to_close != -1)
+		close(cmd->to_close);
+	destroy_cmd(cmd);
+	free_minishell(minishell);
+	exit(err);
+}
+
+/**
  * @brief Execute a command in a child process
  * 			and manage input/output redirection.
  *
@@ -81,7 +109,6 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
 	struct sigaction	sa;
 	pid_t				pid;
-	int					err;
 
 	setup_signals(&sa);
 	pid = fork();
@@ -94,24 +121,7 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
 	else if (pid == 0)
 	{
 		if (is_builtin_command(cmd))
-		{
-			err = execute_builtin_command(minishell, cmd);
-			if (cmd->input_fd != STDIN_FILENO)
-			{
-				dup2(cmd->input_fd, STDIN_FILENO);
-				close(cmd->input_fd);
-			}
-			if (cmd->output_fd != STDOUT_FILENO)
-			{
-				dup2(cmd->output_fd, STDOUT_FILENO);
-				close(cmd->output_fd);
-			}
-			if (cmd->to_close != -1)
-				close(cmd->to_close);
-			destroy_cmd(cmd);
-			free_minishell(minishell);
-			exit(err);
-		}
+			handle_builtins_child_process(cmd, minishell);
 		else
 			handle_child_process(cmd, minishell, &sa);
 	}

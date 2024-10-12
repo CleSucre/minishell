@@ -1954,3 +1954,8 @@ bash
 git status
 vim test
 clear
+clear
+env | grep PATH
+env | grep PWD
+ls7
+ls7
