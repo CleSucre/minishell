@@ -1923,3 +1923,34 @@ ls -la | (grep m) && ls
 ls -la | (grep m) && ls
 ls -la | (grep m) && ls
 ls -la | (grep m) && ls
+echo $USER
+echo $USER
+echo $USER
+echo $USER
+echo $USER
+echo $USER
+echo $USER
+echo $USER
+echo "$USER"
+echo "$USER $HOME"
+echo "$USER $HOME"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+echo "$USER"
+cat Makefile
+clear
+clear
+bash
+git status
+vim test
+clear

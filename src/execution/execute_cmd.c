@@ -155,17 +155,11 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 	else
 	{
 		pid = execute_external(minishell, cmd);
-		ft_fprintf(STDERR_FILENO, "is_last: %d\n", ast->is_last);
-		ft_fprintf(STDERR_FILENO, "PID: %d\n", getpid());
 		if (ast->is_last)
-		{
-			waitpid(pid, &res, 0);
-			res = WEXITSTATUS(res);
-		}
+			res = wait_for_pid(pid);
 	}
 	destroy_cmd(cmd);
 	close_fds(in_out, pipes);
-	ft_fprintf(STDERR_FILENO, "exit code: %d\n", res);
 	minishell->exit_code = res;
 	return (res);
 }

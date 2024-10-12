@@ -42,3 +42,20 @@ int	wait_for_processes(void)
 	else
 		return (0);
 }
+
+/**
+ * @brief Wait for a specific pid
+ *
+ * @param int pid
+ * @return int WEXITSTATUS of the child process
+ */
+int	wait_for_pid(int pid)
+{
+	int status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else
+		return (0);
+}

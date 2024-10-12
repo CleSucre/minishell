@@ -25,7 +25,7 @@ SRCS_CONFIG				= term_config.c
 
 SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c
 
-SRCS_ENVIRONMENT		= env_variable.c
+SRCS_ENVIRONMENT		= env_utils.c path_utils.c variable_utils.c variable_replacer.c
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 

@@ -76,7 +76,6 @@ int	search_in_path(t_dict *dict, char *odir)
  * @param t_minishell *minishell
  * @return int 0 if success
  */
-
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
@@ -86,15 +85,10 @@ int	creation_dict(t_minishell *minishell)
 		return (1);
 	minishell->dict->bst_size = 0;
 	tmp = minishell->dict;
-//	search_in_path(tmp, "/bin");
+	search_in_path(tmp, "/bin");
 	search_in_path(tmp, "/usr/sbin");
-//	search_in_path(tmp, "/usr/local/bin");
-//	search_in_path(tmp, "/opt/bin");
-//	search_in_path(tmp, "/etc");
+	search_in_path(tmp, "/usr/local/bin");
+	search_in_path(tmp, "/opt/bin");
+	search_in_path(tmp, "/etc");
 	return (0);
 }
-
-///usr/sbin
-///usr/local/bin
-///opt/bin
-///etc

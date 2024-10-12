@@ -55,7 +55,7 @@ int	execute_or(t_minishell *minishell, t_ast_node *ast,
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	status = wait_for_processes();
 	if (status == 0)
-		return (status); //TODO: check if this is the correct behavior, should it return 0 or res?
+		return (status);
 	if (res == 1)
 		return (res);
 	execute_ast(minishell, ast->right, pipes, in_out);
