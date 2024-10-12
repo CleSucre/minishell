@@ -82,7 +82,8 @@ void	process_subshell(t_token **tokens, t_ast_node **root,
  * @param t_ast_node **root Root of the AST being constructed.
  * @return t_ast_node* The redirection node created.
  */
-t_ast_node	*process_redirection(t_token **tokens, t_ast_node **root, t_ast_node **last_command, int is_last)
+t_ast_node	*process_redirection(t_token **tokens, t_ast_node **root,
+							t_ast_node **last_command, int is_last)
 {
 	t_ast_node_type	redir_type;
 	t_ast_node		*redir_node;
