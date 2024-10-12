@@ -52,7 +52,8 @@ static char	*check_input(t_minishell *minishell, char *input)
  * @param t_ast_node **last_command
  * @return int
  */
-static int build_ast_secondary(t_token **current, t_ast_node **root, t_ast_node **last_command)
+static int	build_ast_secondary(t_token **current, t_ast_node **root,
+						t_ast_node **last_command)
 {
 	if ((*current)->type == TOKEN_COMMAND)
 	{
@@ -92,13 +93,13 @@ t_ast_node	*build_ast(t_token **tokens)
 		else if ((*tokens)->type == TOKEN_PIPE)
 			return (process_pipe(tokens, &root, &last_command));
 		else if ((*tokens)->type == TOKEN_AND_OPERATOR
-				 || (*tokens)->type == TOKEN_OR_OPERATOR)
+			|| (*tokens)->type == TOKEN_OR_OPERATOR)
 			return (process_operator(tokens, &root, &last_command));
 		else if ((*tokens)->type == TOKEN_REDIR_OUT
-				 || (*tokens)->type == TOKEN_REDIR_OUT_APPEND)
+			|| (*tokens)->type == TOKEN_REDIR_OUT_APPEND)
 			root = process_redirection(tokens, &root, &last_command, 0);
 		else if ((*tokens)->type == TOKEN_REDIR_IN
-				 || (*tokens)->type == TOKEN_HEREDOC)
+			|| (*tokens)->type == TOKEN_HEREDOC)
 			root = process_redirection(tokens, &root, &last_command, 1);
 		else if (!build_ast_secondary(tokens, &root, &last_command))
 			*tokens = (*tokens)->next;

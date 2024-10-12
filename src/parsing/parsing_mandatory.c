@@ -68,7 +68,8 @@ void	process_argument(t_token **current, t_ast_node *last_command)
  * @param t_ast_node **root Root of the AST being constructed.
  * @return t_ast_node* The pipe node created.
  */
-t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
+t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root,
+						t_ast_node **last_command)
 {
 	t_ast_node	*pipe_node;
 
