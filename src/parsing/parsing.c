@@ -43,6 +43,21 @@ static char	*check_input(t_minishell *minishell, char *input)
 	return (trimmed);
 }
 
+int test(t_token *current, t_ast_node *root, t_ast_node *last_command)
+{
+	if (current->type == TOKEN_COMMAND)
+	{
+		process_command(&current, &root, &last_command);
+		return (1);
+	}
+	else if (current->type == TOKEN_ARGUMENT)
+	{
+		process_argument(&current, last_command);
+		return (1);
+	}
+	return (0);
+}
+
 /**
  * @brief Generate the AST from the list of tokens given.
  *
@@ -62,33 +77,23 @@ t_ast_node	*build_ast(t_token **tokens)
 	{
 		if (current->type == TOKEN_PARENTHESIS_CLOSE)
 			return (root);
+		else if (current->type == TOKEN_PIPE)
+			return (process_pipe(&current, &root, &last_command));
+		else if (current->type == TOKEN_AND_OPERATOR
+				 || current->type == TOKEN_OR_OPERATOR)
+			return (process_operator(&current, &root, &last_command));
 		else if (current->type == TOKEN_COMMAND)
 			process_command(&current, &root, &last_command);
 		else if (current->type == TOKEN_ARGUMENT)
-		{
-			process_argument(current, last_command);
-			current = current->next;
-			continue ;
-		}
-		else if (current->type == TOKEN_PIPE)
-		{
-			last_command->is_last = 0;
-			return (process_pipe(&current, &root));
-		}
-		else if (current->type == TOKEN_AND_OPERATOR
-			|| current->type == TOKEN_OR_OPERATOR)
-			return (process_operator(&current, &root, &last_command));
+			process_argument(&current, last_command);
 		else if (current->type == TOKEN_PARENTHESIS_OPEN)
 			process_subshell(&current, &root, &last_command);
 		else if (current->type == TOKEN_REDIR_OUT
-			|| current->type == TOKEN_REDIR_OUT_APPEND)
-		{
-			last_command->is_last = 0;
-			root = process_redirection(&current, &root);
-		}
+				 || current->type == TOKEN_REDIR_OUT_APPEND)
+			root = process_redirection(&current, &root, &last_command, 0);
 		else if (current->type == TOKEN_REDIR_IN
-			|| current->type == TOKEN_HEREDOC)
-			root = process_redirection(&current, &root);
+				 || current->type == TOKEN_HEREDOC)
+			root = process_redirection(&current, &root, &last_command, 1);
 		else
 			current = current->next;
 	}

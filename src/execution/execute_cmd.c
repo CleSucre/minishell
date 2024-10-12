@@ -40,7 +40,8 @@ static void	setup_signals(struct sigaction *sa)
  * @param t_minishell *minishell Minishell context
  * @param struct sigaction *sa Signal action structure
  */
-static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, struct sigaction *sa)
+static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
+							struct sigaction *sa)
 {
 	int	err;
 
@@ -69,7 +70,8 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, struct siga
 }
 
 /**
- * @brief Execute a command in a child process and manage input/output redirection.
+ * @brief Execute a command in a child process
+ * 			and manage input/output redirection.
  *
  * @param t_minishell *minishell Minishell context
  * @param t_cmd *cmd Command structure
@@ -124,11 +126,14 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
  * @brief Executes a command represented by an abstract syntax tree node
  *
  * @param t_minishell *minishell The minishell context
- * @param t_ast_node *ast The abstract syntax tree node representing the command
- * @param int in_out[3] Array holding file descriptors for input/output redirection
+ * @param t_ast_node *ast The abstract syntax tree node
+ * 				representing the command
+ * @param int in_out[3] Array holding file descriptors
+ * 				for input/output redirection
  * @return int Exit code of the command execution
  */
-int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int pipes[2], int in_out[3])
+int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
+			int pipes[2], int in_out[3])
 {
 	t_cmd	*cmd;
 	int		res;

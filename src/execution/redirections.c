@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 /**
  * @brief Close unnecessary file descriptors after command execution
  *
@@ -39,7 +38,7 @@ void	close_fds(int in_out[2], int *fd)
  * @param int is_last 1 if its the last command, 0 otherwise
  * @return int 0 on success, -1 on failure
  */
-int setup_pipes(int *pipes, int *in_out, int is_last)
+int	setup_pipes(int *pipes, int *in_out, int is_last)
 {
 	if (!is_last)
 	{
@@ -50,7 +49,9 @@ int setup_pipes(int *pipes, int *in_out, int is_last)
 		}
 		in_out[1] = pipes[1];
 		in_out[2] = pipes[0];
-	} else {
+	}
+	else
+	{
 		in_out[1] = STDOUT_FILENO;
 		in_out[2] = -1;
 	}
@@ -66,7 +67,7 @@ int setup_pipes(int *pipes, int *in_out, int is_last)
  * @param int fd_to file descriptor to write to
  * @return ssize_t number of bytes written on success, -1 on failure
  */
-ssize_t copy_fd_contents(int fd_from, int fd_to)
+ssize_t	copy_fd_contents(int fd_from, int fd_to)
 {
 	char	buf[BUFFER_SIZE];
 	ssize_t	bytes_read;
@@ -92,18 +93,19 @@ ssize_t copy_fd_contents(int fd_from, int fd_to)
  * @param int *in_out
  * @return int 0 on success, 1 on exit request
  */
-int execute_pipe(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_pipe(t_minishell *minishell, t_ast_node *ast,
+			int *pipes, int *in_out)
 {
-	int res;
+	int	res;
 
 	ast->left->in_pipe = 1;
 	ast->right->in_pipe = 1;
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	if (res == 1)
-		return (res); //TODO: check if this is the correct behavior, should it return 0 or res?
+		return (res);
 	res = execute_ast(minishell, ast->right, pipes, in_out);
 	if (res == 1)
-		return (res); //TODO: check if this is the correct behavior, should it return 0 or res?
+		return (res);
 	return (0);
 }
 
@@ -116,14 +118,14 @@ int execute_pipe(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_ou
  * @param int *in_out
  * @return int 0 on success, -1 on failure
  */
-int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
+					int *pipes, int *in_out)
 {
 	if (ast->right->value[0] == NULL)
 	{
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
 		return (1);
 	}
-	//TODO: check if the file exists and is readable
 	in_out[0] = open(ast->right->value[0], O_RDONLY);
 	if (in_out[0] == -1)
 	{
@@ -145,13 +147,15 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast, int *pipes, 
  * @param int *in_out
  * @return int 0 on success, -1 on failure
  */
-int	execute_heredoc(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_heredoc(t_minishell *minishell, t_ast_node *ast,
+			int *pipes, int *in_out)
 {
 	char	*line;
 	char	*tmp;
 	char	*delimiter;
-	int		status = 0;
+	int		status;
 
+	status = 0;
 	if (ast->right->value[0] == NULL)
 	{
 		ft_putstr_fd("Error: no delimiter specified\n", STDERR_FILENO);
@@ -197,7 +201,8 @@ int	execute_heredoc(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in
  * @param int append
  * @return int 0 on success, -1 on failure
  */
-int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out, int append)
+int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
+						int *pipes, int *in_out, int append)
 {
 	int	file_fd;
 
@@ -206,25 +211,27 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast, int *pipes,
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
 		return (1);
 	}
-	//TODO: check if the file exists, if not create it
 	if (access(ast->right->value[0], W_OK) != 0)
 	{
-		ft_fprintf(STDERR_FILENO, "minishell: %s: Permission denied\n", ast->right->value[0]);
-		return (1); //TODO: dont stop the all execution
+		ft_fprintf(STDERR_FILENO,
+			"minishell: %s: Permission denied\n", ast->right->value[0]);
+		return (1);
 	}
 	execute_ast(minishell, ast->left, pipes, in_out);
 	if (append)
-		file_fd = open(ast->right->value[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
+		file_fd = open(ast->right->value[0],
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
-		file_fd = open(ast->right->value[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		file_fd = open(ast->right->value[0],
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (file_fd == -1)
 	{
 		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
-		return (1); //TODO: dont stop the all execution
+		return (1);
 	}
 	copy_fd_contents(in_out[0], file_fd);
 	close(file_fd);
 	close_fds(in_out, pipes);
 	wait_for_processes();
-	return (0); //TODO: check if this is the correct behavior
+	return (0);
 }

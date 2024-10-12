@@ -1792,3 +1792,119 @@ ls
 echo $TEST
 $TEST
 $TEST
+Makefile >> cat -e
+cat -e < Makefile
+touch test
+cat -e < Makefile
+cat -e < test
+cat -e < test
+cat -e < Makefile
+cat -e < Makefile | grep m
+ls -la | (grep m)
+ls -la | (grep m) && ss
+ls -la | (grep m) && ss | grep 45712
+ls -la | (grep m) && ss | grep 4571
+ls -la | (grep m) && ss | grep 457
+ls -la | (grep m) && ss | grep l
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep a
+ls -la | (grep m) && ss | grep p
+ls -la | (grep m) && ss
+ls -la | (grep m) && echo salut
+ls -la | (grep m) && ls
+clear
+cd ..
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+cd ..
+cd ..
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls
+ls
+ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) | cat -e
+ls -la | grep m | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | grep m | cat -e
+ls -la | (grep m) && ls
+ls -la
+poizujndzjndz
+poizujndzjndz
+ls -la
+ls -la | grep m | cat -e
