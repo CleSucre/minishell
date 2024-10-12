@@ -123,9 +123,9 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast,
 	else if (ast->type == AST_HEREDOC)
 		return (execute_heredoc(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_REDIR_OUT)
-		return (execute_redirect_output(minishell, ast, pipes, in_out, 0));
+		return (execute_redirect_output(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_REDIR_OUT_APPEND)
-		return (execute_redirect_output(minishell, ast, pipes, in_out, 1));
+		return (execute_redirect_output_append(minishell, ast, pipes, in_out));
 	return (0);
 }
 

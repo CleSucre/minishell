@@ -48,6 +48,7 @@ ssize_t	copy_fd_contents(int fd_from, int fd_to);
 int		execute_pipe(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out);
 int		execute_redirect_input(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out);
 int		execute_heredoc(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out);
-int		execute_redirect_output(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out, int append);
+int		execute_redirect_output(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out);
+int		execute_redirect_output_append(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out);
 
 #endif

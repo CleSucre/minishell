@@ -1982,3 +1982,19 @@ la
 ls
 cat -e < Makefile
 clear
+ls
+la
+la
+la
+ks
+history | grep echo
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+clear
