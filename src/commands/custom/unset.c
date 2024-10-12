@@ -12,10 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * Delet args from env
- */
-
 /**
  * @brief Unset the environment variable
  *
@@ -25,6 +21,5 @@
 int	command_unset(t_cmd *cmd)
 {
 	(void)cmd;
-
 	return (0);
 }

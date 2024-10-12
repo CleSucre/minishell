@@ -13,13 +13,16 @@
 #include "minishell.h"
 
 /**
- * @brief Process a command token and create an AST command node.
+ * @brief Process a command token and create
+ * 			an AST command node.
  *
  * @param t_token **tokens Pointer to the current list of tokens.
  * @param t_ast_node **root Root of the AST being constructed.
- * @param t_ast_node **last_command Last command processed (to attach arguments or commands).
+ * @param t_ast_node **last_command Last command processed
+ * 					(to attach arguments or commands).
  */
-void	process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
+void	process_command(t_token **tokens, t_ast_node **root,
+						t_ast_node **last_command)
 {
 	char		**command_tokens;
 	t_ast_node	*command_node;
@@ -66,7 +69,7 @@ void	process_argument(t_token *current, t_ast_node *last_command)
  */
 t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root)
 {
-	t_ast_node *pipe_node;
+	t_ast_node	*pipe_node;
 
 	pipe_node = new_ast_node(AST_PIPE, NULL);
 	pipe_node->left = *root;

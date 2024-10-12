@@ -38,12 +38,10 @@ int	modify_env_input(t_minishell *minishell, char *input, char *value)
 	is_here = find_table_args(minishell->env, input);
 	if (is_here == -1)
 		return (-1);
-//		ft_printf("vAVANT la env : [%s]\n", minishell->env[is_here]);
 	res = ft_strjoin(ft_strjoin(input, "="), value);
 	res = ft_strjoin(res, value);
 	clear_string(minishell->env[is_here]);
 	ft_strlcpy(minishell->env[is_here], res, ft_strlen(res)+1);
-//        ft_printf("vla env : [%s]\n", minishell->env[is_here]);
 	return (0);
 }
 
@@ -70,7 +68,6 @@ void	get_input_converter(t_minishell *minishell, t_cmd *input)
 	quote_set[0] = 34;
 	quote_set[1] = 39;
 	quote_set[2] = '\0';
-
 	cut_name = ft_split_quote(input->name, "=", quote_set);
 	if (!cut_name)
 	{
@@ -82,15 +79,9 @@ void	get_input_converter(t_minishell *minishell, t_cmd *input)
 		ft_fprintf(2, "join env to value\n");
 		return ;
 	}
-//		int i = 0;
-//		while (cut_name[i])
-//		{
-//			ft_printf("cut_name [%s]\n", cut_name[i]);
-//			i++;
-//		}
 	if (modify_env_input(minishell, cut_name[0], cut_name[1]) == -1)
 	{
 		clear_string(input->name);
-		ft_strlcpy(input->name, cut_name[1], ft_strlen(cut_name[1])+1);
+		ft_strlcpy(input->name, cut_name[1], ft_strlen(cut_name[1]) + 1);
 	}
 }

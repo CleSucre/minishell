@@ -16,12 +16,13 @@
  * @brief Create a new AST node
  *
  * @param t_ast_node_type type AST node type
- * @param char **value The value of the node (e.g., command name, parameter, etc.)
+ * @param char **value The value of the node
+ * 				(e.g., command name, parameter, etc.)
  * @return t_ast_node* The new AST node
  */
 t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 {
-	t_ast_node *node;
+	t_ast_node	*node;
 
 	node = (t_ast_node *)malloc(sizeof(t_ast_node));
 	if (!node)

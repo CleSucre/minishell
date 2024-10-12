@@ -27,7 +27,6 @@ static void	invert_oldpwd(t_cmd *cmd)
 
 	oldpwd = find_table_args(cmd->env, "OLDPWD");
 	pwd = find_table_args(cmd->env, "PWD");
-//	ft_fprintf(2, "oldpwd [%s], pwd [%s]\n\n\n\n", cmd->env[oldpwd], cmd->env[pwd]);
 	if (oldpwd == -1 || pwd == -1)
 		return ;
 	name = strcpy_passing_char(cmd->env[oldpwd], 7);
@@ -44,8 +43,6 @@ static void	invert_oldpwd(t_cmd *cmd)
 	buff_name = ft_strjoin("PWD=", name);
 	ft_strlcpy(cmd->env[pwd], buff_name, (int)ft_strlen(name) + 5);
 	free(buff_name);
-//	ft_fprintf(2, "AFTER oldpwd [%s], pwd [%s]\n", cmd->env[oldpwd], cmd->env[pwd]);
-	return ;
 }
 
 static void	change_oldpwd(t_cmd *cmd)
@@ -60,7 +57,6 @@ static void	change_oldpwd(t_cmd *cmd)
 	pwd = find_table_args(cmd->env, "PWD");
 	if (oldpwd == -1 || pwd == -1)
 		return ;
-//	ft_fprintf(2, "BEFORE CHANGE\noldpwd [%s], pwd [%s]\n\n\n\n", cmd->env[oldpwd], cmd->env[pwd]);
 	clear_string(cmd->env[oldpwd]);
 	buff_name = ft_strjoin("OLD", cmd->env[pwd]);
 	ft_strlcpy(cmd->env[oldpwd], buff_name,
@@ -71,8 +67,6 @@ static void	change_oldpwd(t_cmd *cmd)
 	buff_name = ft_strjoin("PWD=", name);
 	ft_strlcpy(cmd->env[pwd], buff_name, (int)ft_strlen(name) + 5);
 	free(buff_name);
-//	ft_fprintf(2, "AFTER CHANGE\noldpwd [%s], pwd [%s]\n", cmd->env[oldpwd], cmd->env[pwd]);
-	return ;
 }
 
 /**

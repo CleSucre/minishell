@@ -34,7 +34,8 @@ void	destroy_cmd(t_cmd *cmd)
  * @param int in_out[3] File descriptors for input, output and to close
  * @return t_cmd* Command structure generated
  */
-t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell, const int in_out[3])
+t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
+					const int in_out[3])
 {
 	t_cmd	*cmd;
 	char	*path;

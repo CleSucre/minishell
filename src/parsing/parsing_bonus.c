@@ -13,14 +13,16 @@
 #include "minishell.h"
 
 /**
- * @brief Process a logical operator token (&& or ||) and create an AST operator node.
+ * @brief Process a logical operator token (&& or ||)
+ * 			and create an AST operator node.
  *
  * @param t_token **tokens Pointer to the current list of tokens.
  * @param t_ast_node **root Root of the AST being constructed.
  * @param t_ast_node **last_command Last command processed.
  * @return t_ast_node* The operator node created.
  */
-t_ast_node	*process_operator(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
+t_ast_node	*process_operator(t_token **tokens, t_ast_node **root,
+							t_ast_node **last_command)
 {
 	t_ast_node_type	op_type;
 	t_ast_node		*operator_node;
@@ -52,9 +54,10 @@ t_ast_node	*process_operator(t_token **tokens, t_ast_node **root, t_ast_node **l
  * @param t_ast_node **root Root of the AST being constructed.
  * @param t_ast_node **last_command Last command processed.
  */
-void	process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
+void	process_subshell(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command)
 {
-	t_ast_node *subshell_node;
+	t_ast_node	*subshell_node;
 
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
 	*tokens = (*tokens)->next;
@@ -72,13 +75,15 @@ void	process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_com
 }
 
 /**
- * @brief Process a redirection token (>, >>, <, <<) and create an AST redirection node.
+ * @brief Process a redirection token (>, >>, <, <<)
+ * 			and create an AST redirection node.
  *
  * @param t_token **tokens Pointer to the current list of tokens.
  * @param t_ast_node **root Root of the AST being constructed.
  * @return t_ast_node* The redirection node created.
  */
-t_ast_node *process_redirection(t_token **tokens, t_ast_node **root) {
+t_ast_node	*process_redirection(t_token **tokens, t_ast_node **root)
+{
 	t_ast_node_type	redir_type;
 	t_ast_node		*redir_node;
 	char			**file_tokens;
@@ -99,7 +104,7 @@ t_ast_node *process_redirection(t_token **tokens, t_ast_node **root) {
 	if ((*tokens)->type == TOKEN_COMMAND)
 	{
 		file_tokens = extract_command_tokens(tokens);
-		redir_node->right = new_ast_node(AST_COMMAND, file_tokens);  // Fichier ou here-doc cible
+		redir_node->right = new_ast_node(AST_COMMAND, file_tokens);
 	}
 	return (redir_node);
 }

@@ -30,9 +30,9 @@ void	handle_signal(int sig)
  * @param int *status
  * @return int WEXITSTATUS of the child process (0 if no child process)
  */
-int	wait_for_processes()
+int	wait_for_processes(void)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	while ((wait(&status)) > 0)

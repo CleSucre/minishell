@@ -158,7 +158,6 @@ int	execute_heredoc(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in
 		return (1);
 	}
 	delimiter = ast->right->value[0];
-
 	if (pipe(pipes) == -1)
 	{
 		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);

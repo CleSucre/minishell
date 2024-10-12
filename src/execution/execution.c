@@ -21,10 +21,11 @@
  * @param int *in_out
  * @return int 0 on success, 1 on exit request
  */
-int execute_and(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_and(t_minishell *minishell, t_ast_node *ast,
+				int *pipes, int *in_out)
 {
-	int res;
-	int status;
+	int	res;
+	int	status;
 
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	status = wait_for_processes();
@@ -45,10 +46,11 @@ int execute_and(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out
  * @param int *in_out
  * @return int 0 on success, 1 on exit request
  */
-int execute_or(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_or(t_minishell *minishell, t_ast_node *ast,
+				int *pipes, int *in_out)
 {
-	int res;
-	int status;
+	int	res;
+	int	status;
 
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	status = wait_for_processes();
@@ -69,14 +71,16 @@ int execute_or(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
  * @param int *in_out
  * @return int 0 on success, 1 on exit request
  */
-int execute_subshell(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_subshell(t_minishell *minishell, t_ast_node *ast,
+					int *pipes, int *in_out)
 {
-	int res;
-	char **tmp_env;
-	char **old_env;
+	int		res;
+	char	**tmp_env;
+	char	**old_env;
 
 	tmp_env = ft_tabdup((const char **)minishell->env);
-	if (!tmp_env) {
+	if (!tmp_env)
+	{
 		perror("Error: ft_tabdup failed");
 		return (-1);
 	}
@@ -99,7 +103,8 @@ int execute_subshell(t_minishell *minishell, t_ast_node *ast, int *pipes, int *i
  * @param t_ast_node *ast
  * @return Last command exit code
  */
-int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_ast(t_minishell *minishell, t_ast_node *ast,
+				int *pipes, int *in_out)
 {
 	if (!ast)
 		return (0);
@@ -134,8 +139,8 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out
 int	execute_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
-	int 		in_out[3];
-	int 		pipes[2];
+	int			in_out[3];
+	int			pipes[2];
 
 	in_out[0] = STDIN_FILENO;
 	in_out[1] = STDOUT_FILENO;
@@ -146,12 +151,9 @@ int	execute_input(t_minishell *minishell, char *input)
 	if (!ast)
 		return (0);
 	minishell->ast = ast;
-
 	disable_termios(minishell->term);
-
 	execute_ast(minishell, ast, pipes, in_out);
 	enable_termios(minishell->term);
-
 	free_ast(ast);
 	minishell->ast = NULL;
 	return (minishell->exit_code);

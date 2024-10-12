@@ -75,23 +75,25 @@ t_ast_node	*build_ast(t_token **tokens)
 			last_command->is_last = 0;
 			return (process_pipe(&current, &root));
 		}
-		else if (current->type == TOKEN_AND_OPERATOR || current->type == TOKEN_OR_OPERATOR)
+		else if (current->type == TOKEN_AND_OPERATOR
+			|| current->type == TOKEN_OR_OPERATOR)
 			return (process_operator(&current, &root, &last_command));
 		else if (current->type == TOKEN_PARENTHESIS_OPEN)
 			process_subshell(&current, &root, &last_command);
-		else if (current->type == TOKEN_REDIR_OUT || current->type == TOKEN_REDIR_OUT_APPEND)
+		else if (current->type == TOKEN_REDIR_OUT
+			|| current->type == TOKEN_REDIR_OUT_APPEND)
 		{
 			last_command->is_last = 0;
 			root = process_redirection(&current, &root);
 		}
-		else if (current->type == TOKEN_REDIR_IN || current->type == TOKEN_HEREDOC)
+		else if (current->type == TOKEN_REDIR_IN
+			|| current->type == TOKEN_HEREDOC)
 			root = process_redirection(&current, &root);
 		else
 			current = current->next;
 	}
 	return (root);
 }
-
 
 /**
  * @brief Parses the input string and creates an AST.
@@ -103,7 +105,7 @@ t_ast_node	*build_ast(t_token **tokens)
 t_ast_node	*parse_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
-	t_token     *tokens;
+	t_token		*tokens;
 	char		*trimmed;
 
 	if (!input)

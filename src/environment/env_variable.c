@@ -38,7 +38,8 @@ char	*get_path(char *cmd, char **envp)
 {
 	int		i;
 	char	*path;
-	char	**paths; // TODO: Change le nom d une des deux variable je t en pris mdrrr path et paths quoi xD
+	// TODO: Change le nom d une des deux variable je t en pris mdrrr path et paths quoi xD
+	char	**paths;
 	char	*tmp;
 
 	if (access(cmd, X_OK) == 0)
@@ -179,7 +180,7 @@ void	replace_variables_in_tab(t_minishell *minishell, char **strs)
  * @param char **env Environment variables to reload
  * @return int 0 if success, 1 otherwise
  */
-int reload_env(char **env)
+int	reload_env(char **env)
 {
 	const char	*pwd;
 
@@ -195,5 +196,4 @@ int reload_env(char **env)
 		return (1);
 	}
 	return (0);
-
 }

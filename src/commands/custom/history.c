@@ -18,7 +18,8 @@
  * TODO: avoid saving history -s command in history
  *
  * @param t_cmd *cmd Command structure
- * @param t_minishell *minishell Minishell structure (it contain history chain list)
+ * @param t_minishell *minishell Minishell structure
+ * 			(it contain history chain list)
  * @return int Exit code
  */
 int	command_history(t_cmd *cmd, t_minishell *minishell)

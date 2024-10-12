@@ -67,7 +67,7 @@ void	free_minishell(t_minishell *minishell)
  */
 void	free_ast(t_ast_node *ast)
 {
-	int i;
+	int	i;
 
 	if (ast == NULL)
 		return ;

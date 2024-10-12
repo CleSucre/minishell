@@ -93,7 +93,8 @@ char	*extract_token(char *input, int *index)
 		(*index)++;
 		return (ft_strdup(buffer));
 	}
-	while (input[*index] != '\0' && !ft_isspace(input[*index]) && input[*index] != '(' && input[*index] != ')')
+	while (input[*index] != '\0' && !ft_isspace(input[*index])
+		&& input[*index] != '(' && input[*index] != ')')
 	{
 		buffer[buffer_pos++] = input[*index];
 		(*index)++;
@@ -114,6 +115,7 @@ t_token	*tokenize(char *input)
 	int				i;
 	char			*token_value;
 	t_token_type	type;
+	t_token			*token;
 
 	head = NULL;
 	i = 0;
@@ -126,7 +128,7 @@ t_token	*tokenize(char *input)
 		}
 		token_value = extract_token(input, &i);
 		type = token_type(token_value);
-		t_token *token = new_token(token_value, type);
+		token = new_token(token_value, type);
 		add_token(&head, token);
 		free(token_value);
 	}
@@ -141,17 +143,17 @@ t_token	*tokenize(char *input)
  */
 char	**extract_command_tokens(t_token **tokens)
 {
-	char **command_tokens;
-	int token_count;
-	t_token *current;
+	char	**command_tokens;
+	int		token_count;
+	t_token	*current;
 
 	command_tokens = (char **)malloc(MAX_COMMAND_SIZE * sizeof(char *));
 	if (command_tokens == NULL)
 		return (NULL);
 	token_count = 0;
 	current = *tokens;
-	while (current != NULL &&
-		   (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
+	while (current != NULL
+		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;

@@ -1788,3 +1788,7 @@ ls -la | grepzdkijhzd m
 ls -la | grepzdkijhzd m
 ls -la | grepzdkijhzd m
 echo $?
+ls
+echo $TEST
+$TEST
+$TEST

@@ -134,7 +134,7 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int pipes[2], int in_ou
 	int		res;
 	int		pid;
 
-	res = 1536;
+	res = 0;
 	if (!ast)
 		return (1);
 	if (setup_pipes(pipes, in_out, ast->is_last) == -1)

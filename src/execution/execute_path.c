@@ -25,6 +25,6 @@ int	execute_path(t_cmd *cmd)
 	err = execve(cmd->path, cmd->args, cmd->env);
 	if (err == -1)
 		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
-				   cmd->name);
+			cmd->name);
 	return (err);
 }
