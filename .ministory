@@ -1959,3 +1959,26 @@ env | grep PATH
 env | grep PWD
 ls7
 ls7
+history | grep m
+history | grep echo
+ls
+ls
+ls
+ls
+lks
+ls
+ls
+ls
+ls
+lsls
+ls
+ls
+ls
+cat -e > Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e > Makefile
+la
+ls
+cat -e < Makefile
+clear

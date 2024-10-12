@@ -59,32 +59,6 @@ int	setup_pipes(int *pipes, int *in_out, int is_last)
 }
 
 /**
- * @brief Copy the contents of a file descriptor to another
- *
- * //TODO: move the function to libft
- *
- * @param int fd_from file descriptor to read from
- * @param int fd_to file descriptor to write to
- * @return ssize_t number of bytes written on success, -1 on failure
- */
-ssize_t	copy_fd_contents(int fd_from, int fd_to)
-{
-	char	buf[BUFFER_SIZE];
-	ssize_t	bytes_read;
-	ssize_t	bytes_written;
-
-	bytes_read = read(fd_from, buf, BUFFER_SIZE);
-	while (bytes_read > 0)
-	{
-		bytes_written = write(fd_to, buf, bytes_read);
-		if (bytes_written == -1)
-			return (-1);
-		bytes_read = read(fd_from, buf, BUFFER_SIZE);
-	}
-	return (bytes_written);
-}
-
-/**
  * @brief Execute the ast respecting pipe operator logic
  *
  * @param t_minishell *minishell

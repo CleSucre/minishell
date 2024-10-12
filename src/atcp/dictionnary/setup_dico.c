@@ -80,7 +80,7 @@ int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
 	char	**paths;
-	int 	i;
+	int		i;
 
 	minishell->dict = create_node("\0", "file");
 	if (!minishell->dict)

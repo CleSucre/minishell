@@ -150,8 +150,6 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 	int		pid;
 
 	res = 0;
-	if (!ast)
-		return (1);
 	if (setup_pipes(pipes, in_out, ast->is_last) == -1)
 	{
 		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);

@@ -18,7 +18,6 @@ NAME					= minishell
 #									SOURCES									#
 #############################################################################
 
-
 SRCS					= main.c
 
 SRCS_CONFIG				= term_config.c
