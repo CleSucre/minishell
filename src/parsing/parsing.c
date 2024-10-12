@@ -52,25 +52,20 @@ static char	*check_input(t_minishell *minishell, char *input)
  * @param t_ast_node **last_command
  * @return int
  */
-static int	build_ast_secondary(t_token **current, t_ast_node **root,
-						t_ast_node **last_command)
+static void	build_ast_secondary(t_token **current, t_ast_node **root,
+							t_ast_node **last_command)
 {
-	if ((*current)->type == TOKEN_COMMAND)
-	{
+	if ((*current)->type == TOKEN_REDIR_IN
+		|| (*current)->type == TOKEN_HEREDOC)
+		*root = process_redirection(current, root, last_command, 1);
+	else if ((*current)->type == TOKEN_COMMAND)
 		process_command(current, root, last_command);
-		return (1);
-	}
 	else if ((*current)->type == TOKEN_ARGUMENT)
-	{
 		process_argument(current, *last_command);
-		return (1);
-	}
 	else if ((*current)->type == TOKEN_PARENTHESIS_OPEN)
-	{
 		process_subshell(current, root, last_command);
-		return (1);
-	}
-	return (0);
+	else
+		*current = (*current)->next;
 }
 
 /**
@@ -81,28 +76,27 @@ static int	build_ast_secondary(t_token **current, t_ast_node **root,
  */
 t_ast_node	*build_ast(t_token **tokens)
 {
+	t_token		*current;
 	t_ast_node	*root;
 	t_ast_node	*last_command;
 
+	current = *tokens;
 	root = NULL;
 	last_command = NULL;
-	while ((*tokens) != NULL)
+	while (current != NULL)
 	{
-		if ((*tokens)->type == TOKEN_PARENTHESIS_CLOSE)
+		if (current->type == TOKEN_PARENTHESIS_CLOSE)
 			return (root);
-		else if ((*tokens)->type == TOKEN_PIPE)
-			return (process_pipe(tokens, &root, &last_command));
-		else if ((*tokens)->type == TOKEN_AND_OPERATOR
-			|| (*tokens)->type == TOKEN_OR_OPERATOR)
-			return (process_operator(tokens, &root, &last_command));
-		else if ((*tokens)->type == TOKEN_REDIR_OUT
-			|| (*tokens)->type == TOKEN_REDIR_OUT_APPEND)
-			root = process_redirection(tokens, &root, &last_command, 0);
-		else if ((*tokens)->type == TOKEN_REDIR_IN
-			|| (*tokens)->type == TOKEN_HEREDOC)
-			root = process_redirection(tokens, &root, &last_command, 1);
-		else if (!build_ast_secondary(tokens, &root, &last_command))
-			*tokens = (*tokens)->next;
+		else if (current->type == TOKEN_PIPE)
+			return (process_pipe(&current, &root, &last_command));
+		else if (current->type == TOKEN_AND_OPERATOR
+			|| current->type == TOKEN_OR_OPERATOR)
+			return (process_operator(&current, &root, &last_command));
+		else if (current->type == TOKEN_REDIR_OUT
+			|| current->type == TOKEN_REDIR_OUT_APPEND)
+			root = process_redirection(&current, &root, &last_command, 0);
+		else
+			build_ast_secondary(&current, &root, &last_command);
 	}
 	return (root);
 }

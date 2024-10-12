@@ -1998,3 +1998,7 @@ cat -e < Makefile
 cat -e < Makefile
 cat -e < Makefile
 clear
+history | grep echo
+ls -la | (grep m) && ls
+history | grep echo
+ls -la | (grep m) && ls
