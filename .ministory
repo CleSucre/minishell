@@ -1908,3 +1908,18 @@ poizujndzjndz
 poizujndzjndz
 ls -la
 ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | cat -e
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
