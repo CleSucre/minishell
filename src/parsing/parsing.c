@@ -60,6 +60,8 @@ static int	build_ast_secondary(t_token **current, t_ast_node **root,
 		return (process_redirection(current, root, last_command, 1));
 	else if ((*current)->type == TOKEN_COMMAND)
 		return (process_command(current, root, last_command));
+	else if ((*current)->type == TOKEN_VARIABLE)
+		return (process_command(current, root, last_command));
 	else if ((*current)->type == TOKEN_ARGUMENT)
 		return (process_argument(current, *last_command));
 	else if ((*current)->type == TOKEN_PARENTHESIS_OPEN)

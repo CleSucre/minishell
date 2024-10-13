@@ -39,11 +39,25 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 {
 	t_cmd	*cmd;
 	char	*path;
+	int 	is_var;
+	char 	**tmp;
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
+	is_var = 0;
+	if (ft_strncmp(ast->value[0], "$", 1) == 0)
+		is_var = 1;
 	replace_variables_in_tab(minishell, ast->value);
+	if (is_var)
+	{
+		tmp = ast->value;
+		ast->value = ft_split(ast->value[0], WHITESPACES);
+		free(tmp);
+		cmd->name = ft_strdup(ast->value[0] + 1);
+		cmd->args = ast->value + 1;
+		cmd->argc = (int)ft_tablen((const char **)ast->value) - 1;
+	}
 	cmd->name = ft_strdup(ast->value[0]);
 	cmd->args = ast->value;
 	cmd->argc = (int)ft_tablen((const char **)ast->value);

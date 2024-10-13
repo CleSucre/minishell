@@ -38,6 +38,8 @@ t_token_type	token_type(char *str)
 		return (TOKEN_PARENTHESIS_OPEN);
 	else if (ft_strncmp(str, ")", 1) == 0)
 		return (TOKEN_PARENTHESIS_CLOSE);
+	else if (ft_strncmp(str, "$", 1) == 0)
+		return (TOKEN_VARIABLE);
 	else
 		return (TOKEN_COMMAND);
 }
@@ -153,7 +155,7 @@ char	**extract_command_tokens(t_token **tokens)
 	token_count = 0;
 	current = *tokens;
 	while (current != NULL
-		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
+		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT || current->type == TOKEN_VARIABLE))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;
