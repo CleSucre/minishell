@@ -2469,3 +2469,19 @@ echo $?
 echo $?
 echo $?
 echo $?
+clear
+ls -la (grep m) | sort | cat -e && ls
+ls -la (grep m) | sort | cat -e
+ls -la (grep m) | sort
+ls -la | (grep m) | sort | cat -e && ls
+ls -la (grep m) | sort | cat -e && ls
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la grep m
+clear
+ls -la (grep m) | sort | cat -e && ls
+git switch clesucre
+git add -A
