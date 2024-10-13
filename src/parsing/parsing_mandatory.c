@@ -77,6 +77,7 @@ t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root,
 	pipe_node = new_ast_node(AST_PIPE, NULL);
 	pipe_node->left = *root;
 	*tokens = (*tokens)->next;
-	pipe_node->right = build_ast(tokens);
+	build_ast(tokens, &pipe_node->right);
+	*root = pipe_node;
 	return (pipe_node);
 }

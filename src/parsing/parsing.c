@@ -74,31 +74,34 @@ static void	build_ast_secondary(t_token **current, t_ast_node **root,
  * @param t_token **tokens List of tokens to build the node from.
  * @return t_ast_node* The generated AST node.
  */
-t_ast_node	*build_ast(t_token **tokens)
+void	build_ast(t_token **tokens, t_ast_node **root)
 {
 	t_token		*current;
-	t_ast_node	*root;
 	t_ast_node	*last_command;
 
 	current = *tokens;
-	root = NULL;
 	last_command = NULL;
 	while (current != NULL)
 	{
 		if (current->type == TOKEN_PARENTHESIS_CLOSE)
-			return (root);
+			return ;
 		else if (current->type == TOKEN_PIPE)
-			return (process_pipe(&current, &root, &last_command));
+		{
+			process_pipe(&current, root, &last_command);
+			return ;
+		}
 		else if (current->type == TOKEN_AND_OPERATOR
 			|| current->type == TOKEN_OR_OPERATOR)
-			return (process_operator(&current, &root, &last_command));
+		{
+			process_operator(&current, root, &last_command);
+			return ;
+		}
 		else if (current->type == TOKEN_REDIR_OUT
 			|| current->type == TOKEN_REDIR_OUT_APPEND)
-			process_redirection(&current, &root, &last_command, 0);
+			process_redirection(&current, root, &last_command, 0);
 		else
-			build_ast_secondary(&current, &root, &last_command);
+			build_ast_secondary(&current, root, &last_command);
 	}
-	return (root);
 }
 
 /**
@@ -124,7 +127,8 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	if (!tokens)
 		return (NULL);
 	debug_tokens(tokens);
-	ast = build_ast(&tokens);
+	ast = NULL;
+	build_ast(&tokens, &ast);
 	free_tokens(tokens);
 	if (!ast)
 		return (NULL);
