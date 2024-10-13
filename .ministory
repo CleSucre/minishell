@@ -2002,3 +2002,13 @@ history | grep echo
 ls -la | (grep m) && ls
 history | grep echo
 ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la && ls -la | grep m | cat -e
+ls -la && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+git add -A

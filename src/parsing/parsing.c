@@ -57,7 +57,7 @@ static void	build_ast_secondary(t_token **current, t_ast_node **root,
 {
 	if ((*current)->type == TOKEN_REDIR_IN
 		|| (*current)->type == TOKEN_HEREDOC)
-		*root = process_redirection(current, root, last_command, 1);
+		process_redirection(current, root, last_command, 1);
 	else if ((*current)->type == TOKEN_COMMAND)
 		process_command(current, root, last_command);
 	else if ((*current)->type == TOKEN_ARGUMENT)
@@ -94,7 +94,7 @@ t_ast_node	*build_ast(t_token **tokens)
 			return (process_operator(&current, &root, &last_command));
 		else if (current->type == TOKEN_REDIR_OUT
 			|| current->type == TOKEN_REDIR_OUT_APPEND)
-			root = process_redirection(&current, &root, &last_command, 0);
+			process_redirection(&current, &root, &last_command, 0);
 		else
 			build_ast_secondary(&current, &root, &last_command);
 	}
