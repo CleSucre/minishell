@@ -112,7 +112,7 @@ void	arrow_right_action(t_minishell *minishell)
 	input_len = (unsigned int)ft_tablen((const char **)minishell->input);
 	if (term->rows - term->begin_rows == 0 && term->cols - get_prompt_len(minishell) >= input_len + 1)
 		return ;
-	else if (term->rows - term->begin_rows != 0 &&  ((term->rows - term->begin_rows) * term->ws_cols) - get_prompt_len(minishell) + term->cols >= input_len + 1)
+	else if (term->rows - term->begin_rows != 0 &&  ((term->rows - term->begin_rows) * term->ws_cols) - get_prompt_len(minishell) + term->cols >= input_len + 2)
 		return ;
 	if (term->cols >= term->ws_cols)
 	{
