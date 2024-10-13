@@ -84,18 +84,12 @@ int	process_action(t_minishell *minishell, char *new)
 		reset_input(&minishell->input);
 		minishell->history_pos = 0;
 		get_cursor_position(minishell->term);
-		minishell->term->input_starting_row = minishell->term->rows;
+		minishell->term->cols = get_prompt_len(minishell) + 1;
+		minishell->term->begin_rows = minishell->term->rows;
 	}
 	else if (new[0] == ESC_SEQ)
 		return (!interpret_escape_sequence(minishell, new));
 	else
 		edit_input(minishell, new);
-//	t_var *var;
-//	var = ft_calloc(1, sizeof(t_var));
-//	var->name = ft_strdup("TET=AHAH");
-//	get_input_converter(minishell, var);
-//	command_pwd(NULL);
-//	int i = find_table_args(minishell->env, "PWD");
-//	ft_printf("Version finale [%s]\n", var->name);
 	return (0);
 }
