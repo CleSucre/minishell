@@ -26,10 +26,6 @@
 *	erase from position,
 * 	join input with new input, print from equivalence to end of input
 *
-*	OLD CODE :
-*		ft_printf("\033[s\033[4h%s\033[4l\033[0m", new);
-*		minishell->input = ft_tabinsert(minishell->input, new,
-*			minishell->term->cols - get_prompt_len(minishell) - 1);
 */
 
 
@@ -39,123 +35,56 @@
 */
 void clear_term(t_minishell *minishell)
 {
-	while (minishell->term->rows > minishell->term->input_starting_row)
+  unsigned int rows;
+
+    rows = minishell->term->rows;
+	while (rows > minishell->term->begin_rows)
 		{
 			ft_putstr_fd("\033[K\033[1A", 1);
-			minishell->term->rows--;
+			rows--;
 		}
-	ft_putstr_fd("\033[K\033[1A", 1);
-}
-
-/**
-* @brief Basic function which print input from start to end
-*	depend on terminal size
-*	@param t_term *term
-*	@param char *input
-*	@param int start
-*	@param int end
-*	@return void
-*/
-void print_str_from_s_to_e_term(t_minishell *minishell, char *input, int start, int end)
-{
-	int i;
-	int rows;
-
-	i = start;
-	rows = minishell->term->rows;
-	// classic verif input
-	if (start >= end)
-		{
-			ft_putstr_fd("Error\n", 2);
-			ft_fprintf(2, "start : %d\nend : %d\n", start, end);
-			return ;
-		}
-	while (input[i] && i < end)
-	{
-		ft_putchar_fd(input[i], 1);
-		i++;
-		// check si fin de ligne selon si row est egal au start (on va dire 0) ou pas, si oui on prend en compte le prompt sinon non
-		if ((rows == minishell->term->input_starting_row && (i + get_prompt_len(minishell)) % minishell->term->ws_cols == 0)
-			|| (rows > minishell->term->input_starting_row && (i % minishell->term->ws_cols == 0)))
-			{
-//                ft_putstr_fd("\033[E", 1);
-                rows++;
-            }
-	}
-
+    ft_putstr_fd("\033[K", 1);
 }
 
 /**
 * 	@brief add new in minishell input
-*	Save cursor position and clear term from cursor to end
-*	then search position in input according to cursor
-*	then print from position to end of input
-*	Restore position, check if needed to go to next line or move to right
 */
-//void    put_in_string(t_minishell *minishell, char *new)
-//{
-//    char    *str;
-//	unsigned int current_pos;
-//	unsigned int cols;
-//	unsigned int rows;
-//
-//	cols = minishell->term->cols;
-//	rows = minishell->term->rows;
-//
-//
-//	// insertion dans l input
-//    minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
-//	// sauvegarde position + clear term
-//    ft_putstr_fd("\033[s\033[J", 1);
-//    str = ft_utf8_tab_to_str(minishell->input);
-//
-//	// Position du curseur : si row == starting alors juste cols - prompt len sinon calcul
-//	if (minishell->term->rows == minishell->term->input_starting_row)
-//        current_pos = minishell->term->cols - get_prompt_len(minishell) - 1;
-//    else
-//	current_pos = minishell->term->cols * (minishell->term->rows -
-//		minishell->term->input_starting_row) - get_prompt_len(minishell) - 1;
-//
-//	// print de position jusqua fin de l input
-//	print_str_from_s_to_e_term(minishell, str, current_pos, ft_strlen(str));
-//
-//    free(str);
-//
-//	// restauration de base du curseur avec U
-//    ft_putstr_fd("\033[u", 1);
-//	if (minishell->term->cols % minishell->term->ws_cols == 0)
-//    {
-//        ft_putstr_fd("\033[E", 1);
-//        minishell->term->rows++;
-//        minishell->term->cols = 1;
-//    }
-//	else
-//			ft_putstr_fd("\033[1C", 1);
-//
-//
-//}
 
-void    put_in_string(t_minishell *minishell, char *new)
+void put_in_string(t_minishell *minishell, char *new)
 {
-	char	*str;
+    unsigned int current_cols;
+    unsigned int current_rows;
+    unsigned int tablen;
 
-	ft_putstr_fd("\033[s\033[J", 1);
-	minishell->input = ft_tabinsert(minishell->input, new, minishell->term->cols - get_prompt_len(minishell) - 1);
-	reset_stdin(minishell);
-	str = ft_utf8_tab_to_str(minishell->input);
-	terminal_print(str, 0, STDOUT_FILENO);
-	free(str);
-	if (minishell->term->rows - minishell->term->input_starting_row > 0)
-		ft_printf("\033[%dB\033[G", minishell->term->rows - minishell->term->input_starting_row);
-	ft_putstr_fd("\033[u", 1);
-		if (minishell->term->cols % minishell->term->ws_cols == 0)
+    current_cols = minishell->term->cols;
+    current_rows = minishell->term->rows;
+
+    ft_putstr_fd("\033[s", 1);
+    if (current_rows - minishell->term->begin_rows == 0)
+	{
+		minishell->input = ft_tabinsert(minishell->input, new,
+			minishell->term->cols - get_prompt_len(minishell) - 1);
+        clear_term(minishell);
+		ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (minishell->term->cols - get_prompt_len(minishell) - 1), STDOUT_FILENO);
+	}
+    else
     {
-        ft_putstr_fd("\033[E", 1);
-        minishell->term->rows++;
-        minishell->term->cols = 1;
+        minishell->input = ft_tabinsert(minishell->input, new,
+            (current_rows * minishell->term->ws_cols) - get_prompt_len(minishell) + current_cols - 2);
+            minishell->term->rows -= current_rows - minishell->term->begin_rows;
+            clear_term(minishell);
+            minishell->term->rows += current_rows - minishell->term->begin_rows;
+        ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (current_rows * minishell->term->ws_cols - 1) - get_prompt_len(minishell) + current_cols -1, STDOUT_FILENO);
     }
-	else if (minishell->term->cols > get_prompt_len(minishell) + 1)
-        ft_putstr_fd("\033[1C", 1);
+    tablen = ft_tablen((const char **)minishell->input);
+    while (tablen  + get_prompt_len(minishell) > minishell->term->ws_cols)
+      {
+
+        ft_putstr_fd("\033[A\r", 1);
+        tablen = tablen - minishell->term->ws_cols;
+      }
+    ft_putstr_fd("\033[u\033[1C", 1);
+
 }
 
 
@@ -197,28 +126,35 @@ void	erase_in_string(t_minishell *minishell)
  */
 void	edit_input(t_minishell *minishell, char *new)
 {
-	if (minishell->term->cols
-		!= get_prompt_len(minishell)
-		+ ft_tablen((const char **)minishell->input) + 1)
-		{
-			put_in_string(minishell, new);
-		}
+	unsigned int	input_len;
+	unsigned int    prompt_len;
+
+	input_len = ft_tablen((const char **)minishell->input);
+	prompt_len = get_prompt_len(minishell);
+	if ((minishell->term->rows - minishell->term->begin_rows == 0 && minishell->term->cols - prompt_len < input_len + 1 )||
+    	(minishell->term->rows - minishell->term->begin_rows != 0 &&  (minishell->term->rows * minishell->term->ws_cols - 1) - prompt_len + minishell->term->cols < input_len))
+	{
+		put_in_string(minishell, new);
+	}
 	else
 	{
+		ft_putstr_fd(new, STDOUT_FILENO);
 		minishell->input = ft_tabjoin(minishell->input,
 				ft_utf8_split_chars(new));
-		ft_putstr_fd(new, STDOUT_FILENO);
 		if (minishell->tab_dict)
 			free_branch(minishell->tab_dict);
 		minishell->tab_dict = NULL;
 	}
-	minishell->term->cols ++;
-	// incrementation de rows si a la fin de ligne apres input
-	minishell->term->rows = (ft_tablen((const char **)minishell->input) + get_prompt_len(minishell))
-        / minishell->term->ws_cols + minishell->term->input_starting_row;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
+	minishell->term->cols++;
+	if (minishell->term->cols >= minishell->term->ws_cols + 1)
+	{
+      	ft_putstr_fd("\n", 1);
+		minishell->term->cols = 1;
+		minishell->term->rows++;
+	}
 }
 
 /**

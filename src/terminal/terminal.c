@@ -32,12 +32,9 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 			arrow_up_action(minishell, new_history);
 		else if (seq[2] == D_ARROW)
 			arrow_down_action(minishell, new_history);
-		else if (seq[2] == R_ARROW && minishell->term->cols
-			< ft_tablen((const char **)minishell->input)
-			+ get_prompt_len(minishell) + 1)
+		else if (seq[2] == R_ARROW)
 			arrow_right_action(minishell);
-		else if (seq[2] == L_ARROW && minishell->term->cols
-			> get_prompt_len(minishell) + 1)
+		else if (seq[2] == L_ARROW)
 			arrow_left_action(minishell);
 		return (1);
 	}
@@ -55,7 +52,8 @@ static void	begin_user_input(t_minishell *minishell)
 	creation_dict(minishell);
 	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
-	minishell->term->input_starting_row = minishell->term->rows;
+	minishell->term->begin_rows = minishell->term->rows;
+	minishell->term->cols = get_prompt_len(minishell) + 1;
 }
 
 /**
@@ -70,8 +68,6 @@ int	process_user_input(t_minishell *minishell,
 	char	buffer[32];
 
 	get_terminal_size(minishell->term);
-	minishell->term->begin_rows
-		= ft_tablen((const char **)minishell->input) % MAX_32_BIT;
 	bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 	if (bits == -1)
 	{

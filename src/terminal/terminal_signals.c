@@ -30,6 +30,8 @@ static void	ctrl_c_action(t_minishell *minishell)
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
 	get_cursor_position(minishell->term);
+	minishell->term->begin_rows = minishell->term->rows;
+	minishell->term->cols = get_prompt_len(minishell) + 1;
 }
 
 /**
