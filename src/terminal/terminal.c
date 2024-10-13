@@ -67,7 +67,6 @@ int	process_user_input(t_minishell *minishell,
 {
 	char	buffer[32];
 
-	get_terminal_size(minishell->term);
 	bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 	if (bits == -1)
 	{
@@ -80,6 +79,7 @@ int	process_user_input(t_minishell *minishell,
 		return (1);
 	if (signal == 2 || process_action(minishell, buffer))
 		return (0);
+	get_terminal_size(minishell->term);
 	return (1);
 }
 
@@ -97,6 +97,7 @@ void	use_termios(t_minishell *minishell)
 	signal = 0;
 	bits = 0;
 	begin_user_input(minishell);
+	get_terminal_size(minishell->term);
 	while (process_user_input(minishell, signal, bits))
 		continue ;
 	ft_fprintf(STDOUT_FILENO, "\n%s\n", TERMINAL_EXIT_MSG);

@@ -155,15 +155,34 @@ void	edit_input(t_minishell *minishell, char *new)
 		minishell->term->cols = 1;
 		minishell->term->rows++;
 	}
-	if (input_len + prompt_len  == minishell->term->ws_cols && minishell->term->rows == minishell->term->ws_rows)
-    {
-//		if (minishell->term->rows - minishell->term->begin_rows == 0)
-        	ft_putstr_fd("\033[s\n\033[A\033[u\033[A\033[A", 1);
-//		else
-//			ft_putstr_fd("\033[s\n\n\033[A\033[u\033[A\033[A\033[A", 1);
-//		fprintf(stdout, "\n\033[%u;%huH", minishell->term->rows, minishell->term->cols);
-		minishell->term->ws_cols++;
+	//ft_fprintf(STDOUT_FILENO, "\ninput_len: %d\n", input_len);
+	//ft_fprintf(STDOUT_FILENO, "prompt_len: %d\n", prompt_len);
+	//ft_fprintf(STDOUT_FILENO, "input_len + prompt_len: %d\n", input_len + prompt_len);
+	//ft_fprintf(STDOUT_FILENO, "minishell->term->ws_cols: %d\n", minishell->term->ws_cols);
+	//ft_fprintf(STDOUT_FILENO, "minishell->term->rows: %d\n", minishell->term->rows);
+	//ft_fprintf(STDOUT_FILENO, "minishell->term->ws_rows: %d\n", minishell->term->ws_rows);
 
+	int calc = (input_len + prompt_len) % minishell->term->ws_cols;
+	int expected = (minishell->term->ws_cols - 2);
+	//ft_fprintf(STDOUT_FILENO, "calc: %d\n", calc);
+	//ft_fprintf(STDOUT_FILENO, "expected: %d\n", expected);
+
+	if (calc == expected && minishell->term->rows >= minishell->term->ws_rows)
+    {
+		//save cursor position
+		ft_putstr_fd("\033[s", 1);
+		//new line
+		ft_fprintf(STDOUT_FILENO, "\033[%dB", minishell->term->ws_rows - 1);
+		ft_putstr_fd("\n", 1);
+		//cursor down
+		//ft_putstr_fd("\033[B", 1);
+		//ft_putstr_fd("\033[B", 1);
+		//ft_fprintf(STDOUT_FILENO, "YEY");
+		//restore cursor position
+		ft_putstr_fd("\033[u", 1);
+		//cusor up
+		ft_putstr_fd("\033[A", 1);
+		//minishell->term->cols--;
     }
 }
 
