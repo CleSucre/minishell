@@ -78,7 +78,7 @@ int	search_in_path(t_dict *dict, char *odir)
  */
 int	creation_dict(t_minishell *minishell)
 {
-	t_dict	*tmp;
+	//t_dict	*tmp;
 	char	**paths;
 	int		i;
 
@@ -86,7 +86,7 @@ int	creation_dict(t_minishell *minishell)
 	if (!minishell->dict)
 		return (1);
 	minishell->dict->bst_size = 0;
-	tmp = minishell->dict;
+	//tmp = minishell->dict;
 	paths = ft_split(get_var_value_const(minishell->env, "PATH"), ":");
 	if (!paths)
 		return (1);

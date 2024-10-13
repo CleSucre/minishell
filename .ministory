@@ -2169,3 +2169,51 @@ ls -la |( grep m | cat -e
 ls -la | (grep m | cat -e
 ls -la | (grep m) | cat -e
 ls -la | (grep m) | cat -e
+ls
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | grep m && ls
+ls -la | grep m && ls | cat -e
+ls
+ls && ls
+ls && ls && ls
+ls -la | grep m | cat -e | usort
+ls -la | grep m | cat -e | sort
+ls -la | grep m | sort | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m && ls | cat -e
+ls | cat -e
+ls -la | grep m | cat -e && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | (grep) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m)
+(ls)
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | sort | cat -e
+ls -la | (grep m) && ls | sort | cat -e
+ls -la | (grep m) && ls | sort | cat -e
+ls -la | grep m && ls | sort | cat -e
+ls -la | grep m && ls | sort | cat -e
+ls -la | (grep m) && ls | sort | cat -e
+ls -la | grep m && ls | sort | cat -e
+ls -la | (grep m) | sort | cat -e
+ls -la | (grep m) | sort | cat -e
+git add -A

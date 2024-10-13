@@ -59,12 +59,10 @@ int	process_subshell(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command)
 {
 	t_ast_node	*subshell_node;
-	t_ast_node	*new_last_command;
 
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
 	*tokens = (*tokens)->next;
-	new_last_command = NULL;
-	if (build_ast(tokens, &subshell_node->left, &new_last_command) != -1)
+	if (build_ast(tokens, &subshell_node->left, last_command) != -1)
 	{
 		ft_fprintf(2, "minishell: syntax error: expected ')'\n");
 		return (0);
