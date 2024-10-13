@@ -78,7 +78,7 @@ void put_in_string(t_minishell *minishell, char *new)
         ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + ((current_rows - minishell->term->begin_rows) * minishell->term->ws_cols - 1) - prompt_len + current_cols -1, STDOUT_FILENO);
     }
     tablen = ft_tablen((const char **)minishell->input);
-    while (tablen + prompt_len > minishell->term->ws_cols * minishell->term->rows - 1)
+    while (tablen + prompt_len > minishell->term->ws_cols + 2)
       {
 		ft_putstr_fd("\033[A\r", 1);
         tablen = tablen - minishell->term->ws_cols;
@@ -151,10 +151,20 @@ void	edit_input(t_minishell *minishell, char *new)
 	minishell->term->cols++;
 	if (minishell->term->cols >= minishell->term->ws_cols + 1)
 	{
-      	ft_putstr_fd("\n", 1);
+      	ft_putstr_fd("\033[E", 1);
 		minishell->term->cols = 1;
 		minishell->term->rows++;
 	}
+	if (input_len + prompt_len  == minishell->term->ws_cols && minishell->term->rows == minishell->term->ws_rows)
+    {
+//		if (minishell->term->rows - minishell->term->begin_rows == 0)
+        	ft_putstr_fd("\033[s\n\033[A\033[u\033[A\033[A", 1);
+//		else
+//			ft_putstr_fd("\033[s\n\n\033[A\033[u\033[A\033[A\033[A", 1);
+//		fprintf(stdout, "\n\033[%u;%huH", minishell->term->rows, minishell->term->cols);
+		minishell->term->ws_cols++;
+
+    }
 }
 
 /**
