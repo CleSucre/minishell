@@ -72,12 +72,14 @@ t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root,
 						t_ast_node **last_command)
 {
 	t_ast_node	*pipe_node;
+	t_ast_node	*new_last_command;
 
 	(*last_command)->is_last = 0;
 	pipe_node = new_ast_node(AST_PIPE, NULL);
 	pipe_node->left = *root;
 	*tokens = (*tokens)->next;
-	build_ast(tokens, &pipe_node->right);
+	new_last_command = NULL;
+	build_ast(tokens, &pipe_node->right, &new_last_command);
 	*root = pipe_node;
 	return (pipe_node);
 }

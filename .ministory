@@ -2041,3 +2041,15 @@ ls && ls -la | grep m | cat -e
 ls && ls -la | grep m | cat -e
 ls && ls -la | grep m && cat -e
 git add -A
+ls && ls -la | grep m && cat -e
+ls && ls -la | grep m && cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m && cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m && cat -e
+git add -A

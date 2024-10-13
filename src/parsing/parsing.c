@@ -74,34 +74,31 @@ static void	build_ast_secondary(t_token **current, t_ast_node **root,
  * @param t_token **tokens List of tokens to build the node from.
  * @return t_ast_node* The generated AST node.
  */
-void	build_ast(t_token **tokens, t_ast_node **root)
+void	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 {
 	t_token		*current;
-	t_ast_node	*last_command;
 
 	current = *tokens;
-	last_command = NULL;
-	while (current != NULL)
+	if (current->type == TOKEN_PARENTHESIS_CLOSE)
+		return ;
+	else if (current->type == TOKEN_PIPE)
 	{
-		if (current->type == TOKEN_PARENTHESIS_CLOSE)
-			return ;
-		else if (current->type == TOKEN_PIPE)
-		{
-			process_pipe(&current, root, &last_command);
-			return ;
-		}
-		else if (current->type == TOKEN_AND_OPERATOR
-			|| current->type == TOKEN_OR_OPERATOR)
-		{
-			process_operator(&current, root, &last_command);
-			return ;
-		}
-		else if (current->type == TOKEN_REDIR_OUT
-			|| current->type == TOKEN_REDIR_OUT_APPEND)
-			process_redirection(&current, root, &last_command, 0);
-		else
-			build_ast_secondary(&current, root, &last_command);
+		process_pipe(&current, root, last_command);
+		return ;
 	}
+	else if (current->type == TOKEN_AND_OPERATOR
+		|| current->type == TOKEN_OR_OPERATOR)
+	{
+		process_operator(&current, root, last_command);
+		return ;
+	}
+	else if (current->type == TOKEN_REDIR_OUT
+		|| current->type == TOKEN_REDIR_OUT_APPEND)
+		process_redirection(&current, root, last_command, 0);
+	else
+		build_ast_secondary(&current, root, last_command);
+	if (current)
+		build_ast(&current, root, last_command);
 }
 
 /**
@@ -114,6 +111,7 @@ void	build_ast(t_token **tokens, t_ast_node **root)
 t_ast_node	*parse_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
+	t_ast_node	*last_command;
 	t_token		*tokens;
 	char		*trimmed;
 
@@ -128,7 +126,8 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 		return (NULL);
 	debug_tokens(tokens);
 	ast = NULL;
-	build_ast(&tokens, &ast);
+	last_command = NULL;
+	build_ast(&tokens, &ast, &last_command);
 	free_tokens(tokens);
 	if (!ast)
 		return (NULL);

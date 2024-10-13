@@ -26,6 +26,7 @@ t_ast_node	*process_operator(t_token **tokens, t_ast_node **root,
 {
 	t_ast_node_type	op_type;
 	t_ast_node		*operator_node;
+	t_ast_node		*new_last_command;
 
 	if ((*tokens)->type == TOKEN_AND_OPERATOR)
 		op_type = AST_AND;
@@ -43,7 +44,8 @@ t_ast_node	*process_operator(t_token **tokens, t_ast_node **root,
 		*root = operator_node;
 	}
 	*tokens = (*tokens)->next;
-	build_ast(tokens, &operator_node->right);
+	new_last_command = NULL;
+	build_ast(tokens, &operator_node->right, &new_last_command);
 	return (*root);
 }
 
@@ -58,10 +60,12 @@ void	process_subshell(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command)
 {
 	t_ast_node	*subshell_node;
+	t_ast_node	*new_last_command;
 
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
 	*tokens = (*tokens)->next;
-	build_ast(tokens, &subshell_node->left);
+	new_last_command = NULL;
+	build_ast(tokens, &subshell_node->left, &new_last_command);
 	while (*tokens != NULL && (*tokens)->type != TOKEN_PARENTHESIS_CLOSE)
 		*tokens = (*tokens)->next;
 	if (*tokens != NULL && (*tokens)->type == TOKEN_PARENTHESIS_CLOSE)

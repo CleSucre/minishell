@@ -65,7 +65,7 @@ typedef struct s_ast_node {
 // #						PARSER						  #
 // ########################################################
 
-void				build_ast(t_token **tokens, t_ast_node **root);
+void				build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
 t_ast_node			*parse_input(t_minishell *minishell, char *input);
 
 void				process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
