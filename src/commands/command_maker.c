@@ -55,12 +55,15 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 		ast->value = ft_split(ast->value[0], WHITESPACES);
 		free(tmp);
 		cmd->name = ft_strdup(ast->value[0] + 1);
-		cmd->args = ast->value + 1;
-		cmd->argc = (int)ft_tablen((const char **)ast->value) - 1;
+		cmd->args = ast->value;
+		cmd->argc = (int)ft_tablen((const char **)ast->value);
 	}
-	cmd->name = ft_strdup(ast->value[0]);
-	cmd->args = ast->value;
-	cmd->argc = (int)ft_tablen((const char **)ast->value);
+	else
+	{
+		cmd->name = ft_strdup(ast->value[0]);
+		cmd->args = ast->value;
+		cmd->argc = (int)ft_tablen((const char **)ast->value);
+	}
 	cmd->input_fd = in_out[0];
 	cmd->output_fd = in_out[1];
 	cmd->to_close = in_out[2];

@@ -25,7 +25,6 @@ static char	*handle_exit_code(t_minishell *minishell, char *res)
 
 	tmp = ft_itoa(minishell->exit_code);
 	res = ft_strjoin_free(res, tmp);
-	free(tmp);
 	return (res);
 }
 

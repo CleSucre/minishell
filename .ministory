@@ -2452,3 +2452,20 @@ $TEST
 $TEST
 $TEST
 clear
+$TEST
+$TEST
+$TEST | grep m
+$TEST
+echo $TEST
+$TEST
+$TEST
+grep "pattern" file.txt
+grep "pattern" Makefile
+echo $?
+echo $?
+echo $?
+$TEST
+echo $?
+echo $?
+echo $?
+echo $?
