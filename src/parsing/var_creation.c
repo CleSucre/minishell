@@ -48,9 +48,11 @@ int	modify_env_input(t_minishell *minishell, char *input, char *value)
 /*
 	int	add_value_arg(t_minishell *minishell, char *input, char *value)
 	{
+		(void)value; //TODO: void value or idk because i cant compile
 		//Old value, new value, concatenate both of them using modify env input
 		int is_here;
 
+		(void)value;
 		is_here = find_table_args(minishell->env, input);
 		if (is_here == -1)
 			ft_printf("Create a new env variable\n");

@@ -75,9 +75,9 @@ static int	alloc_term(t_minishell *minishell)
 		return (1);
 	}
 	get_terminal_size(minishell->term);
-	minishell->term->cols = 0;
-	minishell->term->rows = 0;
-	minishell->term->begin_rows = 0;
+//	minishell->term->cols = 0;
+//	minishell->term->rows = 0;
+	minishell->term->begin_rows = minishell->term->rows;
 	return (0);
 }
 

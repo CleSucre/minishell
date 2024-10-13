@@ -82,8 +82,20 @@ void	arrow_down_action(t_minishell *minishell, t_history *new_history)
  */
 void	arrow_left_action(t_minishell *minishell)
 {
-	minishell->term->cols--;
-	ft_putstr_fd("\033[1D", 1);
+	t_term *term = minishell->term;
+	if (term->rows - term->begin_rows == 0 && term->cols <= get_prompt_len(minishell) + 1)
+			return ;
+	if (term->rows - term->begin_rows != 0 && term->cols <= 1)
+	{
+		ft_putstr_fd("\033[F", 1);
+		ft_printf("\033[%dG", term->ws_cols);
+		term->cols = term->ws_cols;
+		term->rows--;
+		ft_putstr_fd("\033[1;33m", 1);
+		return ;
+	}
+	ft_putstr_fd("\033[D", 1);
+	term->cols--;
 }
 
 /**
@@ -93,6 +105,23 @@ void	arrow_left_action(t_minishell *minishell)
  */
 void	arrow_right_action(t_minishell *minishell)
 {
-	minishell->term->cols++;
-	ft_putstr_fd("\033[1C", 1);
+	t_term 			*term;
+	unsigned int	input_len;
+
+	term  = minishell->term;
+	input_len = (unsigned int)ft_tablen((const char **)minishell->input);
+	if (term->rows - term->begin_rows == 0 && term->cols - get_prompt_len(minishell) >= input_len + 1)
+		return ;
+	else if (term->rows - term->begin_rows != 0 &&  ((term->rows - term->begin_rows) * term->ws_cols) - get_prompt_len(minishell) + term->cols >= input_len + 2)
+		return ;
+	if (term->cols >= term->ws_cols)
+	{
+		ft_putstr_fd("\033[E", 1);
+		term->cols = 1;
+		term->rows++;
+		ft_putstr_fd("\033[1;32m", 1);
+		return ;
+	}
+	ft_putstr_fd("\033[C", 1);
+	term->cols++;
 }
