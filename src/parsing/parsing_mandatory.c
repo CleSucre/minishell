@@ -20,8 +20,9 @@
  * @param t_ast_node **root Root of the AST being constructed.
  * @param t_ast_node **last_command Last command processed
  * 					(to attach arguments or commands).
+ * @return int 1 if the function succeeded, 0 otherwise.
  */
-void	process_command(t_token **tokens, t_ast_node **root,
+int	process_command(t_token **tokens, t_ast_node **root,
 						t_ast_node **last_command)
 {
 	char		**command_tokens;
@@ -29,15 +30,16 @@ void	process_command(t_token **tokens, t_ast_node **root,
 
 	command_tokens = extract_command_tokens(tokens);
 	if (!command_tokens)
-		return ;
+		return (0);
 	command_node = new_ast_node(AST_COMMAND, command_tokens);
 	if (!command_node)
-		return ;
+		return (0);
 	if (*last_command == NULL)
 		*root = command_node;
 	else if ((*last_command)->right == NULL)
 		(*last_command)->right = command_node;
 	*last_command = command_node;
+	return (1);
 }
 
 /**
@@ -46,7 +48,7 @@ void	process_command(t_token **tokens, t_ast_node **root,
  * @param t_token *current Current token (argument).
  * @param t_ast_node *last_command Last command node.
  */
-void	process_argument(t_token **current, t_ast_node *last_command)
+int	process_argument(t_token **current, t_ast_node *last_command)
 {
 	int	i;
 
@@ -59,6 +61,7 @@ void	process_argument(t_token **current, t_ast_node *last_command)
 		last_command->value[i + 1] = NULL;
 	}
 	*current = (*current)->next;
+	return (1);
 }
 
 /**
@@ -68,7 +71,7 @@ void	process_argument(t_token **current, t_ast_node *last_command)
  * @param t_ast_node **root Root of the AST being constructed.
  * @return t_ast_node* The pipe node created.
  */
-t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root,
+int	process_pipe(t_token **tokens, t_ast_node **root,
 						t_ast_node **last_command)
 {
 	t_ast_node	*pipe_node;
@@ -79,7 +82,6 @@ t_ast_node	*process_pipe(t_token **tokens, t_ast_node **root,
 	pipe_node->left = *root;
 	*tokens = (*tokens)->next;
 	new_last_command = NULL;
-	build_ast(tokens, &pipe_node->right, &new_last_command);
 	*root = pipe_node;
-	return (pipe_node);
+	return (build_ast(tokens, &pipe_node->right, &new_last_command));
 }

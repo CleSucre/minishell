@@ -21,7 +21,7 @@
  * @param t_ast_node **last_command Last command processed.
  * @return t_ast_node* The operator node created.
  */
-t_ast_node	*process_operator(t_token **tokens, t_ast_node **root,
+int	process_operator(t_token **tokens, t_ast_node **root,
 							t_ast_node **last_command)
 {
 	t_ast_node_type	op_type;
@@ -45,8 +45,7 @@ t_ast_node	*process_operator(t_token **tokens, t_ast_node **root,
 	}
 	*tokens = (*tokens)->next;
 	new_last_command = NULL;
-	build_ast(tokens, &operator_node->right, &new_last_command);
-	return (*root);
+	return (build_ast(tokens, &operator_node->right, &new_last_command));
 }
 
 /**
@@ -56,7 +55,7 @@ t_ast_node	*process_operator(t_token **tokens, t_ast_node **root,
  * @param t_ast_node **root Root of the AST being constructed.
  * @param t_ast_node **last_command Last command processed.
  */
-void	process_subshell(t_token **tokens, t_ast_node **root,
+int	process_subshell(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command)
 {
 	t_ast_node	*subshell_node;
@@ -65,7 +64,8 @@ void	process_subshell(t_token **tokens, t_ast_node **root,
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
 	*tokens = (*tokens)->next;
 	new_last_command = NULL;
-	build_ast(tokens, &subshell_node->left, &new_last_command);
+	if (!build_ast(tokens, &subshell_node->left, &new_last_command))
+		return (0);
 	while (*tokens != NULL && (*tokens)->type != TOKEN_PARENTHESIS_CLOSE)
 		*tokens = (*tokens)->next;
 	if (*tokens != NULL && (*tokens)->type == TOKEN_PARENTHESIS_CLOSE)
@@ -76,6 +76,7 @@ void	process_subshell(t_token **tokens, t_ast_node **root,
 		*root = subshell_node;
 	else if (*last_command != NULL)
 		subshell_node->right = subshell_node;
+	return (1);
 }
 
 /**
@@ -84,9 +85,9 @@ void	process_subshell(t_token **tokens, t_ast_node **root,
  *
  * @param t_token **tokens Pointer to the current list of tokens.
  * @param t_ast_node **root Root of the AST being constructed.
- * @return t_ast_node* The redirection node created.
+ * @return int 1 if the function succeeded, 0 otherwise.
  */
-void	process_redirection(t_token **tokens, t_ast_node **root,
+int	process_redirection(t_token **tokens, t_ast_node **root,
 							t_ast_node **last_command, int is_last)
 {
 	t_ast_node_type	redir_type;
@@ -105,7 +106,7 @@ void	process_redirection(t_token **tokens, t_ast_node **root,
 	else
 	{
 		*root = NULL;
-		return ;
+		return (0);
 	}
 	redir_node = new_ast_node(redir_type, NULL);
 	redir_node->left = *root;
@@ -116,4 +117,5 @@ void	process_redirection(t_token **tokens, t_ast_node **root,
 		redir_node->right = new_ast_node(AST_COMMAND, file_tokens);
 	}
 	*root = redir_node;
+	return (1);
 }

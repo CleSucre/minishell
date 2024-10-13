@@ -65,16 +65,16 @@ typedef struct s_ast_node {
 // #						PARSER						  #
 // ########################################################
 
-void				build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
 t_ast_node			*parse_input(t_minishell *minishell, char *input);
 
-void				process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-void				process_argument(t_token **current, t_ast_node *last_command);
-t_ast_node			*process_pipe(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					process_argument(t_token **current, t_ast_node *last_command);
+int					process_pipe(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
 
-t_ast_node			*process_operator(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-void				process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-void				process_redirection(t_token **tokens, t_ast_node **root, t_ast_node **last_command, int is_last);
+int					process_operator(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					process_redirection(t_token **tokens, t_ast_node **root, t_ast_node **last_command, int is_last);
 
 // ########################################################
 // #					TOKEN_MANAGER					  #

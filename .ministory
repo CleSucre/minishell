@@ -2053,3 +2053,24 @@ ls && ls -la | grep m | cat -e
 ls && ls -la | grep m | cat -e
 ls && ls -la | grep m && cat -e
 git add -A
+ls
+ls && ls -la | grep m && cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e zdzdzdz
+ls && ls -la | grep m | cat -e Makefile
+ls && ls -la | grep m | cat -e Makefile
+ls && ls -la | grep m | cat -e Makefile
+ls && ls -la | grep m | cat -e
+ls && ls -la | grep m | cat -e Makefile
+ls && ls -la | grep m | cat -e Makefile
+ls
+ls && ls -la | grep m | cat -e Makefile
+ls && ls -la | grep m | cat -e Makefile
+ls
+ls
+ls && ls -la | grep m | cat -e Makefile
+ls && ls -la | grep m | cat -e
+clear

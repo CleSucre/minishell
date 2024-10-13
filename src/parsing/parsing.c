@@ -50,55 +50,57 @@ static char	*check_input(t_minishell *minishell, char *input)
  * @param t_token **current
  * @param t_ast_node **root
  * @param t_ast_node **last_command
- * @return int
+ * @return int 1 if the function succeeded, 0 otherwise.
  */
-static void	build_ast_secondary(t_token **current, t_ast_node **root,
+static int	build_ast_secondary(t_token **current, t_ast_node **root,
 							t_ast_node **last_command)
 {
 	if ((*current)->type == TOKEN_REDIR_IN
 		|| (*current)->type == TOKEN_HEREDOC)
-		process_redirection(current, root, last_command, 1);
+		return (process_redirection(current, root, last_command, 1));
 	else if ((*current)->type == TOKEN_COMMAND)
-		process_command(current, root, last_command);
+		return (process_command(current, root, last_command));
 	else if ((*current)->type == TOKEN_ARGUMENT)
-		process_argument(current, *last_command);
+		return (process_argument(current, *last_command));
 	else if ((*current)->type == TOKEN_PARENTHESIS_OPEN)
-		process_subshell(current, root, last_command);
+		return (process_subshell(current, root, last_command));
 	else
 		*current = (*current)->next;
+	return (1);
 }
 
 /**
  * @brief Generate the AST from the list of tokens given.
  *
  * @param t_token **tokens List of tokens to build the node from.
- * @return t_ast_node* The generated AST node.
+ * @return int 1 if the function succeeded, 0 otherwise.
  */
-void	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
+int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 {
 	t_token		*current;
 
 	current = *tokens;
 	if (current->type == TOKEN_PARENTHESIS_CLOSE)
-		return ;
+		return (1);
 	else if (current->type == TOKEN_PIPE)
 	{
 		process_pipe(&current, root, last_command);
-		return ;
+		return (1);
 	}
 	else if (current->type == TOKEN_AND_OPERATOR
 		|| current->type == TOKEN_OR_OPERATOR)
 	{
 		process_operator(&current, root, last_command);
-		return ;
+		return (1);
 	}
 	else if (current->type == TOKEN_REDIR_OUT
 		|| current->type == TOKEN_REDIR_OUT_APPEND)
 		process_redirection(&current, root, last_command, 0);
-	else
-		build_ast_secondary(&current, root, last_command);
+	else if (!build_ast_secondary(&current, root, last_command))
+		return (0);
 	if (current)
-		build_ast(&current, root, last_command);
+		return (build_ast(&current, root, last_command));
+	return (1);
 }
 
 /**
@@ -127,10 +129,12 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	debug_tokens(tokens);
 	ast = NULL;
 	last_command = NULL;
-	build_ast(&tokens, &ast, &last_command);
-	free_tokens(tokens);
-	if (!ast)
+	if (!build_ast(&tokens, &ast, &last_command))
+	{
+		free_tokens(tokens);
 		return (NULL);
+	}
+	free_tokens(tokens);
 	debug_ast(ast);
 	return (ast);
 }
