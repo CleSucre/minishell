@@ -35,6 +35,7 @@ int	history_create_file(void)
  * @brief Get ministory file fd for reading and writing
  * 			If the file does not exist, it will be created
  *
+ * @param t_minishell *minishell Minishell structure
  * @return int fd if success, -1 if failed
  */
 int	history_goto_file(t_minishell *minishell)
@@ -59,7 +60,7 @@ int	history_goto_file(t_minishell *minishell)
 /**
  * @brief Load the history from file to memory
  *
- * @param t_history *history
+ * @param t_minishell *minishell Minishell structure
  * @return int 0 if success, -1 if failed
  */
 int	history_load(t_minishell *minishell)

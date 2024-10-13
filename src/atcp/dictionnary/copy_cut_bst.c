@@ -14,8 +14,9 @@
 
 /**
  * @brief Copy a specific branch in the BST
- * @param root Dict structure
- * @return t_dict * The new branch
+ *
+ * @param t_dict *root Dict structure
+ * @return t_dict* The new branch
  */
 t_dict	*bst_copy(t_dict *root)
 {
@@ -39,7 +40,9 @@ t_dict	*bst_copy(t_dict *root)
 
 /**
  * @brief Cut a specific branch in the BST
- * @param root Dict structure
+ *
+ * @param t_dict *root Dict structure
+ * @param char *key Name specifically search in the BST
  */
 void	cut_node(t_dict *root, char *key)
 {

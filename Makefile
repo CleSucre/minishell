@@ -18,18 +18,17 @@ NAME					= minishell
 #									SOURCES									#
 #############################################################################
 
-
 SRCS					= main.c
 
 SRCS_CONFIG				= term_config.c
 
 SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c
 
-SRCS_ENVIRONMENT		= env_variable.c
+SRCS_ENVIRONMENT		= env_utils.c path_utils.c variable_utils.c variable_replacer.c
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
-SRCS_EXECUTION			= execute_cmd.c execution_types.c execute_path.c execution.c signal_handler.c
+SRCS_EXECUTION			= execute_cmd.c execution_types.c execute_path.c execution.c signal_handler.c redirections_input.c redirections_output.c pipes.c
 
 SRCS_COMMANDS			= command_maker.c flags_utils.c command_manager.c
 

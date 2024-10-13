@@ -39,9 +39,9 @@ static t_history	*history_create(char *cmd, t_history *older,
  * 			If the command is the same as the last one, it will not be added
  * 			to memory but will still be added to the file for log purposes
  *
- * @param t_history *history
- * @param char *cmd
- * @param int fs save to file if 1
+ * @param t_minishell *minishell Minishell structure
+ * @param char *cmd Command to add
+ * @param int fs save to file if 1 otherwise 0
  * @return int 0 if added, -1 if failed
  */
 int	history_add(t_minishell *minishell, char *cmd, int fs)
@@ -107,7 +107,8 @@ void	history_reset(t_minishell *minishell)
 /**
  * @brief Print the content of history file to the terminal
  *
- * @param t_minishell *minishell
+ * @param t_minishell *minishell Minishell structure
+ * @param int fd file descriptor to print to
  * @return void
  */
 void	history_print(t_minishell *minishell, int fd)

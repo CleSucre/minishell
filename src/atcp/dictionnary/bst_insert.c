@@ -14,10 +14,11 @@
 
 /**
  * @brief Insert a new node in the BST as the left next of the root
- * @param root - parent node
- * @param key - name of directory
- * @param value - file/exec/..
- * @return
+ *
+ * @param t_dict *root - parent node
+ * @param t_dict *node - new node
+ * @param char *key - name of directory
+ * @param char *value - file/exec/..
  */
 static void	insert_l_node(t_dict *root, t_dict *node, char *key, char *value)
 {
@@ -38,10 +39,11 @@ static void	insert_l_node(t_dict *root, t_dict *node, char *key, char *value)
 
 /**
  * @brief Insert a new node in the BST as the right next of the root
- * @param root - parent node
- * @param key - name of directory
- * @param value - file/exec/..
- * @return
+ *
+ * @param t_dict *root - parent node
+ * @param t_dict *node - new node
+ * @param char *key - name of directory
+ * @param char *value - file/exec/..
  */
 static void	insert_r_node(t_dict *root, t_dict *node, char *key, char *value)
 {
@@ -62,10 +64,12 @@ static void	insert_r_node(t_dict *root, t_dict *node, char *key, char *value)
 
 /**
  * @brief Insert a new node in the BST according to an alphabetical order
- * @param root - parent node
- * @param key - name of directory
- * @param value - file/exec/..
- * @return
+ *
+ * @param t_dict *root - parent node
+ * @param t_dict *node - new node
+ * @param char *key - name of directory
+ * @param char *value - file/exec/..
+ * @return t_dict* The new root
  */
 t_dict	*insert_node(t_dict *root, t_dict *node, char *key, char *value)
 {

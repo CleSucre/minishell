@@ -82,8 +82,7 @@ void put_in_string(t_minishell *minishell, char *new)
  * @brief Delete a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
  *
- * @param char *input	String to delete char
- * @param size_t cols	Position to delete char
+ * @param t_minishell *minishell
  * @return void
  */
 void	erase_in_string(t_minishell *minishell)
@@ -165,7 +164,6 @@ void	edit_input(t_minishell *minishell, char *new)
  * TODO: replace this function by a move_cursor function
  *
  * @param size_t len
- * @return void
  */
 void	erase_term(size_t len)
 {

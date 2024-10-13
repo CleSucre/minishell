@@ -81,6 +81,12 @@ static int	alloc_term(t_minishell *minishell)
 	return (0);
 }
 
+/**
+ * @brief Alloc completion structure
+ *
+ * @param t_minishell *minishell
+ * @return int 0 on success, 1 on failure
+ */
 static int	alloc_tab(t_minishell *minishell)
 {
 	minishell->completion = ft_calloc(1, sizeof(t_completion));
@@ -111,7 +117,6 @@ t_minishell	*alloc_minishell(void)
 	if (!minishell)
 		return (NULL);
 	minishell->exit_code = 0;
-	minishell->current_cmd = NULL;
 	if (alloc_cache(minishell))
 		return (NULL);
 	if (alloc_history(minishell))

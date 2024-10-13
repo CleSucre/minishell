@@ -46,7 +46,7 @@ void	arrow_up_action(t_minishell *minishell, t_history *new_history)
  * @brief Process action of cursor down
  *
  * @param t_minishell *minishell
- * @param char **input
+ * @param t_history *new_history
  */
 void	arrow_down_action(t_minishell *minishell, t_history *new_history)
 {

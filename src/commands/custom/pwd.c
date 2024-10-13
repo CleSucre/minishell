@@ -29,8 +29,7 @@
  *		-P (physical) : resolve symlink and give real path
  *	@return 0 if success, 1 if fail
  */
-
-void	command_pwd(t_cmd *cmd)
+int	command_pwd(t_cmd *cmd)
 {
 	char	*path;
 	char	buffer[BUFFER_SIZE];
@@ -42,8 +41,9 @@ void	command_pwd(t_cmd *cmd)
 		ft_fprintf(2, "Cannot get current directory path\n");
 		if (errno == ERANGE)
 			ft_fprintf(2, "Buffer size is too small\n");
-		exit(EXIT_FAILURE);
+		return (1);
 	}
 	else
 		ft_fprintf(1, "%s\n", path);
+	return (0);
 }

@@ -106,7 +106,6 @@ typedef struct s_minishell
 	int					exit_code;
 	unsigned int		history_pos;
 	unsigned int		history_size;
-	struct s_cmd		*current_cmd;
 }		t_minishell;
 
 #endif

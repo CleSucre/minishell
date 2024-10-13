@@ -22,6 +22,8 @@ static char	*get_token_type(t_token_type type)
 {
 	if (type == TOKEN_COMMAND)
 		return ("TOKEN_COMMAND");
+	else if (type == TOKEN_VARIABLE)
+		return ("TOKEN_VARIABLE");
 	else if (type == TOKEN_ARGUMENT)
 		return ("TOKEN_ARGUMENT");
 	else if (type == TOKEN_AND_OPERATOR)
@@ -42,8 +44,6 @@ static char	*get_token_type(t_token_type type)
 		return ("TOKEN_PARENTHESIS_OPEN");
 	else if (type == TOKEN_PARENTHESIS_CLOSE)
 		return ("TOKEN_PARENTHESIS_CLOSE");
-	else if (type == TOKEN_ASSIGNMENT)
-		return ("TOKEN_ASSIGNMENT");
 	return ("UNKNOWN");
 }
 
@@ -63,10 +63,6 @@ static char	*get_ast_node_type_secondary(t_ast_node_type type)
 		return ("AST_REDIR_IN");
 	else if (type == AST_HEREDOC)
 		return ("AST_HEREDOC");
-	else if (type == AST_ASSIGNMENT)
-		return ("AST_ASSIGNMENT");
-	else if (type == AST_VARIABLE)
-		return ("AST_VARIABLE");
 	return ("UNKNOWN");
 }
 
@@ -86,8 +82,6 @@ static char	*get_ast_node_type_primary(t_ast_node_type type)
 		return ("AST_AND");
 	else if (type == AST_OR)
 		return ("AST_OR");
-	else if (type == AST_SEQUENCE)
-		return ("AST_SEQUENCE");
 	else if (type == AST_SUBSHELL)
 		return ("AST_SUBSHELL");
 	return (get_ast_node_type_secondary(type));
@@ -110,8 +104,8 @@ void	debug_tokens(t_token *tokens)
 		ft_printf("\n%s[DEBUG] ====== tokens [%d] ======%s\n", BLUE, i, RESET);
 		ft_printf("token: %s%s%s\n", YELLOW, tokens->value, RESET);
 		ft_printf("type str: %s%s%s (id: %d)\n",
-				  BOLDWHITE, get_token_type(tokens->type),
-				  RESET, tokens->type);
+			BOLDWHITE, get_token_type(tokens->type),
+			RESET, tokens->type);
 		tokens = tokens->next;
 		i++;
 	}
@@ -132,12 +126,10 @@ static void	debug_ast_node(t_ast_node *ast, int level)
 	if (!space)
 		return ;
 	ft_memset(space, ' ', level * 4);
-
 	ft_printf("\n%s%s[DEBUG] ====== NODE ======%s\n", space, BLUE, RESET);
-	ft_printf("%stype str: %s%s%s (id: %d)\n", space, BOLDWHITE,
-			  get_ast_node_type_primary(ast->type), RESET, ast->type);
-
-	// Print the command and its arguments if it's a command node
+	ft_printf("%stype str: %s%s%s (id: %d | is_last: %d)\n", space,
+		BOLDWHITE, get_ast_node_type_primary(ast->type), RESET,
+		ast->type, ast->is_last);
 	if (ast->value && ast->type == AST_COMMAND)
 	{
 		ft_printf("%scommand and args:\n", space);
@@ -177,11 +169,7 @@ void	debug_children(t_ast_node *ast, int level)
 {
 	if (!DEBUG || !ast)
 		return ;
-
-	// Afficher les informations du nœud courant
 	debug_ast_node(ast, level);
-
-	// Afficher les enfants (gauche et droite)
 	debug_ast_child(ast->left, level, "Left next:");
 	debug_ast_child(ast->right, level, "Right next:");
 }
@@ -193,22 +181,24 @@ void	debug_children(t_ast_node *ast, int level)
  */
 void	debug_ast(t_ast_node *ast)
 {
+	int	i;
+
 	if (!DEBUG)
 		return ;
-
 	ft_printf("\n%s[DEBUG] ====== AST NODE ======%s\n", BLUE, RESET);
-	ft_printf("type: %s%s%s (id: %d)\n", BOLDWHITE, get_ast_node_type_primary(ast->type), RESET, ast->type);
-
-	// Imprimer les arguments de la commande (si c'est un nœud de commande)
+	ft_printf("type: %s%s%s (id: %d)\n", BOLDWHITE,
+		get_ast_node_type_primary(ast->type), RESET, ast->type);
+	i = 0;
 	if (ast->type == AST_COMMAND)
 	{
 		ft_printf("command and args: ");
-		for (int i = 0; ast->value && ast->value[i]; i++)
+		while (ast->value && ast->value[i])
+		{
 			ft_printf("%s%s ", YELLOW, ast->value[i]);
+			i++;
+		}
 		ft_printf("%s\n", RESET);
 	}
-
-	// Imprimer les enfants
 	debug_ast_child(ast->left, 1, "Left next:");
 	debug_ast_child(ast->right, 1, "Right next:");
 }

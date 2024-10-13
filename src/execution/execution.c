@@ -13,42 +13,77 @@
 #include "minishell.h"
 
 /**
- * @brief Close unnecessary file descriptors after command execution
+ * @brief Execute the ast respecting AND operator logic
  *
- * @param int in_out[]
- * @param int fd[]
+ * @param t_minishell *minishell
+ * @param t_ast_node *ast
+ * @param int *pipes
+ * @param int *in_out
+ * @return int 0 on success, 1 on exit request
  */
-static void	close_fds(int in_out[2], int *fd)
+int	execute_and(t_minishell *minishell, t_ast_node *ast,
+				int *pipes, int *in_out)
 {
-	if (in_out[0] != STDIN_FILENO)
-		close(in_out[0]);
-	if (in_out[1] != STDOUT_FILENO)
-		close(in_out[1]);
-	if (fd[1] != -1)
-		close(fd[1]);
+	int	res;
+
+	res = execute_ast(minishell, ast->left, pipes, in_out);
+	if (res != 0)
+		return (res);
+	execute_ast(minishell, ast->right, pipes, in_out);
+	return (0);
 }
 
 /**
- * @brief Setup pipes according to the command
- * 			if its a redirection or a simple pipe for the next cmd
+ * @brief Execute the ast respecting OR operator logic
  *
- * @param int *pipes pipe[0] = read, pipe[1] = write
- * @param int *in_out in_out[0] = read, in_out[1] = write, in_out[2] = to_close
+ * @param t_minishell *minishell
+ * @param t_ast_node *ast
+ * @param int *pipes
+ * @param int *in_out
+ * @return int 0 on success, 1 on exit request
  */
-static void setup_pipes(int *pipes, int *in_out, int final_out)
+int	execute_or(t_minishell *minishell, t_ast_node *ast,
+				int *pipes, int *in_out)
 {
-	if (final_out)
+	int	res;
+
+	res = execute_ast(minishell, ast->left, pipes, in_out);
+	if (res == 0)
+		return (res);
+	execute_ast(minishell, ast->right, pipes, in_out);
+	return (0);
+}
+
+/**
+ * @brief Execute the ast respecting subshell logic
+ *
+ * @param t_minishell *minishell
+ * @param t_ast_node *ast
+ * @param int *pipes
+ * @param int *in_out
+ * @return int 0 on success, 1 on exit request
+ */
+int	execute_subshell(t_minishell *minishell, t_ast_node *ast,
+					int *pipes, int *in_out)
+{
+	int		res;
+	char	**tmp_env;
+	char	**old_env;
+
+	tmp_env = ft_tabdup((const char **)minishell->env);
+	if (!tmp_env)
 	{
-		in_out[1] = STDOUT_FILENO;
-		in_out[2] = -1;
+		perror("Error: ft_tabdup failed");
+		return (-1);
 	}
-	else if (pipe(pipes) == -1)
-	{
-		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	in_out[1] = pipes[1];
-	in_out[2] = pipes[0];
+	old_env = minishell->env;
+	minishell->env = tmp_env;
+	res = execute_ast(minishell, ast->left, pipes, in_out);
+	minishell->env = old_env;
+	ft_tabfree(tmp_env);
+	reload_env(minishell->env);
+	wait_for_processes();
+	return (res);
 }
 
 /**
@@ -58,92 +93,31 @@ static void setup_pipes(int *pipes, int *in_out, int final_out)
  *
  * @param t_minishell *minishell
  * @param t_ast_node *ast
- * @return int return 1 if the command is an exit request, 0 otherwise
+ * @return Last command exit code
  */
-static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out)
+int	execute_ast(t_minishell *minishell, t_ast_node *ast,
+				int *pipes, int *in_out)
 {
-	int	res;
-
 	if (!ast)
 		return (0);
 	if (ast->type == AST_COMMAND)
-	{
-		minishell->exit_code = execute_cmd(minishell, ast, in_out);
-	}
+		return (execute_cmd(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_PIPE)
-	{
-		setup_pipes(pipes, in_out, 0);
-		res = execute_ast(minishell, ast->left, pipes, in_out);
-		if (res == 1)
-			return (1);
-		close_fds(in_out, pipes);
-		in_out[0] = pipes[0];
-		setup_pipes(pipes, in_out, 1);
-		res = execute_ast(minishell, ast->right, pipes, in_out);
-		if (res == 1)
-			return (1);
-	}
+		return (execute_pipe(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_AND)
-	{
-		
-	}
+		return (execute_and(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_OR)
-	{
-	}
-	else if (ast->type == AST_SEQUENCE)
-	{
-	}
+		return (execute_or(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_SUBSHELL)
-	{
-	}
+		return (execute_subshell(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_REDIR_IN)
-	{
-		if (ast->right->value[0] == NULL)
-		{
-			ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
-			return (1);
-		}
-		in_out[0] = open(ast->right->value[0], O_RDONLY);
-		if (in_out[0] == -1)
-		{
-			ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
-			return (1);
-		}
-		execute_ast(minishell, ast->left, pipes, in_out);
-		close(in_out[0]);
-	}
-	else if (ast->type == AST_REDIR_OUT)
-	{
-		if (ast->right->value[0] == NULL)
-		{
-			ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
-			return (1);
-		}
-		in_out[1] = open(ast->right->value[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (in_out[1] == -1)
-		{
-			ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
-			return (1);
-		}
-		execute_ast(minishell, ast->left, pipes, in_out);
-		close(in_out[1]);
-	}
-	else if (ast->type == AST_REDIR_OUT_APPEND)
-	{
-		//TODO: find a way to append to the file
-	}
-	else if (ast->type == AST_ASSIGNMENT)
-	{
-		//TODO: call the function to set the variable in the path
-		return (0);
-	}
+		return (execute_redirect_input(minishell, ast, pipes, in_out));
 	else if (ast->type == AST_HEREDOC)
-	{
-	}
-	else if (ast->type == AST_VARIABLE)
-	{
-	}
-	//execute the node corresponding to type
+		return (execute_heredoc(minishell, ast, pipes, in_out));
+	else if (ast->type == AST_REDIR_OUT)
+		return (execute_redirect_output(minishell, ast, pipes, in_out));
+	else if (ast->type == AST_REDIR_OUT_APPEND)
+		return (execute_redirect_output_append(minishell, ast, pipes, in_out));
 	return (0);
 }
 
@@ -157,9 +131,8 @@ static int	execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int 
 int	execute_input(t_minishell *minishell, char *input)
 {
 	t_ast_node	*ast;
-	int			res;
-	int 		in_out[3];
-	int 		pipes[2];
+	int			in_out[3];
+	int			pipes[2];
 
 	in_out[0] = STDIN_FILENO;
 	in_out[1] = STDOUT_FILENO;
@@ -169,13 +142,11 @@ int	execute_input(t_minishell *minishell, char *input)
 	ast = parse_input(minishell, input);
 	if (!ast)
 		return (0);
-	disable_termios(minishell->term);
 	minishell->ast = ast;
-	res = execute_ast(minishell, ast, pipes, in_out);
-	close_fds(in_out, pipes);
+	disable_termios(minishell->term);
+	execute_ast(minishell, ast, pipes, in_out);
 	enable_termios(minishell->term);
 	free_ast(ast);
 	minishell->ast = NULL;
-	minishell->exit_code = res;
-	return (res);
+	return (minishell->exit_code);
 }

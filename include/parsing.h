@@ -20,6 +20,7 @@
 typedef enum s_token_type
 {
 	TOKEN_COMMAND,              // Command (e.g., "ls", "echo", etc.)
+	TOKEN_VARIABLE,             // Variable (e.g., "$HOME")
 	TOKEN_ARGUMENT,             // Argument of a command (e.g., "-l", "/home/user")
 	TOKEN_AND_OPERATOR,         // Logical operator (&&)
 	TOKEN_OR_OPERATOR,          // Logical operator (||)
@@ -30,8 +31,6 @@ typedef enum s_token_type
 	TOKEN_HEREDOC,              // Heredoc redirection (<<)
 	TOKEN_PARENTHESIS_OPEN,     // Opening parenthesis
 	TOKEN_PARENTHESIS_CLOSE,    // Closing parenthesis
-	TOKEN_VARIABLE,             // Variable
-	TOKEN_ASSIGNMENT,           // Variable assignment
 }   t_token_type;
 
 typedef struct s_token
@@ -45,22 +44,20 @@ typedef enum s_ast_node_type
 {
 	AST_COMMAND,            // A simple command
 	AST_PIPE,               // A pipe '|'
-
 	AST_AND,                // Logical AND '&&'
 	AST_OR,                 // Logical OR '||'
-	AST_SEQUENCE,           // Sequence of commands
 	AST_SUBSHELL,           // A subshell '(...)'
 	AST_REDIR_OUT,          // Output redirection
 	AST_REDIR_OUT_APPEND,   // Output redirection in append mode (>>)
 	AST_REDIR_IN,           // Input redirection
-	AST_ASSIGNMENT,         // Variable assignment
 	AST_HEREDOC,            // Heredoc redirection (<<)
-	AST_VARIABLE,           // Variable usage
 }   t_ast_node_type;
 
 typedef struct s_ast_node {
 	t_ast_node_type     type;           // Node type (command, operator, redirection)
 	char                **value;        // Command and arguments (for nodes of type NODE_COMMAND)
+	int 				is_last;		// Is the last command in a sequence
+	int 				in_pipe;		// Is the command in a pipe
 	struct s_ast_node   *left;          // Left subtree (command or sub-command)
 	struct s_ast_node   *right;         // Right subtree (command or sub-command)
 } t_ast_node;
@@ -69,18 +66,16 @@ typedef struct s_ast_node {
 // #						PARSER						  #
 // ########################################################
 
-t_ast_node			*build_ast(t_token **tokens);
+int					build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
 t_ast_node			*parse_input(t_minishell *minishell, char *input);
 
-void				process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-void				process_argument(t_token *current, t_ast_node *last_command);
-t_ast_node			*process_pipe(t_token **tokens, t_ast_node **root);
-t_ast_node			*process_assignment(t_token **tokens);
-t_ast_node			*process_variable(t_token **tokens);
+int					process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					process_argument(t_token **current, t_ast_node *last_command);
+int					process_pipe(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
 
-t_ast_node			*process_operator(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-void				process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-t_ast_node			*process_redirection(t_token **tokens, t_ast_node **root);
+int					process_operator(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
+int					process_redirection(t_token **tokens, t_ast_node **root, t_ast_node **last_command, int is_last);
 
 // ########################################################
 // #					TOKEN_MANAGER					  #
@@ -102,7 +97,7 @@ char				**extract_command_tokens(t_token **tokens);
 // ########################################################
 
 t_ast_node			*extract_full_commands(char *input);
-void			*parse_full_commands(t_ast_node *ast);
+void				*parse_full_commands(t_ast_node *ast);
 
 // ########################################################
 // #					PARSER_BONUS					  #
@@ -127,6 +122,7 @@ void			parse_args(t_ast_node *ast, char **args);
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
+int				is_node(t_ast_node *node, t_ast_node_type type);
 
 // ########################################################
 // #						DEBUG						  #

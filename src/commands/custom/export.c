@@ -56,12 +56,12 @@
 //} t_cmd;
 
 /**
+ * @brief Export the variable in the environment given in parameter
  *
- * @param cmd
- * @param minishell
+ * @param t_cmd *cmd Command structure
+ * @return int Exit code
  */
-
-void	command_export(t_cmd *cmd, t_minishell *minishell)
+int	command_export(t_cmd *cmd)
 {
 	// If no args, print all env
 	if (!cmd->args[1])

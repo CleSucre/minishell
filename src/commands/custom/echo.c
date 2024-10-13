@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Print the last argument with a special format if -n flag is present
+ *
+ * @param int output Output file descriptor
+ */
 static void	print_n_flag(int output)
 {
 	ft_putstr_fd(BACKGROUND_WHITE, output);
@@ -20,6 +25,12 @@ static void	print_n_flag(int output)
 	ft_putstr_fd(RESET, output);
 }
 
+/**
+ * @brief Print the arguments of the command
+ *
+ * @param t_cmd *cmd Command structure
+ * @return int Exit code
+ */
 int	command_echo(t_cmd *cmd)
 {
 	int		i;

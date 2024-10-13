@@ -14,7 +14,8 @@
 
 /**
  * @brief Free a specific node in the BST
- * @param node Dict structure
+ *
+ * @param t_dict *node Dict structure
  */
 void	free_node(t_dict *node)
 {
@@ -30,7 +31,8 @@ void	free_node(t_dict *node)
 
 /**
  * @brief Free the branch found
- * @param root Dict structure
+ *
+ * @param t_dict *root Dict structure
  */
 void	free_branch(t_dict *root)
 {

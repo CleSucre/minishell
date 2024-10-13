@@ -45,7 +45,6 @@ unsigned int	get_prompt_len(t_minishell *minishell)
  * @param t_minishell *minishell
  * @param int new_line 1 if a new line is needed
  * 				before the prompt 0 if not
- * @return void
  */
 void	print_terminal_prompt(t_minishell *minishell, int new_line)
 {

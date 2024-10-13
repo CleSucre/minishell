@@ -37,7 +37,7 @@ set(SRCS
 
         src/execution/execution.c
 
-        src/environment/env_variable.c
+        src/environment/env_utils.c
 
         src/debug/debug_execution.c
         src/debug/debug_history.c

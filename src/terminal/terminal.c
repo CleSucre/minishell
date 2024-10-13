@@ -17,9 +17,10 @@
  * 			- Left & right : Move cursor left and right as bash
  * 			- Up & Down : 	go search familiar
  * 				input user already wrote in .ministory
- * @param t_minishell	Struct which access to history
- * @param input			Current input from user
- * @return int			1 if an action is done, 0 if not
+ *
+ * @param t_minishell *minishell Minishell structure containing history data
+ * @param const char *seq Escape sequence
+ * @return int 1 if an action is done, 0 if not
  */
 int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 {
@@ -60,6 +61,8 @@ static void	begin_user_input(t_minishell *minishell)
  * @brief Process user input using termios
  *
  * @param t_minishell *minishell
+ * @param int signal
+ * @param ssize_t bits
  * @return int 0 if no error, 1 if error
  */
 int	process_user_input(t_minishell *minishell,
