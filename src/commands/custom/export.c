@@ -67,10 +67,10 @@ int	command_export(t_cmd *cmd)
 	if (!cmd->args[1])
 	{
 		ft_printf("Je dois print toutes les variables exportees\n");
-		return ;
+		return (0);
 	}
 	// if not in env, add it
-	else if (find_table_args(minishell->env, cmd->args[1]) == -1)
+	else if (find_table_args(cmd->env, cmd->args[1]) == -1)
 	{
 		ft_printf("Go function to create new node in env\n");
 	}
@@ -81,5 +81,5 @@ int	command_export(t_cmd *cmd)
 	}
 //	(void)cmd;
 //	(void)minishell;
-	return ;
+	return (0);
 }
