@@ -30,14 +30,16 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 		return (1);
 	}
 	in_out[0] = open(ast->right->value[0], O_RDONLY);
+	setup_pipes(pipes, in_out, 0);
+	ft_fprintf(STDERR_FILENO, "DEBUG: %d\n", in_out[0]);
 	if (in_out[0] == -1)
 	{
 		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
 		return (1);
 	}
-	//TODO: FIX THIS
+	close(pipes[0]);
+	close(pipes[1]);
 	execute_ast(minishell, ast->left, pipes, in_out);
-	close(in_out[0]);
 	return (0);
 }
 

@@ -2217,3 +2217,124 @@ ls -la | grep m && ls | sort | cat -e
 ls -la | (grep m) | sort | cat -e
 ls -la | (grep m) | sort | cat -e
 git add -A
+ls -la | grep m && ls | sort | cat -e
+ls -la | grep m && ls | sort | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+make fclean
+make debug
+make debug
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls
+ls -la | grep m && ls | cat -e
+clear
+clear
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+clear
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ls | cat -e
+ls -la | grep m && ss | cat -e
+ls -la | grep m | sort | cat -e
+ls -la | grep m && ls
+ls -la | grep m && ls
+cat -e < Makefile
+cat -e < Makefile
+cat -e < Makefile
+cat -e > test
+cat test
+cat -e >> test
+cat test
+cat -e < test
+cat -e < test
+clear
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test | sort
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test
+cat -e < test | grep Max
+cat -e < test | grep Max
+cat -e < test | grep Max
+cat -e < test
+cat -e < test
+cat -e < test | grep Max
+cat -e < test | grep Max
+cat -e < test | grep Max
+cat -e < test | grep Max
+cat -e < test
+cat -e < test
+cat -e < test | grep Max
+cat -e < test | grep Max
+cat < test | grep Max
+cat tesr
+cat test
+cat < test | grep Max
+cat < test | grep Max | sort
+cat < test | sort
+cat -e >> test
+cat < test | grep Max | sort
+cat -e << END
+cat < test | grep Max | sort
+cat < test | grep Max | sort
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max
+cat < test | grep Max | sort
+cat < test
+cat < test | grep Max | sort
+cat < test
+cat < test | grep Max | sort
+true && ls
+false && ls
+false || ls

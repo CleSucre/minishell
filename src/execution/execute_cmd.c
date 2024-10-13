@@ -168,6 +168,12 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 	}
 	destroy_cmd(cmd);
 	close_fds(in_out, pipes);
+	if (ast->is_last)
+	{
+		in_out[0] = STDIN_FILENO;
+		in_out[1] = STDOUT_FILENO;
+		in_out[2] = -1;
+	}
 	minishell->exit_code = res;
 	return (res);
 }
