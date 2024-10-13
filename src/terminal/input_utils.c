@@ -55,35 +55,35 @@ void put_in_string(t_minishell *minishell, char *new)
     unsigned int current_cols;
     unsigned int current_rows;
     unsigned int tablen;
+	unsigned int prompt_len;
 
     current_cols = minishell->term->cols;
     current_rows = minishell->term->rows;
-
+	prompt_len = get_prompt_len(minishell);
     ft_putstr_fd("\033[s", 1);
     if (current_rows - minishell->term->begin_rows == 0)
 	{
 		minishell->input = ft_tabinsert(minishell->input, new,
-			minishell->term->cols - get_prompt_len(minishell) - 1);
+			minishell->term->cols - prompt_len - 1);
         clear_term(minishell);
-		ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (minishell->term->cols - get_prompt_len(minishell) - 1), STDOUT_FILENO);
+		ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (minishell->term->cols - prompt_len - 1), STDOUT_FILENO);
 	}
     else
     {
         minishell->input = ft_tabinsert(minishell->input, new,
-            (current_rows * minishell->term->ws_cols) - get_prompt_len(minishell) + current_cols - 2);
-            minishell->term->rows -= current_rows - minishell->term->begin_rows;
-            clear_term(minishell);
-            minishell->term->rows += current_rows - minishell->term->begin_rows;
-        ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (current_rows * minishell->term->ws_cols - 1) - get_prompt_len(minishell) + current_cols -1, STDOUT_FILENO);
+            ((current_rows - minishell->term->begin_rows) * minishell->term->ws_cols) - prompt_len + current_cols - 2);
+        minishell->term->rows -= current_rows - minishell->term->begin_rows;
+        clear_term(minishell);
+        minishell->term->rows += current_rows - minishell->term->begin_rows;
+        ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + ((current_rows - minishell->term->begin_rows) * minishell->term->ws_cols - 1) - prompt_len + current_cols -1, STDOUT_FILENO);
     }
     tablen = ft_tablen((const char **)minishell->input);
-    while (tablen  + get_prompt_len(minishell) > minishell->term->ws_cols)
+    while (tablen + prompt_len > minishell->term->ws_cols * minishell->term->rows - 1)
       {
-
-        ft_putstr_fd("\033[A\r", 1);
+		ft_putstr_fd("\033[A\r", 1);
         tablen = tablen - minishell->term->ws_cols;
       }
-    ft_putstr_fd("\033[u\033[1C", 1);
+	  	ft_putstr_fd("\033[u\033[1C", 1);
 
 }
 
@@ -132,7 +132,7 @@ void	edit_input(t_minishell *minishell, char *new)
 	input_len = ft_tablen((const char **)minishell->input);
 	prompt_len = get_prompt_len(minishell);
 	if ((minishell->term->rows - minishell->term->begin_rows == 0 && minishell->term->cols - prompt_len < input_len + 1 )||
-    	(minishell->term->rows - minishell->term->begin_rows != 0 &&  (minishell->term->rows * minishell->term->ws_cols - 1) - prompt_len + minishell->term->cols < input_len))
+    	(minishell->term->rows - minishell->term->begin_rows != 0 &&  ((minishell->term->rows - minishell->term->begin_rows) * minishell->term->ws_cols - 1) - prompt_len + minishell->term->cols < input_len))
 	{
 		put_in_string(minishell, new);
 	}
