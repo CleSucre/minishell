@@ -96,7 +96,7 @@ char				**extract_command_tokens(t_token **tokens);
 // ########################################################
 
 t_ast_node			*extract_full_commands(char *input);
-void			*parse_full_commands(t_ast_node *ast);
+void				*parse_full_commands(t_ast_node *ast);
 
 // ########################################################
 // #					PARSER_BONUS					  #

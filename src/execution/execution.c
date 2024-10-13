@@ -25,17 +25,10 @@ int	execute_and(t_minishell *minishell, t_ast_node *ast,
 				int *pipes, int *in_out)
 {
 	int	res;
-	int	status;
 
 	res = execute_ast(minishell, ast->left, pipes, in_out);
-	ft_fprintf(STDERR_FILENO, "DEBUG 1\n");
-	status = wait_for_processes();
-	ft_fprintf(STDERR_FILENO, "DEBUG 2\n");
-	if (status != 0)
-		return (status);
-	if (res == 1)
+	if (res != 0)
 		return (res);
-	ft_fprintf(STDERR_FILENO, "exit code: %d\n", minishell->exit_code);
 	execute_ast(minishell, ast->right, pipes, in_out);
 	return (0);
 }
@@ -53,13 +46,9 @@ int	execute_or(t_minishell *minishell, t_ast_node *ast,
 				int *pipes, int *in_out)
 {
 	int	res;
-	int	status;
 
 	res = execute_ast(minishell, ast->left, pipes, in_out);
-	status = wait_for_processes();
-	if (status == 0)
-		return (status);
-	if (res == 1)
+	if (res == 0)
 		return (res);
 	execute_ast(minishell, ast->right, pipes, in_out);
 	return (0);

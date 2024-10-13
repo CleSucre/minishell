@@ -2338,3 +2338,88 @@ cat < test | grep Max | sort
 true && ls
 false && ls
 false || ls
+false && ls
+false || ls
+false || ls
+false && ls
+false && ls
+false || ls
+false && ls
+false && ls
+false || ls
+false || ls
+false || ls
+false || ls
+true || ls
+true || ls
+false || ls
+false && ls
+true && ls
+false || ls
+true || ls
+true || ls
+false || ls
+false || ls
+true || ls
+true && ls
+false && ls
+true || ls
+false || ls
+false || ls
+true || ls
+true || ls
+true || ls
+false || ls
+false || ls
+true || ls
+true || ls
+false || ls
+true || ls
+false || ls
+false || ls
+true || ls
+false || ls
+false || ls
+true || ls
+true || ls
+false || ls
+false || ls
+true || ls
+ls -la | gres || ls
+ls -la | gres || ls
+ls -la | gres || ls
+ls -la | gres || ls
+ls -la | gres || ls
+true || ls
+false || ls
+ls -la | grep m || ls
+ls -la | grep m || ls
+ls -la | grep m || ls
+ls -la | grex || ls
+true || ls
+ls -la | grex || ls
+false || ls
+false || ls
+true || ls
+true || ls
+deded || ls
+(deded) || ls
+(ls) || ls
+(ss) || ls
+(sx) || ls
+(sx) && ls
+true && ls
+true && ls
+true && ls
+true && ls
+false && ls
+true && ls
+exit 1 && ls
+exit 2 && ls
+exit 2 && ls
+exit 1972 && ls
+(sx) && ls
+(ss) && ls
+(ss | grep ES) && ls
+(ss | grep 127) && ls
+clear
