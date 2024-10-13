@@ -78,7 +78,6 @@ void put_in_string(t_minishell *minishell, char *new)
 }
 
 
-
 /**
  * @brief Delete a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
