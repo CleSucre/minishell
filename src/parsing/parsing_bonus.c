@@ -64,14 +64,14 @@ int	process_subshell(t_token **tokens, t_ast_node **root,
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
 	*tokens = (*tokens)->next;
 	new_last_command = NULL;
-	if (!build_ast(tokens, &subshell_node->left, &new_last_command))
+	if (build_ast(tokens, &subshell_node->left, &new_last_command) != -1)
+	{
+		ft_fprintf(2, "minishell: syntax error: expected ')'\n");
 		return (0);
+	}
 	while (*tokens != NULL && (*tokens)->type != TOKEN_PARENTHESIS_CLOSE)
 		*tokens = (*tokens)->next;
-	if (*tokens != NULL && (*tokens)->type == TOKEN_PARENTHESIS_CLOSE)
-	{
-		*tokens = (*tokens)->next;
-	}
+	*tokens = (*tokens)->next;
 	if (*root == NULL)
 		*root = subshell_node;
 	else if (*last_command != NULL)

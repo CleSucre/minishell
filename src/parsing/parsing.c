@@ -81,17 +81,15 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 
 	current = *tokens;
 	if (current->type == TOKEN_PARENTHESIS_CLOSE)
-		return (1);
+		return (-1);
 	else if (current->type == TOKEN_PIPE)
 	{
-		process_pipe(&current, root, last_command);
-		return (1);
+		return (process_pipe(&current, root, last_command));
 	}
 	else if (current->type == TOKEN_AND_OPERATOR
 		|| current->type == TOKEN_OR_OPERATOR)
 	{
-		process_operator(&current, root, last_command);
-		return (1);
+		return (process_operator(&current, root, last_command));
 	}
 	else if (current->type == TOKEN_REDIR_OUT
 		|| current->type == TOKEN_REDIR_OUT_APPEND)
@@ -116,6 +114,7 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	t_ast_node	*last_command;
 	t_token		*tokens;
 	char		*trimmed;
+	int 		error;
 
 	if (!input)
 		return (NULL);
@@ -129,8 +128,15 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	debug_tokens(tokens);
 	ast = NULL;
 	last_command = NULL;
-	if (!build_ast(&tokens, &ast, &last_command))
+	error = build_ast(&tokens, &ast, &last_command);
+	if (error == 0)
 	{
+		free_tokens(tokens);
+		return (NULL);
+	}
+	else if (error == -1)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
 		free_tokens(tokens);
 		return (NULL);
 	}

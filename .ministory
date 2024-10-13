@@ -2074,3 +2074,98 @@ ls
 ls && ls -la | grep m | cat -e Makefile
 ls && ls -la | grep m | cat -e
 clear
+ls && ls -la | grep m | cat -e
+ls -la (grep m)
+ls -la (grep m
+ls -la (grep m
+ls -la (grep m
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m
+ls -la (grep m
+ls -la (grep m)
+ls -la (grep m) && ls
+ls -la (grep m) && ls -a
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m) && ls -a
+ls -la (grep m) | ls -a
+ls -la (grep m) && ls -a
+ls -la (grep m) | cat -e
+ls -la (grep m) | cat -e
+ls -la grep m | cat -e
+ls -la | grep m | cat -e
+ls -la (grep m) | cat -e
+ls -la (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la (grep m) | cat -e
+ls -la | (grep m) && ls -a
+ls -la | (grep m) | cat -e
+ls -la | (grep m)
+ls -la | (grep m
+ls -la | (grep m)
+ls -la | (grep m) && cat -e
+ls -la | grep m && cat -e
+ls -la | (grep m) || cat -e
+ls -la | (grep m) && ls
+make debug
+ls -la | (grep m) && ls
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) | cat -e
+ls -la | (grep m)
+ls -la | (grep m)
+ls -la | (grep m)
+ls -la | (grep m
+ls -la | (grep m))
+ls -la | (grep m)
+ls -la | (grep m)
+ls -la | (grep m
+ls -la | (grep m
+ls -la | (grep m)
+ls -la | (grep m))
+ls -la | )
+ls -la | (grep m)
+ls -la | (grep m)
+(grep m)
+(ls)
+(ls
+ls)
+ls)
+(ls)
+(ls
+(ls
+ls)
+ls)
+(ls
+(ls
+(ls
+ls)
+ls)
+(ls
+(ls)
+ls -la | (grep m)
+ls -la | (grep m
+ls -la | grep m)
+ls -la | (grep m)
+ls -la | (grep m)
+ls -la | (grep m
+ls -la | grep m)
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls | cat -e
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | (grep m) && ls
+ls -la | grep m && ls | cat -e
+ls -la | grep m | cat -e
+ls -la |( grep m | cat -e
+ls -la | (grep m | cat -e
+ls -la | (grep m) | cat -e
+ls -la | (grep m) | cat -e
