@@ -70,11 +70,9 @@ static void	pis_other_rows(t_minishell *minishell, char *new)
 
 void	put_in_string(t_minishell *minishell, char *new)
 {
-	unsigned int	current_cols;
 	unsigned int	current_rows;
 	unsigned int	prompt_len;
 
-	current_cols = minishell->term->cols;
 	current_rows = minishell->term->rows;
 	prompt_len = get_prompt_len(minishell);
 	ft_putstr_fd("\033[s", 1);
