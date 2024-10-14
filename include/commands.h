@@ -47,6 +47,7 @@ int		command_unset(t_cmd *cmd);
 
 void	destroy_cmd(t_cmd *cmd);
 t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell, const int in_out[3]);
+void	quickSort(char *tabenv[], int min, int max);
 
 // ########################################################
 // #						FLAGS_UTILS					  #
