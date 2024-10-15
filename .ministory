@@ -2485,3 +2485,59 @@ clear
 ls -la (grep m) | sort | cat -e && ls
 git switch clesucre
 git add -A
+clear
+make re
+cd ;
+cd ..
+cd ..
+ls (grep m)
+ls -la (grep m)
+ls -la (grep m) | sort
+ls -la | (grep m) | sort
+ls -la (grep m) | sort
+ls -la (grep m) | sort
+ls -la (grep m) | sort
+ls -la (grep m)
+ls -la grep m
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la | (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la | (grep m)
+ls -la (grep m) | sort
+ls -la (grep m) | sort
+ls -la (grep m) | sort
+ls -la (grep m) | sort
+ls -la (grep m)
+ls -la | (grep m)
+ls -la | (grep m)
+ls -la | grep m
+ls -la
+ls -la
+ls -la
+ls -la | grep m
+ls -la | grep m
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la
+ls -la | grep m
+ls -la | (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la (grep m)
+ls -la && (ss)
+ls -la && (ss)
+ss && (ls -la)
