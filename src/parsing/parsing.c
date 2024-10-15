@@ -58,9 +58,7 @@ static int	build_ast_secondary(t_token **current, t_ast_node **root,
 	if ((*current)->type == TOKEN_REDIR_IN
 		|| (*current)->type == TOKEN_HEREDOC)
 		return (process_redirection(current, root, last_command, 1));
-	else if ((*current)->type == TOKEN_COMMAND)
-		return (process_command(current, root, last_command));
-	else if ((*current)->type == TOKEN_VARIABLE)
+	else if ((*current)->type == TOKEN_COMMAND || (*current)->type == TOKEN_VARIABLE)
 		return (process_command(current, root, last_command));
 	else if ((*current)->type == TOKEN_ARGUMENT)
 		return (process_argument(current, *last_command));

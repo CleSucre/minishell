@@ -2613,3 +2613,42 @@ exit é_è
 zkojfijef | exit
 ls
 ls && ls
+exit salut
+exit _è$
+exit _è
+export sa
+$TEST
+$TEST ..
+$TEST ..
+ls -la
+ls -la ..
+$TEST ..
+ls -la/..
+ls -la ../..
+ls -la ../..
+ls -la ..
+$TEST ../..
+echo $TEST
+$TEST ..
+$TEST ..
+$TEST ..
+$TEST ../..
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST
+$TEST ..

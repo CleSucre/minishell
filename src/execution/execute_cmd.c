@@ -165,6 +165,8 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 		if (ast->is_last)
 			wait_for_processes();
 	}
+	minishell->exit_code = res;
+	minishell->exit_signal = cmd->exit_signal;
 	destroy_cmd(cmd);
 	close_fds(in_out, pipes);
 	if (ast->is_last)
@@ -173,6 +175,5 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 		in_out[1] = STDOUT_FILENO;
 		in_out[2] = -1;
 	}
-	minishell->exit_code = res;
-	return (cmd->exit_signal);
+	return (minishell->exit_signal);
 }
