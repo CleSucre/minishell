@@ -36,8 +36,7 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 			"minishell: %s: Permission denied\n", ast->right->value[0]);
 		return (1);
 	}
-	execute_ast(minishell, ast->left, pipes, in_out);
-	return (0);
+	return (execute_ast(minishell, ast->left, pipes, in_out));
 }
 
 /**

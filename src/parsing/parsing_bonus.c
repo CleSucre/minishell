@@ -62,14 +62,14 @@ int	process_subshell(t_token **tokens, t_ast_node **root,
 
 	if ((*tokens)->prev != NULL && (*tokens)->prev->type == TOKEN_COMMAND)
 	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token `('\n");
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error near unexpected token `('\n");
 		return (0);
 	}
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
 	*tokens = (*tokens)->next;
 	if (build_ast(tokens, &subshell_node->left, last_command) != -1)
 	{
-		ft_fprintf(2, "minishell: syntax error: expected ')'\n");
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected ')'\n");
 		return (0);
 	}
 	while (*tokens != NULL && (*tokens)->type != TOKEN_PARENTHESIS_CLOSE)

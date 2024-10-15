@@ -73,5 +73,6 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 	if (!path)
 		path = ft_strdup(ast->value[0]);
 	cmd->path = path;
+	cmd->exit_signal = 0;
 	return (cmd);
 }

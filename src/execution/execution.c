@@ -29,7 +29,9 @@ int	execute_and(t_minishell *minishell, t_ast_node *ast,
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	if (res != 0)
 		return (res);
-	execute_ast(minishell, ast->right, pipes, in_out);
+	res = execute_ast(minishell, ast->right, pipes, in_out);
+	if (res != 0)
+		return (1);
 	return (0);
 }
 
@@ -48,9 +50,13 @@ int	execute_or(t_minishell *minishell, t_ast_node *ast,
 	int	res;
 
 	res = execute_ast(minishell, ast->left, pipes, in_out);
-	if (res == 0)
+	if (res != 0)
 		return (res);
-	execute_ast(minishell, ast->right, pipes, in_out);
+	if (minishell->exit_code == 0)
+		return (minishell->exit_code);
+	res = execute_ast(minishell, ast->right, pipes, in_out);
+	if (res != 0)
+		return (res);
 	return (0);
 }
 
@@ -82,6 +88,8 @@ int	execute_subshell(t_minishell *minishell, t_ast_node *ast,
 	minishell->env = old_env;
 	ft_tabfree(tmp_env);
 	reload_env(minishell->env);
+	if (res != 0)
+		return (res);
 	wait_for_processes();
 	return (res);
 }
@@ -93,7 +101,7 @@ int	execute_subshell(t_minishell *minishell, t_ast_node *ast,
  *
  * @param t_minishell *minishell
  * @param t_ast_node *ast
- * @return Last command exit code
+ * @return 0 on success, 1 on exit request
  */
 int	execute_ast(t_minishell *minishell, t_ast_node *ast,
 				int *pipes, int *in_out)
@@ -133,6 +141,7 @@ int	execute_input(t_minishell *minishell, char *input)
 	t_ast_node	*ast;
 	int			in_out[3];
 	int			pipes[2];
+	int 		res;
 
 	in_out[0] = STDIN_FILENO;
 	in_out[1] = STDOUT_FILENO;
@@ -144,9 +153,10 @@ int	execute_input(t_minishell *minishell, char *input)
 		return (0);
 	minishell->ast = ast;
 	disable_termios(minishell->term);
-	execute_ast(minishell, ast, pipes, in_out);
+	res = execute_ast(minishell, ast, pipes, in_out);
 	enable_termios(minishell->term);
 	free_ast(ast);
 	minishell->ast = NULL;
-	return (minishell->exit_code);
+	//TODO: if res == 1, exit request
+	return (res);
 }

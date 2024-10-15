@@ -82,7 +82,7 @@ int	process_action(t_minishell *minishell, char *new)
 	{
 		if (ft_tablen((const char **)minishell->input) > 0)
 			ft_fprintf(STDOUT_FILENO, "\n");
-		if (execute_input(minishell, ft_utf8_tab_to_str(minishell->input)) == -1)
+		if (execute_input(minishell, ft_utf8_tab_to_str(minishell->input)))
 			return (1);
 		print_terminal_prompt(minishell, 0);
 		reset_input(&minishell->input);

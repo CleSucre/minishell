@@ -104,6 +104,7 @@ typedef struct s_minishell
 	char				**env;
 	char				*starting_path;
 	int					exit_code;
+	int					exit_signal;
 	unsigned int		history_pos;
 	unsigned int		history_size;
 }		t_minishell;

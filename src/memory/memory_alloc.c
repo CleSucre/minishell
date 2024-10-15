@@ -117,6 +117,7 @@ t_minishell	*alloc_minishell(void)
 	if (!minishell)
 		return (NULL);
 	minishell->exit_code = 0;
+	minishell->exit_signal = 0;
 	if (alloc_cache(minishell))
 		return (NULL);
 	if (alloc_history(minishell))
