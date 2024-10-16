@@ -121,15 +121,22 @@ int add_cmd_env(t_cmd *cmd, char *input, char *value)
 {
 	int		is_here;
 	char	**tmp;
+	char	*res;
+	char	*res2;
 
 	is_here = 0;
 	is_here = find_table_args(cmd->env, input);
+	if (is_here != -1)
+		return (-1);
 	tmp = ft_tabdup((const char **)cmd->env);
-	if (is_here == -1)
-		cmd->env = ft_tabinsert(tmp, ft_strjoin(ft_strjoin(input, "="), value), ft_tablen((const char **)cmd->env));
-	else
-		ft_tabfree(tmp);
-	ft_printf("env : %s\n", cmd->env[is_here]);
+	res = ft_strjoin(input, "=");
+	res2 = ft_strjoin(res, value);
+	free(res);
+//	ft_tabfree(cmd->env);
+	quickSort(tmp, 0, ft_tablen((const char **)tmp) - 1);
+	cmd->env = ft_tabinsert(tmp, res2, ft_tablen((const char **)cmd->env));
+	free(res2);
+	ft_printf("env : %s\n", cmd->env[ft_tablen((const char **)cmd->env) - 1]);
 	return (0);
 }
 
@@ -148,13 +155,7 @@ int	command_export(t_cmd *cmd)
 	else
 		cut_name = ft_split_quote(cmd->args[1], "=", "\"\'");
 	if (find_table_args(cmd->env, cut_name[0]) == -1)
-	{
-
-//		ft_tabprint((const char **)cut_name, "cut_name : ", "\n", 1);
 		add_cmd_env(cmd, cut_name[0], cut_name[1]);
-		ft_putstr_fd("pas encore coder\n", cmd->output_fd);
-//        ft_putstr_fd(cmd->args[1], cmd->output_fd);
-	}
 	// if in env, modify it
 	else
 	{
@@ -164,7 +165,6 @@ int	command_export(t_cmd *cmd)
 			modify_cmd_env(cmd, cut_name[0], cut_name[1]);
 	}
 	ft_tabfree(cut_name);
-////	(void)cmd;
-////	(void)minishell;
+	print_export(cmd);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quicksort.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpierrot <mpierrot@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 09:03:19 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/10/13 09:03:19 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/10/16 09:13:03 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void  swap(char **a, char **b)
 
 static int  pivot(char *tabenv[], int min, int max)
 {
-  int	i;
-  int	j;
-  char	*pivot;
+  int	  i;
+  int 	j;
+  char  *pivot;
 
   pivot = tabenv[max];
   i = min - 1;

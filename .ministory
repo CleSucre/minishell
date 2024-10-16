@@ -2485,3 +2485,93 @@ clear
 ls -la (grep m) | sort | cat -e && ls
 git switch clesucre
 git add -A
+pwd -l
+export a=b
+echo $a
+export | grep a
+pwd -l
+cd ..
+ls
+cd minishell
+cd -
+cd -
+pwd
+echo $PWD
+echo -n
+echo -nnnn
+echo -np
+clear
+export PWD=bite
+echo $PWD
+echo PWD+=lol
+echo $PWD
+echo PWD+=lol
+echo $PWD
+echo PWD=lol
+export PWD+=lol
+echo PWD
+export PWD=a
+echo PWD
+echo $PWD
+export a=b
+export a=b
+export a=b
+export a=b
+export a=b
+echo $a
+pwdw
+export a=b
+echo $a
+export a=b | echo $a
+export a=b
+export a=b
+export a=b
+export ZZZZZZZZZZZ=bite
+export | grep ZZZ
+export | grep Z
+export PWD=ok
+echo $PWD
+export ZZZ=ok
+echo $ZZZ
+export ZZZZZ=b
+echo $ZZZ
+echo $Z
+export | grep $Z
+clear
+export Z=b
+export Z=ok
+echo $Z
+echo a=b
+export a=b
+export a=b
+export a=b
+export a=b
+export a=b
+echo $a
+export a=b
+echo $a
+export a=b
+echo $a
+export Z=ok
+echo $Z
+export | grep Z
+export
+export Z=ok
+export ZSH=bite
+export | grep Z
+export
+export Z=A
+export a=b
+export Z=ok
+export Z=ok
+export a=b
+export a=b
+ls
+export a=b
+ls
+export a=b
+ls
+export
+export a=b
+export
+export a=b
