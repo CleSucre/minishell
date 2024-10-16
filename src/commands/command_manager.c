@@ -30,7 +30,7 @@ int	execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
 	else if (ft_strcmp(cmd->name, "exit") == 0)
 		return (command_exit(cmd));
 	else if (ft_strcmp(cmd->name, "export") == 0)
-		return (command_export(cmd));
+		return (command_export(minishell, cmd));
 	else if (ft_strcmp(cmd->name, "history") == 0)
 		return (command_history(cmd, minishell));
 	else if (ft_strcmp(cmd->name, "pwd") == 0)

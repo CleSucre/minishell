@@ -36,7 +36,7 @@ int		command_cd(t_cmd *cmd);
 int		command_echo(t_cmd *cmd);
 int		command_env(t_cmd *cmd);
 int		command_exit(t_cmd *cmd);
-int		command_export(t_cmd *cmd);
+int		command_export(t_minishell *minishell, t_cmd *cmd);
 int		command_history(t_cmd *cmd, t_minishell *minishell);
 int		command_pwd(t_cmd *cmd);
 int		command_unset(t_cmd *cmd);
