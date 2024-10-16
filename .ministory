@@ -99,3 +99,28 @@ export Z=$Bite
 clear
 export
 echo $Z
+export Z=ok
+export
+unset Z
+export
+unset ZSH
+export
+export ZSH
+export
+unset PWD
+export PWD=$OLDPWD
+export PWD=~/Dev/minishell
+cd ..
+ls
+echo $PWD
+cd -
+echo $OLDPWD
+cd -
+echo $OLDPWD
+echo $PWD
+cd minishell
+cd -
+cd -
+clear
+echo $PWD
+export

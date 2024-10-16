@@ -138,7 +138,7 @@ int add_cmd_env(t_minishell *minishell, char *input, char *value)
 int	command_export(t_minishell *minishell, t_cmd *cmd)
 {
 	char **cut_name;
-	char *test;
+	char *arg_equal;
 
 //	 If no args, print all env
 	if (!cmd->args[1])
@@ -150,8 +150,8 @@ int	command_export(t_minishell *minishell, t_cmd *cmd)
 		cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
 	else
 		cut_name = ft_split_quote(cmd->args[1], "=", "\"\'");
-	test = ft_strjoin(cut_name[0], "=");
-	if (find_table_args(cmd->env, test) == -1)
+	arg_equal = ft_strjoin(cut_name[0], "=");
+	if (find_table_args(cmd->env, arg_equal) == -1)
 		add_cmd_env(minishell, cut_name[0], cut_name[1]);
 	// if in env, modify it
 	else
@@ -161,7 +161,7 @@ int	command_export(t_minishell *minishell, t_cmd *cmd)
 		else
 			modify_cmd_env(cmd, cut_name[0], cut_name[1]);
 	}
-	free(test);
+	free(arg_equal);
 	ft_tabfree(cut_name);
 //	print_export(minishell->cmd);
 	return (0);
