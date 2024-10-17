@@ -20,9 +20,9 @@
  */
 static char	**list_dir(char *path)
 {
-	DIR		*dir;
-	char	**files;
-	struct	dirent *dirent;
+	DIR				*dir;
+	char			**files;
+	struct dirent	*dirent;
 
 	files = NULL;
 	if (access(path, R_OK) == -1)
@@ -58,7 +58,7 @@ static void	ft_memswap(void **a, void **b)
  *
  * @param char ***files The list of files to sort
  */
-static void alphaetical_sort(char ***files)
+static void	alphaetical_sort(char ***files)
 {
 	int	i;
 
@@ -83,7 +83,7 @@ static void alphaetical_sort(char ***files)
  */
 static void	load_files_if_null(char ***files)
 {
-	char *path;
+	char	*path;
 
 	if (*files != NULL)
 		return ;
@@ -141,9 +141,11 @@ static int	match_wildcard(const char *pattern, const char *str)
  */
 static int	count_matches(char *search, char **files)
 {
-	int count = 0;
-	int i = 0;
+	int	count;
+	int	i;
 
+	count = 0;
+	i = 0;
 	while (files[i])
 	{
 		if (match_wildcard(search, files[i]))
@@ -166,14 +168,13 @@ static char	**expand_wildcard(char **str, char **files)
 	int		i;
 	int		j;
 	int		match_count;
-	char 	*search;
+	char	*search;
 
 	search = *str;
 	match_count = count_matches(search, files);
 	match = (char **)malloc(sizeof(char *) * (match_count + 1));
 	if (!match)
 		return (NULL);
-
 	i = 0;
 	j = 0;
 	while (files[i])
@@ -198,12 +199,12 @@ static char	**expand_wildcard(char **str, char **files)
  * @param char **args The arguments to expand
  * @param t_minishell *minishell
  */
-void expand_wildcards(t_cmd *cmd)
+void	expand_wildcards(t_cmd *cmd)
 {
 	int		i;
-	char 	**files;
-	char 	**match;
-	char 	**new_args;
+	char	**files;
+	char	**match;
+	char	**new_args;
 
 	files = NULL;
 	new_args = NULL;

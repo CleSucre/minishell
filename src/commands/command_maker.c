@@ -20,8 +20,8 @@
  */
 static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 {
-	int 	is_var;
-	char 	**tmp;
+	int		is_var;
+	char	**tmp;
 
 	is_var = ft_strncmp(ast->value[0], "$", 1) == 0;
 	replace_variables_in_tab(minishell, ast->value);

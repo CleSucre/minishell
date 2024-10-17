@@ -58,7 +58,8 @@ static int	build_ast_secondary(t_token **current, t_ast_node **root,
 	if ((*current)->type == TOKEN_REDIR_IN
 		|| (*current)->type == TOKEN_HEREDOC)
 		return (process_redirection(current, root, last_command, 1));
-	else if ((*current)->type == TOKEN_COMMAND || (*current)->type == TOKEN_VARIABLE)
+	else if ((*current)->type == TOKEN_COMMAND
+		|| (*current)->type == TOKEN_VARIABLE)
 		return (process_command(current, root, last_command));
 	else if ((*current)->type == TOKEN_ARGUMENT)
 		return (process_argument(current, *last_command));
@@ -102,6 +103,31 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 }
 
 /**
+ * @brief Check the input and tokenize it.
+ *
+ * @param t_minishell *minishell
+ * @param char *input
+ * @return t_token* the list of tokens
+ */
+static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
+{
+	char		*trimmed;
+	t_token		*tokens;
+
+	if (!input)
+		return (NULL);
+	trimmed = check_input(minishell, input);
+	if (!trimmed)
+		return (NULL);
+	tokens = tokenize(trimmed);
+	free(trimmed);
+	if (!tokens)
+		return (NULL);
+	debug_tokens(tokens);
+	return (tokens);
+}
+
+/**
  * @brief Parses the input string and creates an AST.
  *
  * @param t_minishell *minishell The minishell structure.
@@ -113,19 +139,11 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	t_ast_node	*ast;
 	t_ast_node	*last_command;
 	t_token		*tokens;
-	char		*trimmed;
-	int 		error;
+	int			error;
 
-	if (!input)
-		return (NULL);
-	trimmed = check_input(minishell, input);
-	if (!trimmed)
-		return (0);
-	tokens = tokenize(trimmed);
-	free(trimmed);
+	tokens = check_and_tokenize_input(minishell, input);
 	if (!tokens)
 		return (NULL);
-	debug_tokens(tokens);
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);

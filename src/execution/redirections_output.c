@@ -23,7 +23,7 @@
  * @return int 0 on success, -1 on failure
  */
 static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
-							  int *pipes, int *in_out)
+						int *pipes, int *in_out)
 {
 	int	fd;
 
@@ -36,13 +36,13 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 	if (fd < 0)
 	{
 		ft_fprintf(STDERR_FILENO,
-				   "minishell: %s: Could not create file\n", ast->right->value[0]);
+			"minishell: %s: Could not create file\n", ast->right->value[0]);
 		return (1);
 	}
 	if (access(ast->right->value[0], W_OK) != 0)
 	{
 		ft_fprintf(STDERR_FILENO,
-				   "minishell: %s: Permission denied\n", ast->right->value[0]);
+			"minishell: %s: Permission denied\n", ast->right->value[0]);
 		close(fd);
 		return (1);
 	}

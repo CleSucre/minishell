@@ -141,7 +141,7 @@ int	execute_input(t_minishell *minishell, char *input)
 	t_ast_node	*ast;
 	int			in_out[3];
 	int			pipes[2];
-	int 		res;
+	int			res;
 
 	in_out[0] = STDIN_FILENO;
 	in_out[1] = STDOUT_FILENO;
@@ -157,6 +157,5 @@ int	execute_input(t_minishell *minishell, char *input)
 	enable_termios(minishell->term);
 	free_ast(ast);
 	minishell->ast = NULL;
-	//TODO: if res == 1, exit request
 	return (res);
 }
