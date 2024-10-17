@@ -28,6 +28,15 @@ int		execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes,
 int		execute_input(t_minishell *minishell, char *input);
 
 // ########################################################
+// #					EXECUTION_OR_AND					#
+// ########################################################
+
+int		execute_or(t_minishell *minishell, t_ast_node *ast,
+			int *pipes, int *in_out);
+int		execute_and(t_minishell *minishell, t_ast_node *ast,
+			int *pipes, int *in_out);
+
+// ########################################################
 // #					EXECUTE PATH						#
 // ########################################################
 

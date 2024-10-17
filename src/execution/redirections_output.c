@@ -26,25 +26,25 @@ int	verify_redirection(t_minishell *minishell, t_ast_node *ast)
 	char	**tab_tmp;
 
 	start = ft_strdup(ast->right->value[0]);
-	ft_tabprint((const char **)ast->right->value,
-		"current: ", "", STDERR_FILENO);
 	tmp = replace_variables(minishell, ast->right->value[0]);
 	free(ast->right->value[0]);
 	ast->right->value[0] = tmp;
 	tab_tmp = ft_split(ast->right->value[0], WHITESPACES);
-	ft_tabfree(ast->right->value);
-	ast->right->value = tab_tmp;
-	if (!ast->right->value[0] || !ft_strlen(ast->right->value[0]))
+	if (!tab_tmp[0] || !ft_strlen(tab_tmp[0]))
 		return (free(start), ft_putstr_fd("Error: no file specified\n",
 				STDERR_FILENO), 0);
-	expand_wildcards(&ast->right->value);
-	if (ft_tablen((const char **)ast->right->value) > 1)
+	expand_wildcards(&tab_tmp);
+	if (ft_tablen((const char **)tab_tmp) > 1)
 	{
 		ft_fprintf(STDERR_FILENO, "minishell: %s: ambiguous redirect\n", start);
 		free(start);
-		return (minishell->exit_code = 1, 0);
+		ft_tabfree(tab_tmp);
+		minishell->exit_code = 1;
+		return (0);
 	}
 	free(start);
+	ft_tabfree(tab_tmp);
+	ft_fprintf(STDERR_FILENO, "value[1]: %s\n", ast->right->value[1]);
 	return (1);
 }
 
@@ -80,6 +80,8 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 		return (1);
 	}
 	close(fd);
+	ast->left->value = ft_tabjoin(ast->left->value,
+			ft_tabdup((const char **)ast->right->value + 1));
 	return (execute_ast(minishell, ast->left, pipes, in_out));
 }
 
