@@ -33,12 +33,18 @@ void	handle_signal(int sig)
 int	wait_for_processes(void)
 {
 	int	status;
+	int	res;
 
 	status = 0;
 	while ((wait(&status)) > 0)
 		;
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	{
+		res = WEXITSTATUS(status);
+		if (res == 255)
+			res = 127;
+		return (res);
+	}
 	else
 		return (0);
 }
@@ -52,10 +58,16 @@ int	wait_for_processes(void)
 int	wait_for_pid(int pid)
 {
 	int	status;
+	int	res;
 
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	{
+		res = WEXITSTATUS(status);
+		if (res == 255)
+			res = 127;
+		return (res);
+	}
 	else
 		return (0);
 }
