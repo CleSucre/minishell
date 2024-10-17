@@ -108,7 +108,7 @@ static int check_oldpwd(t_minishell *minishell, t_cmd *cmd)
 	add_cmd_env(minishell, "OLDPWD", getcwd(NULL, 0));
 	cmd->env = ft_tabinsert(tmp, ft_strjoin("OLDPWD=", getcwd(NULL, 0)),
 		ft_tablen((const char **)cmd->env) - 1);
-//	quickSort(cmd->env, 0, ft_tablen((const char **)cmd->env) - 1);
+//	ft_sort(cmd->env, 0, ft_tablen((const char **)cmd->env) - 1);
 //	ft_tabprint((const char **)cmd->env, NULL, NULL, 1);
 
 	return (1);
