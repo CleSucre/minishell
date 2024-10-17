@@ -124,3 +124,153 @@ cd -
 clear
 echo $PWD
 export
+export PWD=bite
+echo $OLDPWD
+cd ..
+echo $OLDPWD
+export OLDPWD=bite
+echo $OLDPWD
+export OLDPWD=$PWD
+echo $OLDPWD
+cd ..
+cd -
+echo $OLDPWD
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+cd -
+clear
+export OLDPWD=bite
+cd -
+cd ..
+cd -
+pwd
+cd -
+cd ..
+cd -
+pwd
+echo $OLDPWD
+cd -
+cd ..
+;oechwe;lKASFHBP9WIOa'wjnfbvwioepahfndvweafdqef
+fheoifhpieklnfoiwehifpowehjpfojwepofjl;wedsnvoiwehiflkcnfieowflkcnweoihfkelrdsbvioferbver
+cd ..
+pwd
+echo $OLDPWD
+cd -
+pwd
+cd ..
+cd ..
+cd -
+pwd
+cd ../..
+pwd
+echo $OLDPWD
+cd Dev
+echo $OLDPWD
+cd -
+pwd
+cd
+cd
+cd
+cd
+sudo
+sudo ls
+clear
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+echo $HOME
+cd $HOME
+cd -
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+pwd
+cd -
+pwd
+cd -
+pwd
+cd
+pwd
+cd
+cd -
+pwd
+cd -
+pwd
+cd Dev
+ls
+cd ..
+cd -
+cd
+cd -
+pwd
+echo $OLDPWD
+cd
+cd -
+pwd
+echo $OLDPWD
+cd
+cd
+echo $OLDPWD
+cd
+cd
+pwd
+echo $PWD
+cd -
+echo $PWD
+echo $OLDPWD
+cd ..
+cd -
+cd
+cd ~
+echo $OLDPWD

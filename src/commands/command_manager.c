@@ -22,7 +22,7 @@
 int	execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->name, "cd") == 0)
-		return (command_cd(cmd));
+		return (command_cd(minishell, cmd));
 	else if (ft_strcmp(cmd->name, "echo") == 0)
 		return (command_echo(cmd));
 	else if (ft_strcmp(cmd->name, "env") == 0)

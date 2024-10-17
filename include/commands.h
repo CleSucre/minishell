@@ -32,7 +32,7 @@ typedef struct s_cmd {
 // #						COMMANDS					  #
 // ########################################################
 
-int		command_cd(t_cmd *cmd);
+int		command_cd(t_minishell *minishell, t_cmd *cmd);
 int		command_echo(t_cmd *cmd);
 int		command_env(t_cmd *cmd);
 int		command_exit(t_cmd *cmd);
@@ -47,6 +47,7 @@ int		command_unset(t_cmd *cmd);
 
 void	destroy_cmd(t_cmd *cmd);
 t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell, const int in_out[3]);
+int		add_cmd_env(t_minishell *minishell, char *input, char *value);
 void	quickSort(char *tabenv[], int min, int max);
 
 // ########################################################

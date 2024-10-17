@@ -93,7 +93,9 @@ int modify_cmd_env(t_cmd *cmd, char *input, char *value)
 	res = ft_strjoin(ft_strjoin(input, "="), value);
 //	res = ft_strjoin(res, value);
 	clear_string(cmd->env[is_here]);
+//	free(cmd->env[is_here]);
 	ft_strlcpy(cmd->env[is_here], res, ft_strlen(res)+1);
+
 	return (0);
 }
 
