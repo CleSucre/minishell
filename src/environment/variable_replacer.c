@@ -70,7 +70,7 @@ char	*replace_variables(t_minishell *minishell, char *str)
 	res = NULL;
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && str[i + 1] != '\0')
 		{
 			if (str[i + 1] == '?')
 			{
@@ -105,6 +105,16 @@ void	replace_variables_in_tab(t_minishell *minishell, char **strs)
 		tmp = replace_variables(minishell, strs[i]);
 		free(strs[i]);
 		strs[i] = tmp;
+		i++;
+	}
+	i = 0;
+	while (strs[i])
+	{
+		if (strs[i][0] == '\0')
+		{
+			ft_tabdel(strs, i);
+			i--;
+		}
 		i++;
 	}
 }
