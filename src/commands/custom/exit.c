@@ -37,15 +37,15 @@ int	command_exit(t_cmd *cmd)
 	int	status;
 
 	status = 0;
-
 	if (cmd->argc > 2)
 	{
 		ft_fprintf(2, "minishell: exit: too many arguments\n");
 		return (1);
 	}
-	else if (cmd->argc > 1  && str_is_digit(cmd->args[1]) == 0)
+	else if (cmd->argc > 1 && str_is_digit(cmd->args[1]) == 0)
 	{
-		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n", cmd->args[1]);
+		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
+			cmd->args[1]);
 		cmd->exit_signal = 1;
 		return (255);
 	}
@@ -54,4 +54,3 @@ int	command_exit(t_cmd *cmd)
 	cmd->exit_signal = 1;
 	return (status % 256);
 }
-
