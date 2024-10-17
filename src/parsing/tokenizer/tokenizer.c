@@ -43,103 +43,6 @@ t_token_type	token_type(char *str)
 }
 
 /**
- * @brief Manage quoted tokens
- *
- * @param char *input The input string
- * @param int *index The current index in the input string
- * @return char * The extracted token
- */
-char	*extract_quoted_token(char *input, int *index)
-{
-	char	buffer[1024];
-	int		buffer_pos;
-	char	quote_type;
-
-	buffer_pos = 0;
-
-	if (input[*index] == '"' || input[*index] == '\'')
-	{
-		quote_type = input[*index];
-		(*index)++;
-	}
-	else
-		return (NULL);
-
-	while (input[*index] != quote_type && input[*index] != '\0')
-	{
-		buffer[buffer_pos++] = input[*index];
-		(*index)++;
-	}
-
-	if (input[*index] == quote_type)
-		(*index)++;
-
-	buffer[buffer_pos] = '\0';
-	return (ft_strdup(buffer));
-}
-
-/**
- * @brief Manage quotes and parentheses
- *
- * @param char *input The input string
- * @param int *index The current index in the input string
- * @return char*
- */
-char	*extract_token(char *input, int *index)
-{
-	char	buffer[1024];
-	int		buffer_pos;
-	char	current_char;
-	char	*quoted_token;
-	char	*temp_token;
-	char	*final_token;
-
-	buffer_pos = 0;
-	current_char = input[*index];
-
-	if (current_char == '"' || current_char == '\'')
-	{
-		quoted_token = extract_quoted_token(input, index);
-		return (quoted_token);
-	}
-
-	if (current_char == '(' || current_char == ')')
-	{
-		buffer[0] = current_char;
-		buffer[1] = '\0';
-		(*index)++;
-		return (ft_strdup(buffer));
-	}
-
-	while (input[*index] != '\0' && !ft_isspace(input[*index])
-		   && input[*index] != '(' && input[*index] != ')')
-	{
-		if (input[*index] == '"' || input[*index] == '\'')
-		{
-			quoted_token = extract_quoted_token(input, index);
-			if (!quoted_token)
-				return (NULL);
-
-			if (buffer_pos > 0)
-			{
-				buffer[buffer_pos] = '\0';
-				temp_token = ft_strdup(buffer);
-				final_token = ft_strjoin(temp_token, quoted_token);
-				free(temp_token);
-				free(quoted_token);
-				return (final_token);
-			}
-			return (quoted_token);
-		}
-
-		buffer[buffer_pos++] = input[*index];
-		(*index)++;
-	}
-	buffer[buffer_pos] = '\0';
-	return (ft_strdup(buffer));
-}
-
-/**
  * @brief Tokenize the input string
  *
  * @param char	*input
@@ -188,11 +91,9 @@ char	**extract_command_tokens(t_token **tokens)
 		return (NULL);
 	token_count = 0;
 	current = *tokens;
-	ft_fprintf(2, "extract_command_tokens\n");
 	while (current != NULL
 		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
 	{
-		ft_fprintf(2, "token: %s\n", current->value);
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;
 	}

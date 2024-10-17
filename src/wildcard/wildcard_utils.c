@@ -18,7 +18,7 @@
  *
  * @param char ***files
  */
-static void	load_files_if_null(char ***files)
+void	load_files_if_null(char ***files)
 {
 	char	*path;
 
@@ -31,149 +31,46 @@ static void	load_files_if_null(char ***files)
 }
 
 /**
- * @brief Check if the string matches the wildcard
+ * @brief Helper function for matching when a wildcard '*' is found
  *
  * @param const char *pattern The wildcard pattern
  * @param const char *str The string to match
- * @return int 1 if the string matches the wildcard, 0 otherwise
+ * @return int 1 if the string matches, 0 otherwise
  */
-static int	match_wildcard(const char *pattern, const char *str)
+int	handle_wildcard(const char *pattern, const char *str)
 {
-	if (*str == '.' && *pattern != '.')
-		return (0);
-	while (*pattern && *str)
+	while (*str)
 	{
-		if (*pattern == '*')
-		{
-			pattern++;
-			if (!*pattern)
-				return (1);
-			while (*str)
-			{
-				if (match_wildcard(pattern, str))
-					return (1);
-				str++;
-			}
-			return (0);
-		}
-		else if (*pattern == '?' || *pattern == *str)
-		{
-			pattern++;
-			str++;
-		}
-		else
-			return (0);
+		if (match_wildcard(pattern, str))
+			return (1);
+		str++;
 	}
-	while (*pattern == '*')
-		pattern++;
-	return (!*pattern && !*str);
+	return (0);
 }
 
 /**
- * @brief Count the number of files matching the wildcard
+ * @brief Handle wildcard matches and update new_args.
  *
- * @param char *search The wildcard to search
- * @param char **files The list of files to search in
- * @return int The number of files matching the wildcard
+ * @param char *arg The argument to check for wildcards
+ * @param char **files List of files to search in
+ * @param char ***new_args The list of new arguments to update
  */
-static int	count_matches(char *search, char **files)
-{
-	int	count;
-	int	i;
-
-	count = 0;
-	i = 0;
-	while (files[i])
-	{
-		if (match_wildcard(search, files[i]))
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-/**
- * @brief Expand the wildcard in the string
- *
- * @param char **str The string to expand
- * @param char **files The list of files to search in
- * @return char** The list of files matching the wildcard
- */
-static char	**expand_wildcard(char **str, char **files)
+void	handle_wildcard_match(char *arg, char **files, char ***new_args)
 {
 	char	**match;
-	int		i;
-	int		j;
-	int		match_count;
-	char	*search;
 
-	search = *str;
-	match_count = count_matches(search, files);
-	match = (char **)malloc(sizeof(char *) * (match_count + 1));
-	if (!match)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (files[i])
+	if (ft_strchr(arg, '*'))
 	{
-		if (match_wildcard(search, files[i]))
+		match = expand_wildcard(&arg, files);
+		if (match)
 		{
-			match[j] = strdup(files[i]);
-			j++;
+			if (!(*new_args))
+				*new_args = ft_tabdup((const char **)match);
+			else
+				*new_args = ft_tabjoin(*new_args, match);
+			ft_tabfree(match);
 		}
-		i++;
 	}
-	match[j] = NULL;
-	return (match);
-}
-
-/**
- * @brief Support wildcard expansion.
- * 			Replace the wildcard with the list of
- * 			files matching it only if there is a match.
- * 			Search the files in the current directory.
- *
- * @param char **args The arguments to expand
- * @param t_minishell *minishell
- */
-void	expand_wildcards(char ***args)
-{
-	int		i;
-	char	**files;
-	char	**match;
-	char	**new_args;
-	char 	**current_args;
-
-	files = NULL;
-	new_args = NULL;
-	i = 0;
-	current_args = *args;
-	while (current_args[i])
-	{
-		if (ft_strchr(current_args[i], '*'))
-		{
-			load_files_if_null(&files);
-			match = expand_wildcard(&current_args[i], files);
-			if (match)
-			{
-				if (!new_args)
-				{
-					new_args = ft_tabdup((const char **)match);
-					ft_tabfree(match);
-				}
-				else
-					new_args = ft_tabjoin(new_args, match);
-			}
-		}
-		else
-			ft_tabadd(&new_args, current_args[i]);
-		i++;
-	}
-	if (files)
-		ft_tabfree(files);
-	if (new_args)
-	{
-		ft_tabfree(*args);
-		*args = new_args;
-	}
+	else
+		ft_tabadd(new_args, arg);
 }

@@ -22,7 +22,7 @@ SRCS					= main.c
 
 SRCS_CONFIG				= term_config.c
 
-SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c
+SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c debug_parsing_utils.c
 
 SRCS_ENVIRONMENT		= env_utils.c path_utils.c variable_utils.c variable_replacer.c
 
@@ -38,12 +38,12 @@ SRCS_MEMORY				= memory_alloc.c memory_free.c builtins_alloc.c
 
 SRCS_PARSING			= ast_management.c parsing.c parsing_args.c parsing_mandatory.c parsing_bonus.c var_creation.c
 
-SRCS_PARSING_TOKENIZER	= tokenizer.c token_management.c
+SRCS_PARSING_TOKENIZER	= tokenizer.c token_management.c tokenizer_quote.c
 
 SRCS_TERMINAL			= input_utils.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_signals.c terminal_utils.c \
 							put_in_string.c
 
-SRCS_WILDCARD			= wildcard_utils.c
+SRCS_WILDCARD			= wildcard.c wildcard_utils.c
 
 SRCS_ATCP				= tab.c dictionnary/setup_dico.c dictionnary/bst.c dictionnary/bst_insert.c dictionnary/free_bst.c dictionnary/print_bst.c \
 							dictionnary/copy_cut_bst.c
@@ -176,7 +176,7 @@ debug:
 	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell
 
 norm:
-	@norminette src libft | grep Error || echo "$(GREEN)Success"
+	@norminette libft src include | grep Error || echo "$(GREEN)Success"
 
 #############################################################################
 #									TESTS									#

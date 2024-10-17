@@ -12,36 +12,37 @@
 
 #include "minishell.h"
 
-int verify_redirection(t_minishell *minishell, t_ast_node *ast)
+/**
+ * @brief Verify if the redirection is valid
+ *
+ * @param t_minishell *minishell
+ * @param t_ast_node *ast
+ * @return int 1 on success, 0 on failure
+ */
+int	verify_redirection(t_minishell *minishell, t_ast_node *ast)
 {
 	char	*start;
-	char 	*tmp;
-	char 	**tab_tmp;
+	char	*tmp;
+	char	**tab_tmp;
 
 	start = ft_strdup(ast->right->value[0]);
-	ft_tabprint((const char **)ast->right->value, "current: ", "", STDERR_FILENO);
-
+	ft_tabprint((const char **)ast->right->value,
+		"current: ", "", STDERR_FILENO);
 	tmp = replace_variables(minishell, ast->right->value[0]);
 	free(ast->right->value[0]);
 	ast->right->value[0] = tmp;
 	tab_tmp = ft_split(ast->right->value[0], WHITESPACES);
 	ft_tabfree(ast->right->value);
 	ast->right->value = tab_tmp;
-	if (ast->right->value[0] == NULL || ft_strlen(ast->right->value[0]) == 0)
-	{
-		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
-		free(start);
-		return (0);
-	}
+	if (!ast->right->value[0] || !ft_strlen(ast->right->value[0]))
+		return (free(start), ft_putstr_fd("Error: no file specified\n",
+				STDERR_FILENO), 0);
 	expand_wildcards(&ast->right->value);
-	ft_tabprint((const char **)ast->right->value, "after: ", "", STDERR_FILENO);
 	if (ft_tablen((const char **)ast->right->value) > 1)
 	{
-		ft_fprintf(STDERR_FILENO,
-				   "minishell: %s: ambiguous redirect\n", start);
+		ft_fprintf(STDERR_FILENO, "minishell: %s: ambiguous redirect\n", start);
 		free(start);
-		minishell->exit_code = 1;
-		return (0);
+		return (minishell->exit_code = 1, 0);
 	}
 	free(start);
 	return (1);
@@ -68,13 +69,13 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 	if (fd < 0)
 	{
 		ft_fprintf(STDERR_FILENO,
-				   "minishell: %s: Could not create file\n", ast->right->value[0]);
+			"minishell: %s: Could not create file\n", ast->right->value[0]);
 		return (1);
 	}
 	if (access(ast->right->value[0], W_OK) != 0)
 	{
 		ft_fprintf(STDERR_FILENO,
-				   "minishell: %s: Permission denied\n", ast->right->value[0]);
+			"minishell: %s: Permission denied\n", ast->right->value[0]);
 		close(fd);
 		return (1);
 	}
