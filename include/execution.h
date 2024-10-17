@@ -20,6 +20,7 @@
 // #						EXECUTOR					  #
 // ########################################################
 
+int		execute_external(t_minishell *minishell, t_cmd *cmd);
 int		execute_cmd(t_minishell *minishell, t_ast_node *ast, int pipes[2], int in_out[3]);
 int		execute_ast(t_minishell *minishell, t_ast_node *ast, int *pipes, int *in_out);
 int		execute_input(t_minishell *minishell, char *input);
