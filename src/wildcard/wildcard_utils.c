@@ -136,22 +136,24 @@ static char	**expand_wildcard(char **str, char **files)
  * @param char **args The arguments to expand
  * @param t_minishell *minishell
  */
-void	expand_wildcards(t_cmd *cmd)
+void	expand_wildcards(char ***args)
 {
 	int		i;
 	char	**files;
 	char	**match;
 	char	**new_args;
+	char 	**current_args;
 
 	files = NULL;
 	new_args = NULL;
 	i = 0;
-	while (cmd->args[i])
+	current_args = *args;
+	while (current_args[i])
 	{
-		if (ft_strchr(cmd->args[i], '*'))
+		if (ft_strchr(current_args[i], '*'))
 		{
 			load_files_if_null(&files);
-			match = expand_wildcard(&cmd->args[i], files);
+			match = expand_wildcard(&current_args[i], files);
 			if (match)
 			{
 				if (!new_args)
@@ -164,14 +166,14 @@ void	expand_wildcards(t_cmd *cmd)
 			}
 		}
 		else
-			ft_tabadd(&new_args, cmd->args[i]);
+			ft_tabadd(&new_args, current_args[i]);
 		i++;
 	}
 	if (files)
 		ft_tabfree(files);
 	if (new_args)
 	{
-		ft_tabfree(cmd->args);
-		cmd->args = new_args;
+		ft_tabfree(*args);
+		*args = new_args;
 	}
 }

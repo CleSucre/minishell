@@ -25,13 +25,26 @@
 static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 						int *pipes, int *in_out)
 {
-	int	fd;
+	int		fd;
+	char	*tmp;
 
 	if (ast->right->value[0] == NULL)
 	{
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
 		return (1);
 	}
+	tmp = ft_strdup(ast->right->value[0]);
+	expand_wildcards(&ast->right->value);
+	if (ft_tablen((const char **)ast->right->value) > 1)
+	{
+		ft_fprintf(STDERR_FILENO,
+			"minishell: %s: ambiguous redirect\n", tmp);
+		free(tmp);
+		close(in_out[0]);
+		minishell->exit_code = 1;
+		return (0);
+	}
+	free(tmp);
 	fd = open(ast->right->value[0], O_WRONLY | O_CREAT, 0644);
 	if (fd < 0)
 	{

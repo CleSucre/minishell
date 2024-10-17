@@ -32,7 +32,7 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 		ast->value = ft_tabjoin(tmp, ast->value);
 	}
 	cmd->args = ft_tabdup((const char **)ast->value);
-	expand_wildcards(cmd);
+	expand_wildcards(&cmd->args);
 	cmd->argc = (int)ft_tablen((const char **)cmd->args);
 	cmd->name = ft_strdup(cmd->args[0]);
 }

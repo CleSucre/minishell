@@ -19,6 +19,6 @@
 // #					WILDCARD_UTILS					  #
 // ########################################################
 
-void expand_wildcards(t_cmd *cmd);
+void expand_wildcards(char ***args);
 
 #endif
