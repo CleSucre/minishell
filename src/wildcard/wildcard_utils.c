@@ -13,69 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief List the files in the directory
- *
- * @param char *path The path to the directory to load
- * @return char** The list of files in the directory
- */
-static char	**list_dir(char *path)
-{
-	DIR				*dir;
-	char			**files;
-	struct dirent	*dirent;
-
-	files = NULL;
-	if (access(path, R_OK) == -1)
-		return (NULL);
-	dir = opendir(path);
-	dirent = readdir(dir);
-	while (dirent)
-	{
-		ft_tabadd(&files, dirent->d_name);
-		dirent = readdir(dir);
-	}
-	closedir(dir);
-	return (files);
-}
-
-/**
- * @brief Memory swap two pointers
- *
- * @param void **a The first pointer
- * @param void **b The second pointer
- */
-static void	ft_memswap(void **a, void **b)
-{
-	void	*tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-/**
- * @brief Sort the files in alphabetical order
- *
- * @param char ***files The list of files to sort
- */
-static void	alphaetical_sort(char ***files)
-{
-	int	i;
-
-	i = 0;
-	while ((*files)[i + 1])
-	{
-		if (ft_strcmp((*files)[i], (*files)[i + 1]) > 0)
-		{
-			ft_memswap((void **)&(*files)[i], (void **)&(*files)[i + 1]);
-			i = 0;
-		}
-		else
-			i++;
-	}
-}
-
-/**
  * @brief Load the files in the current directory
  * 			if the files are not already loaded.
  *
@@ -88,8 +25,8 @@ static void	load_files_if_null(char ***files)
 	if (*files != NULL)
 		return ;
 	path = getcwd(NULL, 0);
-	*files = list_dir(path);
-	alphaetical_sort(files);
+	*files = ft_list_dir(path);
+	ft_sort(*files, 0, ft_tablen((const char **)*files) - 1);
 	free(path);
 }
 

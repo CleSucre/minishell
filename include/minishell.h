@@ -44,7 +44,6 @@
 // ########################################################
 
 //# include <readline/readline.h> BOUH LA HONTE CE TRUC AAAAAAHHHHHHHHHHHHHHHHHHHHHHH !! BURK LES ~400 LEAKS !!!
-# include <dirent.h>
 # include <fcntl.h>
 # include <ncurses.h>
 # include <signal.h>

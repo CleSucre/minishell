@@ -98,7 +98,33 @@ static void	go_home(t_cmd *cmd)
 	chdir(pwd);
 }
 
+<<<<<<< HEAD
 int	cd_minus(t_cmd *cmd)
+=======
+
+static int check_oldpwd(t_minishell *minishell, t_cmd *cmd)
+{
+	char **tmp;
+
+	if (find_table_args(minishell->env, "OLDPWD") != -1)
+		return (0);
+	tmp = ft_tabdup((const char **)cmd->env);
+	add_cmd_env(minishell, "OLDPWD", getcwd(NULL, 0));
+	cmd->env = ft_tabinsert(tmp, ft_strjoin("OLDPWD=", getcwd(NULL, 0)),
+		ft_tablen((const char **)cmd->env) - 1);
+//	ft_sort(cmd->env, 0, ft_tablen((const char **)cmd->env) - 1);
+//	ft_tabprint((const char **)cmd->env, NULL, NULL, 1);
+	return (1);
+}
+
+/**
+ * @brief Change the current working directory
+ * @param cmd The command to execute.
+ * By default, as if -L is used
+ * @return int 0 if the command was executed successfully, 1 otherwise.
+ */
+int	command_cd(t_minishell *minishell, t_cmd *cmd)
+>>>>>>> 78e5638a4a3052bb03571b512fa53d50ef620f5b
 {
 	char	**oldpwd;
 	int		position;

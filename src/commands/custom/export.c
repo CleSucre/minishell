@@ -26,7 +26,7 @@ void	print_export(t_cmd *cmd)
         char **tmp;
 
         tmp = ft_tabdup((const char **)cmd->env);
-        quickSort(tmp, 0, ft_tablen((const char **)tmp) - 1);
+        ft_sort(tmp, 0, ft_tablen((const char **)tmp) - 1);
         i = 0;
 	while (tmp[i])
 	{
@@ -98,7 +98,7 @@ int add_cmd_env(t_minishell *minishell, char *input, char *value)
 	ft_tabfree(minishell->env);
 	minishell->env = ft_tabinsert(tmp, res2, ft_tablen((const char **)tmp));
 	free(res2);
-	quickSort(minishell->env, 0, ft_tablen((const char **)minishell->env) - 1);
+	ft_sort(minishell->env, 0, ft_tablen((const char **)minishell->env) - 1);
 	return (0);
 }
 
