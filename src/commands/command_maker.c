@@ -33,8 +33,15 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	}
 	cmd->args = ft_tabdup((const char **)ast->value);
 	expand_wildcards(&cmd->args);
-	cmd->argc = (int)ft_tablen((const char **)cmd->args);
+	if (!cmd->args[0])
+	{
+		ft_tabfree(cmd->args);
+		cmd->args = ft_calloc(1, sizeof(char *));
+		cmd->args[0] = NULL;
+		return ;
+	}
 	cmd->name = ft_strdup(cmd->args[0]);
+	cmd->argc = (int)ft_tablen((const char **)cmd->args);
 }
 
 /**
@@ -69,12 +76,18 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
+	cmd->name = NULL;
+	cmd->path = NULL;
 	parse_cmd_args(cmd, ast, minishell);
+	if (cmd->args[0] == NULL)
+	{
+		destroy_cmd(cmd);
+		return (NULL);
+	}
 	cmd->input_fd = in_out[0];
 	cmd->output_fd = in_out[1];
 	cmd->to_close = in_out[2];
 	cmd->env = minishell->env;
-	cmd->path = NULL;
 	path = get_path(ast->value[0], minishell->env);
 	if (!path)
 		path = ft_strdup(ast->value[0]);
