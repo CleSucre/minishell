@@ -84,6 +84,24 @@ int	process_subshell(t_token **tokens, t_ast_node **root,
 }
 
 /**
+ * @brief Get the redirection type from the token type.
+ *
+ * @param t_token_type type Token type.
+ * @return t_ast_node_type AST node type.
+ */
+static t_ast_node_type	get_redir_type(t_token_type type)
+{
+	if (type == TOKEN_REDIR_OUT)
+		return (AST_REDIR_OUT);
+	else if (type == TOKEN_REDIR_OUT_APPEND)
+		return (AST_REDIR_OUT_APPEND);
+	else if (type == TOKEN_REDIR_IN)
+		return (AST_REDIR_IN);
+	else
+		return (AST_HEREDOC);
+}
+
+/**
  * @brief Process a redirection token (>, >>, <, <<)
  * 			and create an AST redirection node.
  *
@@ -99,17 +117,16 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 	char			**file_tokens;
 
 	(*last_command)->is_last = is_last;
-	if ((*tokens)->type == TOKEN_REDIR_OUT)
-		redir_type = AST_REDIR_OUT;
-	else if ((*tokens)->type == TOKEN_REDIR_OUT_APPEND)
-		redir_type = AST_REDIR_OUT_APPEND;
-	else if ((*tokens)->type == TOKEN_REDIR_IN)
-		redir_type = AST_REDIR_IN;
-	else
-		redir_type = AST_HEREDOC;
+	redir_type = get_redir_type((*tokens)->type);
 	redir_node = new_ast_node(redir_type, NULL);
 	redir_node->left = *root;
 	*tokens = (*tokens)->next;
+	if ((*tokens) == NULL)
+	{
+		ft_fprintf(STDERR_FILENO,
+			"minishell: syntax error: expected file name\n");
+		return (0);
+	}
 	if ((*tokens)->type == TOKEN_COMMAND)
 	{
 		file_tokens = extract_command_tokens(tokens);

@@ -68,7 +68,7 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 	}
 	cmd = create_cmd(ast, minishell, in_out);
 	if (!cmd)
-		return (1);
+		return (0);
 	res = decide_execution(cmd, minishell, ast);
 	minishell->exit_code = res;
 	minishell->exit_signal = cmd->exit_signal;

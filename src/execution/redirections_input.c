@@ -24,17 +24,19 @@
 int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 					int *pipes, int *in_out)
 {
+	if (!verify_redirection(minishell, ast))
+		return (0);
 	if (ast->right->value[0] == NULL)
 	{
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
-		return (1);
+		return (0);
 	}
 	in_out[0] = open(ast->right->value[0], O_RDONLY);
 	setup_pipes(pipes, in_out, 0);
 	if (in_out[0] == -1)
 	{
 		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
-		return (1);
+		return (0);
 	}
 	close(pipes[0]);
 	close(pipes[1]);

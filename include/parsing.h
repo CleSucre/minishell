@@ -20,7 +20,6 @@
 typedef enum s_token_type
 {
 	TOKEN_COMMAND,
-	TOKEN_VARIABLE,
 	TOKEN_ARGUMENT,
 	TOKEN_AND_OPERATOR,
 	TOKEN_OR_OPERATOR,
@@ -96,9 +95,10 @@ void			add_token(t_token **head, t_token *new);
 // #						TOKENIZER						#
 // ########################################################
 
-t_token_type	token_type(char *str);
-t_token			*tokenize(char *input);
-char			**extract_command_tokens(t_token **tokens);
+t_token_type		token_type(char *str);
+t_token				*tokenize(char *input);
+char				*extract_token(char *input, int *index);
+char				**extract_command_tokens(t_token **tokens);
 
 // ########################################################
 // #					PARSER_MANDATORY					#

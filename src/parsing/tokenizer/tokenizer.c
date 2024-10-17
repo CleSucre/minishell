@@ -38,71 +38,8 @@ t_token_type	token_type(char *str)
 		return (TOKEN_PARENTHESIS_OPEN);
 	else if (ft_strncmp(str, ")", 1) == 0)
 		return (TOKEN_PARENTHESIS_CLOSE);
-	else if (ft_strncmp(str, "$", 1) == 0)
-		return (TOKEN_VARIABLE);
 	else
 		return (TOKEN_COMMAND);
-}
-
-/**
- * @brief Manage quoted tokens
- *
- * @param char *input The input string
- * @param int *index The current index in the input string
- * @return char * The extracted token
- */
-char	*extract_quoted_token(char *input, int *index)
-{
-	char	buffer[1024];
-	int		buffer_pos;
-	char	quote_type;
-
-	buffer_pos = 0;
-	quote_type = input[*index];
-	(*index)++;
-	while (input[*index] != quote_type && input[*index] != '\0')
-	{
-		buffer[buffer_pos++] = input[*index];
-		(*index)++;
-	}
-	if (input[*index] == quote_type)
-		(*index)++;
-	buffer[buffer_pos] = '\0';
-	return (ft_strdup(buffer));
-}
-
-/**
- * @brief Manage quotes and parentheses
- *
- * @param char *input The input string
- * @param int *index The current index in the input string
- * @return char*
- */
-char	*extract_token(char *input, int *index)
-{
-	char	buffer[1024];
-	int		buffer_pos;
-	char	current_char;
-
-	buffer_pos = 0;
-	current_char = input[*index];
-	if (current_char == '"' || current_char == '\'')
-		return (extract_quoted_token(input, index));
-	if (current_char == '(' || current_char == ')')
-	{
-		buffer[0] = current_char;
-		buffer[1] = '\0';
-		(*index)++;
-		return (ft_strdup(buffer));
-	}
-	while (input[*index] != '\0' && !ft_isspace(input[*index])
-		&& input[*index] != '(' && input[*index] != ')')
-	{
-		buffer[buffer_pos++] = input[*index];
-		(*index)++;
-	}
-	buffer[buffer_pos] = '\0';
-	return (ft_strdup(buffer));
 }
 
 /**
@@ -155,8 +92,7 @@ char	**extract_command_tokens(t_token **tokens)
 	token_count = 0;
 	current = *tokens;
 	while (current != NULL
-		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT
-			|| current->type == TOKEN_VARIABLE))
+		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;
