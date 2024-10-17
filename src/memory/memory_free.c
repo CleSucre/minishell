@@ -68,24 +68,13 @@ void	free_minishell(t_minishell *minishell)
  */
 void	free_ast(t_ast_node *ast)
 {
-	int	i;
-
 	if (ast == NULL)
 		return ;
 	if (ast->left != NULL)
 		free_ast(ast->left);
 	if (ast->right != NULL)
 		free_ast(ast->right);
-	if (ast->value != NULL)
-	{
-		i = 0;
-		while (ast->value[i] != NULL)
-		{
-			free(ast->value[i]);
-			i++;
-		}
-		free(ast->value);
-	}
+	ft_tabfree(ast->value);
 	free(ast);
 }
 

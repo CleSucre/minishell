@@ -79,8 +79,8 @@ void	debug_ast(t_ast_node *ast)
 	if (!DEBUG)
 		return ;
 	ft_printf("\n%s[DEBUG] ====== AST NODE ======%s\n", BLUE, RESET);
-	ft_printf("type: %s%s%s (id: %d)\n", BOLDWHITE,
-		get_ast_node_type_primary(ast->type), RESET, ast->type);
+	ft_printf("type: %s%s%s (id: %d) | is_last: %d\n", BOLDWHITE,
+		get_ast_node_type_primary(ast->type), RESET, ast->type, ast->is_last);
 	i = 0;
 	if (ast->type == AST_COMMAND)
 	{

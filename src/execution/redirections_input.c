@@ -57,7 +57,7 @@ static int	heredoc_valid(t_ast_node *ast, int *pipes)
 		ft_putstr_fd("Error: no delimiter specified\n", STDERR_FILENO);
 		return (0);
 	}
-	if (pipe(pipes) == -1)
+	if (pipe(pipes) == -1 && !ast->is_last)
 	{
 		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
 		return (-1);
@@ -123,5 +123,12 @@ int	execute_heredoc(t_minishell *minishell, t_ast_node *ast,
 	status = run_heredoc(minishell, ast->right->value[0], pipes, in_out);
 	if (!status)
 		return (-1);
+	if (!ast->is_last)
+	{
+		close_fds(in_out, pipes);
+		in_out[0] = STDIN_FILENO;
+		in_out[1] = STDOUT_FILENO;
+		in_out[2] = -1;
+	}
 	return (execute_ast(minishell, ast->left, pipes, in_out));
 }

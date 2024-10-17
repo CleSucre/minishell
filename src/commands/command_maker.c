@@ -23,15 +23,15 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	int		is_var;
 	char	**tmp;
 
-	is_var = ft_strncmp(ast->value[0], "$", 1) == 0;
-	replace_variables_in_tab(minishell, ast->value);
+	cmd->args = ft_tabdup((const char **)ast->value);
+	is_var = ft_strncmp(cmd->args[0], "$", 1) == 0;
+	replace_variables_in_tab(minishell, cmd->args);
 	if (is_var)
 	{
-		tmp = ft_split(ast->value[0], WHITESPACES);
-		ft_tabdel(ast->value, 0);
-		ast->value = ft_tabjoin(tmp, ast->value);
+		tmp = ft_split(cmd->args[0], WHITESPACES);
+		ft_tabdel(cmd->args, 0);
+		cmd->args = ft_tabjoin(tmp, cmd->args);
 	}
-	cmd->args = ft_tabdup((const char **)ast->value);
 	expand_wildcards(&cmd->args);
 	if (!cmd->args[0])
 	{
@@ -52,11 +52,18 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 void	destroy_cmd(t_cmd *cmd)
 {
 	if (cmd->name)
+	{
 		free(cmd->name);
+		cmd->name = NULL;
+	}
 	if (cmd->path)
+	{
 		free(cmd->path);
+		cmd->path = NULL;
+	}
 	ft_tabfree(cmd->args);
 	free(cmd);
+	cmd = NULL;
 }
 
 /**

@@ -102,6 +102,60 @@ static t_ast_node_type	get_redir_type(t_token_type type)
 }
 
 /**
+ * @brief Process a heredoc token (<<) and create an AST heredoc node.
+ * 			If the current heredoc is not the last one, keep building the AST
+ * 			utils the last heredoc is reached. Then, build the ast
+ * 			from the last heredoc to the root.
+ *
+ * @param t_token **tokens
+ * @param t_ast_node **root
+ * @param t_ast_node **last_command
+ * @return int 1 if the function succeeded, 0 otherwise.
+ */
+int process_heredoc(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command, int is_last)
+{
+	t_ast_node		*last_node;
+	char			**file_tokens;
+
+	if (*last_command != NULL)
+	{
+		ft_fprintf(STDERR_FILENO, "DEBUG: %d\n", is_last);
+		if ((*last_command)->type == AST_HEREDOC)
+		{
+			(*last_command)->is_last = 0;
+		}
+		else
+			(*last_command)->is_last = is_last;
+	}
+	last_node = new_ast_node(AST_HEREDOC, NULL);
+	*tokens = (*tokens)->next;
+	if ((*tokens) == NULL)
+	{
+		ft_fprintf(STDERR_FILENO,
+				   "minishell: syntax error: expected file name\n");
+		return (0);
+	}
+	if ((*tokens)->type == TOKEN_COMMAND)
+	{
+		file_tokens = extract_command_tokens(tokens);
+		last_node->right = new_ast_node(AST_COMMAND, file_tokens);
+		if (*tokens)
+		{
+			if ((*tokens)->type == TOKEN_HEREDOC)
+			{
+				if (!process_heredoc(tokens, root, &last_node, 1))
+					return (0);
+			}
+		}
+	}
+	last_node->left = *root;
+	*root = last_node;
+	return (1);
+}
+
+
+/**
  * @brief Process a redirection token (>, >>, <, <<)
  * 			and create an AST redirection node.
  *
@@ -116,7 +170,8 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 	t_ast_node		*redir_node;
 	char			**file_tokens;
 
-	(*last_command)->is_last = is_last;
+	if (*last_command != NULL)
+		(*last_command)->is_last = is_last;
 	redir_type = get_redir_type((*tokens)->type);
 	redir_node = new_ast_node(redir_type, NULL);
 	redir_node->left = *root;

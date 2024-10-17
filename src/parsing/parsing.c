@@ -55,9 +55,10 @@ static char	*check_input(t_minishell *minishell, char *input)
 static int	build_ast_secondary(t_token **current, t_ast_node **root,
 							t_ast_node **last_command)
 {
-	if ((*current)->type == TOKEN_REDIR_IN
-		|| (*current)->type == TOKEN_HEREDOC)
+	if ((*current)->type == TOKEN_REDIR_IN)
 		return (process_redirection(current, root, last_command, 1));
+	else if ((*current)->type == TOKEN_HEREDOC)
+		return (process_heredoc(current, root, last_command, 1));
 	else if ((*current)->type == TOKEN_COMMAND)
 		return (process_command(current, root, last_command));
 	else if ((*current)->type == TOKEN_ARGUMENT)

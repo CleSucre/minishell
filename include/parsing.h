@@ -81,6 +81,8 @@ int				process_operator(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command);
 int				process_subshell(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command);
+int				process_heredoc(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command, int is_last);
 int				process_redirection(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command, int is_last);
 
