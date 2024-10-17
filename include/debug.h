@@ -53,5 +53,4 @@ char	*get_ast_node_type_primary(t_ast_node_type type);
 char	*get_ast_node_type_secondary(t_ast_node_type type);
 char	*get_token_type(t_token_type type);
 
-
 #endif

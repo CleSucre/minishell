@@ -19,7 +19,7 @@
 // #						WILDCARD					  #
 // ########################################################
 
-int	match_wildcard(const char *pattern, const char *str);
+int		match_wildcard(const char *pattern, const char *str);
 char	**expand_wildcard(char **str, char **files);
 void	expand_wildcards(char ***args);
 

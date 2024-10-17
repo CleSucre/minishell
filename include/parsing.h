@@ -95,10 +95,10 @@ void			add_token(t_token **head, t_token *new);
 // #						TOKENIZER						#
 // ########################################################
 
-t_token_type		token_type(char *str);
-t_token				*tokenize(char *input);
-char				*extract_token(char *input, int *index);
-char				**extract_command_tokens(t_token **tokens);
+t_token_type	token_type(char *str);
+t_token			*tokenize(char *input);
+char			*extract_token(char *input, int *index);
+char			**extract_command_tokens(t_token **tokens);
 
 // ########################################################
 // #					PARSER_MANDATORY					#

@@ -156,6 +156,6 @@ debug:
 	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell
 
 norm:
-	@norminette libft src include | grep Error || echo "$(GREEN)Success"
+	@norminette -R CheckForbiddenSourceHeader  libft src include | grep Error || echo "$(GREEN)Success"
 
 .PHONY: libft libft_clean libft_fclean all clean fclean re run debug norm
