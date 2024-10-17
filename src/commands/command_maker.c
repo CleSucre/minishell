@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Replace variables, support wildcard expansion
+ *
+ * @param t_minishell *minishell Minishell structure
+ * @param char **tab Tab of strings
+ */
 static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 {
 	int 	is_var;
@@ -22,14 +28,13 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	if (is_var)
 	{
 		tmp = ft_split(ast->value[0], WHITESPACES);
-		cmd->name = ft_strdup(tmp[0]);
 		ft_tabdel(ast->value, 0);
 		ast->value = ft_tabjoin(tmp, ast->value);
 	}
-	else
-		cmd->name = ft_strdup(ast->value[0]);
-	cmd->args = ast->value;
-	cmd->argc = (int)ft_tablen((const char **)ast->value);
+	cmd->args = ft_tabdup((const char **)ast->value);
+	expand_wildcards(cmd);
+	cmd->argc = (int)ft_tablen((const char **)cmd->args);
+	cmd->name = ft_strdup(cmd->args[0]);
 }
 
 /**
@@ -43,6 +48,7 @@ void	destroy_cmd(t_cmd *cmd)
 		free(cmd->name);
 	if (cmd->path)
 		free(cmd->path);
+	ft_tabfree(cmd->args);
 	free(cmd);
 }
 

@@ -37,6 +37,7 @@
 # include "struct.h"
 # include "terminal.h"
 # include "completion.h"
+# include "wildcard.h"
 
 // ########################################################
 // #						DEFAULTS					  #

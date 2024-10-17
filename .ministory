@@ -2652,3 +2652,461 @@ $TEST
 $TEST
 $TEST
 $TEST ..
+ls *
+echo *
+echo *
+echo *
+ls *
+ls *
+ls *
+ls *
+ls *
+ls *
+ls .
+ls *
+ls *
+ls
+clear
+git add -A*
+ls *
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+ls *
+ls *
+ls *
+ls *
+ls *
+ls *
+ls *
+ls *
+*
+*
+ls *
+ls *
+*
+ms *
+git add -A
+ls *
+*
+*
+*
+*
+*
+*
+ls *
+*
+*
+*
+*
+*
+*
+*
+*
+*
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+ls
+ls test
+cd test
+ls
+cd test
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+cd test
+ls
+cd test
+echo $PWD
+ls
+*
+echo *
+*
+ls
+cd ..
+cd ..
+ls
+pwd
+ls
+mls
+ls
+cd test
+ls
+pwd
+echo $PWD
+cd ..
+cd ..
+ls
+cd ..
+ls
+cd ..
+ls
+cd
+cd
+cd
+cd ..
+cd ..
+cd test
+ls
+cd test
+ls
+echo $PWD
+cd ..
+echo $PWD
+cd
+cd ..
+echo $PWD
+cd .. && echo $PWD
+cd .. && echo $PWD
+cd .. && echo $PWD
+cd ..
+cd ..
+echo $PWD
+echo $PWD
+cd ..
+echo $PWD
+cd ..
+cd ..
+cd minishell
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+*
+*
+*
+*
+*
+*
+lze“´@ip,dhbjvsc:k, mzejlmsþ
+zepkfkejgforaejgirge
+zdle´ fcmnklikdfjqlejzcv,n gjl;jkniqjslnjrâozjqnlmiZ^QS:µ
+echo $?
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+clear
+*
+pzkfozifj
+zfzklfjiz
+sudo ls
+sudo pat update
+sudo apt update
+sudo apt upgrade
+sudo
+sudo
+sudo ls
+sudo ls
+sudo ls
+*
+ls *
+*
+*
+*
+*
+ls *za
+ls te*
+ls te*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+cd test
+*
+cd test
+cd test
+*
+*
+cd test
+*
+*
+cd test
+*
+cd test
+*
+*
+*
+*
+*
+cd test
+echo *
+ls
+?
+ls ?
+ls *?
+ls *?
+?
+ls ?
+ls *
+ls t*
+ls tes*
+ls *es
+ls *ests
+ls *est
+ls *est
+ls *est
+ls *est
+ls *est
+ls *est
+*
+*
+*
+*
+.*
+ls .*
+ls .*
+*
+*
+*
+*
+*
+.*
+t*
+*te
+*est
+te*
+t*
+C*
+echi *
+echo ù
+echo *
+*
+.*
+*
+*es
+*es
+*
+te*
+*es
+*ests
+*es
+*ests
+*est
+*
+*
+.*
+.*i
+.*i*
+cd
+zodkzfd
+zodkzfd
+$VAR
+echo $HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+echo $HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+echo $HOME
+echo $HOME
+echo $HOME
+env | grepm HOME
+echo $HOME
+env | grepm HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+echo $HOME
+echo $HOME
+echo $HOME
+echo $HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+env | grepm HOME
+*
+*
+*
+*
+*
+cd test
+ls
+*
+echo *
+rm *
+ls
+ls
+rn *
+ls
+rm *
+ls
+touch a b c d A B C D
+ls
+echo *
+ls
+es*
+*est
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+*ests
+echo *
+echo a *
+echo a b *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+*
+echo *
+echo s a l u t
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c *
+echo a b c * blabla
+*
+clear
+echo *
+echo *
+zdzdf*zfze*f*zef*ezf*ezf*ez*f
+*e*t*
+*e*t*s

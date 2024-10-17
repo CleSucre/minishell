@@ -63,7 +63,6 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
 	if (cmd->to_close != -1)
 		close(cmd->to_close);
 	err = execute_path(cmd);
-	ft_fprintf(STDERR_FILENO, "err: %d\n", err);
 	destroy_cmd(cmd);
 	free_minishell(minishell);
 	exit(err);
