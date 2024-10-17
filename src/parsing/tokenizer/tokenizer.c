@@ -66,6 +66,8 @@ t_token	*tokenize(char *input)
 			continue ;
 		}
 		token_value = extract_token(input, &i);
+		if (token_value == NULL)
+			return (NULL);
 		type = token_type(token_value);
 		token = new_token(token_value, type);
 		add_token(&head, token);

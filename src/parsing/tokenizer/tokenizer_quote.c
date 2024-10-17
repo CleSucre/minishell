@@ -38,8 +38,12 @@ static char	*extract_quoted_token(char *input, int *index)
 		buffer[buffer_pos++] = input[*index];
 		(*index)++;
 	}
-	if (input[*index] == quote_type)
-		(*index)++;
+	if (input[*index] != quote_type)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: unclosed quote\n");
+		return (NULL);
+	}
+	(*index)++;
 	buffer[buffer_pos] = '\0';
 	return (ft_strdup(buffer));
 }
@@ -106,11 +110,18 @@ static char	*handle_operator(char *input, int *index)
 static char	*process_token(char *input, int *index,
 					char *buffer, int *buffer_pos)
 {
+	char	*token;
+
 	while (input[*index] != '\0' && !ft_isspace(input[*index])
 		&& input[*index] != '(' && input[*index] != ')')
 	{
 		if (input[*index] == '"' || input[*index] == '\'')
-			return (handle_quotes(buffer, buffer_pos, input, index));
+		{
+			token = handle_quotes(buffer, buffer_pos, input, index);
+			if (!token)
+				return (NULL);
+			return (token);
+		}
 		if (is_operator(input, *index) > 0)
 		{
 			if (*buffer_pos > 0)
@@ -133,11 +144,11 @@ static char	*process_token(char *input, int *index,
  *
  * @param char *input The input string
  * @param int *index The current index in the input string
- * @return char*
+ * @return char* The extracted token, or NULL if an error is detected
  */
 char	*extract_token(char *input, int *index)
 {
-	char	buffer[BUFFER_SIZE];
+	char	buffer[1024];
 	int		buffer_pos;
 	char	current_char;
 
