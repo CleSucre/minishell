@@ -13,6 +13,31 @@
 #include "minishell.h"
 
 /**
+ * @brief Replace variables, support wildcard expansion
+ *
+ * @param t_minishell *minishell Minishell structure
+ * @param char **tab Tab of strings
+ */
+static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
+{
+	int		is_var;
+	char	**tmp;
+
+	is_var = ft_strncmp(ast->value[0], "$", 1) == 0;
+	replace_variables_in_tab(minishell, ast->value);
+	if (is_var)
+	{
+		tmp = ft_split(ast->value[0], WHITESPACES);
+		ft_tabdel(ast->value, 0);
+		ast->value = ft_tabjoin(tmp, ast->value);
+	}
+	cmd->args = ft_tabdup((const char **)ast->value);
+	expand_wildcards(cmd);
+	cmd->argc = (int)ft_tablen((const char **)cmd->args);
+	cmd->name = ft_strdup(cmd->args[0]);
+}
+
+/**
  * @brief Free a command structure
  *
  * @param t_cmd *cmd Command structure to free
@@ -23,6 +48,7 @@ void	destroy_cmd(t_cmd *cmd)
 		free(cmd->name);
 	if (cmd->path)
 		free(cmd->path);
+	ft_tabfree(cmd->args);
 	free(cmd);
 }
 
@@ -39,31 +65,11 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 {
 	t_cmd	*cmd;
 	char	*path;
-	int 	is_var;
-	char 	**tmp;
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	is_var = 0;
-	if (ft_strncmp(ast->value[0], "$", 1) == 0)
-		is_var = 1;
-	replace_variables_in_tab(minishell, ast->value);
-	if (is_var)
-	{
-		tmp = ast->value;
-		ast->value = ft_split(ast->value[0], WHITESPACES);
-		free(tmp);
-		cmd->name = ft_strdup(ast->value[0] + 1);
-		cmd->args = ast->value;
-		cmd->argc = (int)ft_tablen((const char **)ast->value);
-	}
-	else
-	{
-		cmd->name = ft_strdup(ast->value[0]);
-		cmd->args = ast->value;
-		cmd->argc = (int)ft_tablen((const char **)ast->value);
-	}
+	parse_cmd_args(cmd, ast, minishell);
 	cmd->input_fd = in_out[0];
 	cmd->output_fd = in_out[1];
 	cmd->to_close = in_out[2];
@@ -73,5 +79,6 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 	if (!path)
 		path = ft_strdup(ast->value[0]);
 	cmd->path = path;
+	cmd->exit_signal = 0;
 	return (cmd);
 }

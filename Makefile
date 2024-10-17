@@ -43,6 +43,8 @@ SRCS_PARSING_TOKENIZER	= tokenizer.c token_management.c
 SRCS_TERMINAL			= input_utils.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_signals.c terminal_utils.c \
 							put_in_string.c
 
+SRCS_WILDCARD			= wildcard_utils.c
+
 SRCS_ATCP				= tab.c dictionnary/setup_dico.c dictionnary/bst.c dictionnary/bst_insert.c dictionnary/free_bst.c dictionnary/print_bst.c \
 							dictionnary/copy_cut_bst.c
 
@@ -74,15 +76,17 @@ SRCS_TOKENIZER			:= $(addprefix parsing$(DIRSEP), $(addprefix tokenizer$(DIRSEP)
 
 SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
+SRCS_WILDCARD			:= $(addprefix wildcard$(DIRSEP), $(SRCS_WILDCARD))
+
 SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_ATCP)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_WILDCARD) $(SRCS_ATCP)
 
 SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
 
 SRCS_TESTS				= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_ATCP)
+							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_WILDCARD) $(SRCS_ATCP)
 
 SRCS_TESTS				:= $(addprefix src$(DIRSEP), $(SRCS_TESTS))
 

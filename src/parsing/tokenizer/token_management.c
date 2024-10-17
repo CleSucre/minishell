@@ -29,6 +29,7 @@ t_token	*new_token(char *str, int type)
 	token->value = ft_strdup(str);
 	token->type = type;
 	token->next = NULL;
+	token->prev = NULL;
 	return (token);
 }
 
@@ -51,4 +52,5 @@ void	add_token(t_token **head, t_token *new)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
+	new->prev = tmp;
 }

@@ -25,6 +25,7 @@ typedef struct s_cmd {
 	char	**env;			// Environment variables (e.g., ["PATH=/usr/bin", ...])
 	char	*path;			// Full path of the executable (e.g., "/bin/ls")
 	int 	to_close;		// File descriptors to close after execution in fork
+	int 	exit_signal;	// Exit signal
 } t_cmd;
 
 

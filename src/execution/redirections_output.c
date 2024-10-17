@@ -25,19 +25,29 @@
 static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 						int *pipes, int *in_out)
 {
+	int	fd;
+
 	if (ast->right->value[0] == NULL)
 	{
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
+		return (1);
+	}
+	fd = open(ast->right->value[0], O_WRONLY | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		ft_fprintf(STDERR_FILENO,
+			"minishell: %s: Could not create file\n", ast->right->value[0]);
 		return (1);
 	}
 	if (access(ast->right->value[0], W_OK) != 0)
 	{
 		ft_fprintf(STDERR_FILENO,
 			"minishell: %s: Permission denied\n", ast->right->value[0]);
+		close(fd);
 		return (1);
 	}
-	execute_ast(minishell, ast->left, pipes, in_out);
-	return (0);
+	close(fd);
+	return (execute_ast(minishell, ast->left, pipes, in_out));
 }
 
 /**

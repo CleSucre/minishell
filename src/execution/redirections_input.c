@@ -38,8 +38,7 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 	}
 	close(pipes[0]);
 	close(pipes[1]);
-	execute_ast(minishell, ast->left, pipes, in_out);
-	return (0);
+	return (execute_ast(minishell, ast->left, pipes, in_out));
 }
 
 /**

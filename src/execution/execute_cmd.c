@@ -63,7 +63,6 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
 	if (cmd->to_close != -1)
 		close(cmd->to_close);
 	err = execute_path(cmd);
-	ft_fprintf(STDERR_FILENO, "err: %d\n", err);
 	destroy_cmd(cmd);
 	free_minishell(minishell);
 	exit(err);
@@ -140,14 +139,13 @@ static int	execute_external(t_minishell *minishell, t_cmd *cmd)
  * 				representing the command
  * @param int in_out[3] Array holding file descriptors
  * 				for input/output redirection
- * @return int Exit code of the command execution
+ * @return int 0 on success, 1 on exit request
  */
 int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 			int pipes[2], int in_out[3])
 {
 	t_cmd	*cmd;
 	int		res;
-	int		pid;
 
 	res = 0;
 	if (setup_pipes(pipes, in_out, ast->is_last) == -1)
@@ -162,10 +160,12 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 		res = execute_builtin_command(minishell, cmd);
 	else
 	{
-		pid = execute_external(minishell, cmd);
+		execute_external(minishell, cmd);
 		if (ast->is_last)
-			res = wait_for_pid(pid);
+			wait_for_processes();
 	}
+	minishell->exit_code = res;
+	minishell->exit_signal = cmd->exit_signal;
 	destroy_cmd(cmd);
 	close_fds(in_out, pipes);
 	if (ast->is_last)
@@ -174,6 +174,5 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 		in_out[1] = STDOUT_FILENO;
 		in_out[2] = -1;
 	}
-	minishell->exit_code = res;
-	return (res);
+	return (minishell->exit_signal);
 }

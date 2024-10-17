@@ -60,11 +60,17 @@ int	process_subshell(t_token **tokens, t_ast_node **root,
 {
 	t_ast_node	*subshell_node;
 
+	if ((*tokens)->prev != NULL && (*tokens)->prev->type == TOKEN_COMMAND)
+	{
+		ft_fprintf(STDERR_FILENO,
+			"minishell: syntax error near unexpected token `('\n");
+		return (0);
+	}
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
 	*tokens = (*tokens)->next;
 	if (build_ast(tokens, &subshell_node->left, last_command) != -1)
 	{
-		ft_fprintf(2, "minishell: syntax error: expected ')'\n");
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected ')'\n");
 		return (0);
 	}
 	while (*tokens != NULL && (*tokens)->type != TOKEN_PARENTHESIS_CLOSE)
@@ -99,13 +105,8 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 		redir_type = AST_REDIR_OUT_APPEND;
 	else if ((*tokens)->type == TOKEN_REDIR_IN)
 		redir_type = AST_REDIR_IN;
-	else if ((*tokens)->type == TOKEN_HEREDOC)
-		redir_type = AST_HEREDOC;
 	else
-	{
-		*root = NULL;
-		return (0);
-	}
+		redir_type = AST_HEREDOC;
 	redir_node = new_ast_node(redir_type, NULL);
 	redir_node->left = *root;
 	*tokens = (*tokens)->next;

@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   wildcard.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/16 06:52:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/06/16 06:52:00 by julthoma         ###   ########.fr       */
+/*   Created: 2024/10/16 00:59:00 by julthoma          #+#    #+#             */
+/*   Updated: 2024/10/16 00:59:00 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef WILDCARD_H
+#define WILDCARD_H
+
 #include "minishell.h"
 
-/**
- * @brief Exit the shell with a status code (default 0)
- *
- * @param t_cmd *cmd Command structure
- * @return int Exit code
- */
-int	command_exit(t_cmd *cmd)
-{
-	int	status;
+// ########################################################
+// #					WILDCARD_UTILS					  #
+// ########################################################
 
-	status = 0;
-	if (cmd->argc > 1)
-		status = ft_atoi(cmd->args[1]);
-	cmd->exit_signal = 1;
-	return (status % 256);
-}
+void expand_wildcards(t_cmd *cmd);
+
+#endif
