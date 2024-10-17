@@ -79,6 +79,10 @@ int	process_pipe(t_token **tokens, t_ast_node **root,
 
 	if (*last_command)
 		(*last_command)->is_last = 0;
+	if (!*last_command)
+		return (0);
+	if (!(*tokens)->next)
+		return (0);
 	pipe_node = new_ast_node(AST_PIPE, NULL);
 	pipe_node->left = *root;
 	*tokens = (*tokens)->next;

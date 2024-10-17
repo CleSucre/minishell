@@ -150,6 +150,7 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	if (error == 0)
 	{
 		free_tokens(tokens);
+		free_ast(ast);
 		return (NULL);
 	}
 	else if (error == -1)
