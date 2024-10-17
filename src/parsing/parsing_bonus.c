@@ -120,13 +120,16 @@ int process_heredoc(t_token **tokens, t_ast_node **root,
 
 	if (*last_command != NULL)
 	{
-		ft_fprintf(STDERR_FILENO, "DEBUG: %d\n", is_last);
 		if ((*last_command)->type == AST_HEREDOC)
 		{
 			(*last_command)->is_last = 0;
 		}
 		else
+		{
 			(*last_command)->is_last = is_last;
+			if ((*last_command)->type == AST_PIPE)
+				(*last_command)->right->is_last = is_last;
+		}
 	}
 	last_node = new_ast_node(AST_HEREDOC, NULL);
 	*tokens = (*tokens)->next;

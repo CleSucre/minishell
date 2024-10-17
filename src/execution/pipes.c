@@ -77,6 +77,13 @@ int	execute_pipe(t_minishell *minishell, t_ast_node *ast,
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	if (res == 1)
 		return (res);
+	if (ast->right->type == AST_REDIR_IN || ast->right->type == AST_HEREDOC)
+	{
+		close_fds(in_out, pipes);
+		in_out[0] = STDIN_FILENO;
+		in_out[1] = STDOUT_FILENO;
+		in_out[2] = -1;
+	}
 	res = execute_ast(minishell, ast->right, pipes, in_out);
 	if (res == 1)
 		return (res);
