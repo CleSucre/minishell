@@ -32,7 +32,7 @@ SRCS_EXECUTION			= execute_cmd.c execution_types.c execute_path.c execution.c si
 
 SRCS_COMMANDS			= command_maker.c flags_utils.c command_manager.c
 
-SRCS_COMMANDS_CUSTOM	= cd.c echo.c env.c exit.c history.c pwd.c unset.c export_cmd/export.c export_cmd/quicksort.c
+SRCS_COMMANDS_CUSTOM	= cd.c echo.c env.c exit.c history.c pwd.c unset.c export.c
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c builtins_alloc.c
 
