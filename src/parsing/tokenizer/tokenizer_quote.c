@@ -76,14 +76,51 @@ static char	*handle_parentheses(char current_char, int *index)
 	return (ft_strdup(buffer));
 }
 
+static int	is_operator(char *input, int index)
+{
+	if (input[index] == '|' && input[index + 1] == '|')
+		return (2);
+	if (input[index] == '&' && input[index + 1] == '&')
+		return (2);
+	if (input[index] == '|' || input[index] == '&')
+		return (1);
+	return (0);
+}
+
+static char	*handle_operator(char *input, int *index)
+{
+	char	buffer[3];
+	int		op_length;
+
+	op_length = is_operator(input, *index);
+	if (op_length > 0)
+	{
+		ft_strncpy(buffer, &input[*index], op_length);
+		buffer[op_length] = '\0';
+		*index += op_length;
+		return (ft_strdup(buffer));
+	}
+	return (NULL);
+}
+
 static char	*process_token(char *input, int *index,
-						char *buffer, int *buffer_pos)
+					char *buffer, int *buffer_pos)
 {
 	while (input[*index] != '\0' && !ft_isspace(input[*index])
 		&& input[*index] != '(' && input[*index] != ')')
 	{
 		if (input[*index] == '"' || input[*index] == '\'')
 			return (handle_quotes(buffer, buffer_pos, input, index));
+		if (is_operator(input, *index) > 0)
+		{
+			if (*buffer_pos > 0)
+			{
+				buffer[*buffer_pos] = '\0';
+				(*buffer_pos) = 0;
+				return (ft_strdup(buffer));
+			}
+			return (handle_operator(input, index));
+		}
 		buffer[(*buffer_pos)++] = input[*index];
 		(*index)++;
 	}
@@ -92,7 +129,7 @@ static char	*process_token(char *input, int *index,
 }
 
 /**
- * @brief Manage quotes and parentheses
+ * @brief Manage quotes, parentheses, and operators like &&, ||, |
  *
  * @param char *input The input string
  * @param int *index The current index in the input string
@@ -100,7 +137,7 @@ static char	*process_token(char *input, int *index,
  */
 char	*extract_token(char *input, int *index)
 {
-	char	buffer[1024];
+	char	buffer[BUFFER_SIZE];
 	int		buffer_pos;
 	char	current_char;
 
@@ -110,5 +147,7 @@ char	*extract_token(char *input, int *index)
 		return (extract_quoted_token(input, index));
 	if (current_char == '(' || current_char == ')')
 		return (handle_parentheses(current_char, index));
+	if (is_operator(input, *index) > 0)
+		return (handle_operator(input, index));
 	return (process_token(input, index, buffer, &buffer_pos));
 }
