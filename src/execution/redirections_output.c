@@ -44,7 +44,6 @@ int	verify_redirection(t_minishell *minishell, t_ast_node *ast)
 	}
 	free(start);
 	ft_tabfree(tab_tmp);
-	ft_fprintf(STDERR_FILENO, "value[1]: %s\n", ast->right->value[1]);
 	return (1);
 }
 
