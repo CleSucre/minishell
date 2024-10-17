@@ -28,7 +28,7 @@ unsigned int	get_prompt_len(t_minishell *minishell)
 
 	user = get_var_value_const(minishell->env, "USER");
 	host = get_var_value_const(minishell->env, "NAME");
-	path = getcwd(NULL, 0);
+	path = get_var_value_const(minishell->env, "PWD");
 	home = get_var_value_const(minishell->env, "HOME");
 	length = ft_strlen(user) + ft_strlen(host);
 	if (ft_strncmp(path, home, ft_strlen(home)) == 0)
@@ -55,7 +55,7 @@ void	print_terminal_prompt(t_minishell *minishell, int new_line)
 
 	user = get_var_value_const(minishell->env, "USER");
 	host = get_var_value_const(minishell->env, "NAME");
-	path = getcwd(NULL, 0);
+	path = get_var_value_const(minishell->env, "PWD");
 	home = get_var_value_const(minishell->env, "HOME");
 	if (new_line)
 		ft_putchar_fd('\n', 1);

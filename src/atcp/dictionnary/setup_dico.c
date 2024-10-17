@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_dico.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 07:35:56 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/10 09:08:30 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/10/17 05:59:26 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	search_in_path(t_dict *dict, char *odir)
  */
 int	creation_dict(t_minishell *minishell)
 {
-	t_dict	*tmp;
+	// t_dict	*tmp;
 	char	**paths;
 	int		i;
 
@@ -86,14 +86,14 @@ int	creation_dict(t_minishell *minishell)
 	if (!minishell->dict)
 		return (1);
 	minishell->dict->bst_size = 0;
-	tmp = minishell->dict;
+	// tmp = minishell->dict;
 	paths = ft_split(get_var_value_const(minishell->env, "PATH"), ":");
 	if (!paths)
 		return (1);
 	i = 0;
 	while (paths[i])
 	{
-		search_in_path(tmp, paths[i]);
+//		search_in_path(tmp, paths[i]);
 		i++;
 	}
 	ft_tabfree(paths);

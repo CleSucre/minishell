@@ -30,11 +30,12 @@ int	main(int argc, char **args, char **env)
 	(void)args;
 	minishell = alloc_minishell();
 	minishell->term->original_termios = &original_termios;
-	minishell->env = env;
+	minishell->env = ft_tabdup((const char **)env);
 	enable_termios(minishell->term);
 	use_termios(minishell);
 	disable_termios(minishell->term);
 	exit_code = minishell->exit_code;
+	ft_tabfree(minishell->env);
 	free_minishell(minishell);
 	ft_printf("exit code: %d\n", exit_code);
 	return (exit_code);

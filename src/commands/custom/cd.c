@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: julthoma <marvin@42.fr>                    +#+  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
 /*   Created: 2024/06/16 06:52:00 by julthoma          #+#    #+#             */
 /*   Updated: 2024/09/14 19:35:36 by mpierrot         ###   ########.fr       */
 /*                                                                            */
@@ -33,19 +36,20 @@ static void	invert_oldpwd(t_cmd *cmd)
 	if (chdir(name) == -1)
 		ft_putstr_fd("Error accessing oldpwd\n", 2);
 	free(name);
-	clear_string(cmd->env[oldpwd]);
+	free(cmd->env[oldpwd]);
 	buff_name = ft_strjoin("OLD", cmd->env[pwd]);
-	ft_strlcpy(cmd->env[oldpwd], buff_name,
-		(int)ft_strlen(cmd->env[pwd]) + 4);
+	if (!buff_name)
+		return ;
+	cmd->env[oldpwd] = ft_strdup(buff_name);
 	free(buff_name);
-	clear_string(cmd->env[pwd]);
+	free(cmd->env[pwd]);
 	name = getcwd(buffer, BUFFER_SIZE);
 	buff_name = ft_strjoin("PWD=", name);
-	ft_strlcpy(cmd->env[pwd], buff_name, (int)ft_strlen(name) + 5);
+	cmd->env[pwd] = ft_strdup(buff_name);
 	free(buff_name);
 }
 
-static void	change_oldpwd(t_cmd *cmd)
+static void	move_dir(t_cmd *cmd)
 {
 	int		pwd;
 	char	*name;
@@ -57,61 +61,65 @@ static void	change_oldpwd(t_cmd *cmd)
 	pwd = find_table_args(cmd->env, "PWD");
 	if (oldpwd == -1 || pwd == -1)
 		return ;
-	clear_string(cmd->env[oldpwd]);
+	free(cmd->env[oldpwd]);
 	buff_name = ft_strjoin("OLD", cmd->env[pwd]);
-	ft_strlcpy(cmd->env[oldpwd], buff_name,
-		(int)ft_strlen(cmd->env[pwd]) + 4);
+	if (!buff_name)
+		return ;
+	cmd->env[oldpwd] = ft_strdup(buff_name);
 	free(buff_name);
-	clear_string(cmd->env[pwd]);
+	free(cmd->env[pwd]);
 	name = getcwd(buffer, BUFFER_SIZE);
 	buff_name = ft_strjoin("PWD=", name);
-	ft_strlcpy(cmd->env[pwd], buff_name, (int)ft_strlen(name) + 5);
+	cmd->env[pwd] = ft_strdup(buff_name);
 	free(buff_name);
 }
 
-static void go_home(t_cmd *cmd)
+static void	go_home(t_cmd *cmd)
 {
-	//Use get var const
-	char *oldpwd;
-	char *pwd;
-	char *buf_name;
-	int position;
-
-
+	char	*oldpwd;
+	char	*pwd;
+	char	*buf_name;
+	int		position;
 
 	oldpwd = (char *)get_var_value_const(cmd->env, "PWD");
 	position = find_table_args(cmd->env, "OLDPWD");
 	if (position == -1)
 		return ;
-	clear_string(cmd->env[position]);
+	free(cmd->env[position]);
 	buf_name = ft_strjoin("OLDPWD=", oldpwd);
-	ft_strlcpy(cmd->env[position], buf_name, ft_strlen(buf_name) + 1);
+	cmd->env[position] = ft_strdup(buf_name);
 	free(buf_name);
 	position = find_table_args(cmd->env, "PWD");
-	clear_string(cmd->env[position]);
+	free(cmd->env[position]);
 	pwd = (char *)get_var_value_const(cmd->env, "HOME");
-	printf("pwd = %s\n", pwd);
 	buf_name = ft_strjoin("PWD=", pwd);
-	ft_strlcpy(cmd->env[position], buf_name, ft_strlen(buf_name) + 1);
+	cmd->env[position] = ft_strdup(buf_name);
 	free(buf_name);
 	chdir(pwd);
 }
 
-
-static int check_oldpwd(t_minishell *minishell, t_cmd *cmd)
+int	cd_minus(t_cmd *cmd)
 {
-	char **tmp;
+	char	**oldpwd;
+	int		position;
 
-	if (find_table_args(minishell->env, "OLDPWD") != -1)
-		return (0);
-	tmp = ft_tabdup((const char **)cmd->env);
-	add_cmd_env(minishell, "OLDPWD", getcwd(NULL, 0));
-	cmd->env = ft_tabinsert(tmp, ft_strjoin("OLDPWD=", getcwd(NULL, 0)),
-		ft_tablen((const char **)cmd->env) - 1);
-//	ft_sort(cmd->env, 0, ft_tablen((const char **)cmd->env) - 1);
-//	ft_tabprint((const char **)cmd->env, NULL, NULL, 1);
-
-	return (1);
+	position = find_table_args(cmd->env, "OLDPWD");
+	oldpwd = ft_split_quote(cmd->env[position], "=", "\"\'");
+	if (ft_strcmp(cmd->args[1], "-") == 0)
+	{
+		if (access(oldpwd[1], R_OK | X_OK) == 0)
+		{
+			invert_oldpwd(cmd);
+			return (1);
+		}
+		else
+		{
+			ft_tabfree(oldpwd);
+			ft_putstr_fd("error, oldpwd can't be established\n", 2);
+			return (126);
+		}
+	}
+	return (0);
 }
 
 /**
@@ -122,36 +130,28 @@ static int check_oldpwd(t_minishell *minishell, t_cmd *cmd)
  */
 int	command_cd(t_minishell *minishell, t_cmd *cmd)
 {
-	char	**oldpwd;
-	int		position;
+	int	minus;
 
 	check_oldpwd(minishell, cmd);
 	if (!cmd->args[1] || ft_strcmp(cmd->args[1], "~") == 0)
 	{
-		ft_putstr_fd("OK\n", 2);
 		go_home(cmd);
 		return (0);
 	}
-	position = find_table_args(cmd->env, "OLDPWD");
-	oldpwd = ft_split_quote(cmd->env[position], "=", "\"\'");
-	if (ft_strcmp(cmd->args[1], "-") == 0)
-	{
-		if (access(oldpwd[1], R_OK | X_OK) == 0)
-			invert_oldpwd(cmd);
-		else
-		{
-			ft_putstr_fd("error, oldpwd can't be established\n", 2);
-			return (126);
-		}
-	}
-	else if	(access(cmd->args[1], R_OK | X_OK) != 0
-		|| chdir(cmd->args[1]) == -1)
+	else
+		minus = cd_minus(cmd);
+	if (minus == 126)
+		return (126);
+	else if (minus == 1)
+		return (0);
+	else if (access(cmd->args[1], R_OK | X_OK) != 0 || chdir(cmd->args[1])
+		== -1)
 	{
 		ft_fprintf(2, "minishell: cd: %s: No such file or directory\n",
 			cmd->args[1]);
 		return (1);
 	}
 	else
-		change_oldpwd(cmd);
+		move_dir(cmd);
 	return (0);
 }
