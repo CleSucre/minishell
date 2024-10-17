@@ -20,7 +20,6 @@
 typedef enum s_token_type
 {
 	TOKEN_COMMAND,              // Command (e.g., "ls", "echo", etc.)
-	TOKEN_VARIABLE,             // Variable (e.g., "$HOME")
 	TOKEN_ARGUMENT,             // Argument of a command (e.g., "-l", "/home/user")
 	TOKEN_AND_OPERATOR,         // Logical operator (&&)
 	TOKEN_OR_OPERATOR,          // Logical operator (||)

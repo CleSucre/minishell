@@ -34,6 +34,7 @@ int	process_command(t_token **tokens, t_ast_node **root,
 	command_node = new_ast_node(AST_COMMAND, command_tokens);
 	if (!command_node)
 		return (0);
+	ft_fprintf(2, "command: %s\n", command_node->value[0]);
 	if (*last_command == NULL)
 		*root = command_node;
 	else if ((*last_command)->right == NULL)

@@ -110,6 +110,11 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 	redir_node = new_ast_node(redir_type, NULL);
 	redir_node->left = *root;
 	*tokens = (*tokens)->next;
+	if ((*tokens) == NULL)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected file name\n");
+		return (0);
+	}
 	if ((*tokens)->type == TOKEN_COMMAND)
 	{
 		file_tokens = extract_command_tokens(tokens);

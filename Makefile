@@ -128,7 +128,7 @@ else
 	CXXFLAGS += -g -D DEBUG=$(DEBUG)
 endif
 
-VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes --suppressions=valgrind.supp
+VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes
 
 # COLORS
 DEFCOLOR = \033[0;39m

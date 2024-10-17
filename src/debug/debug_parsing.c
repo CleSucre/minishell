@@ -22,8 +22,6 @@ static char	*get_token_type(t_token_type type)
 {
 	if (type == TOKEN_COMMAND)
 		return ("TOKEN_COMMAND");
-	else if (type == TOKEN_VARIABLE)
-		return ("TOKEN_VARIABLE");
 	else if (type == TOKEN_ARGUMENT)
 		return ("TOKEN_ARGUMENT");
 	else if (type == TOKEN_AND_OPERATOR)
