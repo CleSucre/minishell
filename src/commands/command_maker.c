@@ -88,6 +88,7 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 	parse_cmd_args(cmd, ast, minishell);
 	if (cmd->args[0] == NULL)
 	{
+		ft_fprintf(STDERR_FILENO, "DEBUG: %s: command not found\n", cmd->name);
 		destroy_cmd(cmd);
 		return (NULL);
 	}

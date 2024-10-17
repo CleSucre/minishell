@@ -36,7 +36,7 @@ SRCS_COMMANDS_CUSTOM	= cd.c cd_utils.c echo.c env.c exit.c history.c pwd.c unset
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c builtins_alloc.c
 
-SRCS_PARSING			= ast_management.c parsing.c parsing_args.c parsing_mandatory.c parsing_bonus.c var_creation.c
+SRCS_PARSING			= ast_management.c parsing.c parsing_mandatory.c parsing_redirection.c parsing_bonus.c var_creation.c
 
 SRCS_PARSING_TOKENIZER	= tokenizer.c token_management.c tokenizer_quote.c
 

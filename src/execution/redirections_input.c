@@ -66,6 +66,33 @@ static int	heredoc_valid(t_ast_node *ast, int *pipes)
 }
 
 /**
+ * @brief Write the heredoc content to the pipe
+ *
+ * @param t_minishell *minishell
+ * @param int *pipes
+ * @param int *in_out
+ * @param char *line
+ * @return int 1 on success, 0 on failure
+ */
+static int	write_heredoc(t_minishell *minishell, int *pipes,
+						int *in_out, char *line)
+{
+	char	*tmp;
+
+	tmp = replace_variables(minishell, line);
+	free(line);
+	if (write(pipes[1], tmp, ft_strlen(tmp)) == -1)
+	{
+		ft_putstr_fd("Error: write failed\n", STDERR_FILENO);
+		free(tmp);
+		close_fds(in_out, pipes);
+		return (1);
+	}
+	free(tmp);
+	return (0);
+}
+
+/**
  * @brief Run the heredoc logic
  *
  * @param t_minishell *minishell
@@ -84,18 +111,16 @@ static int	run_heredoc(t_minishell *minishell, char *delimiter,
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
-		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
-			break ;
-		tmp = replace_variables(minishell, line);
-		free(line);
-		if (write(pipes[1], tmp, strlen(tmp)) == -1)
+		tmp = ft_strdup(line);
+		tmp[ft_strlen(line) - 1] = '\0';
+		if (!line || ft_strcmp(tmp, delimiter) == 0)
 		{
-			ft_putstr_fd("Error: write failed\n", STDERR_FILENO);
 			free(tmp);
-			close_fds(in_out, pipes);
-			return (0);
+			break ;
 		}
 		free(tmp);
+		if (write_heredoc(minishell, pipes, in_out, line))
+			return (0);
 	}
 	free(line);
 	in_out[0] = pipes[0];
