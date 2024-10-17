@@ -340,3 +340,144 @@ cd
 cd
 ls
 clear
+echo $HOME
+cd
+echo $HOME
+env | grep HOME
+env | grep HOME
+cd
+export | grep HOME
+cd
+cd
+cd ..
+cd ..
+cd ..
+export
+export a=b
+export a=b
+c
+export a=b
+export a=b
+export a=b
+export a=b
+export a=b
+export a=b
+echo $a
+export PWD=patate
+export PWD=bite
+export PWD=bite
+export PWD=bite
+export PWD=bite
+export PWD=bite
+export a=b
+export a=b
+echo $a
+export a=b
+export a=b
+export a=b
+echo $a
+ls
+exit
+exit
+export a=b
+echo $a
+export a=b
+echo $a
+ls
+export a=b
+export a=b
+echo $a
+export PWD=bite
+cd
+cd -
+c
+cd ..
+cd -
+cd -
+c
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+c
+cd ..
+cd ..
+cd ..
+pwd
+cd ..
+cd minishell
+cd src
+cd ..
+cd ..
+cd ..
+cd Dev
+cd minishell
+cd src
+cd src
+cd src
+pwd
+cd ..
+cd src
+cd src
+cd src
+cd src
+cd src
+cd src
+cd src
+cd ..
+cd src
+ls
+ls
+ls
+cd ..
+ls
+cd src
+ls
+ls
+pwd
+ls
+ls
+ls
+cd ../..
+ls
+cd ..
+cd src
+cd ..
+cd ..
+cd -
+cd ..
+cd ..
+ls
+cd Dev
+ls
+cd ..
+cd ..
+cd Dev/minishell
+cd ..
+cd ..
+cd Dev/minishell
+cd ..
+ls
+cd
+pwd
+cd -
+pwd
+cd minishell
+clear
+echo $PWD
+cd
+echo $PWD
+cd -
+echo $PWD
+cd ..
+ls
+cd ..
+ls
+cd -
+ls
+export a=b
+export PWD=bite
+export PWD+=bite
