@@ -72,6 +72,7 @@ void	put_in_string(t_minishell *minishell, char *new)
 {
 	unsigned int	current_rows;
 	unsigned int	prompt_len;
+	char			*tmp;
 
 	current_rows = minishell->term->rows;
 	prompt_len = get_prompt_len(minishell);
@@ -81,8 +82,10 @@ void	put_in_string(t_minishell *minishell, char *new)
 		minishell->input = ft_tabinsert(minishell->input, new,
 				minishell->term->cols - prompt_len - 1);
 		clear_term(minishell);
-		ft_putstr_fd(ft_utf8_tab_to_str(minishell->input)
+		tmp = ft_utf8_tab_to_str(minishell->input);
+		ft_putstr_fd(tmp
 			+ (minishell->term->cols - prompt_len - 1), STDOUT_FILENO);
+		free(tmp);
 	}
 	else
 		pis_other_rows(minishell, new);

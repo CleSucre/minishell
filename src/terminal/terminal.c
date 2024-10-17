@@ -68,7 +68,7 @@ static void	begin_user_input(t_minishell *minishell)
 int	process_user_input(t_minishell *minishell,
 				int signal, ssize_t bits)
 {
-	char	buffer[32];
+	char	buffer[BUFFER_SIZE];
 
 	bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 	if (bits == -1)
