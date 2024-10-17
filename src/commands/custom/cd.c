@@ -83,7 +83,6 @@ static void go_home(t_cmd *cmd)
 	position = find_table_args(cmd->env, "OLDPWD");
 	if (position == -1)
 		return ;
-	ft_printf("oldpwd = %s\n position %d\n", oldpwd, position);
 	clear_string(cmd->env[position]);
 	buf_name = ft_strjoin("OLDPWD=", oldpwd);
 	ft_strlcpy(cmd->env[position], buf_name, ft_strlen(buf_name) + 1);
@@ -91,6 +90,7 @@ static void go_home(t_cmd *cmd)
 	position = find_table_args(cmd->env, "PWD");
 	clear_string(cmd->env[position]);
 	pwd = (char *)get_var_value_const(cmd->env, "HOME");
+	printf("pwd = %s\n", pwd);
 	buf_name = ft_strjoin("PWD=", pwd);
 	ft_strlcpy(cmd->env[position], buf_name, ft_strlen(buf_name) + 1);
 	free(buf_name);

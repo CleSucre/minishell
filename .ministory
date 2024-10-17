@@ -274,3 +274,69 @@ cd -
 cd
 cd ~
 echo $OLDPWD
+cd
+pwd
+cd
+pwd
+pwd
+cd
+cd
+cd
+cd
+cd
+cd
+cd -
+cd
+cd -
+cd
+pwd
+echo $PWD
+echo $OLDPWD
+ls
+pwd
+cd ..
+pwd
+cd
+cd
+cd
+cd
+ls
+cd -
+ls
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+cd
+env
+env | grep HOME
+clear
+nv
+env
+env | grep HOME
+env | grep ZSH
+env
+env | grep PWD
+clear
+env | grep HOME
+cd
+cd
+cd
+ls
+clear
