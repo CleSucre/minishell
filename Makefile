@@ -84,14 +84,6 @@ SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
 
 SRCS					:= $(addprefix src$(DIRSEP), $(SRCS))
 
-SRCS_TESTS				= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
-							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
-							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_WILDCARD) $(SRCS_ATCP)
-
-SRCS_TESTS				:= $(addprefix src$(DIRSEP), $(SRCS_TESTS))
-
-SRCS_TESTS				+= tests$(DIRSEP)src$(DIRSEP)main.cpp tests$(DIRSEP)src$(DIRSEP)tester$(DIRSEP)TesterQuote.cpp tests$(DIRSEP)src$(DIRSEP)tester$(DIRSEP)TesterStrSplit.cpp
-
 #############################################################################
 
 OBJ_PATH		= obj$(DIRSEP)
@@ -100,15 +92,7 @@ OBJ_NAME		= $(SRCS:%.c=%.o)
 
 OBJS			= $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 
-# .cpp & .c to .o
-OBJ_NAME_CPP    = $(SRCS_TESTS:%.c=%.o)
-OBJ_NAME_CPP    := $(OBJ_NAME_CPP:%.cpp=%.o)
-
-OBJS_CPP        = $(addprefix $(OBJ_PATH), $(OBJ_NAME_CPP))
-
 CC				= gcc
-
-CXX				= c++
 
 HEAD			= include
 
@@ -116,16 +100,12 @@ LIBFT_DIR		= libft
 
 CFLAGS			= -I $(HEAD) -MMD -MP
 
-CXXFLAGS        = $(CFLAGS) -std=c++17 -I tests/include
-
 # DEBUG
 DEBUG ?= 0
 ifeq ($(DEBUG), 0)
 	CFLAGS += -Wall -Wextra -Werror
-	CXXFLAGS += -Wall -Wextra -Werror
 else
 	CFLAGS += -g -D DEBUG=$(DEBUG)
-	CXXFLAGS += -g -D DEBUG=$(DEBUG)
 endif
 
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes
@@ -178,19 +158,4 @@ debug:
 norm:
 	@norminette libft src include | grep Error || echo "$(GREEN)Success"
 
-#############################################################################
-#									TESTS									#
-#############################################################################
-
-$(OBJ_PATH)%.o: %.cpp
-	@mkdir -p $(@D) 2> $(DIRSEP)dev$(DIRSEP)null || true
-	@echo "$(YELLOW)Compiling $< $(DEFCOLOR)"
-	@$(CXX) $(CXXFLAGS) -o $@ -c $<
-
-tests: $(OBJS_CPP) libft
-	@$(CXX) $(CXXFLAGS) -o test $(OBJS_CPP) -L $(LIBFT_DIR) -lft
-	@echo "$(GREEN)Tests have been created successfully.$(DEFCOLOR)"
-	./test
-	rm -f test
-
-.PHONY: libft libft_clean libft_fclean all clean fclean re run debug norm tests
+.PHONY: libft libft_clean libft_fclean all clean fclean re run debug norm
