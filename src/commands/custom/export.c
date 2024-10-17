@@ -19,26 +19,25 @@
  * @return int Exit code
  */
 
-
 void	print_export(t_cmd *cmd)
 {
-	int i;
-        char **tmp;
+	int		i;
+	char	**tmp;
 
-        tmp = ft_tabdup((const char **)cmd->env);
-        ft_sort(tmp, 0, ft_tablen((const char **)tmp) - 1);
-        i = 0;
+	tmp = ft_tabdup((const char **)cmd->env);
+	ft_sort(tmp, 0, ft_tablen((const char **)tmp) - 1);
+	i = 0;
 	while (tmp[i])
 	{
-        ft_putstr_fd("declare -x ", cmd->output_fd);
+		ft_putstr_fd("declare -x ", cmd->output_fd);
 		ft_putstr_fd(tmp[i], cmd->output_fd);
-        ft_putstr_fd("\n", cmd->output_fd);
+		ft_putstr_fd("\n", cmd->output_fd);
 		i++;
 	}
-        ft_tabfree(tmp);
+	ft_tabfree(tmp);
 }
 
-int modify_cmd_env(t_cmd *cmd, char *input, char *value)
+int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
 {
 	int		is_here;
 	char	*res;
@@ -51,13 +50,13 @@ int modify_cmd_env(t_cmd *cmd, char *input, char *value)
 	tmp = ft_strjoin(input, "=");
 	res = ft_strjoin(tmp, value);
 	clear_string(cmd->env[is_here]);
-	ft_strncpy(cmd->env[is_here], res, ft_strlen(res)+1);
+	ft_strncpy(cmd->env[is_here], res, ft_strlen(res) + 1);
 	free(tmp);
 	free(res);
 	return (0);
 }
 
-int sum_cmd_env(t_cmd *cmd, char *input, char *value)
+int	sum_cmd_env(t_cmd *cmd, char *input, char *value)
 {
 	int		is_here;
 	char	**arg_split;
@@ -80,12 +79,10 @@ int sum_cmd_env(t_cmd *cmd, char *input, char *value)
 	free(res);
 	free(tmp);
 	ft_tabfree(arg_split);
-//	clear_string(cmd->env[is_here]);
-//	ft_strlcpy(cmd->env[is_here], res, ft_strlen(res)+1);
 	return (0);
 }
 
-int add_cmd_env(t_minishell *minishell, char *input, char *value)
+int	add_cmd_env(t_minishell *minishell, char *input, char *value)
 {
 	char	**tmp;
 	char	*res;
@@ -104,14 +101,14 @@ int add_cmd_env(t_minishell *minishell, char *input, char *value)
 
 int	command_export(t_minishell *minishell, t_cmd *cmd)
 {
-	char **cut_name;
-	char *arg_equal;
+	char	**cut_name;
+	char	*arg_equal;
 
 	if (!cmd->args[1])
-		{
-          	print_export(cmd);
-			return (0);
-		}
+	{
+		print_export(cmd);
+		return (0);
+	}
 	else if (ft_is_charset('+', cmd->args[1]))
 		cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
 	else
