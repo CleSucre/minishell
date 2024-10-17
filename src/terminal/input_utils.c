@@ -44,9 +44,9 @@ void	erase_in_string(t_minishell *minishell)
  * 			if cursor at end of cols, go one line under
  */
 static void	ad_nl_last_rows(t_minishell *minishell, unsigned int input_len,
-		unsigned int prompt_len)
+		unsigned int prompt_len, unsigned int new_len)
 {
-	minishell->term->cols++;
+	minishell->term->cols += new_len;
 	if (minishell->term->cols >= minishell->term->ws_cols + 1)
 	{
 		ft_putstr_fd("\033[E", 1);
@@ -96,7 +96,7 @@ void	edit_input(t_minishell *minishell, char *new)
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
-	ad_nl_last_rows(minishell, input_len, prompt_len);
+	ad_nl_last_rows(minishell, input_len, prompt_len, ft_strlen(new));
 }
 
 /**

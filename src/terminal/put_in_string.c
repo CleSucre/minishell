@@ -53,6 +53,7 @@ static void	pis_other_rows(t_minishell *minishell, char *new)
 	unsigned int	current_cols;
 	unsigned int	current_rows;
 	unsigned int	prompt_len;
+	char			*tmp;
 
 	current_cols = minishell->term->cols;
 	current_rows = minishell->term->rows;
@@ -63,9 +64,11 @@ static void	pis_other_rows(t_minishell *minishell, char *new)
 	minishell->term->rows -= current_rows - minishell->term->begin_rows;
 	clear_term(minishell);
 	minishell->term->rows += current_rows - minishell->term->begin_rows;
-	ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + ((current_rows
+	tmp = ft_utf8_tab_to_str(minishell->input);
+	ft_putstr_fd(tmp + ((current_rows
 				- minishell->term->begin_rows) * minishell->term->ws_cols - 1)
 		- prompt_len + current_cols - 1, STDOUT_FILENO);
+	free(tmp);
 }
 
 void	put_in_string(t_minishell *minishell, char *new)

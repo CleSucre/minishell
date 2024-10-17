@@ -80,6 +80,7 @@ int	process_user_input(t_minishell *minishell,
 	signal = process_signals(minishell, buffer[0]);
 	if (signal == 1)
 		return (1);
+	get_terminal_size(minishell->term);
 	if (signal == 2 || process_action(minishell, buffer))
 		return (0);
 	get_terminal_size(minishell->term);
