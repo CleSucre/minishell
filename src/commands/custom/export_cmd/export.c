@@ -60,20 +60,28 @@ int modify_cmd_env(t_cmd *cmd, char *input, char *value)
 int sum_cmd_env(t_cmd *cmd, char *input, char *value)
 {
 	int		is_here;
-	char	**tmp;
+	char	**arg_split;
 	char	*res;
+	char	*tmp;
 
 	is_here = 0;
 	is_here = find_table_args(cmd->env, input);
 	if (is_here == -1)
 		return (-1);
-	tmp = ft_split_quote(cmd->env[is_here], "=", "\"\'");
-	if (!tmp)
+	arg_split = ft_split_quote(cmd->env[is_here], "=", "\"\'");
+	if (!arg_split)
 		return (-1);
-	res = ft_strjoin(ft_strjoin(input, "="), tmp[1]);
-	res = ft_strjoin(res, value);
-	clear_string(cmd->env[is_here]);
-	ft_strlcpy(cmd->env[is_here], res, ft_strlen(res)+1);
+	res = ft_strjoin(input, "=");
+	tmp = ft_strjoin(res, arg_split[1]);
+	free(res);
+	res = ft_strjoin(tmp, value);
+	free(cmd->env[is_here]);
+	cmd->env[is_here] = ft_strdup(res);
+	free(res);
+	free(tmp);
+	ft_tabfree(arg_split);
+//	clear_string(cmd->env[is_here]);
+//	ft_strlcpy(cmd->env[is_here], res, ft_strlen(res)+1);
 	return (0);
 }
 

@@ -93,7 +93,7 @@ int	creation_dict(t_minishell *minishell)
 	i = 0;
 	while (paths[i])
 	{
-		search_in_path(tmp, paths[i]);
+//		search_in_path(tmp, paths[i]);
 		i++;
 	}
 	ft_tabfree(paths);
