@@ -17,9 +17,10 @@
  * 			- Left & right : Move cursor left and right as bash
  * 			- Up & Down : 	go search familiar
  * 				input user already wrote in .ministory
- * @param t_minishell	Struct which access to history
- * @param input			Current input from user
- * @return int			1 if an action is done, 0 if not
+ *
+ * @param t_minishell *minishell Minishell structure containing history data
+ * @param const char *seq Escape sequence
+ * @return int 1 if an action is done, 0 if not
  */
 int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 {
@@ -32,12 +33,9 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 			arrow_up_action(minishell, new_history);
 		else if (seq[2] == D_ARROW)
 			arrow_down_action(minishell, new_history);
-		else if (seq[2] == R_ARROW && minishell->term->cols
-			< ft_tablen((const char **)minishell->input)
-			+ get_prompt_len(minishell) + 1)
+		else if (seq[2] == R_ARROW)
 			arrow_right_action(minishell);
-		else if (seq[2] == L_ARROW && minishell->term->cols
-			> get_prompt_len(minishell) + 1)
+		else if (seq[2] == L_ARROW)
 			arrow_left_action(minishell);
 		return (1);
 	}
@@ -55,12 +53,16 @@ static void	begin_user_input(t_minishell *minishell)
 	creation_dict(minishell);
 	print_terminal_prompt(minishell, 1);
 	get_cursor_position(minishell->term);
+	minishell->term->begin_rows = minishell->term->rows;
+	minishell->term->cols = get_prompt_len(minishell) + 1;
 }
 
 /**
  * @brief Process user input using termios
  *
  * @param t_minishell *minishell
+ * @param int signal
+ * @param ssize_t bits
  * @return int 0 if no error, 1 if error
  */
 int	process_user_input(t_minishell *minishell,
@@ -68,9 +70,6 @@ int	process_user_input(t_minishell *minishell,
 {
 	char	buffer[32];
 
-	get_terminal_size(minishell->term);
-	minishell->term->begin_rows
-		= ft_tablen((const char **)minishell->input) % MAX_32_BIT;
 	bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 	if (bits == -1)
 	{
@@ -83,6 +82,7 @@ int	process_user_input(t_minishell *minishell,
 		return (1);
 	if (signal == 2 || process_action(minishell, buffer))
 		return (0);
+	get_terminal_size(minishell->term);
 	return (1);
 }
 
@@ -100,6 +100,7 @@ void	use_termios(t_minishell *minishell)
 	signal = 0;
 	bits = 0;
 	begin_user_input(minishell);
+	get_terminal_size(minishell->term);
 	while (process_user_input(minishell, signal, bits))
 		continue ;
 	ft_fprintf(STDOUT_FILENO, "\n%s\n", TERMINAL_EXIT_MSG);

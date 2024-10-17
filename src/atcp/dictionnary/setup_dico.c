@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   setup_dico.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 07:35:56 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/10 09:08:30 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/10/17 05:59:26 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Add a new node in the BST
+ *
+ * @param struct dirent *dir - directory
+ * @param t_dict *dict - BST
+ */
 void	send_to_bst(struct dirent *dir, t_dict *dict)
 {
 	char			*name;
@@ -31,9 +37,10 @@ void	send_to_bst(struct dirent *dir, t_dict *dict)
  * @brief Open dir with odir path and fill dict with all files in it
  * 		which are executable return a BST full with all
  * 		executable files found and sort alphabetically
- * 	@param	dict - BST
- * 	@param	odir - path to open
- * 	@return 0 if success
+ *
+ * 	@param t_dict *dict - BST
+ * 	@param char *odir - path to open
+ * 	@return int 0 if success
  */
 int	search_in_path(t_dict *dict, char *odir)
 {
@@ -54,38 +61,41 @@ int	search_in_path(t_dict *dict, char *odir)
 	}
 	else
 	{
-		perror("opendir");
+		perror("warning: opendir bst");
 		return (1);
 	}
 	return (0);
 }
 
 /**
- * @brief 	Create first BST node (root)
+ * @brief Create first BST node (root)
  *			Fill it with search in path
  *			Search for a specific node
  *			Print the branch found
- * 	@return 0 if success
+ *
+ * @param t_minishell *minishell
+ * @return int 0 if success
  */
-
 int	creation_dict(t_minishell *minishell)
 {
 	t_dict	*tmp;
+	char	**paths;
+	int		i;
 
 	minishell->dict = create_node("\0", "file");
 	if (!minishell->dict)
 		return (1);
 	minishell->dict->bst_size = 0;
 	tmp = minishell->dict;
-//	search_in_path(tmp, "/bin");
-	search_in_path(tmp, "/usr/sbin");
-//	search_in_path(tmp, "/usr/local/bin");
-//	search_in_path(tmp, "/opt/bin");
-//	search_in_path(tmp, "/etc");
+	paths = ft_split(get_var_value_const(minishell->env, "PATH"), ":");
+	if (!paths)
+		return (1);
+	i = 0;
+	while (paths[i])
+	{
+		search_in_path(tmp, paths[i]);
+		i++;
+	}
+	ft_tabfree(paths);
 	return (0);
 }
-
-///usr/sbin
-///usr/local/bin
-///opt/bin
-///etc

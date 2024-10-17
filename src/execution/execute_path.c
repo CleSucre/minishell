@@ -13,10 +13,10 @@
 #include "minishell.h"
 
 /**
- * @brief Execute the command given in input
+ * @brief Execute the command given in input with the path
  *
- * @param t_cmd *cmd
- * @return int error code
+ * @param t_cmd *cmd Command structure
+ * @return int Error code
  */
 int	execute_path(t_cmd *cmd)
 {
@@ -25,6 +25,6 @@ int	execute_path(t_cmd *cmd)
 	err = execve(cmd->path, cmd->args, cmd->env);
 	if (err == -1)
 		ft_fprintf(STDERR_FILENO, "minishell: command not found: %s\n",
-				   cmd->name);
+			cmd->name);
 	return (err);
 }

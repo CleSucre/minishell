@@ -12,8 +12,31 @@
 
 #include "minishell.h"
 
-void	command_unset(t_cmd *cmd, t_minishell *minishell)
+/**
+ * @brief Unset the environment variable
+ *
+ * @param t_cmd *cmd Command structure
+ * @return int Exit code
+ */
+int	command_unset(t_cmd *cmd)
 {
-	(void)cmd;
-	(void)minishell;
+	char	**cut_name;
+	char	*arg_equal;
+	int		position;
+
+	cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
+	if (!cut_name)
+		return (1);
+	arg_equal = ft_strjoin(cut_name[0], "=");
+	if (!arg_equal)
+	{
+		ft_tabfree(cut_name);
+		return (1);
+	}
+	position = find_table_args(cmd->env, arg_equal);
+	if (position != -1)
+		ft_tabdel(cmd->env, position);
+	ft_tabfree(cut_name);
+	free(arg_equal);
+	return (0);
 }

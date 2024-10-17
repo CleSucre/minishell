@@ -15,7 +15,7 @@
 /**
  * @brief Clear the lines and put back prompt after moving cursor
  *
- * @param cols
+ * @param t_minishell *minishell
  */
 void	reset_stdin(t_minishell *minishell)
 {
@@ -27,9 +27,10 @@ void	reset_stdin(t_minishell *minishell)
 /**
  * @brief Print in our terminal
  * 			if nl, move cursor one line down
- * @param char * String to print
+ *
+ * @param char *str String to print
  * @param int nl Move cursor down and print newline(s)
- * @return void
+ * @param int fd File descriptor
  */
 void	terminal_print(char *str, int nl, int fd)
 {
@@ -44,7 +45,6 @@ void	terminal_print(char *str, int nl, int fd)
  * @brief Reset input string and realloc it
  *
  * @param char ***input
- * @return void
  */
 void	reset_input(char ***input)
 {
@@ -55,6 +55,8 @@ void	reset_input(char ***input)
 
 /**
  * @brief Set tabstop every 4, will possibly be deleted
+ *
+ * @param t_minishell *minishell
  */
 void	set_tabstop(t_minishell *minishell)
 {

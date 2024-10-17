@@ -11,15 +11,14 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /**
  * @brief Create a new node
- * @param *key name of directory
- * @param *value file/exec/..
- * @param left_branch // right_branch - Childrens
- * @param parent - Parent node
+ *
+ * @param char *key name of directory
+ * @param char *value file/exec/..
  * @return t_dict * The new node
  */
-
 t_dict	*create_node(char *key, char *value)
 {
 	t_dict	*node;
@@ -49,11 +48,11 @@ t_dict	*create_node(char *key, char *value)
 
 /**
  * @brief Search for a specific node in the BST
- * @param root Dict structure
- * @param key Name specifically search in the BST
- * @return
+ *
+ * @param t_dict *root Dict structure
+ * @param char *key Name specifically search in the BST
+ * @return t_dict * The node found
  */
-
 t_dict	*search_node(t_dict *root, char *key)
 {
 	if (!root)
@@ -67,8 +66,9 @@ t_dict	*search_node(t_dict *root, char *key)
 }
 
 /**
- * @brief Get the Number of Branch in the BSTn
- * @param root Dict structure
+ * @brief Get the Number of Branch in the BST
+ *
+ * @param t_dict *root Dict structure
  * @return size_t The size of the BST
  */
 size_t	bst_size(t_dict *root)
@@ -91,8 +91,10 @@ size_t	bst_size(t_dict *root)
 
 /**
  * @brief Move in the path for a specific node
- * @param dict Dict structure
- * @param key position in the BST searched
+ *
+ * @param t_dict *dict Dict structure
+ * @param int key position in the BST searched
+ * @return t_dict * The node found
  */
 t_dict	*move_in_bst(t_dict *dict, int key)
 {

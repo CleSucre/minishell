@@ -2,8 +2,10 @@
 *.DS_Store
 
 # compilation
-
+.clang-format
 minishell
+.ministory
+
 #.ministory
 obj/
 

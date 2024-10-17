@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: votre_nom <votre_email@example.com>        +#+  +:+       +#+        */
+/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:13:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/09/23 12:00:00 by votre_nom        ###   ########.fr       */
+/*   Updated: 2024/09/23 12:00:00 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,68 +17,68 @@
 #include <string.h>
 
 /**
- * @brief Exécute une commande externe en utilisant fork et execve
+ * @brief Decide whether to execute a command as a builtin
+ * 			or external command and execute it
+ *
+ * @param t_cmd *cmd Command structure
+ * @param t_minishell *minishell Minishell context
+ * @return int Exit code
  */
-static int	execute_external(t_minishell *minishell, t_cmd *cmd)
+static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
+						t_ast_node *ast)
 {
-	pid_t	pid;
-	int		status;
-	char	*cmd_path;
+	int	res;
+	int	pid;
 
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		return (errno);
-	}
-	else if (pid == 0)
-	{
-		// Processus enfant
-		// Redirection des entrées/sorties si nécessaire
-		if (cmd->input_fd != STDIN_FILENO)
-		{
-			dup2(cmd->input_fd, STDIN_FILENO);
-			close(cmd->input_fd);
-		}
-		if (cmd->output_fd != STDOUT_FILENO)
-		{
-			dup2(cmd->output_fd, STDOUT_FILENO);
-			close(cmd->output_fd);
-		}
-		execute_path(cmd);
-		destroy_cmd(cmd);
-		free_minishell(minishell);
-		// Si execve échoue
-		perror("execve");
-		exit(errno);
-	}
+	res = 0;
+	if (is_builtin_command(cmd) && !ast->in_pipe)
+		res = execute_builtin_command(minishell, cmd);
 	else
 	{
-		// Processus parent
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-			return (128 + WTERMSIG(status));
+		pid = execute_external(minishell, cmd);
+		if (ast->is_last)
+		{
+			res = wait_for_pid(pid);
+			wait_for_processes();
+		}
 	}
-	return (0);
+	return (res);
 }
 
 /**
- * @brief Fonction principale pour exécuter une commande
+ * @brief Executes a command represented by an abstract syntax tree node
+ *
+ * @param t_minishell *minishell The minishell context
+ * @param t_ast_node *ast The abstract syntax tree node
+ * 				representing the command
+ * @param int in_out[3] Array holding file descriptors
+ * 				for input/output redirection
+ * @return int 0 on success, 1 on exit request
  */
-int	execute_cmd(t_minishell *minishell, t_ast_node *ast, int input_fd, int output_fd)
+int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
+			int pipes[2], int in_out[3])
 {
 	t_cmd	*cmd;
 	int		res;
 
-	cmd = create_cmd(ast, minishell->env, input_fd, output_fd);
-	if (!cmd)
+	if (setup_pipes(pipes, in_out, ast->is_last) == -1)
+	{
+		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
 		return (1);
-	if (is_builtin_command(cmd))
-		res = execute_builtin_command(minishell, cmd);
-	else
-		res = execute_external(minishell, cmd);
+	}
+	cmd = create_cmd(ast, minishell, in_out);
+	if (!cmd)
+		return (0);
+	res = decide_execution(cmd, minishell, ast);
+	minishell->exit_code = res;
+	minishell->exit_signal = cmd->exit_signal;
 	destroy_cmd(cmd);
-	return (res);
+	close_fds(in_out, pipes);
+	if (ast->is_last)
+	{
+		in_out[0] = STDIN_FILENO;
+		in_out[1] = STDOUT_FILENO;
+		in_out[2] = -1;
+	}
+	return (minishell->exit_signal);
 }

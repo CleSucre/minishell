@@ -16,7 +16,6 @@
  * @brief Erase a char in string
  *
  * @param minishell
- * @param input
  */
 static void	backspace_action(t_minishell *minishell)
 {
@@ -39,6 +38,12 @@ static void	backspace_action(t_minishell *minishell)
 	}
 }
 
+/**
+ * @brief Edit input string
+ *
+ * @param t_minishell *minishell
+ * @param char *new
+ */
 static int	process_tab(t_minishell *minishell, char *new)
 {
 	char	*str;
@@ -62,8 +67,7 @@ static int	process_tab(t_minishell *minishell, char *new)
  * @brief Sort inputs && act in consequence
  *
  * @param t_minishell *minishell 	struct which access history
- * @param char c					char read by use_termios
- * 								read by termios from 1st to Enter
+ * @param char *new					input to process
  * @return int 						1 if exit, 0 if not
  */
 int	process_action(t_minishell *minishell, char *new)
@@ -78,12 +82,14 @@ int	process_action(t_minishell *minishell, char *new)
 	{
 		if (ft_tablen((const char **)minishell->input) > 0)
 			ft_fprintf(STDOUT_FILENO, "\n");
-		if (execute_input(minishell, ft_utf8_tab_to_str(minishell->input)) == -1)
+		if (execute_input(minishell, ft_utf8_tab_to_str(minishell->input)))
 			return (1);
 		print_terminal_prompt(minishell, 0);
 		reset_input(&minishell->input);
 		minishell->history_pos = 0;
 		get_cursor_position(minishell->term);
+		minishell->term->cols = get_prompt_len(minishell) + 1;
+		minishell->term->begin_rows = minishell->term->rows;
 	}
 	else if (new[0] == ESC_SEQ)
 		return (!interpret_escape_sequence(minishell, new));

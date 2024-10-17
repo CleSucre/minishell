@@ -75,12 +75,16 @@ static int	alloc_term(t_minishell *minishell)
 		return (1);
 	}
 	get_terminal_size(minishell->term);
-	minishell->term->cols = 0;
-	minishell->term->rows = 0;
-	minishell->term->begin_rows = 0;
+	minishell->term->begin_rows = minishell->term->rows;
 	return (0);
 }
 
+/**
+ * @brief Alloc completion structure
+ *
+ * @param t_minishell *minishell
+ * @return int 0 on success, 1 on failure
+ */
 static int	alloc_tab(t_minishell *minishell)
 {
 	minishell->completion = ft_calloc(1, sizeof(t_completion));
@@ -111,7 +115,7 @@ t_minishell	*alloc_minishell(void)
 	if (!minishell)
 		return (NULL);
 	minishell->exit_code = 0;
-	minishell->current_cmd = NULL;
+	minishell->exit_signal = 0;
 	if (alloc_cache(minishell))
 		return (NULL);
 	if (alloc_history(minishell))
@@ -120,8 +124,13 @@ t_minishell	*alloc_minishell(void)
 		return (NULL);
 	if (alloc_tab(minishell))
 		return (NULL);
+	if (alloc_dirinfo(minishell))
+		return (NULL);
+	if (alloc_starting_path(minishell))
+		return (NULL);
 	minishell->input = ft_calloc(1, sizeof(char *));
 	if (minishell->input == NULL)
 		return (NULL);
+	minishell->ast = NULL;
 	return (minishell);
 }

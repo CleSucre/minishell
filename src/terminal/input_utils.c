@@ -3,35 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   input_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpierrot <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 05:39:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/07/19 03:19:59 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/10/13 10:26:07 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Add a char in string at "cols" (n) position
- * 			and put back the cursor at the right place
- *	Save cursor position, insert new character, restore cursor position
- *	[u[C
- * @return void
- */
-void	put_in_string(t_minishell *minishell, char *new)
-{
-	ft_printf("\033[s\033[1@%s\033[4l\033[0m", new);
-	minishell->input = ft_tabinsert(minishell->input, new,
-			minishell->term->cols - get_prompt_len(minishell) - 1);
-}
-
-/**
  * @brief Delete a char in string at "cols" (n) position
  * 			and put back the cursor at the right place
  *
- * @param char *input	String to delete char
- * @param size_t cols	Position to delete char
+ * @param t_minishell *minishell
  * @return void
  */
 void	erase_in_string(t_minishell *minishell)
@@ -43,8 +28,8 @@ void	erase_in_string(t_minishell *minishell)
 	if (cols <= get_prompt_len(minishell))
 		return ;
 	ft_putstr_fd("\033[s", 1);
-	ft_tabdel(minishell->input,
-		(unsigned int)cols - get_prompt_len(minishell) - 2);
+	ft_tabdel(minishell->input, (unsigned int)cols - get_prompt_len(minishell)
+		- 2);
 	reset_stdin(minishell);
 	res = ft_utf8_tab_to_str(minishell->input);
 	terminal_print(res, 0, STDOUT_FILENO);
@@ -52,6 +37,30 @@ void	erase_in_string(t_minishell *minishell)
 	ft_putstr_fd("\033[u", 1);
 	if (cols > get_prompt_len(minishell) + 1)
 		ft_putstr_fd("\033[1D", 1);
+}
+
+/**
+ * @brief Add a new line if the cursor is at the end of the window
+ * 			if cursor at end of cols, go one line under
+ */
+static void	ad_nl_last_rows(t_minishell *minishell, unsigned int input_len,
+		unsigned int prompt_len)
+{
+	minishell->term->cols++;
+	if (minishell->term->cols >= minishell->term->ws_cols + 1)
+	{
+		ft_putstr_fd("\033[E", 1);
+		minishell->term->cols = 1;
+		minishell->term->rows++;
+	}
+	if ((input_len + prompt_len)
+		% minishell->term->ws_cols == minishell->term->ws_cols - 2
+		&& minishell->term->rows >= minishell->term->ws_rows)
+	{
+		ft_putstr_fd("\033[s", 1);
+		ft_fprintf(STDOUT_FILENO, "\033[%dB", minishell->term->ws_rows - 1);
+		ft_putstr_fd("\n\033[u\033[A", 1);
+	}
 }
 
 /**
@@ -63,23 +72,31 @@ void	erase_in_string(t_minishell *minishell)
  */
 void	edit_input(t_minishell *minishell, char *new)
 {
-	if (minishell->term->cols
-		!= get_prompt_len(minishell)
-		+ ft_tablen((const char **)minishell->input) + 1)
+	unsigned int	input_len;
+	unsigned int	prompt_len;
+
+	input_len = ft_tablen((const char **)minishell->input);
+	prompt_len = get_prompt_len(minishell);
+	if ((minishell->term->rows - minishell->term->begin_rows == 0
+			&& minishell->term->cols - prompt_len < input_len + 1)
+		|| (minishell->term->rows - minishell->term->begin_rows != 0
+			&& ((minishell->term->rows - minishell->term->begin_rows)
+				* minishell->term->ws_cols - 1) - prompt_len
+			+ minishell->term->cols < input_len))
 		put_in_string(minishell, new);
 	else
 	{
+		ft_putstr_fd(new, STDOUT_FILENO);
 		minishell->input = ft_tabjoin(minishell->input,
 				ft_utf8_split_chars(new));
-		ft_putstr_fd(new, STDOUT_FILENO);
 		if (minishell->tab_dict)
 			free_branch(minishell->tab_dict);
 		minishell->tab_dict = NULL;
 	}
-	minishell->term->cols++;
 	minishell->completion->tab_count = 0;
 	minishell->completion->check_len = 0;
 	minishell->completion->print_line = 1;
+	ad_nl_last_rows(minishell, input_len, prompt_len);
 }
 
 /**
@@ -88,11 +105,10 @@ void	edit_input(t_minishell *minishell, char *new)
  * TODO: replace this function by a move_cursor function
  *
  * @param size_t len
- * @return void
  */
 void	erase_term(size_t len)
 {
-	size_t		i;
+	size_t	i;
 
 	i = 0;
 	while (i < len)

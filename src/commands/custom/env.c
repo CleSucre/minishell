@@ -12,15 +12,20 @@
 
 #include "minishell.h"
 
-//TODO: handle other flags?
-void	command_env(t_cmd *cmd)
+/**
+ * @brief Print the environment variables
+ *
+ * @param t_cmd *cmd Command structure
+ * @return int Exit code
+ */
+int	command_env(t_cmd *cmd)
 {
 	int			i;
 
 	if (contain_flag(cmd->args, 'i'))
 	{
 		terminal_print("", 1, cmd->output_fd);
-		return ;
+		return (0);
 	}
 	else if (cmd->argc > 1)
 	{
@@ -38,4 +43,5 @@ void	command_env(t_cmd *cmd)
 		}
 	}
 	terminal_print("", 1, cmd->output_fd);
+	return (0);
 }

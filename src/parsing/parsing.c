@@ -44,88 +44,120 @@ static char	*check_input(t_minishell *minishell, char *input)
 }
 
 /**
- * @brief Build a new AST node based on tokens given.
+ * @brief The logic suite of the function build_ast.
+ * 			Thx norminette !
  *
- * @param t_token **tokens List of tokens to build the node from.
- * @return t_ast_node* New AST node created.
+ * @param t_token **current
+ * @param t_ast_node **root
+ * @param t_ast_node **last_command
+ * @return int 1 if the function succeeded, 0 otherwise.
  */
-t_ast_node	*build_ast(t_token **tokens)
+static int	build_ast_secondary(t_token **current, t_ast_node **root,
+							t_ast_node **last_command)
 {
-	t_token *current;
-	t_ast_node *root;
-	t_ast_node *last_command;
-
-	current = *tokens;
-	root = NULL;
-	last_command = NULL;
-	while (current != NULL)
-	{
-		if (current->type == TOKEN_COMMAND)
-			process_command(&current, &root, &last_command);
-		else if (current->type == TOKEN_ARGUMENT)
-		{
-			process_argument(current, last_command);
-			current = current->next;
-			continue ;
-		}
-		else if (current->type == TOKEN_PIPE)
-			return process_pipe(&current, &root);
-		else if (current->type == TOKEN_AND_OPERATOR || current->type == TOKEN_OR_OPERATOR)
-			return process_operator(&current, &root, &last_command);
-		else if (current->type == TOKEN_PARENTHESIS_OPEN)
-			process_subshell(&current, &root, &last_command);
-		else if (current->type == TOKEN_REDIR_OUT || current->type == TOKEN_REDIR_OUT_APPEND ||
-				 current->type == TOKEN_REDIR_IN || current->type == TOKEN_HEREDOC)
-			root = process_redirection(&current, &root);
-		else if (current->type == TOKEN_ASSIGNMENT)
-		{
-			t_ast_node *assignment_node = process_assignment(&current);
-			if (root == NULL)
-				root = assignment_node;
-			else
-				last_command->right = assignment_node;
-		}
-		else if (current->type == TOKEN_VARIABLE)
-		{
-			t_ast_node *variable_node = process_variable(&current);
-			if (root == NULL)
-				root = variable_node;
-			else
-				last_command->right = variable_node;
-		}
-		else
-			current = current->next;
-	}
-	return (root);
+	if ((*current)->type == TOKEN_REDIR_IN
+		|| (*current)->type == TOKEN_HEREDOC)
+		return (process_redirection(current, root, last_command, 1));
+	else if ((*current)->type == TOKEN_COMMAND)
+		return (process_command(current, root, last_command));
+	else if ((*current)->type == TOKEN_ARGUMENT)
+		return (process_argument(current, *last_command));
+	else if ((*current)->type == TOKEN_PARENTHESIS_OPEN)
+		return (process_subshell(current, root, last_command));
+	else
+		*current = (*current)->next;
+	return (1);
 }
 
+/**
+ * @brief Generate the AST from the list of tokens given.
+ *
+ * @param t_token **tokens List of tokens to build the node from.
+ * @return int 1 if the function succeeded, 0 otherwise.
+ */
+int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
+{
+	t_token		*current;
+
+	current = *tokens;
+	if (current->type == TOKEN_PARENTHESIS_CLOSE)
+		return (-1);
+	else if (current->type == TOKEN_PIPE)
+	{
+		return (process_pipe(&current, root, last_command));
+	}
+	else if (current->type == TOKEN_AND_OPERATOR
+		|| current->type == TOKEN_OR_OPERATOR)
+	{
+		return (process_operator(&current, root, last_command));
+	}
+	else if (current->type == TOKEN_REDIR_OUT
+		|| current->type == TOKEN_REDIR_OUT_APPEND)
+		process_redirection(&current, root, last_command, 0);
+	else if (!build_ast_secondary(&current, root, last_command))
+		return (0);
+	if (current)
+		return (build_ast(&current, root, last_command));
+	return (1);
+}
 
 /**
- * @brief Parses the input string and creates an AST.
+ * @brief Check the input and tokenize it.
  *
- * @param char *input Input string to parse.
- * @return t_ast * AST created from the input.
+ * @param t_minishell *minishell
+ * @param char *input
+ * @return t_token* the list of tokens
  */
-t_ast_node	*parse_input(t_minishell *minishell, char *input)
+static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 {
-	t_ast_node	*ast;
-    t_token     *tokens;
 	char		*trimmed;
+	t_token		*tokens;
 
 	if (!input)
 		return (NULL);
 	trimmed = check_input(minishell, input);
 	if (!trimmed)
-		return (0);
-    tokens = tokenize(trimmed);
-	free(trimmed);
-    if (!tokens)
-        return (NULL);
-    debug_tokens(tokens);
-    ast = build_ast(&tokens);
-	free_tokens(tokens);
-	if (!ast)
 		return (NULL);
+	tokens = tokenize(trimmed);
+	free(trimmed);
+	if (!tokens)
+		return (NULL);
+	debug_tokens(tokens);
+	return (tokens);
+}
+
+/**
+ * @brief Parses the input string and creates an AST.
+ *
+ * @param t_minishell *minishell The minishell structure.
+ * @param char *input The input string to parse.
+ * @return t_ast * AST created from the input.
+ */
+t_ast_node	*parse_input(t_minishell *minishell, char *input)
+{
+	t_ast_node	*ast;
+	t_ast_node	*last_command;
+	t_token		*tokens;
+	int			error;
+
+	tokens = check_and_tokenize_input(minishell, input);
+	if (!tokens)
+		return (NULL);
+	ast = NULL;
+	last_command = NULL;
+	error = build_ast(&tokens, &ast, &last_command);
+	if (error == 0)
+	{
+		free_tokens(tokens);
+		return (NULL);
+	}
+	else if (error == -1)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
+		free_tokens(tokens);
+		return (NULL);
+	}
+	free_tokens(tokens);
 	debug_ast(ast);
 	return (ast);
 }

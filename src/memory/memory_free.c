@@ -31,6 +31,12 @@ static void	history_free(t_history *history)
 	}
 }
 
+//TODO: remove !!!!!!!!
+static void	free_dirinfo(t_dirinfo *dirinfo)
+{
+	free(dirinfo);
+}
+
 /**
  * @brief Free minishell structure
  *
@@ -47,18 +53,21 @@ void	free_minishell(t_minishell *minishell)
 	free_branch(minishell->dict);
 	free(minishell->completion);
 	ft_tabfree(minishell->input);
+	free_dirinfo(minishell->dirinfo);
+	free(minishell->starting_path);
+	free_ast(minishell->ast);
 	free(minishell);
 }
 
 /**
  * @brief Free ast tree
  *
- * @param t_ast *ast
+ * @param t_ast_node *ast
  * @return void
  */
 void	free_ast(t_ast_node *ast)
 {
-	int i;
+	int	i;
 
 	if (ast == NULL)
 		return ;

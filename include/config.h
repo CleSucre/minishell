@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: julthoma <marvin@42.fr>                    +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
 /*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
 /*                                                                            */
@@ -14,10 +17,10 @@
 # define CONFIG_H
 
 // ########################################################
-// #					TERM_CONFIG						  #
+// #					TERM_CONFIG							#
 // ########################################################
 
-void		enable_termios(t_term *term);
-void		disable_termios(t_term *term);
+void	enable_termios(t_term *term);
+void	disable_termios(t_term *term);
 
 #endif
