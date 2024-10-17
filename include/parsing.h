@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Created: 2024/10/17 10:22:57 by mpierrot          #+#    #+#             */
+/*   Updated: 2024/10/17 10:22:57 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_PARSING_H
-# define MINISHELL_PARSING_H
+#ifndef PARSING_H
+# define PARSING_H
 
 # include "struct.h"
 
-#define MAX_COMMAND_SIZE 1024
+# define MAX_COMMAND_SIZE 1024
 
 typedef enum s_token_type
 {
-	TOKEN_COMMAND,              // Command (e.g., "ls", "echo", etc.)
-	TOKEN_ARGUMENT,             // Argument of a command (e.g., "-l", "/home/user")
-	TOKEN_AND_OPERATOR,         // Logical operator (&&)
-	TOKEN_OR_OPERATOR,          // Logical operator (||)
-	TOKEN_PIPE,                 // Pipe (|)
-	TOKEN_REDIR_OUT,            // Output redirection (>)
-	TOKEN_REDIR_OUT_APPEND,     // Output redirection in append mode (>>)
-	TOKEN_REDIR_IN,             // Input redirection (<)
-	TOKEN_HEREDOC,              // Heredoc redirection (<<)
-	TOKEN_PARENTHESIS_OPEN,     // Opening parenthesis
-	TOKEN_PARENTHESIS_CLOSE,    // Closing parenthesis
-}   t_token_type;
+	TOKEN_COMMAND,
+	TOKEN_ARGUMENT,
+	TOKEN_AND_OPERATOR,
+	TOKEN_OR_OPERATOR,
+	TOKEN_PIPE,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_OUT_APPEND,
+	TOKEN_REDIR_IN,
+	TOKEN_HEREDOC,
+	TOKEN_PARENTHESIS_OPEN,
+	TOKEN_PARENTHESIS_CLOSE,
+}	t_token_type;
 
 typedef struct s_token
 {
@@ -42,50 +42,57 @@ typedef struct s_token
 
 typedef enum s_ast_node_type
 {
-	AST_COMMAND,            // A simple command
-	AST_PIPE,               // A pipe '|'
-	AST_AND,                // Logical AND '&&'
-	AST_OR,                 // Logical OR '||'
-	AST_SUBSHELL,           // A subshell '(...)'
-	AST_REDIR_OUT,          // Output redirection
-	AST_REDIR_OUT_APPEND,   // Output redirection in append mode (>>)
-	AST_REDIR_IN,           // Input redirection
-	AST_HEREDOC,            // Heredoc redirection (<<)
-}   t_ast_node_type;
+	AST_COMMAND,
+	AST_PIPE,
+	AST_AND,
+	AST_OR,
+	AST_SUBSHELL,
+	AST_REDIR_OUT,
+	AST_REDIR_OUT_APPEND,
+	AST_REDIR_IN,
+	AST_HEREDOC,
+}	t_ast_node_type;
 
-typedef struct s_ast_node {
-	t_ast_node_type     type;           // Node type (command, operator, redirection)
-	char                **value;        // Command and arguments (for nodes of type NODE_COMMAND)
-	int 				is_last;		// Is the last command in a sequence
-	int 				in_pipe;		// Is the command in a pipe
-	struct s_ast_node   *left;          // Left subtree (command or sub-command)
-	struct s_ast_node   *right;         // Right subtree (command or sub-command)
-} t_ast_node;
-
-// ########################################################
-// #						PARSER						  #
-// ########################################################
-
-int					build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-t_ast_node			*parse_input(t_minishell *minishell, char *input);
-
-int					process_command(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-int					process_argument(t_token **current, t_ast_node *last_command);
-int					process_pipe(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-
-int					process_operator(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-int					process_subshell(t_token **tokens, t_ast_node **root, t_ast_node **last_command);
-int					process_redirection(t_token **tokens, t_ast_node **root, t_ast_node **last_command, int is_last);
+typedef struct s_ast_node
+{
+	t_ast_node_type		type;
+	char				**value;
+	int					is_last;
+	int					in_pipe;
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
+}	t_ast_node;
 
 // ########################################################
-// #					TOKEN_MANAGER					  #
+// #						PARSER							#
 // ########################################################
 
-t_token				*new_token(char *str, int type);
-void				add_token(t_token **head, t_token *new);
+int				build_ast(t_token **tokens,
+					t_ast_node **root, t_ast_node **last_command);
+t_ast_node		*parse_input(t_minishell *minishell, char *input);
+
+int				process_command(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command);
+int				process_argument(t_token **current, t_ast_node *last_command);
+int				process_pipe(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command);
+
+int				process_operator(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command);
+int				process_subshell(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command);
+int				process_redirection(t_token **tokens, t_ast_node **root,
+					t_ast_node **last_command, int is_last);
 
 // ########################################################
-// #						TOKENIZER					  #
+// #					TOKEN_MANAGER						#
+// ########################################################
+
+t_token			*new_token(char *str, int type);
+void			add_token(t_token **head, t_token *new);
+
+// ########################################################
+// #						TOKENIZER						#
 // ########################################################
 
 t_token_type		token_type(char *str);
@@ -94,39 +101,39 @@ char				*extract_token(char *input, int *index);
 char				**extract_command_tokens(t_token **tokens);
 
 // ########################################################
-// #					PARSER_MANDATORY				  #
+// #					PARSER_MANDATORY					#
 // ########################################################
 
-t_ast_node			*extract_full_commands(char *input);
-void				*parse_full_commands(t_ast_node *ast);
+t_ast_node		*extract_full_commands(char *input);
+void			*parse_full_commands(t_ast_node *ast);
 
 // ########################################################
-// #					PARSER_BONUS					  #
+// #					PARSER_BONUS						#
 // ########################################################
 
-t_ast_node			*parsing(t_token *tokens);
+t_ast_node		*parsing(t_token *tokens);
 
 // ########################################################
-// #						TOKENIZER					  #
+// #						TOKENIZER						#
 // ########################################################
 
-t_ast_node_type			token_type_primary(char *str);
+t_ast_node_type	token_type_primary(char *str);
 
 // ########################################################
-// #					AST_CREATION					  #
+// #					AST_CREATION						#
 // ########################################################
 
 void			parse_args(t_ast_node *ast, char **args);
 
 // ########################################################
-// #						AST						  	  #
+// #						AST									#
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
 int				is_node(t_ast_node *node, t_ast_node_type type);
 
 // ########################################################
-// #						DEBUG						  #
+// #						DEBUG							#
 // ########################################################
 
 void			print_tokens(t_token *tokens);

@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   debug.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: julthoma <marvin@42.fr>                    +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
 /*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
 /*                                                                            */
@@ -20,13 +23,13 @@
 # include "parsing.h"
 
 // ########################################################
-// #					DEBUG_EXECUTION					  #
+// #					DEBUG_EXECUTION						#
 // ########################################################
 
 void	debug_execution(char *cmd);
 
 // ########################################################
-// #					DEBUG_HISTORY					  #
+// #					DEBUG_HISTORY						#
 // ########################################################
 
 void	debug_history_loaded(int cmd_count);
@@ -34,7 +37,7 @@ void	debug_history_add(char *cmd, int added);
 void	debug_history_add_file(char *cmd);
 
 // ########################################################
-// #					DEBUG_PARSING					  #
+// #					DEBUG_PARSING						#
 // ########################################################
 
 void	debug_tokens(t_token *tokens);

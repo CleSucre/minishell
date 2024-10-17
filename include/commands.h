@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   commands.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/16 07:13:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/19 09:44:33 by julthoma         ###   ########.fr       */
+/*   Created: 2024/10/17 10:19:46 by mpierrot          #+#    #+#             */
+/*   Updated: 2024/10/17 10:19:46 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_COMMANDS_H
-# define MINISHELL_COMMANDS_H
+#ifndef COMMANDS_H
+# define COMMANDS_H
 
 # include "parsing.h"
 # include "struct.h"
 
-typedef struct s_cmd {
-	char	*name;			// Command name (e.g., "ls", "echo")
-	char	**args;			// Command arguments (e.g., ["ls", "-la", NULL])
-	int 	argc;			// Number of arguments
-	int		input_fd;		// Input file descriptor (default: STDIN_FILENO)
-	int		output_fd;		// Output file descriptor (default: STDOUT_FILENO)
-	char	**env;			// Environment variables (e.g., ["PATH=/usr/bin", ...])
-	char	*path;			// Full path of the executable (e.g., "/bin/ls")
-	int 	to_close;		// File descriptors to close after execution in fork
-	int 	exit_signal;	// Exit signal
-} t_cmd;
-
+typedef struct s_cmd
+{
+	char	*name;
+	char	**args;
+	int		argc;
+	int		input_fd;
+	int		output_fd;
+	char	**env;
+	char	*path;
+	int		to_close;
+	int		exit_signal;
+}				t_cmd;
 
 // ########################################################
-// #						COMMANDS					  #
+// #						COMMANDS						#
 // ########################################################
 
 int		command_cd(t_minishell *minishell, t_cmd *cmd);
@@ -43,28 +43,28 @@ int		command_pwd(t_cmd *cmd);
 int		command_unset(t_cmd *cmd);
 
 // ########################################################
-// #						UTILS						  #
+// #						UTILS							#
 // ########################################################
 
 void	destroy_cmd(t_cmd *cmd);
-t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell, const int in_out[3]);
+t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
+			const int in_out[3]);
 int		add_cmd_env(t_minishell *minishell, char *input, char *value);
 
 int		check_oldpwd(t_minishell *minishell, t_cmd *cmd);
 void	print_export(t_cmd *cmd);
 
 // ########################################################
-// #						FLAGS_UTILS					  #
+// #						FLAGS_UTILS						#
 // ########################################################
 
 int		contain_flag(char **argv, char flag);
 
 // ########################################################
-// #						COMMAND_MANAGER				  #
+// #						COMMAND_MANAGER					#
 // ########################################################
 
 int		execute_builtin_command(t_minishell *minishell, t_cmd *cmd);
 int		is_builtin_command(t_cmd *cmd);
-
 
 #endif
