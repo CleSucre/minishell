@@ -74,7 +74,7 @@ static void	move_dir(t_cmd *cmd)
 	free(buff_name);
 }
 
-static void	go_home(t_cmd *cmd)
+static int	go_home(t_cmd *cmd)
 {
 	char	*oldpwd;
 	char	*pwd;
@@ -84,7 +84,7 @@ static void	go_home(t_cmd *cmd)
 	oldpwd = (char *)get_var_value_const(cmd->env, "PWD");
 	position = find_table_args(cmd->env, "OLDPWD");
 	if (position == -1)
-		return ;
+		return (1);
 	free(cmd->env[position]);
 	buf_name = ft_strjoin("OLDPWD=", oldpwd);
 	cmd->env[position] = ft_strdup(buf_name);
@@ -96,6 +96,7 @@ static void	go_home(t_cmd *cmd)
 	cmd->env[position] = ft_strdup(buf_name);
 	free(buf_name);
 	chdir(pwd);
+	return (0);
 }
 
 int	cd_minus(t_cmd *cmd)
@@ -134,22 +135,23 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 	int	minus;
 
 	check_oldpwd(minishell, cmd);
-	if (!cmd->args[1] || ft_strcmp(cmd->args[1], "~") == 0)
+	if (cmd->argc > 2)
 	{
-		go_home(cmd);
-		return (0);
+		ft_fprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
+		return (1);
 	}
-	else
-		minus = cd_minus(cmd);
-	if (minus == 126)
-		return (126);
-	else if (minus == 1)
-		return (0);
+	else if (!cmd->args[1] || ft_strcmp(cmd->args[1], "~") == 0)
+	{
+		return (go_home(cmd));
+	}
+	minus = cd_minus(cmd);
+	if (minus != 0)
+		return (minus);
 	else if (access(cmd->args[1], R_OK | X_OK) != 0 || chdir(cmd->args[1])
 		== -1)
 	{
-		ft_fprintf(2, "minishell: cd: %s: No such file or directory\n",
-			cmd->args[1]);
+		ft_fprintf(STDERR_FILENO,
+			"minishell: cd: %s: No such file or directory\n", cmd->args[1]);
 		return (1);
 	}
 	else
