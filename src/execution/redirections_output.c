@@ -61,6 +61,7 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 						int *pipes, int *in_out)
 {
 	int	fd;
+	int	i;
 
 	if (!verify_redirection(minishell, ast))
 		return (1);
@@ -79,8 +80,9 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 		return (1);
 	}
 	close(fd);
-	ast->left->value = ft_tabjoin(ast->left->value,
-			ft_tabdup((const char **)ast->right->value + 1));
+	i = 1;
+	while (ast->right->value[i])
+		ft_tabadd(&ast->left->value, ast->right->value[i++]);
 	return (execute_ast(minishell, ast->left, pipes, in_out));
 }
 
@@ -107,7 +109,8 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
 		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
 		return (0);
 	}
-	copy_fd_contents(in_out[0], file_fd);
+	if (ast->left->type != AST_HEREDOC)
+		copy_fd_contents(in_out[0], file_fd);
 	close(file_fd);
 	close_fds(in_out, pipes);
 	wait_for_processes();

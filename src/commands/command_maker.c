@@ -42,7 +42,6 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	}
 	cmd->name = ft_strdup(cmd->args[0]);
 	cmd->argc = (int)ft_tablen((const char **)cmd->args);
-	ft_tabprint((const char **)cmd->args, "tab: |", "|", STDERR_FILENO);
 }
 
 /**
