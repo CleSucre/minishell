@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: julthoma <marvin@42.fr>                    +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/06/16 06:52:00 by julthoma          #+#    #+#             */
 /*   Updated: 2024/09/14 19:35:36 by mpierrot         ###   ########.fr       */
 /*                                                                            */
@@ -46,7 +49,7 @@ static void	invert_oldpwd(t_cmd *cmd)
 	free(buff_name);
 }
 
-static void	change_oldpwd(t_cmd *cmd)
+static void	move_dir(t_cmd *cmd)
 {
 	int		pwd;
 	char	*name;
@@ -71,16 +74,12 @@ static void	change_oldpwd(t_cmd *cmd)
 	free(buff_name);
 }
 
-
-
-
-
-static void go_home(t_cmd *cmd)
+static void	go_home(t_cmd *cmd)
 {
-	char *oldpwd;
-	char *pwd;
-	char *buf_name;
-	int position;
+	char	*oldpwd;
+	char	*pwd;
+	char	*buf_name;
+	int		position;
 
 	oldpwd = (char *)get_var_value_const(cmd->env, "PWD");
 	position = find_table_args(cmd->env, "OLDPWD");
@@ -99,37 +98,11 @@ static void go_home(t_cmd *cmd)
 	chdir(pwd);
 }
 
-
-static int check_oldpwd(t_minishell *minishell, t_cmd *cmd)
-{
-	char **tmp;
-
-	if (find_table_args(minishell->env, "OLDPWD") != -1)
-		return (0);
-	tmp = ft_tabdup((const char **)cmd->env);
-	add_cmd_env(minishell, "OLDPWD", getcwd(NULL, 0));
-	cmd->env = ft_tabinsert(tmp, ft_strjoin("OLDPWD=", getcwd(NULL, 0)),
-		ft_tablen((const char **)cmd->env) - 1);
-	return (1);
-}
-
-/**
- * @brief Change the current working directory
- * @param cmd The command to execute.
- * By default, as if -L is used
- * @return int 0 if the command was executed successfully, 1 otherwise.
- */
-int	command_cd(t_minishell *minishell, t_cmd *cmd)
+int	cd_minus(t_cmd *cmd)
 {
 	char	**oldpwd;
 	int		position;
 
-	check_oldpwd(minishell, cmd);
-	if (!cmd->args[1] || ft_strcmp(cmd->args[1], "~") == 0)
-	{
-		go_home(cmd);
-		return (0);
-	}
 	position = find_table_args(cmd->env, "OLDPWD");
 	oldpwd = ft_split_quote(cmd->env[position], "=", "\"\'");
 	if (ft_strcmp(cmd->args[1], "-") == 0)
@@ -143,16 +116,33 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 			return (126);
 		}
 	}
-	else if	(access(cmd->args[1], R_OK | X_OK) != 0
-		|| chdir(cmd->args[1]) == -1)
+	return (0);
+}
+
+/**
+ * @brief Change the current working directory
+ * @param cmd The command to execute.
+ * By default, as if -L is used
+ * @return int 0 if the command was executed successfully, 1 otherwise.
+ */
+int	command_cd(t_minishell *minishell, t_cmd *cmd)
+{
+	check_oldpwd(minishell, cmd);
+	if (!cmd->args[1] || ft_strcmp(cmd->args[1], "~") == 0)
+	{
+		go_home(cmd);
+		return (0);
+	}
+	else if (cd_minus(cmd) == 126)
+		return (126);
+	else if (access(cmd->args[1], R_OK | X_OK) != 0 || chdir(cmd->args[1])
+		== -1)
 	{
 		ft_fprintf(2, "minishell: cd: %s: No such file or directory\n",
 			cmd->args[1]);
-		ft_tabfree(oldpwd);
 		return (1);
 	}
 	else
-		change_oldpwd(cmd);
-	ft_tabfree(oldpwd);
+		move_dir(cmd);
 	return (0);
 }
