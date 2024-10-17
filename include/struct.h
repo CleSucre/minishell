@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 14:20:34 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/17 02:52:20 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:21:51 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-#include "commands.h"
+# include "commands.h"
 
 // ########################################################
-// #						TERMINAL					  #
+// #						TERMINAL						#
 // ########################################################
 
 typedef struct s_term
 {
-	char			*iterm_buffer;
-	char			*strterm_buffer;
-	unsigned int	ws_cols;
-	unsigned int	ws_rows;
-	unsigned int	cols;
-	unsigned int	rows;
-	unsigned int	begin_rows;
-	struct termios	*original_termios;
-}		t_term;
+	char				*iterm_buffer;
+	char				*strterm_buffer;
+	unsigned int		ws_cols;
+	unsigned int		ws_rows;
+	unsigned int		cols;
+	unsigned int		rows;
+	unsigned int		begin_rows;
+	struct termios		*original_termios;
+}						t_term;
 
 // ########################################################
-// #						HISTORY						  #
+// #						HISTORY							#
 // ########################################################
 
 typedef struct s_history
@@ -40,55 +40,52 @@ typedef struct s_history
 	char				*cmd;
 	struct s_history	*older;
 	struct s_history	*newer;
-}		t_history;
+}						t_history;
 
 // ########################################################
-// #				DICTIONARY	- BST					  #
+// #				DICTIONARY	- BST						#
 // ########################################################
 
 typedef struct s_dict
 {
-	int				bst_size;
-	int				position;
-	char			*key;
-	char			*value;
-	struct s_dict	*left_branch;
-	struct s_dict	*right_branch;
-	struct s_dict	*parent;
-}					t_dict;
-
+	int					bst_size;
+	int					position;
+	char				*key;
+	char				*value;
+	struct s_dict		*left_branch;
+	struct s_dict		*right_branch;
+	struct s_dict		*parent;
+}						t_dict;
 
 // ########################################################
-// #					AUTOCOMPLETION					  #
+// #					AUTOCOMPLETION						#
 // ########################################################
 
 typedef struct s_completion
 {
-//	char	*cmd;
-//	char	*path;		TODO: Not used???
-	int		check_len;
-	int		tab_count;
-	int		print_line;
-}			t_completion;
+	int					check_len;
+	int					tab_count;
+	int					print_line;
+}						t_completion;
 
 // ########################################################
-// #						CD_PATHS					  #
+// #						CD_PATHS						#
 // ########################################################
 
 typedef struct s_dirinfo
 {
-	char	*path;
-	char	*old_path;
+	char				*path;
+	char				*old_path;
 
-}			t_dirinfo;
+}						t_dirinfo;
 // ########################################################
-// #						MINISHELL					  #
+// #						MINISHELL						#
 // ########################################################
 
 typedef struct s_cache
 {
-	char			**input;
-}		t_cache;
+	char				**input;
+}						t_cache;
 
 typedef struct s_minishell
 {
@@ -100,13 +97,13 @@ typedef struct s_minishell
 	t_dict				*tab_dict;
 	t_dirinfo			*dirinfo;
 	struct s_ast_node	*ast;
-    char            	**input;
+	char				**input;
 	char				**env;
 	char				*starting_path;
 	int					exit_code;
 	int					exit_signal;
 	unsigned int		history_pos;
 	unsigned int		history_size;
-}		t_minishell;
+}						t_minishell;
 
 #endif

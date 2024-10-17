@@ -3,30 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:19:10 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#define MAX_32_BIT 4294967295
+# define MAX_32_BIT 4294967295
 
 // ########################################################
-// #						LIBFT						  #
+// #						LIBFT							#
 // ########################################################
 
 # include "../libft/include/colors.h"
 # include "../libft/include/libft.h"
 
 // ########################################################
-// #						MINISHELL					  #
+// #						MINISHELL						#
 // ########################################################
 
 # include "commands.h"
+# include "completion.h"
 # include "config.h"
 # include "debug.h"
 # include "environment.h"
@@ -36,14 +37,12 @@
 # include "parsing.h"
 # include "struct.h"
 # include "terminal.h"
-# include "completion.h"
 # include "wildcard.h"
 
 // ########################################################
-// #						DEFAULTS					  #
+// #						DEFAULTS						#
 // ########################################################
 
-//# include <readline/readline.h> BOUH LA HONTE CE TRUC AAAAAAHHHHHHHHHHHHHHHHHHHHHHH !! BURK LES ~400 LEAKS !!!
 # include <fcntl.h>
 # include <ncurses.h>
 # include <signal.h>
@@ -54,8 +53,8 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <termios.h>
 # include <term.h>
+# include <termios.h>
 # include <unistd.h>
 
 #endif

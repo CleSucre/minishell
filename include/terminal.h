@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   terminal.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/07/19 02:34:45 by julthoma         ###   ########.fr       */
+/*   Created: 2024/10/17 10:26:45 by mpierrot          #+#    #+#             */
+/*   Updated: 2024/10/17 10:26:45 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TERMINAL_H
-#define TERMINAL_H
+# define TERMINAL_H
 
-# define TERMINAL_EXIT_MSG BOLDYELLOW "Goodbye !" RESET
+# ifndef TERMINAL_EXIT_MSG
+#  define TERMINAL_EXIT_MSG "\033[1m\033[33mGoodbye !\033[0m"
+# endif
 
 // ########################################################
-// #					CURSOR MOVES					  #
+// #					CURSOR MOVES						#
 // ########################################################
 
 # define CURSOR_UP "\033[%dA"
@@ -28,7 +30,7 @@
 # define CURSOR_ERA "\033[2K"
 
 // ########################################################
-// #					    KEYS						  #
+// #							KEYS						  #
 // ########################################################
 
 # define ESC_SEQ '\033'
@@ -45,14 +47,15 @@
 # define D_ARROW 'B'
 
 // ########################################################
-// #						TERMINAL					  #
+// #						TERMINAL						#
 // ########################################################
 
-int				interpret_escape_sequence(t_minishell *minishell, const char *seq);
+int				interpret_escape_sequence(t_minishell *minishell,
+					const char *seq);
 void			use_termios(t_minishell *minishell);
 
 // ########################################################
-// #					TERMINAL-ACTION					  #
+// #					TERMINAL-ACTION						#
 // ########################################################
 
 void			set_tabstop(t_minishell *minishell);
@@ -61,7 +64,7 @@ int				process_signals(t_minishell *minishell, char c);
 int				process_action(t_minishell *minishell, char *new);
 
 // ########################################################
-// #				TERMINAL-INFORMATION				  #
+// #				TERMINAL-INFORMATION					#
 // ########################################################
 
 void			get_terminal_size(t_term *term);
@@ -70,23 +73,23 @@ void			term_info(t_term *term);
 void			move_cursor(t_term *term, int x, int y);
 
 // ########################################################
-// #					TERMINAL-UTILS					  #
+// #					TERMINAL-UTILS						#
 // ########################################################
 
 void			terminal_print(char *str, int nl, int fd);
 void			reset_stdin(t_minishell *minishell);
 
 // ########################################################
-// #					TERMINAL-CURSOR					  #
+// #					TERMINAL-CURSOR						#
 // ########################################################
 
 void			move_cursor_back(size_t n);
 void			move_cursor_forward(size_t n);
 void			move_cursor_up(size_t n);
-void            move_cursor_down(size_t n);
+void			move_cursor_down(size_t n);
 
 // ########################################################
-// #						ERASE_PUT					  #
+// #						ERASE_PUT						#
 // ########################################################
 
 void			put_in_string(t_minishell *minishell, char *new);
@@ -95,19 +98,21 @@ void			edit_input(t_minishell *minishell, char *new);
 void			erase_term(size_t len);
 
 // ########################################################
-// #					TERMINAL_ARROW					  #
+// #					TERMINAL_ARROW						#
 // ########################################################
 
-void			arrow_up_action(t_minishell *minishell, t_history *new_history);
-void			arrow_down_action(t_minishell *minishell, t_history *new_history);
+void			arrow_up_action(t_minishell *minishell,
+					t_history *new_history);
+void			arrow_down_action(t_minishell *minishell,
+					t_history *new_history);
 void			arrow_left_action(t_minishell *minishell);
 void			arrow_right_action(t_minishell *minishell);
 
 // ########################################################
-// #					TERMINAL_PROMPT					  #
+// #					TERMINAL_PROMPT						#
 // ########################################################
 
-unsigned int		get_prompt_len(t_minishell *minishell);
-void				print_terminal_prompt(t_minishell *minishell, int new_line);
+unsigned int	get_prompt_len(t_minishell *minishell);
+void			print_terminal_prompt(t_minishell *minishell, int new_line);
 
 #endif
