@@ -3110,3 +3110,19 @@ echo *
 zdzdf*zfze*f*zef*ezf*ezf*ez*f
 *e*t*
 *e*t*s
+echo > test
+echo salut > test
+echo salut > test
+echo salut > test
+echo salut > test
+echo salut >> test
+echo salut >> test
+echo salut >> test
+echo salut >> testdZ
+echo salut >> testdZ
+cat testdZ
+rm testdZ
+echo salut > test
+cat te
+cat test
+rm test

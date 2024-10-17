@@ -93,30 +93,13 @@ static void	load_files_if_null(char ***files)
 	free(path);
 }
 
-char *ft_strstr(const char *haystack, const char *needle)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	if (!needle[0])
-		return ((char *)haystack);
-	while (haystack[i])
-	{
-		if (haystack[i] == needle[j])
-		{
-			while (haystack[i + j] == needle[j] && needle[j])
-				j++;
-			if (!needle[j])
-				return ((char *)&haystack[i]);
-			j = (0);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
+/**
+ * @brief Check if the string matches the wildcard
+ *
+ * @param const char *pattern The wildcard pattern
+ * @param const char *str The string to match
+ * @return int 1 if the string matches the wildcard, 0 otherwise
+ */
 static int	match_wildcard(const char *pattern, const char *str)
 {
 	if (*str == '.' && *pattern != '.')
@@ -149,6 +132,13 @@ static int	match_wildcard(const char *pattern, const char *str)
 	return (!*pattern && !*str);
 }
 
+/**
+ * @brief Count the number of files matching the wildcard
+ *
+ * @param char *search The wildcard to search
+ * @param char **files The list of files to search in
+ * @return int The number of files matching the wildcard
+ */
 static int	count_matches(char *search, char **files)
 {
 	int count = 0;
@@ -163,6 +153,13 @@ static int	count_matches(char *search, char **files)
 	return (count);
 }
 
+/**
+ * @brief Expand the wildcard in the string
+ *
+ * @param char **str The string to expand
+ * @param char **files The list of files to search in
+ * @return char** The list of files matching the wildcard
+ */
 static char	**expand_wildcard(char **str, char **files)
 {
 	char	**match;

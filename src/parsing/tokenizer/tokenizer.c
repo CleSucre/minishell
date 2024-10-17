@@ -155,7 +155,8 @@ char	**extract_command_tokens(t_token **tokens)
 	token_count = 0;
 	current = *tokens;
 	while (current != NULL
-		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT || current->type == TOKEN_VARIABLE))
+		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT
+			|| current->type == TOKEN_VARIABLE))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;
