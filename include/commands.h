@@ -51,6 +51,7 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell, const int in_out[3]);
 int		add_cmd_env(t_minishell *minishell, char *input, char *value);
 
 int		check_oldpwd(t_minishell *minishell, t_cmd *cmd);
+void	print_export(t_cmd *cmd);
 
 // ########################################################
 // #						FLAGS_UTILS					  #

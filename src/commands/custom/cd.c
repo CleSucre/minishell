@@ -104,9 +104,9 @@ int	cd_minus(t_cmd *cmd)
 	int		position;
 
 	position = find_table_args(cmd->env, "OLDPWD");
-	oldpwd = ft_split_quote(cmd->env[position], "=", "\"\'");
 	if (ft_strcmp(cmd->args[1], "-") == 0)
 	{
+		oldpwd = ft_split_quote(cmd->env[position], "=", "\"\'");
 		if (access(oldpwd[1], R_OK | X_OK) == 0)
 		{
 			invert_oldpwd(cmd);
@@ -115,13 +115,11 @@ int	cd_minus(t_cmd *cmd)
 		}
 		else
 		{
-			ft_tabfree(oldpwd);
 			ft_putstr_fd("error, oldpwd can't be established\n", 2);
 			ft_tabfree(oldpwd);
 			return (126);
 		}
 	}
-	ft_tabfree(oldpwd);
 	return (0);
 }
 
