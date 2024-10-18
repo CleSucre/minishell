@@ -26,6 +26,8 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	cmd->args = ft_tabdup((const char **)ast->value);
 	is_var = ft_strncmp(cmd->args[0], "$", 1) == 0;
 	replace_variables_in_tab(minishell, cmd->args);
+	if (cmd->args[0] == NULL)
+		return ;
 	if (is_var)
 	{
 		tmp = ft_split(cmd->args[0], WHITESPACES);
@@ -88,7 +90,6 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 	parse_cmd_args(cmd, ast, minishell);
 	if (cmd->args[0] == NULL)
 	{
-		ft_fprintf(STDERR_FILENO, "DEBUG: %s: command not found\n", cmd->name);
 		destroy_cmd(cmd);
 		return (NULL);
 	}
