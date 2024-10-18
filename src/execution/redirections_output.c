@@ -109,8 +109,7 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
 		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
 		return (0);
 	}
-	if (ast->left->type != AST_HEREDOC)
-		copy_fd_contents(in_out[0], file_fd);
+	copy_fd_contents(in_out[0], file_fd);
 	close(file_fd);
 	close_fds(in_out, pipes);
 	wait_for_processes();
