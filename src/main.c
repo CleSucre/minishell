@@ -42,10 +42,7 @@ int	main(int argc, char **args, char **env)
 	(void)argc;
 	(void)args;
 	if (is_running_in_pipeline())
-	{
-		fprintf(stderr, "Error: minishell cannot be run in a pipeline.\n");
 		return (1);
-	}
 	minishell = alloc_minishell();
 	minishell->term->original_termios = &original_termios;
 	minishell->env = ft_tabdup((const char **)env);

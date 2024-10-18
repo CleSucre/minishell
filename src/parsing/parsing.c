@@ -143,12 +143,16 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 
 	tokens = check_and_tokenize_input(minishell, input);
 	if (!tokens)
+	{
+		minishell->exit_code = 2;
 		return (NULL);
+	}
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);
 	if (error == 0)
 	{
+		minishell->exit_code = 2;
 		free_tokens(tokens);
 		free_ast(ast);
 		return (NULL);
