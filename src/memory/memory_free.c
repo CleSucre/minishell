@@ -74,7 +74,8 @@ void	free_ast(t_ast_node *ast)
 		free_ast(ast->left);
 	if (ast->right != NULL)
 		free_ast(ast->right);
-	ft_tabfree(ast->value);
+	if (ast->value != NULL)
+		ft_tabfree(ast->value);
 	free(ast);
 }
 

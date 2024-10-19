@@ -69,6 +69,7 @@ static int	tab_input_protection(t_minishell *minishell, char *new)
 static int	process_tab(t_minishell *minishell, char *new)
 {
 	char	*str;
+	char 	*tmp;
 
 	if (tab_input_protection(minishell, new))
 		return (1);
@@ -79,8 +80,10 @@ static int	process_tab(t_minishell *minishell, char *new)
 	else if (new[0] == '\t')
 	{
 		str = ft_utf8_tab_to_str(minishell->input);
-		tab_completion(minishell, &str);
+		tmp = ft_strtrim(str, WHITESPACES);
 		free(str);
+		tab_completion(minishell, &tmp);
+		free(tmp);
 	}
 	else
 		return (0);

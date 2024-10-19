@@ -85,6 +85,7 @@ int	execute_heredoc(t_minishell *minishell, t_ast_node *ast,
 	status = heredoc_valid(ast, pipes);
 	if (status <= 0)
 		return (status);
+	ft_tabdel_empty(ast->right->value);
 	status = run_heredoc(minishell, ast->right->value[0], pipes, in_out);
 	if (!status)
 		return (-1);
