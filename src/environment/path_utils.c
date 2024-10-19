@@ -42,7 +42,7 @@ char	*get_path(char *cmd, char **envp)
 	char	*tmp;
 
 	if (access(cmd, X_OK) == 0)
-		return (cmd);
+		return (NULL);
 	i = 0;
 	while (ft_strncmp(envp[i], "PATH=", 5))
 		i++;
