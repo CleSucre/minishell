@@ -93,6 +93,28 @@ static int	write_heredoc(t_minishell *minishell, int *pipes,
 }
 
 /**
+ * @brief Signal handler for heredoc
+ *
+ * @param int sig
+ * @param siginfo_t *info
+ * @param void *context
+ */
+static void	signal_handler(int sig, siginfo_t *info, void *context)
+{
+	t_heredoc_info	*heredoc_info;
+
+	(void)sig;
+	(void)context;
+	heredoc_info = (t_heredoc_info *)info->si_value.sival_ptr;
+	if (heredoc_info && heredoc_info->delimiter)
+	{
+		ft_fprintf(STDERR_FILENO, "\nminishell: heredoc terminated (wanted `%s`)\n", heredoc_info->delimiter);
+		close(heredoc_info->pipes[0]);
+		close(heredoc_info->pipes[1]);
+	}
+}
+
+/**
  * @brief Run the heredoc logic
  *
  * @param t_minishell *minishell
@@ -104,16 +126,30 @@ static int	write_heredoc(t_minishell *minishell, int *pipes,
 static int	run_heredoc(t_minishell *minishell, char *delimiter,
 					int *pipes, int *in_out)
 {
-	char	*tmp;
-	char	*line;
+	char				*tmp;
+	char				*line;
+	int					i;
+	struct sigaction	sa;
+	union sigval		sig_data;
+	t_heredoc_info		heredoc_info;
 
+	heredoc_info.delimiter = delimiter;
+	heredoc_info.pipes = pipes;
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = signal_handler;
+	sigaction(SIGINT, &sa, NULL);
+	sig_data.sival_ptr = &heredoc_info;
+	i = 1;
 	while (1)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 		{
-			ft_fprintf(STDERR_FILENO, "Error: get_next_line failed\n");
+			ft_fprintf(STDERR_FILENO, "\nminishell: warning:"
+				"here-document at line %d delimited by end-of-file"
+				"(wanted `%s`)\n", i, delimiter);
 			close_fds(in_out, pipes);
 			free(line);
 			return (1);
@@ -128,10 +164,13 @@ static int	run_heredoc(t_minishell *minishell, char *delimiter,
 		free(tmp);
 		if (write_heredoc(minishell, pipes, in_out, line))
 			return (0);
+		i++;
 	}
 	free(line);
 	in_out[0] = pipes[0];
 	close(pipes[1]);
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &sa, NULL);
 	return (1);
 }
 

@@ -21,8 +21,6 @@
 
 typedef struct s_term
 {
-	char				*iterm_buffer;
-	char				*strterm_buffer;
 	unsigned int		ws_cols;
 	unsigned int		ws_rows;
 	unsigned int		cols;
@@ -75,7 +73,6 @@ typedef struct s_completion
 typedef struct s_dirinfo
 {
 	char				*path;
-	char				*old_path;
 
 }						t_dirinfo;
 // ########################################################
@@ -105,5 +102,11 @@ typedef struct s_minishell
 	unsigned int		history_pos;
 	unsigned int		history_size;
 }						t_minishell;
+
+typedef struct s_heredoc_info
+{
+	char				*delimiter;
+	int					*pipes;
+}						t_heredoc_info;
 
 #endif
