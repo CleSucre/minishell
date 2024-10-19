@@ -82,11 +82,19 @@ static char	*handle_parentheses(char current_char, int *index)
 
 static int	is_operator(char *input, int index)
 {
+	if (input[index] == '<' && input[index + 1] == '<')
+		return (2);
+	if (input[index] == '>' && input[index + 1] == '>')
+		return (2);
+	if (input[index] == '<')
+		return (1);
+	if (input[index] == '>')
+		return (1);
 	if (input[index] == '|' && input[index + 1] == '|')
 		return (2);
 	if (input[index] == '&' && input[index + 1] == '&')
 		return (2);
-	if (input[index] == '|' || input[index] == '&')
+	if (input[index] == '|')
 		return (1);
 	return (0);
 }
@@ -108,12 +116,12 @@ static char	*handle_operator(char *input, int *index)
 }
 
 static char	*process_token(char *input, int *index,
-					char *buffer, int *buffer_pos)
+							  char *buffer, int *buffer_pos)
 {
 	char	*token;
 
 	while (input[*index] != '\0' && !ft_isspace(input[*index])
-		&& input[*index] != '(' && input[*index] != ')')
+		   && input[*index] != '(' && input[*index] != ')')
 	{
 		if (input[*index] == '"' || input[*index] == '\'')
 		{
