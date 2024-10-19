@@ -72,13 +72,15 @@ void	autocomplete_print(t_minishell *minishell, t_dict *dict, char **input)
 int	tab_completion(t_minishell *minishell, char	**input)
 {
 	char	*str;
+	int		bst_too_long;
 
 	ft_tabdel(input, ft_tablen((const char **)input) - 1);
 	str = ft_utf8_tab_to_str(input);
-	if (ft_strlen(str) <= 0)
+	if (ft_strlen(str) <= 0 || tab_input_protection(minishell, str))
+	{
+		free(str);
 		return (1);
-	if (minishell->tab_dict)
-		free_branch(minishell->tab_dict);
+	}
 	if (creation_tab_dict(minishell, str))
 		return (1);
 	if (!minishell->tab_dict)
@@ -87,14 +89,12 @@ int	tab_completion(t_minishell *minishell, char	**input)
 		print_terminal_prompt(minishell, ft_strlen(str) <= 0);
 		ft_putstr_fd(str, STDIN_FILENO);
 	}
-	if (!minishell->tab_dict || tab_action(minishell, &str))
-	{
-		free(str);
-		str = NULL;
-		return (1);
-	}
+	else
+		bst_too_long = tab_action(minishell, &str);
 	free(str);
 	str = NULL;
+	if (!minishell->tab_dict || bst_too_long)
+		return (1);
 	return (0);
 }
 

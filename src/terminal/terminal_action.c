@@ -38,7 +38,7 @@ static void	backspace_action(t_minishell *minishell)
 	}
 }
 
-static int	tab_input_protection(t_minishell *minishell, char *new)
+int	tab_input_protection(t_minishell *minishell, char *new)
 {
 	char	*str;
 	char	*tmp;
@@ -46,6 +46,11 @@ static int	tab_input_protection(t_minishell *minishell, char *new)
 	if (new[0] == '\t')
 	{
 		str = ft_utf8_tab_to_str(minishell->input);
+		if (str[ft_strlen(str) - 1] == ' ')
+		{
+			free(str);
+			return (1);
+		}
 		tmp = ft_strtrim(str, WHITESPACES);
 		free(str);
 		if (ft_strlen(tmp) <= 0 || tmp == NULL)
