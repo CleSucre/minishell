@@ -61,7 +61,6 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
 	err = execute_path(cmd);
 	destroy_cmd(cmd);
 	free_minishell(minishell);
-	ft_fprintf(STDERR_FILENO, "error: %d\n", errno);
 	exit(err);
 }
 

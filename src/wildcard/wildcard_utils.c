@@ -65,10 +65,12 @@ void	handle_wildcard_match(char *arg, char **files, char ***new_args)
 		if (match)
 		{
 			if (!(*new_args))
+			{
 				*new_args = ft_tabdup((const char **)match);
+				ft_tabfree(match);
+			}
 			else
 				*new_args = ft_tabjoin(*new_args, match);
-			ft_tabfree(match);
 		}
 	}
 	else

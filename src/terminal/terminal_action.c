@@ -69,7 +69,6 @@ static int	tab_input_protection(t_minishell *minishell, char *new)
 static int	process_tab(t_minishell *minishell, char *new)
 {
 	char	*str;
-	char	*tmp;
 
 	if (tab_input_protection(minishell, new))
 		return (1);

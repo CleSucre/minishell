@@ -94,7 +94,7 @@ char	**expand_wildcard(char **str, char **files)
 	{
 		if (match_wildcard(search, files[i]))
 		{
-			match[j] = strdup(files[i]);
+			match[j] = ft_strdup(files[i]);
 			j++;
 		}
 		i++;
