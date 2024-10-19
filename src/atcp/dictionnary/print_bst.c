@@ -101,6 +101,8 @@ int	creation_tab_dict(t_minishell *minishell, char *str)
 	char	**search;
 	t_dict	*head;
 
+	if (minishell->tab_dict)
+		free_branch(minishell->tab_dict);
 	search = ft_split(str, (const char *) " ");
 	if (!search)
 		return (1);
