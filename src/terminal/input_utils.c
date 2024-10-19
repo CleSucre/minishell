@@ -50,7 +50,8 @@ static void	ad_nl_last_rows(t_minishell *minishell, unsigned int input_len,
 	if (minishell->term->cols >= minishell->term->ws_cols + 1)
 	{
 		ft_putstr_fd("\033[E", 1);
-		minishell->term->cols = 1;
+		minishell->term->cols %= minishell->term->ws_cols;
+		move_cursor_forward(minishell->term->cols - 1);
 		minishell->term->rows++;
 	}
 	if ((input_len + prompt_len)
