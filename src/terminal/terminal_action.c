@@ -38,6 +38,28 @@ static void	backspace_action(t_minishell *minishell)
 	}
 }
 
+static int	tab_input_protection(t_minishell *minishell, char *new)
+{
+	char	*str;
+	char	*tmp;
+
+	if (new[0] == '\t')
+	{
+		str = ft_utf8_tab_to_str(minishell->input);
+		tmp = ft_strtrim(str, WHITESPACES);
+		free(str);
+		if (ft_strlen(tmp) <= 0 || tmp == NULL)
+		{
+			free(tmp);
+			tmp = NULL;
+			return (1);
+		}
+		free(tmp);
+		tmp = NULL;
+	}
+	return (0);
+}
+
 /**
  * @brief Edit input string
  *
@@ -47,7 +69,10 @@ static void	backspace_action(t_minishell *minishell)
 static int	process_tab(t_minishell *minishell, char *new)
 {
 	char	*str;
+	char	*tmp;
 
+	if (tab_input_protection(minishell, new))
+		return (1);
 	if (new[0] == '\t' || (minishell->completion->check_len == 1
 			&& (minishell->completion->tab_count == 0
 				&& (new[0] == 'y' || new[0] == 'n'))))
