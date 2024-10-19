@@ -19,19 +19,37 @@
  * @return int Exit code
  */
 
+char *surround_str_by(char *str, char *surround)
+{
+	char	*tmp;
+	char	*res;
+
+	tmp = ft_strjoin(surround, str);
+	res = ft_strjoin(tmp, surround);
+	free(tmp);
+	return (res);
+}
+
 void	print_export(t_cmd *cmd)
 {
 	int		i;
 	char	**tmp;
+	char	**cut_name;
 
 	tmp = ft_tabdup((const char **)cmd->env);
 	ft_sort(tmp, 0, ft_tablen((const char **)tmp) - 1);
 	i = 0;
 	while (tmp[i])
 	{
+		cut_name = ft_split_quote(tmp[i], "=", "\"\'");
 		ft_putstr_fd("declare -x ", cmd->output_fd);
-		ft_putstr_fd(tmp[i], cmd->output_fd);
+		ft_putstr_fd(cut_name[0], cmd->output_fd);
+		if (cut_name[1])
+			ft_fprintf(cmd->output_fd, "=\"%s\"",cut_name[1]);
+		else
+			ft_fprintf(cmd->output_fd, "=\"\"");
 		ft_putstr_fd("\n", cmd->output_fd);
+		ft_tabfree(cut_name);
 		i++;
 	}
 	ft_tabfree(tmp);
@@ -104,6 +122,7 @@ int	command_export(t_minishell *minishell, t_cmd *cmd)
 	char	**cut_name;
 	char	*arg_equal;
 
+	cut_name = NULL;
 	if (!cmd->args[1])
 	{
 		print_export(cmd);
@@ -111,7 +130,7 @@ int	command_export(t_minishell *minishell, t_cmd *cmd)
 	}
 	else if (ft_is_charset('+', cmd->args[1]))
 		cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
-	else
+	else if (ft_is_charset('=', cmd->args[1]))
 		cut_name = ft_split_quote(cmd->args[1], "=", "\"\'");
 	arg_equal = ft_strjoin(cut_name[0], "=");
 	if (find_table_args(cmd->env, arg_equal) == -1)

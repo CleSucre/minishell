@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+
+static void print_env(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	while (cmd->env[i])
+	{
+		terminal_print(cmd->env[i], 1, cmd->output_fd);
+		i++;
+	}
+}
+
 /**
  * @brief Print the environment variables
  *
@@ -20,8 +33,6 @@
  */
 int	command_env(t_cmd *cmd)
 {
-	int			i;
-
 	if (contain_flag(cmd->args, 'i'))
 	{
 		terminal_print("", 1, cmd->output_fd);
@@ -34,14 +45,7 @@ int	command_env(t_cmd *cmd)
 		terminal_print("’: No such file or directory", 0, cmd->output_fd);
 	}
 	else
-	{
-		i = 0;
-		while (cmd->env[i])
-		{
-			terminal_print(cmd->env[i], 1, cmd->output_fd);
-			i++;
-		}
-	}
+		print_env(cmd);
 	terminal_print("", 1, cmd->output_fd);
 	return (0);
 }
