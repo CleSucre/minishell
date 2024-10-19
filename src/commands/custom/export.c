@@ -19,7 +19,7 @@
  * @return int Exit code
  */
 
-void	print_export(t_cmd *cmd)
+int	print_export(t_cmd *cmd)
 {
 	int		i;
 	char	**tmp;
@@ -42,6 +42,7 @@ void	print_export(t_cmd *cmd)
 		i++;
 	}
 	ft_tabfree(tmp);
+	return (0);
 }
 
 int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
@@ -71,6 +72,46 @@ int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
 	return (0);
 }
 
+int	str_is_alnum(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '=')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	check_inside_args(t_cmd *cmd)
+{
+	char	**cut_name;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		cut_name = ft_split_quote(cmd->args[i], "=", "\"\'");
+		tmp = ft_strtrim(cut_name[0], "=");
+		if (!str_is_alnum(tmp))
+		{
+			ft_tabfree(cut_name);
+			ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n",
+				tmp);
+			free(tmp);
+			return (1);
+		}
+		free(tmp);
+		ft_tabfree(cut_name);
+		i++;
+	}
+	return (0);
+}
+
 int	export_wt_args(t_minishell *minishell, t_cmd *cmd)
 {
 	int		position;
@@ -81,6 +122,7 @@ int	export_wt_args(t_minishell *minishell, t_cmd *cmd)
 	if (position == -1)
 		position = find_table_args(minishell->env, cmd->args[1]);
 	free(tmp);
+	check_inside_args(cmd);
 	if (position == -1)
 	{
 		minishell->env = ft_tabinsert(minishell->env, cmd->args[1],
@@ -97,27 +139,25 @@ int	command_export(t_minishell *minishell, t_cmd *cmd)
 {
 	char	**cut_name;
 
-	cut_name = NULL;
 	if (!cmd->args[1])
-	{
-		print_export(cmd);
-		return (0);
-	}
+		return (print_export(cmd));
 	else if (ft_is_charset('+', cmd->args[1]))
 		cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
 	else if (ft_is_charset('=', cmd->args[1]))
 		cut_name = ft_split_quote(cmd->args[1], "=", "\"\'");
 	else
 		return (export_wt_args(minishell, cmd));
+	if (check_inside_args(cmd))
+	{
+		ft_tabfree(cut_name);
+		return (1);
+	}
 	if (find_table_args(cmd->env, cut_name[0]) == -1)
 		add_cmd_env(minishell, cut_name[0], cut_name[1]);
+	else if (ft_is_charset('+', cmd->args[1]))
+		sum_cmd_env(cmd, cut_name[0], cut_name[1] + 1);
 	else
-	{
-		if (ft_is_charset('+', cmd->args[1]))
-			sum_cmd_env(cmd, cut_name[0], cut_name[1] + 1);
-		else
-			modify_cmd_env(cmd, cut_name[0], cut_name[1]);
-	}
+		modify_cmd_env(cmd, cut_name[0], cut_name[1]);
 	ft_tabfree(cut_name);
 	return (0);
 }
