@@ -12,10 +12,9 @@
 
 #include "minishell.h"
 
-
-static void print_env(t_cmd *cmd)
+static void	print_env(t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->env[i])

@@ -19,17 +19,6 @@
  * @return int Exit code
  */
 
-char *surround_str_by(char *str, char *surround)
-{
-	char	*tmp;
-	char	*res;
-
-	tmp = ft_strjoin(surround, str);
-	res = ft_strjoin(tmp, surround);
-	free(tmp);
-	return (res);
-}
-
 void	print_export(t_cmd *cmd)
 {
 	int		i;
@@ -45,8 +34,8 @@ void	print_export(t_cmd *cmd)
 		ft_putstr_fd("declare -x ", cmd->output_fd);
 		ft_putstr_fd(cut_name[0], cmd->output_fd);
 		if (cut_name[1])
-			ft_fprintf(cmd->output_fd, "=\"%s\"",cut_name[1]);
-		else
+			ft_fprintf(cmd->output_fd, "=\"%s\"", cut_name[1]);
+		else if (ft_is_charset('=', tmp[i]))
 			ft_fprintf(cmd->output_fd, "=\"\"");
 		ft_putstr_fd("\n", cmd->output_fd);
 		ft_tabfree(cut_name);
@@ -66,61 +55,47 @@ int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
 	if (is_here == -1)
 		return (-1);
 	tmp = ft_strjoin(input, "=");
+	if (!tmp)
+		return (-1);
 	res = ft_strjoin(tmp, value);
+	if (!res)
+	{
+		free(tmp);
+		return (-1);
+	}
 	clear_string(cmd->env[is_here]);
-	ft_strncpy(cmd->env[is_here], res, ft_strlen(res) + 1);
-	free(tmp);
-	free(res);
-	return (0);
-}
-
-int	sum_cmd_env(t_cmd *cmd, char *input, char *value)
-{
-	int		is_here;
-	char	**arg_split;
-	char	*res;
-	char	*tmp;
-
-	is_here = 0;
-	is_here = find_table_args(cmd->env, input);
-	if (is_here == -1)
-		return (-1);
-	arg_split = ft_split_quote(cmd->env[is_here], "=", "\"\'");
-	if (!arg_split)
-		return (-1);
-	res = ft_strjoin(input, "=");
-	tmp = ft_strjoin(res, arg_split[1]);
-	free(res);
-	res = ft_strjoin(tmp, value);
 	free(cmd->env[is_here]);
 	cmd->env[is_here] = ft_strdup(res);
-	free(res);
 	free(tmp);
-	ft_tabfree(arg_split);
+	free(res);
 	return (0);
 }
 
-int	add_cmd_env(t_minishell *minishell, char *input, char *value)
+int	export_wt_args(t_minishell *minishell, t_cmd *cmd)
 {
-	char	**tmp;
-	char	*res;
-	char	*res2;
+	int		position;
+	char	*tmp;
 
-	tmp = ft_tabdup((const char **)minishell->env);
-	res = ft_strjoin(input, "=");
-	res2 = ft_strjoin(res, value);
-	free(res);
-	ft_tabfree(minishell->env);
-	minishell->env = ft_tabinsert(tmp, res2, ft_tablen((const char **)tmp));
-	free(res2);
-	ft_sort(minishell->env, 0, ft_tablen((const char **)minishell->env) - 1);
+	tmp = ft_strjoin(cmd->args[1], "=");
+	position = find_table_args(cmd->env, tmp);
+	if (position == -1)
+		position = find_table_args(minishell->env, cmd->args[1]);
+	free(tmp);
+	if (position == -1)
+	{
+		minishell->env = ft_tabinsert(minishell->env, cmd->args[1],
+				ft_tablen((const char **)minishell->env));
+		ft_sort(minishell->env, 0,
+			ft_tablen((const char **)minishell->env) - 1);
+	}
+	else if (ft_is_charset('=', cmd->args[1]))
+		modify_cmd_env(cmd, cmd->args[1], "");
 	return (0);
 }
 
 int	command_export(t_minishell *minishell, t_cmd *cmd)
 {
 	char	**cut_name;
-	char	*arg_equal;
 
 	cut_name = NULL;
 	if (!cmd->args[1])
@@ -132,8 +107,9 @@ int	command_export(t_minishell *minishell, t_cmd *cmd)
 		cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
 	else if (ft_is_charset('=', cmd->args[1]))
 		cut_name = ft_split_quote(cmd->args[1], "=", "\"\'");
-	arg_equal = ft_strjoin(cut_name[0], "=");
-	if (find_table_args(cmd->env, arg_equal) == -1)
+	else
+		return (export_wt_args(minishell, cmd));
+	if (find_table_args(cmd->env, cut_name[0]) == -1)
 		add_cmd_env(minishell, cut_name[0], cut_name[1]);
 	else
 	{
@@ -142,7 +118,6 @@ int	command_export(t_minishell *minishell, t_cmd *cmd)
 		else
 			modify_cmd_env(cmd, cut_name[0], cut_name[1]);
 	}
-	free(arg_equal);
 	ft_tabfree(cut_name);
 	return (0);
 }
