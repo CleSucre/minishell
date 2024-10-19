@@ -97,9 +97,9 @@ t_cmd	*create_cmd(t_ast_node *ast, t_minishell *minishell,
 	cmd->output_fd = in_out[1];
 	cmd->to_close = in_out[2];
 	cmd->env = minishell->env;
-	path = get_path(ast->value[0], minishell->env);
+	path = get_path(cmd->args[0], minishell->env);
 	if (!path)
-		path = ft_strdup(ast->value[0]);
+		path = ft_strdup(cmd->args[0]);
 	cmd->path = path;
 	cmd->exit_signal = 0;
 	return (cmd);
