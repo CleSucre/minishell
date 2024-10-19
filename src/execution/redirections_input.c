@@ -13,6 +13,34 @@
 #include "minishell.h"
 
 /**
+ * @brief Verify file access and print error message if needed
+ *
+ * @param char *file The file to check
+ * @return int 1 on success, 0 on failure
+ */
+static int	test_file_access(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		if (access(file, F_OK) == 0)
+		{
+			if (access(file, R_OK) == -1)
+				ft_fprintf(STDERR_FILENO, "minishell: %s: No permissions\n", file);
+			else
+				ft_fprintf(STDERR_FILENO, "minishell: %s: Error opening file\n", file);
+		}
+		else
+			ft_fprintf(STDERR_FILENO, "minishell: %s: No such file or directory\n", file);
+		return (0);
+	}
+	close(fd);
+	return (1);
+}
+
+/**
  * @brief Redirect the of a file to the input of the command
  *
  * @param t_minishell *minishell
@@ -31,13 +59,10 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
 		return (0);
 	}
+	if (!test_file_access(ast->right->value[0]))
+		return (0);
 	in_out[0] = open(ast->right->value[0], O_RDONLY);
 	setup_pipes(pipes, in_out, 0);
-	if (in_out[0] == -1)
-	{
-		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
-		return (0);
-	}
 	close(pipes[0]);
 	close(pipes[1]);
 	return (execute_ast(minishell, ast->left, pipes, in_out));

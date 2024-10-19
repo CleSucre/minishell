@@ -13,6 +13,34 @@
 #include "minishell.h"
 
 /**
+ * @brief Verify file access and print error message if needed
+ *
+ * @param char *file The file to check
+ * @return int 1 on success, 0 on failure
+ */
+static int	test_file_access(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		if (access(file, F_OK) == 0)
+		{
+			if (access(file, R_OK) == -1)
+				ft_fprintf(STDERR_FILENO, "minishell: %s: No permissions\n", file);
+			else
+				ft_fprintf(STDERR_FILENO, "minishell: %s: Error opening file\n", file);
+		}
+		else
+			return (1);
+		return (0);
+	}
+	close(fd);
+	return (1);
+}
+
+/**
  * @brief Verify if the redirection is valid
  *
  * @param t_minishell *minishell
@@ -72,13 +100,6 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 			"minishell: %s: Could not create file\n", ast->right->value[0]);
 		return (1);
 	}
-	if (access(ast->right->value[0], W_OK) != 0)
-	{
-		ft_fprintf(STDERR_FILENO,
-			"minishell: %s: Permission denied\n", ast->right->value[0]);
-		close(fd);
-		return (1);
-	}
 	close(fd);
 	i = 1;
 	while (ast->right->value[i])
@@ -100,13 +121,16 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
 {
 	int	file_fd;
 
+	if (!test_file_access(ast->right->value[0]))
+		return (0);
 	if (redirect_output(minishell, ast, pipes, in_out))
 		return (0);
 	file_fd = open(ast->right->value[0],
 			O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (file_fd == -1)
 	{
-		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
+		ft_fprintf(STDERR_FILENO, "minishell: %s: No such file or directory\n",
+			ast->right->value[0]);
 		return (0);
 	}
 	copy_fd_contents(in_out[0], file_fd);
@@ -132,13 +156,16 @@ int	execute_redirect_output_append(t_minishell *minishell, t_ast_node *ast,
 {
 	int	file_fd;
 
+	if (!test_file_access(ast->right->value[0]))
+		return (0);
 	if (redirect_output(minishell, ast, pipes, in_out))
 		return (1);
 	file_fd = open(ast->right->value[0],
 			O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (file_fd == -1)
 	{
-		ft_putstr_fd("Error: open failed\n", STDERR_FILENO);
+		ft_fprintf(STDERR_FILENO, "minishell: %s: No such file or directory\n",
+			ast->right->value[0]);
 		return (1);
 	}
 	copy_fd_contents(in_out[0], file_fd);
