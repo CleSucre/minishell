@@ -92,7 +92,7 @@ OBJ_NAME		= $(SRCS:%.c=%.o)
 
 OBJS			= $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 
-CC				= gcc
+CC				= cc
 
 HEAD			= include
 
