@@ -85,13 +85,22 @@ static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 
 	if (!input)
 		return (NULL);
-	trimmed = check_input(minishell, input);
-	if (!trimmed)
+	trimmed = check_input(input);
+	if (trimmed == NULL || *trimmed == '\0')
+	{
+		minishell->exit_code = 0;
 		return (NULL);
+	}
 	tokens = tokenize(trimmed);
-	free(trimmed);
 	if (!tokens)
+	{
+		minishell->exit_code = 2;
+		free(trimmed);
 		return (NULL);
+	}
+	if (ft_isprint(*trimmed))
+		history_add(minishell, trimmed, 1);
+	free(trimmed);
 	debug_tokens(tokens);
 	return (tokens);
 }
@@ -140,10 +149,7 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 
 	tokens = check_and_tokenize_input(minishell, input);
 	if (!tokens)
-	{
-		minishell->exit_code = 2;
 		return (NULL);
-	}
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);

@@ -13,16 +13,36 @@
 #include "minishell.h"
 
 /**
- * @brief Print the last argument with a special format if -n flag is present
+ * @brief Count the number of flags in the command
  *
- * @param int output Output file descriptor
+ * @param char **args Arguments of the command
+ * @return int Number of flags
  */
-static void	print_n_flag(int output)
+static int	count_flags(char **args)
 {
-	ft_putstr_fd(BACKGROUND_WHITE, output);
-	ft_putstr_fd(TEXT_BLACK, output);
-	terminal_print("%", 0, output);
-	ft_putstr_fd(RESET, output);
+	int	i;
+	int	j;
+	int	count;
+
+	i = 1;
+	count = 0;
+	while (args[i])
+	{
+		if (args[i][0] == '-')
+		{
+			j = 1;
+			while (args[i][j] == 'n')
+				j++;
+			if (args[i][j] == '\0')
+				count++;
+			else
+				break ;
+		}
+		else
+			break ;
+		i++;
+	}
+	return (count);
 }
 
 /**
@@ -36,13 +56,11 @@ int	command_echo(t_cmd *cmd)
 	int		i;
 	int		n_flag;
 
-	i = 1;
 	n_flag = 0;
-	if (cmd->argc > 1 && ft_strncmp(cmd->args[1], "-n", 2) == 0)
-	{
+	i = count_flags(cmd->args);
+	if (i)
 		n_flag = 1;
-		i++;
-	}
+	i++;
 	while (i < cmd->argc)
 	{
 		terminal_print(cmd->args[i], 0, cmd->output_fd);
@@ -50,8 +68,6 @@ int	command_echo(t_cmd *cmd)
 			ft_putchar_fd(' ', cmd->output_fd);
 		i++;
 	}
-	if (n_flag)
-		print_n_flag(cmd->output_fd);
-	terminal_print("", 1, cmd->output_fd);
+	terminal_print("", !n_flag, cmd->output_fd);
 	return (0);
 }

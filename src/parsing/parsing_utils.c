@@ -23,7 +23,7 @@
  * @param char *input
  * @return char* the trimmed input
  */
-char	*check_input(t_minishell *minishell, char *input)
+char	*check_input(char *input)
 {
 	char	*trimmed;
 
@@ -38,7 +38,5 @@ char	*check_input(t_minishell *minishell, char *input)
 	if (!trimmed)
 		return (NULL);
 	debug_execution(trimmed);
-	if (ft_isprint(*trimmed))
-		history_add(minishell, trimmed, 1);
 	return (trimmed);
 }

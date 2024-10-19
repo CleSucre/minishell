@@ -31,7 +31,7 @@ int	contain_flag(char **argv, char flag)
 			while (argv[i][j])
 			{
 				if (argv[i][j] == flag)
-					return (1);
+					return (i);
 				j++;
 			}
 		}
