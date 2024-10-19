@@ -111,6 +111,13 @@ static int	run_heredoc(t_minishell *minishell, char *delimiter,
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
+		if (!line)
+		{
+			ft_fprintf(STDERR_FILENO, "Error: get_next_line failed\n");
+			close_fds(in_out, pipes);
+			free(line);
+			return (1);
+		}
 		tmp = ft_strdup(line);
 		tmp[ft_strlen(line) - 1] = '\0';
 		if (!line || ft_strcmp(tmp, delimiter) == 0)
@@ -148,9 +155,8 @@ int	execute_heredoc(t_minishell *minishell, t_ast_node *ast,
 	status = run_heredoc(minishell, ast->right->value[0], pipes, in_out);
 	if (!status)
 		return (-1);
-	if (!ast->is_last && !ast->left)
+	if (!ast->is_last || !ast->left)
 	{
-		ft_fprintf(STDERR_FILENO, "DEBUG\n");
 		close_fds(in_out, pipes);
 		in_out[0] = STDIN_FILENO;
 		in_out[1] = STDOUT_FILENO;
