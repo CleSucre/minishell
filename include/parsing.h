@@ -76,7 +76,8 @@ int				process_command(t_token **tokens, t_ast_node **root,
 int				process_argument(t_token **current, t_ast_node *last_command);
 int				process_pipe(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command);
-
+int				run_heredoc(t_minishell *minishell, char *delimiter,
+					int *pipes, int *in_out);
 int				process_operator(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command);
 int				process_subshell(t_token **tokens, t_ast_node **root,
@@ -85,6 +86,7 @@ int				process_heredoc(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command, int is_last);
 int				process_redirection(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command, int is_last);
+char			*check_input(t_minishell *minishell, char *input);
 
 // ########################################################
 // #					TOKEN_MANAGER						#
@@ -101,6 +103,10 @@ t_token_type	token_type(char *str);
 t_token			*tokenize(char *input);
 char			*extract_token(char *input, int *index);
 char			**extract_command_tokens(t_token **tokens);
+char			*extract_quoted_token(char *input, int *index);
+char			*handle_quotes(char *buffer, int *buffer_pos,
+					char *input, int *index);
+char			*handle_parentheses(char current_char, int *index);
 
 // ########################################################
 // #					PARSER_MANDATORY					#

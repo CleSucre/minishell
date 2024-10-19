@@ -62,6 +62,7 @@ int		execute_pipe(t_minishell *minishell, t_ast_node *ast,
 int		verify_redirection(t_minishell *minishell, t_ast_node *ast);
 int		execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 			int *pipes, int *in_out);
+int		heredoc_valid(t_ast_node *ast, int *pipes);
 int		execute_heredoc(t_minishell *minishell, t_ast_node *ast,
 			int *pipes, int *in_out);
 int		execute_redirect_output(t_minishell *minishell, t_ast_node *ast,

@@ -28,7 +28,7 @@ SRCS_ENVIRONMENT		= env_utils.c path_utils.c variable_utils.c variable_replacer.
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
-SRCS_EXECUTION			= execute_cmd.c execution_or_and.c execution_types.c execute_path.c execution.c execution_fork.c signal_handler.c redirections_input.c redirections_output.c pipes.c
+SRCS_EXECUTION			= execute_cmd.c execution_or_and.c execution_types.c execute_path.c execution.c execution_fork.c execution_heredoc.c signal_handler.c redirections_input.c redirections_output.c pipes.c
 
 SRCS_COMMANDS			= command_maker.c flags_utils.c command_manager.c
 
@@ -36,9 +36,9 @@ SRCS_COMMANDS_CUSTOM	= cd.c cd_utils.c echo.c env.c exit.c history.c pwd.c unset
 
 SRCS_MEMORY				= memory_alloc.c memory_free.c builtins_alloc.c
 
-SRCS_PARSING			= ast_management.c parsing.c parsing_mandatory.c parsing_redirection.c parsing_bonus.c var_creation.c
+SRCS_PARSING			= ast_management.c parsing.c parsing_mandatory.c parsing_redirection.c parsing_bonus.c parsing_utils.c var_creation.c
 
-SRCS_PARSING_TOKENIZER	= tokenizer.c token_management.c tokenizer_quote.c
+SRCS_PARSING_TOKENIZER	= token_extractor.c tokenizer.c token_management.c tokenizer_quote_handler.c
 
 SRCS_TERMINAL			= input_utils.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_signals.c terminal_utils.c \
 							put_in_string.c

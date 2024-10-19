@@ -13,37 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Check the following things:
- * 	- If the input is empty, print a new line and return NULL
- * 	- Trim the input
- * 	- Add the input to the history
- * 	- Print the input in debug mode if needed
- *
- * @param t_minishell *minishell
- * @param char *input
- * @return char* the trimmed input
- */
-static char	*check_input(t_minishell *minishell, char *input)
-{
-	char	*trimmed;
-
-	if (ft_strlen(input) == 0)
-	{
-		terminal_print("", 1, STDOUT_FILENO);
-		free(input);
-		return (NULL);
-	}
-	trimmed = ft_strtrim(input, WHITESPACES);
-	free(input);
-	if (!trimmed)
-		return (NULL);
-	debug_execution(trimmed);
-	if (ft_isprint(*trimmed))
-		history_add(minishell, trimmed, 1);
-	return (trimmed);
-}
-
-/**
  * @brief The logic suite of the function build_ast.
  * 			Thx norminette !
  *
@@ -128,6 +97,34 @@ static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 }
 
 /**
+ * @brief Handle the token errors.
+ *
+ * @param t_minishell *minishell
+ * @param t_token *tokens
+ * @param int error
+ * @param t_ast_node *ast
+ * @return int 1 if the function succeeded, 0 otherwise.
+ */
+static int	handle_token_errors(t_minishell *minishell,
+							t_token *tokens, int error, t_ast_node *ast)
+{
+	if (error == 0)
+	{
+		minishell->exit_code = 2;
+		free_tokens(tokens);
+		free_ast(ast);
+		return (0);
+	}
+	else if (error == -1)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
+		free_tokens(tokens);
+		return (0);
+	}
+	return (1);
+}
+
+/**
  * @brief Parses the input string and creates an AST.
  *
  * @param t_minishell *minishell The minishell structure.
@@ -150,19 +147,8 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);
-	if (error == 0)
-	{
-		minishell->exit_code = 2;
-		free_tokens(tokens);
-		free_ast(ast);
+	if (!handle_token_errors(minishell, tokens, error, ast))
 		return (NULL);
-	}
-	else if (error == -1)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
-		free_tokens(tokens);
-		return (NULL);
-	}
 	free_tokens(tokens);
 	debug_ast(ast);
 	return (ast);
