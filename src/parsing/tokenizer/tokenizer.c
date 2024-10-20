@@ -91,6 +91,7 @@ char	**split_with_quotes(const char *input, int *count)
 		buffer[buf_pos] = '\0';
 		add_token(&tokens, &token_count, buffer);
 	}
+	free(buffer);
 	*count = token_count;
 	return (tokens);
 }
@@ -100,8 +101,8 @@ int	are_parentheses_valid(char **tokens, int token_count)
 	int	i;
 	int	parentheses_balance;
 
-	parentheses_balance = 0;
 	i = 0;
+	parentheses_balance = 0;
 	while (i < token_count)
 	{
 		if (strcmp(tokens[i], "(") == 0)
@@ -109,7 +110,7 @@ int	are_parentheses_valid(char **tokens, int token_count)
 			parentheses_balance++;
 			if (i + 1 < token_count && strcmp(tokens[i + 1], ")") == 0)
 			{
-				printf("minishell: syntax error near unexpected token `)'\n");
+				printf("syntax error near unexpected token `)'\n");
 				return (0);
 			}
 		}
@@ -118,7 +119,13 @@ int	are_parentheses_valid(char **tokens, int token_count)
 			parentheses_balance--;
 			if (parentheses_balance < 0)
 			{
-				printf("minishell: syntax error near unexpected token `)'\n");
+				printf("syntax error near unexpected token `)'\n");
+				return (0);
+			}
+			if (i + 1 < token_count && strcmp(tokens[i + 1], "&&") != 0
+				&& strcmp(tokens[i + 1], "||") != 0 && strcmp(tokens[i + 1], "|") != 0)
+			{
+				printf("syntax error: expected operator after `)'\n");
 				return (0);
 			}
 		}
@@ -126,7 +133,7 @@ int	are_parentheses_valid(char **tokens, int token_count)
 	}
 	if (parentheses_balance != 0)
 	{
-		printf("minishell: syntax error near unexpected token `)'\n");
+		printf("syntax error near unexpected token `)'\n");
 		return (0);
 	}
 	return (1);
@@ -184,7 +191,7 @@ char	**extract_command_tokens(t_token **tokens)
 	token_count = 0;
 	current = *tokens;
 	while (current != NULL
-		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
+		   && (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;
