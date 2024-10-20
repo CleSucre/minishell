@@ -36,21 +36,40 @@ t_token	*new_token(char *str, int type)
 /**
  * @brief Add a token to the token list
  *
+ * @param tokens The head of the token list
+ * @param type The type of the token
+ * @param value The value of the token
+ */
+void add_token_to_list(t_token **tokens, t_token_type type, char *value)
+{
+	t_token *new_token = malloc(sizeof(t_token));
+	new_token->type = type;
+	new_token->value = strdup(value);
+	new_token->next = NULL;
+
+	if (!*tokens)
+	{
+		*tokens = new_token;
+	}
+	else
+	{
+		t_token *temp = *tokens;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = new_token;
+	}
+}
+
+/**
+ * @brief Add a token to the token list
+ *
  * @param head The head of the token list
  * @param new The new token to add
  */
-void	add_token(t_token **head, t_token *new)
-{
-	t_token	*tmp;
 
-	if (!*head)
-	{
-		*head = new;
-		return ;
-	}
-	tmp = *head;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-	new->prev = tmp;
+void add_token(char ***tokens, int *token_count, char *token)
+{
+	*tokens = realloc(*tokens, sizeof(char *) * (*token_count + 1));
+	(*tokens)[*token_count] = strdup(token);
+	(*token_count)++;
 }

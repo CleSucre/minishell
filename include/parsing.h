@@ -93,14 +93,15 @@ char			*check_input(char *input);
 // ########################################################
 
 t_token			*new_token(char *str, int type);
-void			add_token(t_token **head, t_token *new);
+void			add_token(char ***tokens, int *token_count, char *token);
+void			add_token_to_list(t_token **tokens, t_token_type type, char *value);
 
 // ########################################################
 // #						TOKENIZER						#
 // ########################################################
 
 t_token_type	token_type(char *str);
-t_token			*tokenize(char *input);
+void			tokenize(const char *input, t_token **token_list);
 char			*extract_token(char *input, int *index);
 char			**extract_command_tokens(t_token **tokens);
 char			*extract_quoted_token(char *input, int *index);
