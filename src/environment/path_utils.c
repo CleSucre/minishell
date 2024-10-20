@@ -28,6 +28,26 @@ static int	check_path(char *path)
 }
 
 /**
+ * @brief Check if the env is valid
+ *
+ * @param char **env
+ * @return int 1 if the env is valid, 0 otherwise
+ */
+static int	is_valid_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/**
  * @brief Get the path of the command to execute
  *
  * @param char *cmd
@@ -41,7 +61,7 @@ char	*get_path(char *cmd, char **envp)
 	char	**paths;
 	char	*tmp;
 
-	if (access(cmd, X_OK) == 0)
+	if (access(cmd, X_OK) == 0 || !is_valid_env(envp))
 		return (NULL);
 	i = 0;
 	while (ft_strncmp(envp[i], "PATH=", 5))
