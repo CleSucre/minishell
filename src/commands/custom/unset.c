@@ -24,6 +24,8 @@ int	command_unset(t_cmd *cmd)
 	char	*arg_equal;
 	int		position;
 
+	if (!cmd->args[1])
+		return (0);
 	cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
 	if (!cut_name)
 		return (1);

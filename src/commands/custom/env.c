@@ -19,7 +19,8 @@ static void	print_env(t_cmd *cmd)
 	i = 0;
 	while (cmd->env[i])
 	{
-		terminal_print(cmd->env[i], 1, cmd->output_fd);
+		if (ft_is_charset('=', cmd->env[i]))
+			terminal_print(cmd->env[i], 1, cmd->output_fd);
 		i++;
 	}
 }
