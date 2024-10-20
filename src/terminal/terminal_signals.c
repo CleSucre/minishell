@@ -32,6 +32,7 @@ static void	ctrl_c_action(t_minishell *minishell)
 	get_cursor_position(minishell->term);
 	minishell->term->begin_rows = minishell->term->rows;
 	minishell->term->cols = get_prompt_len(minishell) + 1;
+//	minishell->exit_code = 130; TODO: rm this line, just a test
 }
 
 /**
@@ -54,5 +55,7 @@ int	process_signals(t_minishell *minishell, char c)
 		ctrl_c_action(minishell);
 		return (1);
 	}
+	else if (c == CTRL_BACKSLASH)
+		return (1);
 	return (0);
 }
