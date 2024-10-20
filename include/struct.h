@@ -107,7 +107,6 @@ typedef struct s_heredoc_info
 {
 	char				*delimiter;
 	int					*pipes;
-	int 				force_close;
 }						t_heredoc_info;
 
 #endif

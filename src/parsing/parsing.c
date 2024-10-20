@@ -71,8 +71,6 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 	return (1);
 }
 
-
-
 /**
  * @brief Check the input and tokenize it.
  *

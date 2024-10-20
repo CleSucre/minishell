@@ -12,18 +12,21 @@
 
 #include "minishell.h"
 
-int is_operator(const char *input, int i)
+int	is_operator(const char *input, int i, char quote_char)
 {
+	if (quote_char != 0)
+		return (0);
 	if (input[i] == '|' && input[i + 1] == '|')
-		return 2;
+		return (2);
 	else if (input[i] == '&' && input[i + 1] == '&')
-		return 2;
-	else if (input[i] == '|' || input[i] == '&' || input[i] == '(' || input[i] == ')')
-		return 1;
-	return 0;
+		return (2);
+	else if (input[i] == '|' || input[i] == '&'
+		|| input[i] == '(' || input[i] == ')')
+		return (1);
+	return (0);
 }
 
-char **split_with_quotes(const char *input, int *count)
+char	**split_with_quotes(const char *input, int *count)
 {
 	int		len;
 	char	**tokens;
@@ -32,6 +35,7 @@ char **split_with_quotes(const char *input, int *count)
 	int		buf_pos;
 	int		i;
 	char	quote_char;
+	int		op_len;
 
 	len = ft_strlen(input);
 	tokens = NULL;
@@ -63,7 +67,7 @@ char **split_with_quotes(const char *input, int *count)
 			buffer[buf_pos++] = input[i];
 			i++;
 		}
-		else if (is_operator(input, i))
+		else if (is_operator(input, i, quote_char))
 		{
 			if (buf_pos > 0)
 			{
@@ -71,14 +75,16 @@ char **split_with_quotes(const char *input, int *count)
 				add_token(&tokens, &token_count, buffer);
 				buf_pos = 0;
 			}
-			int op_len = is_operator(input, i);
+			op_len = is_operator(input, i, quote_char);
 			strncpy(buffer, input + i, op_len);
 			buffer[op_len] = '\0';
 			add_token(&tokens, &token_count, buffer);
 			i += op_len;
 		}
 		else
+		{
 			buffer[buf_pos++] = input[i++];
+		}
 	}
 	if (buf_pos > 0)
 	{
@@ -86,17 +92,63 @@ char **split_with_quotes(const char *input, int *count)
 		add_token(&tokens, &token_count, buffer);
 	}
 	*count = token_count;
-	return tokens;
+	return (tokens);
 }
 
-void tokenize(const char *input, t_token **token_list)
+int	are_parentheses_valid(char **tokens, int token_count)
+{
+	int	i;
+	int	parentheses_balance;
+
+	parentheses_balance = 0;
+	i = 0;
+	while (i < token_count)
+	{
+		if (strcmp(tokens[i], "(") == 0)
+		{
+			parentheses_balance++;
+			if (i + 1 < token_count && strcmp(tokens[i + 1], ")") == 0)
+			{
+				printf("minishell: syntax error near unexpected token `)'\n");
+				return (0);
+			}
+		}
+		else if (strcmp(tokens[i], ")") == 0)
+		{
+			parentheses_balance--;
+			if (parentheses_balance < 0)
+			{
+				printf("minishell: syntax error near unexpected token `)'\n");
+				return (0);
+			}
+		}
+		i++;
+	}
+	if (parentheses_balance != 0)
+	{
+		printf("minishell: syntax error near unexpected token `)'\n");
+		return (0);
+	}
+	return (1);
+}
+
+void	tokenize(const char *input, t_token **token_list)
 {
 	int		token_count;
-	char 	**tokens;
-	int 	i;
+	char	**tokens;
+	int		i;
 
 	token_count = 0;
 	tokens = split_with_quotes(input, &token_count);
+	if (!are_parentheses_valid(tokens, token_count))
+	{
+		*token_list = NULL;
+		i = 0;
+		while (i < token_count)
+			free(tokens[i++]);
+		free(tokens);
+		return ;
+	}
 	i = 0;
 	while (i < token_count)
 	{
@@ -120,12 +172,6 @@ void tokenize(const char *input, t_token **token_list)
 	free(tokens);
 }
 
-/**
- * @brief Extract the command tokens from the token list
- *
- * @param t_token **tokens
- * @return char**
- */
 char	**extract_command_tokens(t_token **tokens)
 {
 	char	**command_tokens;
@@ -138,7 +184,7 @@ char	**extract_command_tokens(t_token **tokens)
 	token_count = 0;
 	current = *tokens;
 	while (current != NULL
-		   && (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
+		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;
