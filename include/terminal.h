@@ -41,6 +41,7 @@
 # define ENTER 10
 # define CTRL_D 4
 # define CTRL_C 3
+# define CTRL_BACKSLASH 28
 # define L_ARROW 'D'
 # define R_ARROW 'C'
 # define U_ARROW 'A'
