@@ -42,7 +42,7 @@ char	*parse_quotes(const char *input)
 	return (result);
 }
 
-static void	remove_quotes(char **table)
+void	remove_quotes(char **table)
 {
 	int	i;
 

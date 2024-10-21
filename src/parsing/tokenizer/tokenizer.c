@@ -20,6 +20,12 @@ int	is_operator(const char *input, int i, char quote_char)
 		return (2);
 	else if (input[i] == '&' && input[i + 1] == '&')
 		return (2);
+	else if (input[i] == '<' && input[i + 1] == '<')
+		return (2);
+	else if (input[i] == '>' && input[i + 1] == '>')
+		return (2);
+	else if (input[i] == '<' || input[i] == '>')
+		return (1);
 	else if (input[i] == '|' || input[i] == '&'
 		|| input[i] == '(' || input[i] == ')')
 		return (1);
@@ -159,15 +165,23 @@ void	tokenize(const char *input, t_token **token_list)
 	i = 0;
 	while (i < token_count)
 	{
-		if (strcmp(tokens[i], "&&") == 0)
+		if (ft_strcmp(tokens[i], "&&") == 0)
 			add_token_to_list(token_list, TOKEN_AND_OPERATOR, tokens[i]);
-		else if (strcmp(tokens[i], "||") == 0)
+		else if (ft_strcmp(tokens[i], "||") == 0)
 			add_token_to_list(token_list, TOKEN_OR_OPERATOR, tokens[i]);
-		else if (strcmp(tokens[i], "|") == 0)
+		else if (ft_strcmp(tokens[i], "<<") == 0)
+			add_token_to_list(token_list, TOKEN_HEREDOC, tokens[i]);
+		else if (ft_strcmp(tokens[i], ">>") == 0)
+			add_token_to_list(token_list, TOKEN_REDIR_OUT_APPEND, tokens[i]);
+		else if (ft_strcmp(tokens[i], ">") == 0)
+			add_token_to_list(token_list, TOKEN_REDIR_OUT, tokens[i]);
+		else if (ft_strcmp(tokens[i], "<") == 0)
+			add_token_to_list(token_list, TOKEN_REDIR_IN, tokens[i]);
+		else if (ft_strcmp(tokens[i], "|") == 0)
 			add_token_to_list(token_list, TOKEN_PIPE, tokens[i]);
-		else if (strcmp(tokens[i], "(") == 0)
+		else if (ft_strcmp(tokens[i], "(") == 0)
 			add_token_to_list(token_list, TOKEN_PARENTHESIS_OPEN, tokens[i]);
-		else if (strcmp(tokens[i], ")") == 0)
+		else if (ft_strcmp(tokens[i], ")") == 0)
 			add_token_to_list(token_list, TOKEN_PARENTHESIS_CLOSE, tokens[i]);
 		else
 			add_token_to_list(token_list, TOKEN_COMMAND, tokens[i]);

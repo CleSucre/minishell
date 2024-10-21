@@ -105,8 +105,12 @@ typedef struct s_minishell
 
 typedef struct s_heredoc_info
 {
+	t_minishell			*minishell;
 	char				*delimiter;
 	int					*pipes;
+	int					*in_out;
+	char 				*line;
+	int 				expend_var;
 }						t_heredoc_info;
 
 #endif
