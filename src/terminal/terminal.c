@@ -29,14 +29,10 @@ int	interpret_escape_sequence(t_minishell *minishell, const char *seq)
 	if (seq[1] == '[')
 	{
 		new_history = NULL;
-		if (ft_tablen((const char **)minishell->input)
-			< minishell->term->ws_cols - get_prompt_len(minishell))
-		{
-			if (seq[2] == U_ARROW)
-				arrow_up_action(minishell, new_history);
-			else if (seq[2] == D_ARROW)
-				arrow_down_action(minishell, new_history);
-		}
+		if (seq[2] == U_ARROW)
+			arrow_up_action(minishell, new_history);
+		else if (seq[2] == D_ARROW)
+			arrow_down_action(minishell, new_history);
 		else if (seq[2] == R_ARROW)
 			arrow_right_action(minishell);
 		else if (seq[2] == L_ARROW)
