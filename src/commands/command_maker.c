@@ -12,6 +12,48 @@
 
 #include "minishell.h"
 
+char	*parse_quotes(const char *input)
+{
+	char	*result;
+	int		i;
+	int		j;
+	char	quote_type;
+
+	result = (char *)malloc(ft_strlen(input) + 1);
+	i = 0;
+	j = 0;
+	quote_type = 0;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '\'' || input[i] == '"')
+		{
+			if (quote_type == 0)
+				quote_type = input[i];
+			else if (quote_type == input[i])
+				quote_type = 0;
+			else
+				result[j++] = input[i];
+		}
+		else
+			result[j++] = input[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+static void	remove_quotes(char **table)
+{
+	int	i;
+
+	i = 0;
+	while (table[i])
+	{
+		table[i] = parse_quotes(table[i]);
+		i++;
+	}
+}
+
 /**
  * @brief Replace variables, support wildcard expansion
  *
@@ -27,6 +69,7 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	cmd->args = ft_tabdup((const char **)ast->value);
 	is_var = ft_strncmp(cmd->args[0], "$", 1) == 0;
 	replace_variables_in_tab(minishell, cmd->args);
+	remove_quotes(cmd->args);
 	if (cmd->args[0] == NULL)
 		return ;
 	if (is_var)

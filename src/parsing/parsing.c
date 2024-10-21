@@ -91,7 +91,8 @@ static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 		minishell->exit_code = 0;
 		return (NULL);
 	}
-	tokens = tokenize(trimmed);
+	tokens = NULL;
+	tokenize(trimmed, &tokens);
 	if (!tokens)
 	{
 		minishell->exit_code = 2;

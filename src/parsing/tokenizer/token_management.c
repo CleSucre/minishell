@@ -36,21 +36,57 @@ t_token	*new_token(char *str, int type)
 /**
  * @brief Add a token to the token list
  *
+ * @param tokens The head of the token list
+ * @param type The type of the token
+ * @param value The value of the token
+ */
+void	add_token_to_list(t_token **tokens, t_token_type type, char *value)
+{
+	t_token	*temp;
+	t_token	*new_token;
+
+	new_token = malloc(sizeof(t_token));
+	if (!new_token)
+		return ;
+	new_token->type = type;
+	new_token->value = strdup(value);
+	new_token->next = NULL;
+	new_token->prev = NULL;
+	if (!*tokens)
+		*tokens = new_token;
+	else
+	{
+		temp = *tokens;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = new_token;
+		new_token->prev = temp;
+	}
+}
+
+/**
+ * @brief Add a token to the token list
+ *
  * @param head The head of the token list
  * @param new The new token to add
  */
-void	add_token(t_token **head, t_token *new)
+void	add_token(char ***tokens, int *token_count, char *token)
 {
-	t_token	*tmp;
+	char	**new_tokens;
+	int		i;
 
-	if (!*head)
-	{
-		*head = new;
+	new_tokens = (char **)malloc(sizeof(char *) * (*token_count + 1));
+	if (!new_tokens)
 		return ;
+	i = 0;
+	while (i < *token_count)
+	{
+		new_tokens[i] = (*tokens)[i];
+		i++;
 	}
-	tmp = *head;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-	new->prev = tmp;
+	new_tokens[i] = ft_strdup(token);
+	if (*tokens)
+		free(*tokens);
+	*tokens = new_tokens;
+	(*token_count)++;
 }

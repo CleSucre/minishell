@@ -92,16 +92,15 @@ char			*check_input(char *input);
 // #					TOKEN_MANAGER						#
 // ########################################################
 
-t_token			*new_token(char *str, int type);
-void			add_token(t_token **head, t_token *new);
+void			add_token(char ***tokens, int *token_count, char *token);
+void			add_token_to_list(t_token **tokens,
+					t_token_type type, char *value);
 
 // ########################################################
 // #						TOKENIZER						#
 // ########################################################
 
-t_token_type	token_type(char *str);
-t_token			*tokenize(char *input);
-char			*extract_token(char *input, int *index);
+void			tokenize(const char *input, t_token **token_list);
 char			**extract_command_tokens(t_token **tokens);
 char			*extract_quoted_token(char *input, int *index);
 char			*handle_quotes(char *buffer, int *buffer_pos,
@@ -109,42 +108,9 @@ char			*handle_quotes(char *buffer, int *buffer_pos,
 char			*handle_parentheses(char current_char, int *index);
 
 // ########################################################
-// #					PARSER_MANDATORY					#
-// ########################################################
-
-t_ast_node		*extract_full_commands(char *input);
-void			*parse_full_commands(t_ast_node *ast);
-
-// ########################################################
-// #					PARSER_BONUS						#
-// ########################################################
-
-t_ast_node		*parsing(t_token *tokens);
-
-// ########################################################
-// #						TOKENIZER						#
-// ########################################################
-
-t_ast_node_type	token_type_primary(char *str);
-
-// ########################################################
-// #					AST_CREATION						#
-// ########################################################
-
-void			parse_args(t_ast_node *ast, char **args);
-
-// ########################################################
 // #						AST									#
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
-int				is_node(t_ast_node *node, t_ast_node_type type);
-
-// ########################################################
-// #						DEBUG							#
-// ########################################################
-
-void			print_tokens(t_token *tokens);
-void			print_ast(t_ast_node *ast);
 
 #endif
