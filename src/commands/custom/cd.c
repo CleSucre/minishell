@@ -99,6 +99,31 @@ static int	go_home(t_cmd *cmd)
 	return (0);
 }
 
+int ft_check_access(const char *name)
+{
+	struct stat statbuf;
+
+
+	if (access(name, F_OK) != 0)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: cd: %s: No such file or directory\n", name);
+		return (1);
+	}
+	else if (stat(name, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode)) {
+		ft_fprintf(STDERR_FILENO, "minishell: cd: %s: Not a directory\n", name);
+		return (1);
+	}
+	else if (access(name, X_OK) != 0) {
+		if (stat(name, &statbuf) == 0) {
+			if ((statbuf.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) == 0)
+				ft_fprintf(STDERR_FILENO, "minishell: cd: %s: Access denied\n", name);
+			else
+				ft_fprintf(STDERR_FILENO, "minishell: cd: %s: Permission denied\n", name);
+		}
+	}
+	return (0);
+}
+
 int	cd_minus(t_cmd *cmd)
 {
 	char	**oldpwd;
@@ -108,20 +133,20 @@ int	cd_minus(t_cmd *cmd)
 	if (ft_strcmp(cmd->args[1], "-") == 0)
 	{
 		oldpwd = ft_split_quote(cmd->env[position], "=", "\"\'");
-		if (access(oldpwd[1], R_OK | X_OK) == 0)
+		if (ft_check_access(oldpwd[1]) == 0)
 		{
 			invert_oldpwd(cmd);
+			ft_printf("%s\n", oldpwd[1]);
 			ft_tabfree(oldpwd);
-			return (1);
+			return (0);
 		}
 		else
 		{
-			ft_putstr_fd("error, oldpwd can't be established\n", 2);
 			ft_tabfree(oldpwd);
 			return (126);
 		}
 	}
-	return (0);
+	return (1);
 }
 
 /**
@@ -145,15 +170,11 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 		return (go_home(cmd));
 	}
 	minus = cd_minus(cmd);
-	if (minus != 0)
+	if (minus != 1)
 		return (minus);
-	else if (access(cmd->args[1], R_OK | X_OK) != 0 || chdir(cmd->args[1])
+	else if (ft_check_access(cmd->args[1]) != 0 || chdir(cmd->args[1])
 		== -1)
-	{
-		ft_fprintf(STDERR_FILENO,
-			"minishell: cd: %s: No such file or directory\n", cmd->args[1]);
 		return (1);
-	}
 	else
 		move_dir(cmd);
 	return (0);

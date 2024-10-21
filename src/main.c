@@ -25,6 +25,24 @@ int	is_running_in_pipeline(void)
 	return (0);
 }
 
+int fill_env(t_minishell *minishell)
+{
+	char	*tmp;
+
+	minishell->env = ft_calloc(2, sizeof(char *));
+	minishell->env[0] = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin");
+	tmp = ft_strjoin("PWD=", getcwd(NULL, 0));
+	minishell->env = ft_tabinsert(minishell->env, tmp, 1);
+	free(tmp);
+	minishell->env = ft_tabinsert(minishell->env, "OLDPWD=", 2);
+	minishell->env = ft_tabinsert(minishell->env, "SHLVL=1", 3);
+	minishell->env = ft_tabinsert(minishell->env, "_=", 4);
+	minishell->env = ft_tabinsert(minishell->env, "TERM=xterm-256color", 5);
+	minishell->env = ft_tabinsert(minishell->env, "HOME=", 6);
+	minishell->env = ft_tabinsert(minishell->env, "USER=", 7);
+	return (0);
+}
+
 /**
  * @brief Main function of the minishell
  *
@@ -45,7 +63,10 @@ int	main(int argc, char **args, char **env)
 		return (1);
 	minishell = alloc_minishell();
 	minishell->term->original_termios = &original_termios;
-	minishell->env = ft_tabdup((const char **)env);
+	if (ft_tablen((const char**)env))
+		minishell->env = ft_tabdup((const char **)env);
+	else
+		fill_env(minishell);
 	enable_termios(minishell->term);
 	use_termios(minishell);
 	disable_termios(minishell->term);
