@@ -26,8 +26,8 @@ int	is_operator(const char *input, int i, char quote_char)
 		return (2);
 	else if (input[i] == '<' || input[i] == '>')
 		return (1);
-	else if (input[i] == '|' || input[i] == '&'
-		|| input[i] == '(' || input[i] == ')')
+	else if (input[i] == '|' || input[i] == '('
+		|| input[i] == ')')
 		return (1);
 	return (0);
 }
@@ -128,18 +128,12 @@ int	are_parentheses_valid(char **tokens, int token_count)
 				printf("syntax error near unexpected token `)'\n");
 				return (0);
 			}
-			if (i + 1 < token_count && strcmp(tokens[i + 1], "&&") != 0
-				&& strcmp(tokens[i + 1], "||") != 0 && strcmp(tokens[i + 1], "|") != 0)
-			{
-				printf("syntax error: expected operator after `)'\n");
-				return (0);
-			}
 		}
 		i++;
 	}
 	if (parentheses_balance != 0)
 	{
-		printf("syntax error near unexpected token `)'\n");
+		printf("syntax error: unclosed parentheses\n");
 		return (0);
 	}
 	return (1);
