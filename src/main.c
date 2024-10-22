@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <julthoma@student.42angouleme.fr> +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:24:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/05/28 12:24:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:07:51 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	is_running_in_pipeline(void)
 	return (0);
 }
 
-int fill_env(t_minishell *minishell)
+int	fill_env(t_minishell *minishell)
 {
 	char	*tmp;
 
@@ -63,7 +63,7 @@ int	main(int argc, char **args, char **env)
 		return (1);
 	minishell = alloc_minishell();
 	minishell->term->original_termios = &original_termios;
-	if (ft_tablen((const char**)env))
+	if (ft_tablen((const char **)env))
 		minishell->env = ft_tabdup((const char **)env);
 	else
 		fill_env(minishell);

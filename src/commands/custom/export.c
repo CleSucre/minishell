@@ -19,32 +19,6 @@
  * @return int Exit code
  */
 
-int	print_export(t_cmd *cmd)
-{
-	int		i;
-	char	**tmp;
-	char	**cut_name;
-
-	tmp = ft_tabdup((const char **)cmd->env);
-	ft_sort(tmp, 0, ft_tablen((const char **)tmp) - 1);
-	i = 0;
-	while (tmp[i])
-	{
-		cut_name = ft_split_quote(tmp[i], "=", "\"\'");
-		ft_putstr_fd("declare -x ", cmd->output_fd);
-		ft_putstr_fd(cut_name[0], cmd->output_fd);
-		if (cut_name[1])
-			ft_fprintf(cmd->output_fd, "=\"%s\"", cut_name[1]);
-		else if (ft_is_charset('=', tmp[i]))
-			ft_fprintf(cmd->output_fd, "=\"\"");
-		ft_putstr_fd("\n", cmd->output_fd);
-		ft_tabfree(cut_name);
-		i++;
-	}
-	ft_tabfree(tmp);
-	return (0);
-}
-
 int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
 {
 	int		is_here;
