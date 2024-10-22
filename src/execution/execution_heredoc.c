@@ -136,7 +136,7 @@ static t_heredoc_info	*load_heredoc_info(
  * @return int 1 on success, 0 on failure
  */
 int	run_heredoc(t_minishell *minishell, char *delimiter,
-					int *pipes, int *in_out)
+				   int *pipes, int *in_out)
 {
 	char				*tmp;
 	int					i;
@@ -145,12 +145,16 @@ int	run_heredoc(t_minishell *minishell, char *delimiter,
 	t_heredoc_info		*heredoc_info;
 
 	heredoc_info = load_heredoc_info(minishell, pipes, in_out, delimiter);
+	if (!heredoc_info)
+		return (0);
 	(void)sig_data;
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = signal_handler;
 	sigaction(SIGINT, &sa, NULL);
-	sig_data.sival_ptr = &heredoc_info;
+	sigaction(SIGQUIT, &sa, NULL);
+	sig_data.sival_ptr = heredoc_info;
+
 	i = 1;
 	while (1)
 	{
@@ -158,16 +162,16 @@ int	run_heredoc(t_minishell *minishell, char *delimiter,
 		heredoc_info->line = get_next_line(STDIN_FILENO);
 		if (!heredoc_info->line)
 		{
-			ft_fprintf(STDERR_FILENO, "\nminishell: warning:"
-				"here-document at line %d delimited by end-of-file"
-				"(wanted `%s`)\n", i, heredoc_info->delimiter);
+			ft_fprintf(STDERR_FILENO, "\nminishell: warning: "
+									  "here-document at line %d delimited by end-of-file "
+									  "(wanted `%s`)\n", i, heredoc_info->delimiter);
 			close_fds(in_out, pipes);
 			free(heredoc_info->line);
 			return (1);
 		}
 		tmp = ft_strdup(heredoc_info->line);
 		tmp[ft_strlen(heredoc_info->line) - 1] = '\0';
-		if (!heredoc_info->line || ft_strcmp(tmp, heredoc_info->delimiter) == 0)
+		if (ft_strcmp(tmp, heredoc_info->delimiter) == 0)
 		{
 			free(tmp);
 			break ;
@@ -181,7 +185,9 @@ int	run_heredoc(t_minishell *minishell, char *delimiter,
 	free(heredoc_info->delimiter);
 	in_out[0] = pipes[0];
 	close(pipes[1]);
+
 	sa.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 	return (1);
 }

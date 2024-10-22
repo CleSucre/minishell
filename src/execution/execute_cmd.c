@@ -22,7 +22,7 @@
  *
  * @param t_cmd *cmd Command structure
  * @param t_minishell *minishell Minishell context
- * @return int Exit code
+ * @return int 0 on success, 1 on exit request
  */
 static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
 						t_ast_node *ast)
@@ -42,6 +42,7 @@ static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
 			res = wait_for_processes();
 		}
 	}
+	minishell->exit_code = res;
 	return (res);
 }
 
@@ -59,7 +60,6 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 			int pipes[2], int in_out[3])
 {
 	t_cmd	*cmd;
-	int		res;
 
 	if (setup_pipes(pipes, in_out, ast->is_last) == -1)
 	{
@@ -69,8 +69,13 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 	cmd = create_cmd(ast, minishell, in_out);
 	if (!cmd)
 		return (0);
-	res = decide_execution(cmd, minishell, ast);
-	minishell->exit_code = res;
+	if (decide_execution(cmd, minishell, ast) == 130)
+	{
+		minishell->exit_signal = cmd->exit_signal;
+		destroy_cmd(cmd);
+		close_fds(in_out, pipes);
+		return (1);
+	}
 	minishell->exit_signal = cmd->exit_signal;
 	destroy_cmd(cmd);
 	close_fds(in_out, pipes);

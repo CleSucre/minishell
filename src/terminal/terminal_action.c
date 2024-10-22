@@ -104,6 +104,8 @@ static int	process_tab(t_minishell *minishell, char *new)
  */
 int	process_action(t_minishell *minishell, char *new)
 {
+	int res;
+
 	if (process_tab(minishell, new))
 		return (0);
 	else if (new[0] == BACKSPACE)
@@ -114,7 +116,8 @@ int	process_action(t_minishell *minishell, char *new)
 	{
 		if (ft_tablen((const char **)minishell->input) > 0)
 			ft_fprintf(STDOUT_FILENO, "\n");
-		if (execute_input(minishell, ft_utf8_tab_to_str(minishell->input)))
+		res = execute_input(minishell, ft_utf8_tab_to_str(minishell->input));
+		if (res == 1)
 			return (1);
 		print_terminal_prompt(minishell, 0);
 		reset_input(&minishell->input);

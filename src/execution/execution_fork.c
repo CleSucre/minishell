@@ -13,7 +13,7 @@ void	handle_signal(int sig)
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
+		ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
 	}
 }
 
