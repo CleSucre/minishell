@@ -27,23 +27,21 @@ static int	str_is_digit(char *str)
 }
 
 
-static int	check__digit(char *str, char **endptr, int base)
+static int	check_digit(char *str, char **endptr, int base, long long *res)
 {
 	int			i;
 	int			digit;
-	long long	res;
 
 	i = 0;
-	res = 0;
 	while (ft_isdigit(str[i]))
 	{
 		digit = str[i] - '0';
-		if (res > (LLONG_MAX - digit) / base)
+		if (*res > (LLONG_MAX - digit) / base)
 		{
 			*endptr = (char *)&str[i];
 			return (i);
 		}
-		res = res * base + digit;
+		*res = *res * base + digit;
 		i++;
 	}
 	return (0);
@@ -73,7 +71,7 @@ static long long	ft_strtoll(const char *str, char **endptr, int base)
             sign = -1;
         i++;
     }
-	if (check__digit((char *)&str[i], endptr, base))
+	if (check_digit((char *)&str[i], endptr, base, &res))
 		{
 			*endptr = (char *)&str[i];
         	return (0);
@@ -82,13 +80,51 @@ static long long	ft_strtoll(const char *str, char **endptr, int base)
     return (res * sign);
 }
 
-static int	check_llong(char *str)
+static char	*copy(char *tmp, size_t a, size_t i)
+{
+	while (tmp[i])
+	{
+		tmp[a] = tmp[i];
+		a++;
+		i++;
+	}
+	tmp[a] = '\0';
+	return (tmp);
+}
+
+static char	*noptozero(char *tmp)
+{
+	size_t	i;
+	size_t	a;
+
+	i = 0;
+	a = 0;
+	if ((tmp[0] == 43 || tmp[0] == 45) && tmp[1] && tmp[1] != ' ')
+	{
+		a++;
+		i++;
+	}
+	while (tmp[i] == '0')
+		i++;
+	if (!tmp[i])
+	{
+		tmp[0] = '0';
+		tmp[1] = '\0';
+		return (tmp);
+	}
+	tmp = copy(tmp, a, i);
+	return (tmp);
+}
+
+static int	check_llong(char *str, long long *res)
 {
     char *endptr;
 
+	(void)res;
+	str = noptozero(str);
 	if (ft_strlen(str) > 20)
 		return (1);
-    ft_strtoll(str, &endptr, 10);
+	*res = ft_strtoll(str, &endptr, 10);
 	if (*endptr != '\0')
 		return (1);
 	return (0);
@@ -102,10 +138,11 @@ static int	check_llong(char *str)
  */
 int	command_exit(t_cmd *cmd)
 {
-	int	status;
+	long long	status;
 
 	status = 0;
-	if (check_llong(cmd->args[1]) || str_is_digit(cmd->args[1]) == 0)
+
+	if (check_llong(cmd->args[1], &status) || str_is_digit(cmd->args[1]) == 0)
     {
         ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
             cmd->args[1]);
@@ -117,8 +154,6 @@ int	command_exit(t_cmd *cmd)
 		ft_fprintf(2, "minishell: exit: too many arguments\n");
 		return (1);
 	}
-	else if (cmd->argc > 1)
-		status = ft_atoi(cmd->args[1]);
 	cmd->exit_signal = 1;
 	return (status % 256);
 }
