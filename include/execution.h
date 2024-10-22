@@ -46,7 +46,7 @@ int		execute_path(t_cmd *cmd);
 // #					SIGNAL HANDLER						#
 // ########################################################
 
-void	handle_signal(int sig);
+//void	handle_signal(int sig);
 int		wait_for_processes(void);
 int		wait_for_pid(int pid);
 

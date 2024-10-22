@@ -38,8 +38,8 @@ static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
 		pid = execute_external(minishell, cmd);
 		if (ast->is_last)
 		{
-			res = wait_for_pid(pid);
-			wait_for_processes();
+			wait_for_pid(pid);
+			res = wait_for_processes();
 		}
 	}
 	return (res);
