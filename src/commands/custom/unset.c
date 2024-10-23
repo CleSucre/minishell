@@ -38,7 +38,6 @@ int	command_unset(t_cmd *cmd)
 		position = find_table_args(cmd->env, cmd->args[i]);
 		if (position != -1)
 			ft_tabdel(cmd->env, position);
-		fprintf(stderr, "arg : [%s]\n", cmd->args[i]);
 		i++;
 	}
 	ft_tabfree(cut_name);
