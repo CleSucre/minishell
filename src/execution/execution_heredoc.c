@@ -105,11 +105,12 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
 		return (0);
 	}
-
 	sigemptyset(&sa_parent.sa_mask);
+	sa_parent.sa_flags = 0;
 	sa_parent.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &sa_parent, NULL);
 	sigaction(SIGQUIT, &sa_parent, NULL);
+
 	pid = fork();
 	if (pid < 0)
 	{
@@ -121,14 +122,13 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 		heredoc_info = load_heredoc_info(minishell, pipes, in_out, delimiter);
 		if (!heredoc_info)
 			exit(1);
-
 		memset(&sa, 0, sizeof(sa));
+		sa.sa_flags = 0;
 		sa.sa_handler = heredoc_signal_handler;
+		sigemptyset(&sa.sa_mask);
 		sigaction(SIGINT, &sa, NULL);
 		signal(SIGQUIT, SIG_IGN);
-
 		close(pipes[0]);
-
 		i = 1;
 		while (1)
 		{
@@ -139,6 +139,12 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 				ft_fprintf(STDERR_FILENO, "\nminishell: warning: heredoc at line %d delimited by end-of-file (wanted `%s`)\n", i, heredoc_info->delimiter);
 				close(heredoc_info->pipes[1]);
 				free(heredoc_info->line);
+
+
+				free(heredoc_info->delimiter);
+				free_minishell(heredoc_info->minishell);
+				free(heredoc_info);
+
 				exit(0);
 			}
 
@@ -151,15 +157,22 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 				break;
 			}
 			free(tmp);
-
 			if (write_heredoc(heredoc_info))
+			{
+				free(heredoc_info->line);
+				free(heredoc_info->delimiter);
+				close(pipes[1]);
+				free_minishell(heredoc_info->minishell);
+				free(heredoc_info);
 				exit(1);
-
+			}
 			i++;
 		}
 		free(heredoc_info->line);
 		free(heredoc_info->delimiter);
 		close(pipes[1]);
+		free_minishell(heredoc_info->minishell);
+		free(heredoc_info);
 		exit(0);
 	}
 	else
@@ -168,14 +181,14 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 		waitpid(pid, &status, 0);
 		sigaction(SIGINT, &sa_parent, NULL);
 		sigaction(SIGQUIT, &sa_parent, NULL);
-
 		if (WIFEXITED(status))
 			minishell->exit_code = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			minishell->exit_code = 130;
-
 		in_out[0] = pipes[0];
 
+		if (minishell->exit_code != 0)
+			return (0);
 		return (1);
 	}
 }

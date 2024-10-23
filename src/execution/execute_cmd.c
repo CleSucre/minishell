@@ -69,13 +69,7 @@ int	execute_cmd(t_minishell *minishell, t_ast_node *ast,
 	cmd = create_cmd(ast, minishell, in_out);
 	if (!cmd)
 		return (0);
-	if (decide_execution(cmd, minishell, ast) == 130)
-	{
-		minishell->exit_signal = cmd->exit_signal;
-		destroy_cmd(cmd);
-		close_fds(in_out, pipes);
-		return (1);
-	}
+	decide_execution(cmd, minishell, ast);
 	minishell->exit_signal = cmd->exit_signal;
 	destroy_cmd(cmd);
 	close_fds(in_out, pipes);

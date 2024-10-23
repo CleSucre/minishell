@@ -10,10 +10,12 @@ void	handle_signal(int sig)
 	if (sig == SIGINT)
 	{
 		ft_putstr_fd("\n", STDOUT_FILENO);
+		signal(SIGINT, SIG_DFL);
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+		ft_putstr_fd("WTF\n", STDOUT_FILENO);
+		signal(SIGQUIT, SIG_DFL);
 	}
 }
 
@@ -42,11 +44,9 @@ void	setup_signals(struct sigaction *sa)
  * @param t_minishell *minishell Contexte de minishell
  * @param struct sigaction *sa Structure de signal pour la gestion des signaux
  */
-static void	handle_child_process(t_cmd *cmd, t_minishell *minishell, struct sigaction *sa)
+static void	handle_child_process(t_cmd *cmd, t_minishell *minishell)
 {
 	int	err;
-
-	setup_signals(sa);
 
 	if (cmd->input_fd != STDIN_FILENO)
 	{
@@ -122,7 +122,7 @@ int	execute_external(t_minishell *minishell, t_cmd *cmd)
 		if (is_builtin_command(cmd))
 			handle_builtins_child_process(cmd, minishell);
 		else
-			handle_child_process(cmd, minishell, &sa);
+			handle_child_process(cmd, minishell);
 	}
 
 	if (cmd->input_fd != STDIN_FILENO)
