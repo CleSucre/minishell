@@ -87,7 +87,7 @@ int	heredoc_valid(t_ast_node *ast)
 	return (1);
 }
 
-int pre_execute_heredoc(t_minishell *minishell, t_ast_node *ast)
+int	pre_execute_heredoc(t_minishell *minishell, t_ast_node *ast)
 {
 	if (heredoc_valid(ast) == 0)
 		return (0);
@@ -107,7 +107,7 @@ int pre_execute_heredoc(t_minishell *minishell, t_ast_node *ast)
 int	execute_heredoc(t_minishell *minishell, t_ast_node *ast,
 				int *pipes, int *in_out)
 {
-	int res;
+	int	res;
 
 	if (!ast->is_last || !ast->left)
 		close_fds(in_out, pipes);

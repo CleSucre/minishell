@@ -1,12 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_heredoc.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/05 23:51:00 by julthoma          #+#    #+#             */
+/*   Updated: 2024/10/05 23:51:00 by julthoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int *g_exit_code;
+int	*g_exit_code;
 
 static void	heredoc_signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_putstr_fd("\nminishell: heredoc interrupted by Ctrl+C\n", STDERR_FILENO);
+		ft_putstr_fd("\nminishell: heredoc interrupted by Ctrl+C\n",
+			STDERR_FILENO);
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 	}
@@ -18,7 +31,7 @@ static void	heredoc_signal_handler(int sig)
  *
  * @param int sig
  */
-static void parent_signal_handler(int sig)
+static void	parent_signal_handler(int sig)
 {
 	if (sig == SIGINT)
 		*g_exit_code = 130;
@@ -43,17 +56,20 @@ static int	write_heredoc(t_heredoc_info *heredoc_info)
 			i++;
 			continue ;
 		}
-		bites = write(heredoc_info->pipes[1], heredoc_info->texts[i], ft_strlen(heredoc_info->texts[i]));
+		bites = write(heredoc_info->pipes[1],
+				heredoc_info->texts[i], ft_strlen(heredoc_info->texts[i]));
 		if (bites == -1)
 		{
-			ft_fprintf(STDERR_FILENO, "Error 1 on fd %d: write failed\n", heredoc_info->pipes[1]);
+			ft_fprintf(STDERR_FILENO,
+				"Error 1 on fd %d: write failed\n", heredoc_info->pipes[1]);
 			ft_putstr_fd("Error: write failed\n", STDERR_FILENO);
 			return (0);
 		}
 		bites = write(heredoc_info->pipes[1], "\n", 1);
 		if (bites == -1)
 		{
-			ft_fprintf(STDERR_FILENO, "Error 2 on fd %d: write failed\n", heredoc_info->pipes[1]);
+			ft_fprintf(STDERR_FILENO,
+				"Error 2 on fd %d: write failed\n", heredoc_info->pipes[1]);
 			ft_putstr_fd("Error: write failed\n", STDERR_FILENO);
 			return (0);
 		}
@@ -70,7 +86,8 @@ static int	write_heredoc(t_heredoc_info *heredoc_info)
  * @param char *delimiter
  * @return t_heredoc_info*
  */
-static t_heredoc_info	*load_heredoc_info(t_minishell *minishell, int *pipes, char *delimiter)
+static t_heredoc_info	*load_heredoc_info(t_minishell *minishell,
+							int *pipes, char *delimiter)
 {
 	t_heredoc_info	*heredoc_info;
 
@@ -87,15 +104,14 @@ static t_heredoc_info	*load_heredoc_info(t_minishell *minishell, int *pipes, cha
 		free(heredoc_info);
 		return (NULL);
 	}
-	heredoc_info->expend_var = 1;
 	return (heredoc_info);
 }
 
 static int	read_heredoc(t_heredoc_info *heredoc_info)
 {
 	int		i;
-	char 	*tmp;
-	char 	*line;
+	char	*tmp;
+	char	*line;
 
 	i = 0;
 	while (1)
@@ -106,7 +122,10 @@ static int	read_heredoc(t_heredoc_info *heredoc_info)
 		free(tmp);
 		if (!line)
 		{
-			ft_fprintf(STDERR_FILENO, "minishell: warning: heredoc at line %d delimited by end-of-file (wanted `%s`)\n", i, heredoc_info->delimiter);
+			ft_fprintf(STDERR_FILENO,
+				"minishell: warning: heredoc at line %d"
+				"delimited by end-of-file (wanted `%s`)\n",
+				i, heredoc_info->delimiter);
 			return (0);
 		}
 		if (ft_strcmp(line, heredoc_info->delimiter) == 0)
@@ -136,12 +155,10 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *output_fd)
 	struct sigaction	sa_child;
 	struct sigaction	sa_parent;
 	int					status;
-	int 				tmp_pipe[2];
+	int					tmp_pipe[2];
 
 	if (pipe(tmp_pipe) == -1)
-	{
 		return (0);
-	}
 	status = 0;
 	g_exit_code = &minishell->exit_code;
 	pid = fork();
@@ -153,7 +170,6 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *output_fd)
 	}
 	else if (pid == 0)
 	{
-
 		heredoc_info = load_heredoc_info(minishell, tmp_pipe, delimiter);
 		if (!heredoc_info)
 			exit(1);
@@ -164,13 +180,10 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *output_fd)
 		sigaction(SIGINT, &sa_child, NULL);
 		signal(SIGQUIT, SIG_IGN);
 		close(tmp_pipe[0]);
-
 		read_heredoc(heredoc_info);
-
 		free(heredoc_info->delimiter);
 		close_all_fds(minishell->opened_fds);
 		free_minishell(heredoc_info->minishell);
-
 		if (!write_heredoc(heredoc_info))
 		{
 			close(tmp_pipe[1]);
@@ -178,7 +191,6 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *output_fd)
 			free(heredoc_info);
 			exit(1);
 		}
-
 		close(tmp_pipe[1]);
 		ft_tabfree(heredoc_info->texts);
 		free(heredoc_info);
@@ -200,7 +212,7 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *output_fd)
 			return (0);
 		}
 		else
-			minishell->exit_code  = 0;
+			minishell->exit_code = 0;
 		return (1);
 	}
 }

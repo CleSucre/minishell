@@ -82,7 +82,7 @@ char	**split_with_quotes(const char *input, int *count)
 				buf_pos = 0;
 			}
 			op_len = is_operator(input, i, quote_char);
-			strncpy(buffer, input + i, op_len);
+			ft_strncpy(buffer, input + i, op_len);
 			buffer[op_len] = '\0';
 			add_token(&tokens, &token_count, buffer);
 			i += op_len;
@@ -199,7 +199,7 @@ char	**extract_command_tokens(t_token **tokens)
 	token_count = 0;
 	current = *tokens;
 	while (current != NULL
-		   && (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
+		&& (current->type == TOKEN_COMMAND || current->type == TOKEN_ARGUMENT))
 	{
 		command_tokens[token_count++] = ft_strdup(current->value);
 		current = current->next;

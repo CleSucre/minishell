@@ -60,7 +60,7 @@ typedef struct s_ast_node
 	int					is_last;
 	int					in_pipe;
 	int					heredoc_fd;
- 	struct s_ast_node	*left;
+	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 }	t_ast_node;
 
@@ -111,6 +111,5 @@ char			*handle_parentheses(char current_char, int *index);
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
-t_ast_node		*get_heredoc_node(t_ast_node *node);
 
 #endif

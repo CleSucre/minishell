@@ -87,7 +87,7 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast,
  * @param t_ast_node *ast
  * @return int
  */
-int count_heredoc(t_ast_node *ast)
+int	count_heredoc(t_ast_node *ast)
 {
 	int	count;
 
@@ -152,10 +152,10 @@ int	execute_input(t_minishell *minishell, char *input)
 		return (0);
 	minishell->ast = ast;
 	disable_termios(minishell->term);
-
 	if (count_heredoc(ast) >= MAX_HEREDOC)
 	{
-		ft_putstr_fd("minishell: maximum here-document count exceeded\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: maximum here-document count exceeded\n",
+			STDERR_FILENO);
 		free_ast(ast);
 		close_all_fds(minishell->opened_fds);
 		minishell->ast = NULL;
@@ -164,7 +164,6 @@ int	execute_input(t_minishell *minishell, char *input)
 		enable_termios(minishell->term);
 		return (1);
 	}
-
 	res = pre_execute_ast(minishell, ast);
 	if (res == 0)
 	{

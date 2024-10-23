@@ -26,8 +26,6 @@ static int	execute_or_with_and(t_minishell *minishell,
 {
 	int	res;
 
-
-
 	if (minishell->exit_code == 0)
 	{
 		execute_ast(minishell, ast->right->left, pipes, in_out);

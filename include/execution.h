@@ -18,7 +18,6 @@
 
 # define MAX_HEREDOC 17
 
-
 // ########################################################
 // #						EXECUTOR						#
 // ########################################################
@@ -61,6 +60,7 @@ void	close_fds(int in_out[2], int *fd);
 void	close_all_fds(int *to_close);
 void	add_fd_to_close(int *to_close, int fd);
 int		setup_pipes(int *pipes, int *in_out, int is_last);
+int		*init_to_close(void);
 ssize_t	copy_fd_contents(int fd_from, int fd_to);
 int		execute_pipe(t_minishell *minishell, t_ast_node *ast,
 			int *pipes, int *in_out);

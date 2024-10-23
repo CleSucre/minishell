@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/17 11:52:00 by julthoma          #+#    #+#             */
+/*   Updated: 2024/10/17 11:52:00 by julthoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -9,6 +21,7 @@ int	wait_for_processes(void)
 {
 	int	status;
 	int	res;
+	int	signal_num;
 
 	res = 0;
 	status = 0;
@@ -22,7 +35,7 @@ int	wait_for_processes(void)
 		}
 		else if (WIFSIGNALED(status))
 		{
-			int signal_num = WTERMSIG(status);
+			signal_num = WTERMSIG(status);
 			if (signal_num == SIGINT)
 				return (130);
 			else if (signal_num == SIGQUIT)
@@ -42,6 +55,7 @@ int	wait_for_pid(int pid)
 {
 	int	status;
 	int	res;
+	int	signal_num;
 
 	res = 0;
 	status = 0;
@@ -55,7 +69,7 @@ int	wait_for_pid(int pid)
 	}
 	else if (WIFSIGNALED(status))
 	{
-		int signal_num = WTERMSIG(status);
+		signal_num = WTERMSIG(status);
 		if (signal_num == SIGINT)
 			return (130);
 		else if (signal_num == SIGQUIT)

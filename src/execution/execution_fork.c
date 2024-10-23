@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_fork.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/05 23:51:00 by julthoma          #+#    #+#             */
+/*   Updated: 2024/10/05 23:51:00 by julthoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -29,7 +41,6 @@ void	setup_signals(struct sigaction *sa)
 	sa->sa_handler = handle_signal;
 	sa->sa_flags = 0;
 	sigemptyset(&sa->sa_mask);
-
 	if (sigaction(SIGINT, sa, NULL) == -1 || sigaction(SIGQUIT, sa, NULL) == -1)
 	{
 		perror("sigaction");

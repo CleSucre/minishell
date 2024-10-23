@@ -36,17 +36,3 @@ t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 	node->right = NULL;
 	return (node);
 }
-
-/**
-* @brief get the next heredoc node
- *
- * @param t_ast_node *node
- */
-t_ast_node	*get_heredoc_node(t_ast_node *node)
-{
-	if (node->type == AST_HEREDOC)
-		return (node);
-	if (node->right)
-		return (get_heredoc_node(node->right));
-	return (NULL);
-}
