@@ -2,6 +2,12 @@
 
 int *g_exit_code;
 
+static void	heredoc_signal_handler(int sig)
+{
+	if (sig == SIGINT)
+		close(STDIN_FILENO);
+}
+
 /**
  * @brief Handle the signal in the parent process
  * 			to set the exit code to 130 on SIGINT
@@ -105,6 +111,7 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
 		return (0);
 	}
+	status = 0;
 	g_exit_code = &minishell->exit_code;
 	pid = fork();
 	if (pid < 0)
@@ -121,7 +128,7 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 			exit(1);
 		memset(&sa, 0, sizeof(sa));
 		sa.sa_flags = 0;
-		sa.sa_handler = SIG_DFL;
+		sa.sa_handler = heredoc_signal_handler;
 		sigemptyset(&sa.sa_mask);
 		sigaction(SIGINT, &sa, NULL);
 		signal(SIGQUIT, SIG_IGN);
@@ -181,6 +188,11 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 		else if (WIFEXITED(status))
 			minishell->exit_code = WEXITSTATUS(status);
 		in_out[0] = pipes[0];
-		return (minishell->exit_code == 130) ? 0 : 1;
+		if (minishell->exit_code == 130)
+		{
+			close(pipes[0]);
+			return (0);
+		}
+		return (1);
 	}
 }
