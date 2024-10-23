@@ -75,16 +75,12 @@ static void	move_dir(t_cmd *cmd)
 
 static int	go_home(t_cmd *cmd)
 {
-	char	*oldpwd;
 	char	*pwd;
 	char	*buf_name;
 	int		position;
-	int		verif_home;
 
-	oldpwd = (char *)get_var_value_const(cmd->env, "PWD");
 	position = find_table_args(cmd->env, "OLDPWD");
-	verif_home = find_table_args(cmd->env, "HOME");
-	if (position == -1 || verif_home == -1)
+	if (position == -1 || find_table_args(cmd->env, "HOME") == -1)
 	{
 		ft_fprintf(STDERR_FILENO, "minishell: cd: HOME not set\n");
 		return (1);
@@ -92,7 +88,8 @@ static int	go_home(t_cmd *cmd)
 	if (ft_check_access((char *)get_var_value_const(cmd->env, "HOME")) != 0)
 		return (1);
 	free(cmd->env[position]);
-	buf_name = ft_strjoin("OLDPWD=", oldpwd);
+	buf_name = ft_strjoin("OLDPWD=",
+			(char *)get_var_value_const(cmd->env, "PWD"));
 	cmd->env[position] = ft_strdup(buf_name);
 	free(buf_name);
 	position = find_table_args(cmd->env, "PWD");
