@@ -15,6 +15,26 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <string.h>
+//TODO: tej les includes du haut s ils sont deja dans un .h
+
+static int is_directory(const char *name)
+{
+	struct stat st;
+
+	if (ft_strncmp(name, "/", 1) != 0  && ft_strncmp(name, "./", 2) != 0)
+		return (0);
+	if (stat(name, &st) != 0)
+	{
+		fprintf(stderr, "minishell: %s: No such file or directory\n", name);
+		return (1);
+	}
+	if (S_ISDIR(st.st_mode))
+	{
+		fprintf(stderr, "minishell: %s: is a directory\n", name);
+		return (1);
+	}
+	return (0);
+}
 
 /**
  * @brief Decide whether to execute a command as a builtin
@@ -35,11 +55,16 @@ static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
 		res = execute_builtin_command(minishell, cmd);
 	else
 	{
-		pid = execute_external(minishell, cmd);
-		if (ast->is_last)
+		if (is_directory(cmd->args[0]))
+			res = 126;
+		else
 		{
-			res = wait_for_pid(pid);
-			wait_for_processes();
+			pid = execute_external(minishell, cmd);
+			if (ast->is_last)
+			{
+				res = wait_for_pid(pid);
+				wait_for_processes();
+			}
 		}
 	}
 	return (res);
