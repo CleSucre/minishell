@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:13:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/09/23 12:00:00 by julthoma         ###   ########.fr       */
+/*   Updated: 2024/10/23 06:24:06 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 #include <string.h>
 //TODO: tej les includes du haut s ils sont deja dans un .h
 
-static int is_directory(const char *name)
+static int	is_directory(const char *name)
 {
-	struct stat st;
+	struct stat	st;
 
-	if (ft_strncmp(name, "/", 1) != 0  && ft_strncmp(name, "./", 2) != 0)
+	if (ft_strncmp(name, "/", 1) != 0 && ft_strncmp(name, "./", 2) != 0)
 		return (0);
 	if (stat(name, &st) != 0)
 	{
