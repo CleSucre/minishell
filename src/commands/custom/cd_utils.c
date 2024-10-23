@@ -40,6 +40,8 @@ int	ft_check_access(const char *name)
 {
 	struct stat	statbuf;
 
+	if (!name)
+		return (1);
 	if (access(name, F_OK) != 0)
 	{
 		ft_fprintf(STDERR_FILENO,
