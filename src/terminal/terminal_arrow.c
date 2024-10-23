@@ -125,7 +125,7 @@ void	arrow_right_action(t_minishell *minishell)
 		ft_putstr_fd("\033[E", 1);
 		term->cols = 1;
 		term->rows++;
-		ft_putstr_fd("\033[1;32m",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          1);
+		ft_putstr_fd("\033[1;32m", 1);
 		return ;
 	}
 	ft_putstr_fd("\033[C", 1);

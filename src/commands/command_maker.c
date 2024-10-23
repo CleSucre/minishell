@@ -44,12 +44,15 @@ char	*parse_quotes(const char *input)
 
 void	remove_quotes(char **table)
 {
-	int	i;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (table[i])
 	{
-		table[i] = parse_quotes(table[i]);
+		tmp = table[i];
+		table[i] = parse_quotes(tmp);
+		free(tmp);
 		i++;
 	}
 }

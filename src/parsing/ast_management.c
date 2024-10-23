@@ -36,3 +36,23 @@ t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 	node->right = NULL;
 	return (node);
 }
+
+/**
+ * @brief Count the number of heredoc nodes in the ast
+ *
+ * @param t_ast_node *ast
+ * @return int
+ */
+int	count_heredoc(t_ast_node *ast)
+{
+	int	count;
+
+	count = 0;
+	if (!ast)
+		return (0);
+	if (ast->type == AST_HEREDOC)
+		count++;
+	count += count_heredoc(ast->left);
+	count += count_heredoc(ast->right);
+	return (count);
+}

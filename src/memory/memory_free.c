@@ -31,12 +31,6 @@ static void	history_free(t_history *history)
 	}
 }
 
-//TODO: remove !!!!!!!!
-static void	free_dirinfo(t_dirinfo *dirinfo)
-{
-	free(dirinfo);
-}
-
 /**
  * @brief Free minishell structure
  *
@@ -53,7 +47,7 @@ void	free_minishell(t_minishell *minishell)
 	free_branch(minishell->dict);
 	free(minishell->completion);
 	ft_tabfree(minishell->input);
-	free_dirinfo(minishell->dirinfo);
+	free(minishell->dirinfo);
 	free(minishell->starting_path);
 	free_ast(minishell->ast);
 	ft_tabfree(minishell->env);

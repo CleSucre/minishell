@@ -104,7 +104,7 @@ int	process_heredoc(t_token **tokens, t_ast_node **root,
 }
 
 /**
- * @brief Process a redirection token (>, >>, <, <<)
+ * @brief Process a redirection token (>, >>, <)
  * 			and create an AST redirection node.
  *
  * @param t_token **tokens Pointer to the current list of tokens.
@@ -114,14 +114,12 @@ int	process_heredoc(t_token **tokens, t_ast_node **root,
 int	process_redirection(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command, int is_last)
 {
-	t_ast_node_type	redir_type;
 	t_ast_node		*redir_node;
 	char			**file_tokens;
 
 	if (*last_command != NULL)
 		(*last_command)->is_last = is_last;
-	redir_type = get_redir_type((*tokens)->type);
-	redir_node = new_ast_node(redir_type, NULL);
+	redir_node = new_ast_node(get_redir_type((*tokens)->type), NULL);
 	redir_node->left = *root;
 	*tokens = (*tokens)->next;
 	if ((*tokens) == NULL)
@@ -130,6 +128,7 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 			"minishell: syntax error: expected file name\n");
 		return (0);
 	}
+
 	if ((*tokens)->type == TOKEN_COMMAND)
 	{
 		file_tokens = extract_command_tokens(tokens);

@@ -82,26 +82,6 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast,
 }
 
 /**
- * @brief Count the number of heredoc nodes in the ast
- *
- * @param t_ast_node *ast
- * @return int
- */
-int	count_heredoc(t_ast_node *ast)
-{
-	int	count;
-
-	count = 0;
-	if (!ast)
-		return (0);
-	if (ast->type == AST_HEREDOC)
-		count++;
-	count += count_heredoc(ast->left);
-	count += count_heredoc(ast->right);
-	return (count);
-}
-
-/**
  * @brief Execute all the heredoc nodes in the ast
  *
  * @param t_minishell *minishell

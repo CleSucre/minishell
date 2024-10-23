@@ -111,5 +111,6 @@ char			*handle_parentheses(char current_char, int *index);
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
+int				count_heredoc(t_ast_node *ast);
 
 #endif
