@@ -132,5 +132,6 @@ t_minishell	*alloc_minishell(void)
 	if (minishell->input == NULL)
 		return (NULL);
 	minishell->ast = NULL;
+	minishell->opened_fds = init_to_close();
 	return (minishell);
 }

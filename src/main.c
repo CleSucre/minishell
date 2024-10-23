@@ -71,7 +71,7 @@ int	main(int argc, char **args, char **env)
 	use_termios(minishell);
 	disable_termios(minishell->term);
 	exit_code = minishell->exit_code;
+	close_all_fds(minishell->opened_fds);
 	free_minishell(minishell);
-	ft_printf("exit code: %d\n", exit_code);
 	return (exit_code);
 }

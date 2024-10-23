@@ -91,15 +91,16 @@ static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 		minishell->exit_code = 0;
 		return (NULL);
 	}
-	tokens = tokenize(trimmed);
+	if (ft_isprint(*trimmed))
+		history_add(minishell, trimmed, 1);
+	tokens = NULL;
+	tokenize(trimmed, &tokens);
 	if (!tokens)
 	{
 		minishell->exit_code = 2;
 		free(trimmed);
 		return (NULL);
 	}
-	if (ft_isprint(*trimmed))
-		history_add(minishell, trimmed, 1);
 	free(trimmed);
 	debug_tokens(tokens);
 	return (tokens);
@@ -153,9 +154,9 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);
+	debug_ast(ast);
 	if (!handle_token_errors(minishell, tokens, error, ast))
 		return (NULL);
 	free_tokens(tokens);
-	debug_ast(ast);
 	return (ast);
 }

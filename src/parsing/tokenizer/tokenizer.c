@@ -12,76 +12,181 @@
 
 #include "minishell.h"
 
-/**
- * @brief Identify the type of token from the string
- *
- * @param char *str The string to analyze
- * @return t_token_type The type of the token
- */
-t_token_type	token_type(char *str)
+int	is_operator(const char *input, int i, char quote_char)
 {
-	if (ft_strcmp(str, "&&") == 0)
-		return (TOKEN_AND_OPERATOR);
-	else if (ft_strcmp(str, "||") == 0)
-		return (TOKEN_OR_OPERATOR);
-	else if (ft_strcmp(str, "|") == 0)
-		return (TOKEN_PIPE);
-	else if (ft_strcmp(str, ">") == 0)
-		return (TOKEN_REDIR_OUT);
-	else if (ft_strcmp(str, ">>") == 0)
-		return (TOKEN_REDIR_OUT_APPEND);
-	else if (ft_strcmp(str, "<") == 0)
-		return (TOKEN_REDIR_IN);
-	else if (ft_strcmp(str, "<<") == 0)
-		return (TOKEN_HEREDOC);
-	else if (ft_strncmp(str, "(", 1) == 0)
-		return (TOKEN_PARENTHESIS_OPEN);
-	else if (ft_strncmp(str, ")", 1) == 0)
-		return (TOKEN_PARENTHESIS_CLOSE);
-	else
-		return (TOKEN_COMMAND);
+	if (quote_char != 0)
+		return (0);
+	if (input[i] == '|' && input[i + 1] == '|')
+		return (2);
+	else if (input[i] == '&' && input[i + 1] == '&')
+		return (2);
+	else if (input[i] == '<' && input[i + 1] == '<')
+		return (2);
+	else if (input[i] == '>' && input[i + 1] == '>')
+		return (2);
+	else if (input[i] == '<' || input[i] == '>')
+		return (1);
+	else if (input[i] == '|' || input[i] == '('
+		|| input[i] == ')')
+		return (1);
+	return (0);
 }
 
-/**
- * @brief Tokenize the input string
- *
- * @param char	*input
- * @return t_token*
- */
-t_token	*tokenize(char *input)
+char	**split_with_quotes(const char *input, int *count)
 {
-	t_token			*head;
-	int				i;
-	char			*token_value;
-	t_token_type	type;
-	t_token			*token;
+	int		len;
+	char	**tokens;
+	int		token_count;
+	char	*buffer;
+	int		buf_pos;
+	int		i;
+	char	quote_char;
+	int		op_len;
 
-	head = NULL;
+	len = ft_strlen(input);
+	tokens = NULL;
+	token_count = 0;
+	buffer = (char *)malloc(len + 1);
+	if (buffer == NULL)
+		return (NULL);
+	buf_pos = 0;
 	i = 0;
-	while (input[i] != '\0')
+	quote_char = 0;
+	while (i < len)
 	{
-		if (ft_isspace(input[i]))
+		if (ft_isspace(input[i]) && quote_char == 0)
 		{
+			if (buf_pos > 0)
+			{
+				buffer[buf_pos] = '\0';
+				add_token(&tokens, &token_count, buffer);
+				buf_pos = 0;
+			}
 			i++;
-			continue ;
 		}
-		token_value = extract_token(input, &i);
-		if (token_value == NULL)
-			return (NULL);
-		type = token_type(token_value);
-		token = new_token(token_value, type);
-		add_token(&head, token);
-		free(token_value);
+		else if (input[i] == '\'' || input[i] == '"')
+		{
+			if (quote_char == 0)
+				quote_char = input[i];
+			else if (quote_char == input[i])
+				quote_char = 0;
+			buffer[buf_pos++] = input[i];
+			i++;
+		}
+		else if (is_operator(input, i, quote_char))
+		{
+			if (buf_pos > 0)
+			{
+				buffer[buf_pos] = '\0';
+				add_token(&tokens, &token_count, buffer);
+				buf_pos = 0;
+			}
+			op_len = is_operator(input, i, quote_char);
+			ft_strncpy(buffer, input + i, op_len);
+			buffer[op_len] = '\0';
+			add_token(&tokens, &token_count, buffer);
+			i += op_len;
+		}
+		else
+		{
+			buffer[buf_pos++] = input[i++];
+		}
 	}
-	return (head);
+	if (buf_pos > 0)
+	{
+		buffer[buf_pos] = '\0';
+		add_token(&tokens, &token_count, buffer);
+	}
+	free(buffer);
+	*count = token_count;
+	return (tokens);
 }
 
-/**
- * @brief Extract the command tokens from the token list
- *
- * @param t_token **tokens
- * @return char**
- */
+int	are_parentheses_valid(char **tokens, int token_count)
+{
+	int	i;
+	int	parentheses_balance;
+
+	i = 0;
+	parentheses_balance = 0;
+	while (i < token_count)
+	{
+		if (strcmp(tokens[i], "(") == 0)
+		{
+			parentheses_balance++;
+			if (i + 1 < token_count && strcmp(tokens[i + 1], ")") == 0)
+			{
+				printf("syntax error near unexpected token `)'\n");
+				return (0);
+			}
+		}
+		else if (strcmp(tokens[i], ")") == 0)
+		{
+			parentheses_balance--;
+			if (parentheses_balance < 0)
+			{
+				printf("syntax error near unexpected token `)'\n");
+				return (0);
+			}
+		}
+		i++;
+	}
+	if (parentheses_balance != 0)
+	{
+		printf("syntax error: unclosed parentheses\n");
+		return (0);
+	}
+	return (1);
+}
+
+void	tokenize(const char *input, t_token **token_list)
+{
+	int		token_count;
+	char	**tokens;
+	int		i;
+
+	token_count = 0;
+	tokens = split_with_quotes(input, &token_count);
+	if (!are_parentheses_valid(tokens, token_count))
+	{
+		*token_list = NULL;
+		i = 0;
+		while (i < token_count)
+			free(tokens[i++]);
+		free(tokens);
+		return ;
+	}
+	i = 0;
+	while (i < token_count)
+	{
+		if (ft_strcmp(tokens[i], "&&") == 0)
+			add_token_to_list(token_list, TOKEN_AND_OPERATOR, tokens[i]);
+		else if (ft_strcmp(tokens[i], "||") == 0)
+			add_token_to_list(token_list, TOKEN_OR_OPERATOR, tokens[i]);
+		else if (ft_strcmp(tokens[i], "<<") == 0)
+			add_token_to_list(token_list, TOKEN_HEREDOC, tokens[i]);
+		else if (ft_strcmp(tokens[i], ">>") == 0)
+			add_token_to_list(token_list, TOKEN_REDIR_OUT_APPEND, tokens[i]);
+		else if (ft_strcmp(tokens[i], ">") == 0)
+			add_token_to_list(token_list, TOKEN_REDIR_OUT, tokens[i]);
+		else if (ft_strcmp(tokens[i], "<") == 0)
+			add_token_to_list(token_list, TOKEN_REDIR_IN, tokens[i]);
+		else if (ft_strcmp(tokens[i], "|") == 0)
+			add_token_to_list(token_list, TOKEN_PIPE, tokens[i]);
+		else if (ft_strcmp(tokens[i], "(") == 0)
+			add_token_to_list(token_list, TOKEN_PARENTHESIS_OPEN, tokens[i]);
+		else if (ft_strcmp(tokens[i], ")") == 0)
+			add_token_to_list(token_list, TOKEN_PARENTHESIS_CLOSE, tokens[i]);
+		else
+			add_token_to_list(token_list, TOKEN_COMMAND, tokens[i]);
+		i++;
+	}
+	i = 0;
+	while (i < token_count)
+		free(tokens[i++]);
+	free(tokens);
+}
+
 char	**extract_command_tokens(t_token **tokens)
 {
 	char	**command_tokens;

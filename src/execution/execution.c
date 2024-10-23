@@ -82,11 +82,58 @@ int	execute_ast(t_minishell *minishell, t_ast_node *ast,
 }
 
 /**
+ * @brief Count the number of heredoc nodes in the ast
+ *
+ * @param t_ast_node *ast
+ * @return int
+ */
+int	count_heredoc(t_ast_node *ast)
+{
+	int	count;
+
+	count = 0;
+	if (!ast)
+		return (0);
+	if (ast->type == AST_HEREDOC)
+		count++;
+	count += count_heredoc(ast->left);
+	count += count_heredoc(ast->right);
+	return (count);
+}
+
+/**
+ * @brief Execute all the heredoc nodes in the ast
+ *
+ * @param t_minishell *minishell
+ * @param t_ast_node *ast
+ * @return int 1 on success, 0 on failure
+ */
+int	pre_execute_ast(t_minishell *minishell, t_ast_node *ast)
+{
+	int		res;
+
+	if (!ast)
+		return (1);
+	if (ast->type == AST_HEREDOC)
+	{
+		res = pre_execute_heredoc(minishell, ast);
+		add_fd_to_close(minishell->opened_fds, ast->heredoc_fd);
+		if (res == 0)
+			return (res);
+	}
+	res = pre_execute_ast(minishell, ast->left);
+	if (res == 0)
+		return (res);
+	res = pre_execute_ast(minishell, ast->right);
+	return (res);
+}
+
+/**
  * @brief Execute the command given in input
  *
  * @param t_minishell *minishell
  * @param char *input
- * @return 0 on success -1 on exit request
+ * @return 0 on success 1 on exit request
  */
 int	execute_input(t_minishell *minishell, char *input)
 {
@@ -105,7 +152,30 @@ int	execute_input(t_minishell *minishell, char *input)
 		return (0);
 	minishell->ast = ast;
 	disable_termios(minishell->term);
+	if (count_heredoc(ast) >= MAX_HEREDOC)
+	{
+		ft_putstr_fd("minishell: maximum here-document count exceeded\n",
+			STDERR_FILENO);
+		free_ast(ast);
+		close_all_fds(minishell->opened_fds);
+		minishell->ast = NULL;
+		minishell->exit_code = 2;
+		minishell->exit_signal = 1;
+		enable_termios(minishell->term);
+		return (1);
+	}
+	res = pre_execute_ast(minishell, ast);
+	if (res == 0)
+	{
+		enable_termios(minishell->term);
+		free_ast(ast);
+		close_all_fds(minishell->opened_fds);
+		minishell->ast = NULL;
+		ft_fprintf(STDERR_FILENO, "Error: pre_execute_ast failed\n");
+		return (res);
+	}
 	res = execute_ast(minishell, ast, pipes, in_out);
+	close_all_fds(minishell->opened_fds);
 	enable_termios(minishell->term);
 	free_ast(ast);
 	minishell->ast = NULL;

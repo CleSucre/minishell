@@ -65,12 +65,32 @@ char	*replace_variables(t_minishell *minishell, char *str)
 {
 	size_t	i;
 	char	*res;
+	bool	inside_single_quotes;
+	bool	inside_double_quotes;
 
+	inside_single_quotes = false;
+	inside_double_quotes = false;
 	i = 0;
 	res = NULL;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] != '\0')
+		if (str[i] == '\'' && !inside_single_quotes && !inside_double_quotes)
+		{
+			inside_single_quotes = true;
+			res = ft_strjoin_char(res, str[i++]);
+		}
+		else if (str[i] == '\'' && inside_single_quotes)
+		{
+			inside_single_quotes = false;
+			res = ft_strjoin_char(res, str[i++]);
+		}
+		else if (str[i] == '"' && !inside_single_quotes)
+		{
+			inside_double_quotes = !inside_double_quotes;
+			res = ft_strjoin_char(res, str[i++]);
+		}
+		else if (str[i] == '$' && str[i + 1] != '\0'
+			&& (!inside_single_quotes || inside_double_quotes))
 		{
 			if (str[i + 1] == '?')
 			{

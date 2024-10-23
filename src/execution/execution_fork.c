@@ -5,24 +5,43 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: julthoma <julthoma@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 18:13:00 by julthoma          #+#    #+#             */
-/*   Updated: 2024/09/23 12:00:00 by julthoma         ###   ########.fr       */
+/*   Created: 2024/10/05 23:51:00 by julthoma          #+#    #+#             */
+/*   Updated: 2024/10/05 23:51:00 by julthoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief Set up signal handling for SIGUSR1
+ * @brief Gestionnaire de signal pour SIGINT (Ctrl+C) et SIGQUIT (Ctrl+\)
  *
- * @param struct sigaction *sa Signal action structure
+ * @param sig Signal capturé
  */
-static void	setup_signals(struct sigaction *sa)
+void	handle_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		signal(SIGINT, SIG_DFL);
+	}
+	else if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+		signal(SIGQUIT, SIG_DFL);
+	}
+}
+
+/**
+ * @brief Configure les signaux pour la gestion dans les processus enfants
+ *
+ * @param struct sigaction *sa Structure de signal pour la configuration
+ */
+void	setup_signals(struct sigaction *sa)
 {
 	sa->sa_handler = handle_signal;
 	sa->sa_flags = 0;
 	sigemptyset(&sa->sa_mask);
-	if (sigaction(SIGUSR1, sa, NULL) == -1)
+	if (sigaction(SIGINT, sa, NULL) == -1 || sigaction(SIGQUIT, sa, NULL) == -1)
 	{
 		perror("sigaction");
 		exit(EXIT_FAILURE);
@@ -30,22 +49,16 @@ static void	setup_signals(struct sigaction *sa)
 }
 
 /**
- * @brief Handle the child process after fork
+ * @brief Gérer le processus enfant après fork (commande externe)
  *
- * @param t_cmd *cmd Command structure
- * @param t_minishell *minishell Minishell context
- * @param struct sigaction *sa Signal action structure
+ * @param t_cmd *cmd Structure de commande
+ * @param t_minishell *minishell Contexte de minishell
+ * @param struct sigaction *sa Structure de signal pour la gestion des signaux
  */
-static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
-									struct sigaction *sa)
+static void	handle_child_process(t_cmd *cmd, t_minishell *minishell)
 {
 	int	err;
 
-	if (sigaction(SIGUSR1, sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
-	}
 	if (cmd->input_fd != STDIN_FILENO)
 	{
 		dup2(cmd->input_fd, STDIN_FILENO);
@@ -58,6 +71,7 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
 	}
 	if (cmd->to_close != -1)
 		close(cmd->to_close);
+	close_all_fds(minishell->opened_fds);
 	err = execute_path(cmd);
 	destroy_cmd(cmd);
 	free_minishell(minishell);
@@ -65,10 +79,10 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell,
 }
 
 /**
- * @brief Handle the parent process after fork
+ * @brief Gérer le processus parent après fork
  *
- * @param t_cmd *cmd Command structure
- * @param t_minishell *minishell Minishell context
+ * @param t_cmd *cmd Structure de commande
+ * @param t_minishell *minishell Contexte de minishell
  */
 static void	handle_builtins_child_process(t_cmd *cmd, t_minishell *minishell)
 {
@@ -88,24 +102,32 @@ static void	handle_builtins_child_process(t_cmd *cmd, t_minishell *minishell)
 	if (cmd->to_close != -1)
 		close(cmd->to_close);
 	destroy_cmd(cmd);
+	close_all_fds(minishell->opened_fds);
 	free_minishell(minishell);
 	exit(err);
 }
 
 /**
- * @brief Execute a command in a child process
- * 			and manage input/output redirection.
+ * @brief Exécute une commande dans un processus enfant
+ *        et gère la redirection des entrées/sorties.
  *
- * @param t_minishell *minishell Minishell context
- * @param t_cmd *cmd Command structure
- * @return int Exit code
+ * @param t_minishell *minishell Contexte de minishell
+ * @param t_cmd *cmd Structure de commande
+ * @return int Code de sortie
+ */
+/**
+ * @brief Exécute une commande dans un processus enfant
+ *        et gère la redirection des entrées/sorties.
+ *
+ * @param t_minishell *minishell Contexte de minishell
+ * @param t_cmd *cmd Structure de commande
+ * @return int Code de sortie
  */
 int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
 	struct sigaction	sa;
 	pid_t				pid;
 
-	setup_signals(&sa);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -115,11 +137,14 @@ int	execute_external(t_minishell *minishell, t_cmd *cmd)
 	}
 	else if (pid == 0)
 	{
+		setup_signals(&sa);
 		if (is_builtin_command(cmd))
 			handle_builtins_child_process(cmd, minishell);
 		else
-			handle_child_process(cmd, minishell, &sa);
+			handle_child_process(cmd, minishell);
 	}
+	else
+		setup_signals(&sa);
 	if (cmd->input_fd != STDIN_FILENO)
 		close(cmd->input_fd);
 	if (cmd->output_fd != STDOUT_FILENO)

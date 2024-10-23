@@ -16,6 +16,8 @@
 # include "struct.h"
 # include <errno.h>
 
+# define MAX_HEREDOC 17
+
 // ########################################################
 // #						EXECUTOR						#
 // ########################################################
@@ -46,7 +48,7 @@ int		execute_path(t_cmd *cmd);
 // #					SIGNAL HANDLER						#
 // ########################################################
 
-void	handle_signal(int sig);
+//void	handle_signal(int sig);
 int		wait_for_processes(void);
 int		wait_for_pid(int pid);
 
@@ -55,14 +57,19 @@ int		wait_for_pid(int pid);
 // ########################################################
 
 void	close_fds(int in_out[2], int *fd);
+void	close_all_fds(int *to_close);
+void	add_fd_to_close(int *to_close, int fd);
 int		setup_pipes(int *pipes, int *in_out, int is_last);
+int		*init_to_close(void);
 ssize_t	copy_fd_contents(int fd_from, int fd_to);
 int		execute_pipe(t_minishell *minishell, t_ast_node *ast,
 			int *pipes, int *in_out);
 int		verify_redirection(t_minishell *minishell, t_ast_node *ast);
 int		execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 			int *pipes, int *in_out);
-int		heredoc_valid(t_ast_node *ast, int *pipes);
+int		heredoc_valid(t_ast_node *ast);
+int		pre_execute_heredoc(t_minishell *minishell, t_ast_node *ast);
+int		run_heredoc(t_minishell *minishell, char *delimiter, int *output_fd);
 int		execute_heredoc(t_minishell *minishell, t_ast_node *ast,
 			int *pipes, int *in_out);
 int		execute_redirect_output(t_minishell *minishell, t_ast_node *ast,

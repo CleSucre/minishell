@@ -31,23 +31,8 @@ t_ast_node	*new_ast_node(t_ast_node_type type, char **value)
 	node->value = value;
 	node->is_last = 1;
 	node->in_pipe = 0;
+	node->heredoc_fd = -1;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
-}
-
-/**
- * @brief Check if the node corresponds to type variable given
- *
- * @param t_ast_node		*node
- * @param t_ast_node_type	*type
- * @return int 1 if the next node is a command, 0 otherwise
- */
-int	is_node(t_ast_node *node, t_ast_node_type type)
-{
-	if (!node)
-		return (0);
-	if (node->type == type)
-		return (1);
-	return (0);
 }

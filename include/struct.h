@@ -101,13 +101,15 @@ typedef struct s_minishell
 	int					exit_signal;
 	unsigned int		history_pos;
 	unsigned int		history_size;
+	int					*opened_fds;
 }						t_minishell;
 
 typedef struct s_heredoc_info
 {
+	t_minishell			*minishell;
 	char				*delimiter;
 	int					*pipes;
-	int					force_close;
+	char				**texts;
 }						t_heredoc_info;
 
 #endif

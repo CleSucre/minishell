@@ -28,15 +28,20 @@ static int	execute_or_with_and(t_minishell *minishell,
 
 	if (minishell->exit_code == 0)
 	{
-		res = execute_ast(minishell, ast->right->left, pipes, in_out);
-		if (res != 0)
-			return (1);
+		execute_ast(minishell, ast->right->left, pipes, in_out);
+		if (minishell->exit_code == 130)
+			res = 0;
+		else
+			res = minishell->exit_code;
+		if (res == 0)
+			return (0);
+		execute_ast(minishell, ast->right->right, pipes, in_out);
 	}
 	else
 	{
 		res = execute_ast(minishell, ast->right->right, pipes, in_out);
 		if (res != 0)
-			return (1);
+			return (0);
 	}
 	return (0);
 }
@@ -55,16 +60,17 @@ int	execute_and(t_minishell *minishell, t_ast_node *ast,
 {
 	int	res;
 
-	res = execute_ast(minishell, ast->left, pipes, in_out);
+	execute_ast(minishell, ast->left, pipes, in_out);
+	res = minishell->exit_code;
 	if (res != 0)
-		return (res);
+		return (0);
 	if (ast->right->type == AST_OR)
 		return (execute_or_with_and(minishell, ast, pipes, in_out));
 	else
 	{
 		res = execute_ast(minishell, ast->right, pipes, in_out);
 		if (res != 0)
-			return (1);
+			return (0);
 	}
 	return (0);
 }
@@ -85,7 +91,7 @@ int	execute_or(t_minishell *minishell, t_ast_node *ast,
 
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	if (res != 0)
-		return (res);
+		return (0);
 	if (minishell->exit_code == 0)
 		return (minishell->exit_code);
 	res = execute_ast(minishell, ast->right, pipes, in_out);

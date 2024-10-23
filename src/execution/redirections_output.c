@@ -28,9 +28,11 @@ static int	test_file_access(char *file)
 		if (access(file, F_OK) == 0)
 		{
 			if (access(file, R_OK) == -1)
-				ft_fprintf(STDERR_FILENO, "minishell: %s: No permissions\n", file);
+				ft_fprintf(STDERR_FILENO,
+					"minishell: %s: No permissions\n", file);
 			else
-				ft_fprintf(STDERR_FILENO, "minishell: %s: Error opening file\n", file);
+				ft_fprintf(STDERR_FILENO,
+					"minishell: %s: Error opening file\n", file);
 		}
 		else
 			return (1);
