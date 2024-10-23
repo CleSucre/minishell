@@ -60,7 +60,7 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell)
 	}
 	if (cmd->to_close != -1)
 		close(cmd->to_close);
-
+	close_all_fds(minishell->opened_fds);
 	err = execute_path(cmd);
 	destroy_cmd(cmd);
 	free_minishell(minishell);
@@ -91,6 +91,7 @@ static void	handle_builtins_child_process(t_cmd *cmd, t_minishell *minishell)
 	if (cmd->to_close != -1)
 		close(cmd->to_close);
 	destroy_cmd(cmd);
+	close_all_fds(minishell->opened_fds);
 	free_minishell(minishell);
 	exit(err);
 }

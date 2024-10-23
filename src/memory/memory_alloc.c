@@ -102,6 +102,26 @@ static int	alloc_tab(t_minishell *minishell)
 	return (0);
 }
 
+static int *init_to_close(void)
+{
+	int i;
+	int	*to_close;
+
+	to_close = malloc(sizeof(int) * MAX_HEREDOC);
+	if (!to_close)
+	{
+		perror("Error: malloc failed");
+		return (NULL);
+	}
+	i = 0;
+	while (i < MAX_HEREDOC)
+	{
+		to_close[i] = -1;
+		i++;
+	}
+	return (to_close);
+}
+
 /**
  * @brief Init minishell structure
  *
@@ -132,5 +152,6 @@ t_minishell	*alloc_minishell(void)
 	if (minishell->input == NULL)
 		return (NULL);
 	minishell->ast = NULL;
+	minishell->opened_fds = init_to_close();
 	return (minishell);
 }

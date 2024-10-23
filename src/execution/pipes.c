@@ -30,6 +30,44 @@ void	close_fds(int in_out[2], int *fd)
 }
 
 /**
+ * @brief Close all file descriptors in the array
+ *
+ * @param int *to_close
+ */
+void	close_all_fds(int *to_close)
+{
+	int i;
+
+	if (!to_close)
+		return ;
+	i = 0;
+	while (to_close[i] != -1)
+	{
+		close(to_close[i]);
+		to_close[i] = -1;
+		i++;
+	}
+	to_close = NULL;
+}
+
+/**
+ * @brief Add a file descriptor to the array of file descriptors to close
+ *
+ * @param int *to_close
+ * @param int fd
+ */
+void	add_fd_to_close(int *to_close, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (to_close[i] != -1)
+		i++;
+	to_close[i] = fd;
+	to_close[i + 1] = -1;
+}
+
+/**
  * @brief Setup pipes according to the command
  * 			if its a redirection or a simple pipe for the next cmd
  *

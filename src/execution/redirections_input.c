@@ -72,6 +72,30 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 }
 
 /**
+ * @brief Check for heredoc validity before starting the process
+ *
+ * @param t_ast_node *ast
+ * @return int 1 on success, 0 on failure
+ */
+int	heredoc_valid(t_ast_node *ast)
+{
+	if (ast->right->value[0] == NULL)
+	{
+		ft_putstr_fd("Error: no delimiter specified\n", STDERR_FILENO);
+		return (0);
+	}
+	return (1);
+}
+
+int pre_execute_heredoc(t_minishell *minishell, t_ast_node *ast)
+{
+	if (heredoc_valid(ast) == 0)
+		return (0);
+	ft_tabdel_empty(ast->right->value);
+	return (run_heredoc(minishell, ast->right->value[0], &ast->heredoc_fd));
+}
+
+/**
  * @brief Execute the ast respecting heredoc logic
  *
  * @param t_minishell *minishell
@@ -83,22 +107,13 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 int	execute_heredoc(t_minishell *minishell, t_ast_node *ast,
 				int *pipes, int *in_out)
 {
-	int		status;
+	int res;
 
-	status = heredoc_valid(ast);
-	if (status <= 0)
-		return (status);
-	ft_tabdel_empty(ast->right->value);
-
-	status = run_heredoc(minishell, ast->right->value[0], pipes, in_out);
-	if (!status)
-		return (-1);
 	if (!ast->is_last || !ast->left)
-	{
 		close_fds(in_out, pipes);
-		in_out[0] = STDIN_FILENO;
-		in_out[1] = STDOUT_FILENO;
-		in_out[2] = -1;
-	}
-	return (execute_ast(minishell, ast->left, pipes, in_out));
+	in_out[0] = ast->heredoc_fd;
+	in_out[1] = STDOUT_FILENO;
+	in_out[2] = -1;
+	res = execute_ast(minishell, ast->left, pipes, in_out);
+	return (res);
 }

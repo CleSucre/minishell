@@ -57,6 +57,7 @@ void	free_minishell(t_minishell *minishell)
 	free(minishell->starting_path);
 	free_ast(minishell->ast);
 	ft_tabfree(minishell->env);
+	free(minishell->opened_fds);
 	free(minishell);
 }
 

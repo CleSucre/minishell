@@ -59,7 +59,8 @@ typedef struct s_ast_node
 	char				**value;
 	int					is_last;
 	int					in_pipe;
-	struct s_ast_node	*left;
+	int					heredoc_fd;
+ 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 }	t_ast_node;
 
@@ -76,8 +77,6 @@ int				process_command(t_token **tokens, t_ast_node **root,
 int				process_argument(t_token **current, t_ast_node *last_command);
 int				process_pipe(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command);
-int				run_heredoc(t_minishell *minishell, char *delimiter,
-					int *pipes, int *in_out);
 int				process_operator(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command);
 int				process_subshell(t_token **tokens, t_ast_node **root,
@@ -112,5 +111,6 @@ char			*handle_parentheses(char current_char, int *index);
 // ########################################################
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
+t_ast_node		*get_heredoc_node(t_ast_node *node);
 
 #endif
