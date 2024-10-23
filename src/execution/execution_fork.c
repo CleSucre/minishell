@@ -14,7 +14,7 @@ void	handle_signal(int sig)
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("WTF\n", STDOUT_FILENO);
+		ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
 		signal(SIGQUIT, SIG_DFL);
 	}
 }
@@ -103,12 +103,18 @@ static void	handle_builtins_child_process(t_cmd *cmd, t_minishell *minishell)
  * @param t_cmd *cmd Structure de commande
  * @return int Code de sortie
  */
+/**
+ * @brief Exécute une commande dans un processus enfant
+ *        et gère la redirection des entrées/sorties.
+ *
+ * @param t_minishell *minishell Contexte de minishell
+ * @param t_cmd *cmd Structure de commande
+ * @return int Code de sortie
+ */
 int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
 	struct sigaction	sa;
 	pid_t				pid;
-
-	setup_signals(&sa);
 
 	pid = fork();
 	if (pid < 0)
@@ -119,16 +125,17 @@ int	execute_external(t_minishell *minishell, t_cmd *cmd)
 	}
 	else if (pid == 0)
 	{
+		setup_signals(&sa);
 		if (is_builtin_command(cmd))
 			handle_builtins_child_process(cmd, minishell);
 		else
 			handle_child_process(cmd, minishell);
 	}
-
+	else
+		setup_signals(&sa);
 	if (cmd->input_fd != STDIN_FILENO)
 		close(cmd->input_fd);
 	if (cmd->output_fd != STDOUT_FILENO)
 		close(cmd->output_fd);
-
 	return (pid);
 }

@@ -1,17 +1,17 @@
 #include "minishell.h"
 
+int *g_exit_code;
+
 /**
- * @brief Handle signals for heredoc (Ctrl+C)
+ * @brief Handle the signal in the parent process
+ * 			to set the exit code to 130 on SIGINT
  *
- * @param int sig The signal number
+ * @param int sig
  */
-static void	heredoc_signal_handler(int sig)
+static void parent_signal_handler(int sig)
 {
 	if (sig == SIGINT)
-	{
-		ft_putstr_fd("\nminishell: heredoc interrupted by Ctrl+C\n", STDERR_FILENO);
-		exit(130);
-	}
+		*g_exit_code = 130;
 }
 
 /**
@@ -97,24 +97,21 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 	char				*tmp;
 	int					i;
 	struct sigaction	sa;
-	int					status;
 	struct sigaction	sa_parent;
+	int					status;
 
 	if (pipe(pipes) == -1)
 	{
 		ft_putstr_fd("Error: pipe failed\n", STDERR_FILENO);
 		return (0);
 	}
-	sigemptyset(&sa_parent.sa_mask);
-	sa_parent.sa_flags = 0;
-	sa_parent.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa_parent, NULL);
-	sigaction(SIGQUIT, &sa_parent, NULL);
-
+	g_exit_code = &minishell->exit_code;
 	pid = fork();
 	if (pid < 0)
 	{
 		ft_putstr_fd("Error: fork failed\n", STDERR_FILENO);
+		close(pipes[0]);
+		close(pipes[1]);
 		return (0);
 	}
 	else if (pid == 0)
@@ -124,7 +121,7 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 			exit(1);
 		memset(&sa, 0, sizeof(sa));
 		sa.sa_flags = 0;
-		sa.sa_handler = heredoc_signal_handler;
+		sa.sa_handler = SIG_DFL;
 		sigemptyset(&sa.sa_mask);
 		sigaction(SIGINT, &sa, NULL);
 		signal(SIGQUIT, SIG_IGN);
@@ -136,21 +133,16 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 			heredoc_info->line = get_next_line(STDIN_FILENO);
 			if (!heredoc_info->line)
 			{
-				ft_fprintf(STDERR_FILENO, "\nminishell: warning: heredoc at line %d delimited by end-of-file (wanted `%s`)\n", i, heredoc_info->delimiter);
+				ft_fprintf(STDERR_FILENO, "minishell: warning: heredoc at line %d delimited by end-of-file (wanted `%s`)\n", i, heredoc_info->delimiter);
 				close(heredoc_info->pipes[1]);
 				free(heredoc_info->line);
-
-
 				free(heredoc_info->delimiter);
 				free_minishell(heredoc_info->minishell);
 				free(heredoc_info);
-
 				exit(0);
 			}
-
 			tmp = ft_strdup(heredoc_info->line);
 			tmp[ft_strlen(heredoc_info->line) - 1] = '\0';
-
 			if (ft_strcmp(tmp, heredoc_info->delimiter) == 0)
 			{
 				free(tmp);
@@ -177,18 +169,18 @@ int	run_heredoc(t_minishell *minishell, char *delimiter, int *pipes, int *in_out
 	}
 	else
 	{
+		sigemptyset(&sa_parent.sa_mask);
+		sa_parent.sa_flags = 0;
+		sa_parent.sa_handler = parent_signal_handler;
+		sigaction(SIGINT, &sa_parent, NULL);
+		signal(SIGQUIT, SIG_IGN);
 		close(pipes[1]);
 		waitpid(pid, &status, 0);
-		sigaction(SIGINT, &sa_parent, NULL);
-		sigaction(SIGQUIT, &sa_parent, NULL);
-		if (WIFEXITED(status))
-			minishell->exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 			minishell->exit_code = 130;
+		else if (WIFEXITED(status))
+			minishell->exit_code = WEXITSTATUS(status);
 		in_out[0] = pipes[0];
-
-		if (minishell->exit_code != 0)
-			return (0);
-		return (1);
+		return (minishell->exit_code == 130) ? 0 : 1;
 	}
 }
