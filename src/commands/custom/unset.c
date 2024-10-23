@@ -21,24 +21,25 @@
 int	command_unset(t_cmd *cmd)
 {
 	char	**cut_name;
-	char	*arg_equal;
+//	char	*arg_equal;
 	int		position;
+    int		i;
 
 	if (!cmd->args[1])
 		return (0);
-	cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
+	cut_name = ft_split_quote(cmd->args[1], " ", "\"\'");
 	if (!cut_name)
 		return (1);
-	arg_equal = ft_strjoin(cut_name[0], "=");
-	if (!arg_equal)
-	{
-		ft_tabfree(cut_name);
-		return (1);
-	}
-	position = find_table_args(cmd->env, arg_equal);
+    i = 1;
+    while(cmd->args[i])
+    {
+
+	position = find_table_args(cmd->env, cmd->args[i]);
 	if (position != -1)
 		ft_tabdel(cmd->env, position);
+    fprintf(stderr, "arg : [%s]\n", cmd->args[i]);
+    i++;
+    }
 	ft_tabfree(cut_name);
-	free(arg_equal);
 	return (0);
 }
