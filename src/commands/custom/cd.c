@@ -84,13 +84,11 @@ static int	go_home(t_cmd *cmd)
 	oldpwd = (char *)get_var_value_const(cmd->env, "PWD");
 	position = find_table_args(cmd->env, "OLDPWD");
 	verif_home = find_table_args(cmd->env, "HOME");
-	if (position == -1 || verif_home == -1 || ft_strlen(cmd->env[verif_home]) == 0)
+	if (position == -1 || verif_home == -1)
 	{
-		printf("verif home = %d\n", verif_home);
 		ft_fprintf(STDERR_FILENO, "minishell: cd: HOME not set\n");
 		return (1);
 	}
-	ft_fprintf(STDERR_FILENO, "verif home len = %d\n", ft_strlen(cmd->env[verif_home]));
 	if (ft_check_access((char *)get_var_value_const(cmd->env, "HOME")) != 0)
 		return (1);
 	free(cmd->env[position]);
