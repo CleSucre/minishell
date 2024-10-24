@@ -85,17 +85,13 @@ int				execute_redirect_output_append(t_minishell *minishell,
 // #						HEREDOC							#
 // ########################################################
 
+int				handle_heredoc_parent_process(t_minishell *minishell,
+					int *tmp_pipe, pid_t pid, int *output_fd);
+void			write_and_cleanup_heredoc(t_heredoc_info *heredoc_info, int fd);
+void			heredoc_signal_handler(int sig);
 void			parent_signal_handler(int sig);
-t_heredoc_info	*load_heredoc_info(t_minishell *minishell,
-					int *pipes, char *delimiter);
-// 					heredoc_pid.c
-void			work_pid(t_minishell *minishell, char *delimiter);
-int				last_option(int *output_fd, t_minishell *minishell,
-					pid_t pid, int *tmp_pipe);
-// 					heredoc_utils.c
 int				write_heredoc(t_heredoc_info *heredoc_info);
-char			*gnl_heredoc(t_heredoc_info *heredoc_info, int i);
-void			heredoc_sa_flag_pid(void);
 int				read_heredoc(t_heredoc_info *heredoc_info);
+char			*begin_read(void);
 
 #endif

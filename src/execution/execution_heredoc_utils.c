@@ -12,91 +12,58 @@
 
 #include "minishell.h"
 
-static int	bite_heredoc(t_heredoc_info *heredoc_info, int i)
+void	heredoc_signal_handler(int sig)
 {
-	ssize_t	bites;
-
-	bites = write(heredoc_info->pipes[1],
-			heredoc_info->texts[i], ft_strlen(heredoc_info->texts[i]));
-	if (bites == -1)
+	if (sig == SIGINT)
 	{
-		ft_fprintf(STDERR_FILENO,
-			"Error 1 on fd %d: write failed\n", heredoc_info->pipes[1]);
-		ft_putstr_fd("Error: write failed\n", STDERR_FILENO);
+		ft_putstr_fd("\nminishell: heredoc interrupted"
+					 "by Ctrl+C\n", STDERR_FILENO);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+	}
+}
+
+void	setup_heredoc_parent_signals(void)
+{
+	struct sigaction	sa_parent;
+
+	sigemptyset(&sa_parent.sa_mask);
+	sa_parent.sa_flags = 0;
+	sa_parent.sa_handler = parent_signal_handler;
+	sigaction(SIGINT, &sa_parent, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+int	handle_heredoc_parent_process(t_minishell *minishell, int *tmp_pipe,
+									 pid_t pid, int *output_fd)
+{
+	int	status;
+
+	setup_heredoc_parent_signals();
+	close(tmp_pipe[1]);
+	waitpid(pid, &status, 0);
+	*output_fd = tmp_pipe[0];
+	if (minishell->exit_code == 130)
+	{
+		close(*output_fd);
 		return (0);
 	}
-	bites = write(heredoc_info->pipes[1], "\n", 1);
-	if (bites == -1)
-	{
-		ft_fprintf(STDERR_FILENO,
-			"Error 2 on fd %d: write failed\n", heredoc_info->pipes[1]);
-		ft_putstr_fd("Error: write failed\n", STDERR_FILENO);
-		return (0);
-	}
+	else
+		minishell->exit_code = 0;
 	return (1);
 }
 
-/**
- * @brief Write the heredoc content to the pipe
- *
- * @param t_heredoc_info *heredoc_info Information sur le heredoc
- * @return int 1 on success, 0 on failure
- */
-int	write_heredoc(t_heredoc_info *heredoc_info)
+void	write_and_cleanup_heredoc(t_heredoc_info *heredoc_info, int fd)
 {
-	int		i;
-
-	i = 0;
-	while (heredoc_info->texts[i])
+	if (!write_heredoc(heredoc_info))
 	{
-		if (ft_strlen(heredoc_info->texts[i]) == 0)
-			continue ;
-		if (!bite_heredoc(heredoc_info, i))
-			return (0);
-		i++;
+		close(fd);
+		ft_tabfree(heredoc_info->texts);
+		free(heredoc_info);
+		exit(1);
 	}
-	return (1);
-}
-
-int	read_heredoc(t_heredoc_info *heredoc_info)
-{
-	int		i;
-	char	*line;
-
-	i = 0;
-	while (1)
-	{
-		line = gnl_heredoc(heredoc_info, i);
-		if (!line)
-			return (0);
-		if (ft_strcmp(line, heredoc_info->delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		ft_tabadd(&heredoc_info->texts, line);
-		free(line);
-		i++;
-	}
-	return (1);
-}
-
-char	*gnl_heredoc(t_heredoc_info *heredoc_info, int i)
-{
-	char	*tmp;
-	char	*line;
-
-	ft_putstr_fd("> ", STDOUT_FILENO);
-	tmp = get_next_line(STDIN_FILENO);
-	line = ft_strtrim(tmp, "\n");
-	free(tmp);
-	if (!line)
-	{
-		ft_fprintf(STDERR_FILENO,
-			"minishell: warning: heredoc at line %d"
-			"delimited by end-of-file (wanted `%s`)\n",
-			i, heredoc_info->delimiter);
-		return (NULL);
-	}
-	return (line);
+	close(fd);
+	ft_tabfree(heredoc_info->texts);
+	free(heredoc_info);
+	exit(0);
 }
