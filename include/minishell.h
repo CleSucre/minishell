@@ -27,7 +27,6 @@
 # include "commands.h"
 # include "completion.h"
 # include "config.h"
-# include "debug.h"
 # include "environment.h"
 # include "execution.h"
 # include "history.h"
