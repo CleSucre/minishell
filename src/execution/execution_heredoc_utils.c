@@ -47,12 +47,13 @@ int	write_heredoc(t_heredoc_info *heredoc_info)
 	int		i;
 
 	i = 0;
-	while (heredoc_info->texts[i++])
+	while (heredoc_info->texts[i])
 	{
 		if (ft_strlen(heredoc_info->texts[i]) == 0)
 			continue ;
 		if (!bite_heredoc(heredoc_info, i))
 			return (0);
+		i++;
 	}
 	return (1);
 }

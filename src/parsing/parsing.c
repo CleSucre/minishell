@@ -50,6 +50,8 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 	t_token		*current;
 
 	current = *tokens;
+	if (!current)
+		return (1);
 	if (current->type == TOKEN_PARENTHESIS_CLOSE)
 		return (-1);
 	else if (current->type == TOKEN_PIPE)
@@ -93,6 +95,13 @@ static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 	}
 	if (ft_isprint(*trimmed))
 		history_add(minishell, trimmed, 1);
+	if (check_quotes_count(trimmed) == 0)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: unexpected EOF\n");
+		minishell->exit_code = 2;
+		free(trimmed);
+		return (NULL);
+	}
 	tokens = NULL;
 	tokenize(trimmed, &tokens);
 	if (!tokens)
@@ -162,9 +171,9 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);
+	debug_ast(ast);
 	if (!handle_token_errors(minishell, tokens, error, ast))
 		return (NULL);
-	debug_ast(ast);
 	free_tokens(tokens);
 	return (ast);
 }
