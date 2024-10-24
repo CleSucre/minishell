@@ -58,6 +58,8 @@ int			modify_cmd_env(t_cmd *cmd, char *input, char *value);
 
 // Cd
 int			cd_minus(t_cmd *cmd);
+char		*get_env_value(t_cmd *cmd, const char *var_name,
+				const char *error_msg);
 void		invert_oldpwd(t_cmd *cmd);
 int			check_oldpwd(t_minishell *minishell, t_cmd *cmd);
 int			ft_check_access(const char *name);

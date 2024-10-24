@@ -73,32 +73,57 @@ static void	move_dir(t_cmd *cmd)
 	free(buff_name);
 }
 
+static int	update_env_var(char **env, const char *var_name,
+							const char *new_value)
+{
+	int		position;
+	char	*buf_name;
+	char	*full_value;
+
+	position = find_table_args(env, (char *)var_name);
+	if (position == -1)
+		return (-1);
+	free(env[position]);
+	buf_name = ft_strjoin(var_name, "=");
+	if (!buf_name)
+		return (-1);
+	full_value = ft_strjoin(buf_name, new_value);
+	free(buf_name);
+	if (!full_value)
+		return (-1);
+	env[position] = ft_strdup(full_value);
+	free(full_value);
+	if (!env[position])
+		return (-1);
+	return (0);
+}
+
 static int	go_home(t_cmd *cmd)
 {
-	char	*pwd;
-	char	*buf_name;
-	int		position;
+	char	*home_value;
+	char	*pwd_value;
 
-	position = find_table_args(cmd->env, "OLDPWD");
-	if (position == -1 || find_table_args(cmd->env, "HOME") == -1)
+	home_value = get_env_value(cmd, "HOME", "minishell: cd: HOME not set\n");
+	if (!home_value)
+		return (1);
+	if (ft_check_access(home_value) != 0)
+		return (1);
+	pwd_value = ft_strdup(get_env_value(cmd, "PWD",
+				"minishell: cd: PWD not set\n"));
+	if (!pwd_value)
+		return (1);
+	if (update_env_var(cmd->env, "OLDPWD", pwd_value) != 0)
 	{
-		ft_fprintf(STDERR_FILENO, "minishell: cd: HOME not set\n");
+		free(pwd_value);
 		return (1);
 	}
-	if (ft_check_access((char *)get_var_value_const(cmd->env, "HOME")) != 0)
+	if (update_env_var(cmd->env, "PWD", home_value) != 0)
+	{
+		free(pwd_value);
 		return (1);
-	free(cmd->env[position]);
-	buf_name = ft_strjoin("OLDPWD=",
-			(char *)get_var_value_const(cmd->env, "PWD"));
-	cmd->env[position] = ft_strdup(buf_name);
-	free(buf_name);
-	position = find_table_args(cmd->env, "PWD");
-	free(cmd->env[position]);
-	pwd = (char *)get_var_value_const(cmd->env, "HOME");
-	buf_name = ft_strjoin("PWD=", pwd);
-	cmd->env[position] = ft_strdup(buf_name);
-	free(buf_name);
-	chdir(pwd);
+	}
+	free(pwd_value);
+	chdir(home_value);
 	return (0);
 }
 
@@ -119,9 +144,7 @@ int	command_cd(t_minishell *minishell, t_cmd *cmd)
 		return (1);
 	}
 	else if (!cmd->args[1] || ft_strcmp(cmd->args[1], "~") == 0)
-	{
 		return (go_home(cmd));
-	}
 	minus = cd_minus(cmd);
 	if (minus != 1)
 		return (minus);

@@ -83,3 +83,17 @@ int	cd_minus(t_cmd *cmd)
 	}
 	return (1);
 }
+
+char	*get_env_value(t_cmd *cmd, const char *var_name,
+							const char *error_msg)
+{
+	char	*value;
+
+	if (find_table_args(cmd->env, (char *)var_name) == -1)
+	{
+		ft_fprintf(STDERR_FILENO, error_msg);
+		return (NULL);
+	}
+	value = (char *)get_var_value_const(cmd->env, (char *)var_name);
+	return (value);
+}
