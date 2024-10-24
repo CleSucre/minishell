@@ -44,6 +44,33 @@ static int	test_file_access(char *file)
 }
 
 /**
+ * @brief Find the next AST_COMMAND node and update its value
+ *
+ * @param char *new_command
+ * @param t_ast_node *ast
+ */
+static int	update_next_command(char * new_command, t_ast_node *ast)
+{
+	if (ast->type == AST_COMMAND)
+	{
+		ft_fprintf(STDOUT_FILENO, "ast->value[0]: %s\n", ast->value[0]);
+		ft_tabfree(ast->value);
+		ast->value = ft_tabnew(1);
+		ast->value[0] = ft_strdup(new_command);
+		ft_fprintf(STDOUT_FILENO, "ast->value[0]: %s\n", ast->value[0]);
+		return (1);
+	}
+	else
+	{
+		if (ast->left && update_next_command(new_command, ast->left))
+			return (1);
+		if (ast->right && update_next_command(new_command, ast->right))
+			return (1);
+	}
+	return (0);
+}
+
+/**
  * @brief Redirect the of a file to the input of the command
  *
  * @param t_minishell *minishell
@@ -69,8 +96,13 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 		setup_pipes(pipes, in_out, 0);
 		close(pipes[0]);
 		close(pipes[1]);
-		return (execute_ast(minishell, ast->left, pipes, in_out));
+		minishell->exit_code = 0;
+		execute_ast(minishell, ast->left, pipes, in_out);
+		return (0);
 	}
+	update_next_command("false", ast);
+	execute_ast(minishell, ast->left, pipes, in_out);
+	minishell->exit_code = 1;
 	return (0);
 }
 

@@ -90,23 +90,19 @@ int	verify_redirection(t_minishell *minishell, t_ast_node *ast)
 static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 						int *pipes, int *in_out)
 {
-	int	fd;
 	int	i;
 
 	if (!verify_redirection(minishell, ast))
-		return (1);
-	fd = open(ast->right->value[0], O_WRONLY | O_CREAT, 0644);
-	if (fd < 0)
 	{
-		ft_fprintf(STDERR_FILENO,
-			"minishell: %s: Could not create file\n", ast->right->value[0]);
+		minishell->exit_code = 1;
 		return (1);
 	}
-	close(fd);
 	i = 1;
 	while (ast->right->value[i])
 		ft_tabadd(&ast->left->value, ast->right->value[i++]);
-	return (execute_ast(minishell, ast->left, pipes, in_out));
+	execute_ast(minishell, ast->left, pipes, in_out);
+	ft_fprintf(STDOUT_FILENO, "exit code: %d\n", minishell->exit_code);
+	return (0);
 }
 
 /**
@@ -127,6 +123,8 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
 		return (0);
 	if (redirect_output(minishell, ast, pipes, in_out))
 		return (0);
+	if (minishell->exit_code != 0)
+		return (0);
 	file_fd = open(ast->right->value[0],
 			O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (file_fd == -1)
@@ -139,15 +137,15 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
 	{
 		close(file_fd);
 		file_fd = STDOUT_FILENO;
+		minishell->exit_code = 0;
 		return (1);
 	}
-	ft_fprintf(STDOUT_FILENO, "Redirect output 1\n");
-	ft_fprintf(STDOUT_FILENO, "Redirect fd: %d\n", in_out[0]);
-	copy_fd_contents(in_out[0], file_fd);
-	ft_fprintf(STDOUT_FILENO, "Redirect output 2\n");
-	close_fds(in_out, pipes);
-	ft_fprintf(STDOUT_FILENO, "Redirect output 3\n");
-	ft_fprintf(STDOUT_FILENO, "Redirect output 4\n");
+	if (in_out[0] != STDIN_FILENO)
+	{
+		copy_fd_contents(in_out[0], file_fd);
+		close_fds(in_out, pipes);
+	}
+	minishell->exit_code = 0;
 	return (0);
 }
 
@@ -170,18 +168,29 @@ int	execute_redirect_output_append(t_minishell *minishell, t_ast_node *ast,
 	if (!test_file_access(ast->right->value[0]))
 		return (0);
 	if (redirect_output(minishell, ast, pipes, in_out))
-		return (1);
+		return (0);
+	if (minishell->exit_code != 0)
+		return (0);
 	file_fd = open(ast->right->value[0],
 			O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (file_fd == -1)
 	{
 		ft_fprintf(STDERR_FILENO, "minishell: %s: No such file or directory\n",
 			ast->right->value[0]);
+		return (0);
+	}
+	if (!ast->is_last)
+	{
+		close(file_fd);
+		file_fd = STDOUT_FILENO;
+		minishell->exit_code = 0;
 		return (1);
 	}
-	copy_fd_contents(in_out[0], file_fd);
-	close(file_fd);
-	close_fds(in_out, pipes);
-	wait_for_processes();
+	if (in_out[0] != STDIN_FILENO)
+	{
+		copy_fd_contents(in_out[0], file_fd);
+		close_fds(in_out, pipes);
+	}
+	minishell->exit_code = 0;
 	return (0);
 }
