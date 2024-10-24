@@ -68,6 +68,8 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	cmd->args = ft_tabdup((const char **)ast->value);
 	if (!cmd->args)
 		return ;
+	if (ast->type != AST_HEREDOC)
+		replace_variables_in_tab(minishell, cmd->args);
 	replace_variables_in_tab(minishell, cmd->args);
 	remove_quotes(cmd->args);
 	if (cmd->args[0] == NULL)
