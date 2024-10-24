@@ -108,6 +108,15 @@ int	pre_execute_ast(t_minishell *minishell, t_ast_node *ast)
 	return (res);
 }
 
+static void	init_in_out_pipe(int *in_out, int *pipes)
+{
+	in_out[0] = STDIN_FILENO;
+	in_out[1] = STDOUT_FILENO;
+	in_out[2] = -1;
+	pipes[0] = -1;
+	pipes[1] = -1;
+}
+
 /**
  * @brief Execute the command given in input
  *
@@ -122,11 +131,7 @@ int	execute_input(t_minishell *minishell, char *input)
 	int			pipes[2];
 	int			res;
 
-	in_out[0] = STDIN_FILENO;
-	in_out[1] = STDOUT_FILENO;
-	in_out[2] = -1;
-	pipes[0] = -1;
-	pipes[1] = -1;
+	init_in_out_pipe(in_out, pipes);
 	ast = parse_input(minishell, input);
 	if (!ast)
 		return (0);
@@ -134,26 +139,12 @@ int	execute_input(t_minishell *minishell, char *input)
 	disable_termios(minishell->term);
 	if (count_heredoc(ast) >= MAX_HEREDOC)
 	{
-		ft_putstr_fd("minishell: maximum here-document count exceeded\n",
-			STDERR_FILENO);
-		free_ast(ast);
-		close_all_fds(minishell->opened_fds);
-		minishell->ast = NULL;
-		minishell->exit_code = 2;
-		minishell->exit_signal = 1;
-		enable_termios(minishell->term);
+		exceed_max_heredoc(minishell, ast);
 		return (1);
 	}
 	res = pre_execute_ast(minishell, ast);
 	if (res == 0)
-	{
-		enable_termios(minishell->term);
-		free_ast(ast);
-		close_all_fds(minishell->opened_fds);
-		minishell->ast = NULL;
-		ft_fprintf(STDERR_FILENO, "Error: pre_execute_ast failed\n");
-		return (res);
-	}
+		return (pre_executed_failed(minishell, ast));
 	res = execute_ast(minishell, ast, pipes, in_out);
 	close_all_fds(minishell->opened_fds);
 	enable_termios(minishell->term);

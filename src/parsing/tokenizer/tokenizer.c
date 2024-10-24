@@ -102,6 +102,30 @@ char	**split_with_quotes(const char *input, int *count)
 	return (tokens);
 }
 
+static int	cmp_token(char **tokens, int i,
+				int *parentheses_balance, int token_count)
+{
+	if (ft_strcmp(tokens[i], "(") == 0)
+	{
+		parentheses_balance++;
+		if (i + 1 < token_count && ft_strcmp(tokens[i + 1], ")") == 0)
+		{
+			printf("syntax error near unexpected token `)'\n");
+			return (0);
+		}
+	}
+	else if (ft_strcmp(tokens[i], ")") == 0)
+	{
+		parentheses_balance--;
+		if (parentheses_balance < 0)
+		{
+			printf("syntax error near unexpected token `)'\n");
+			return (0);
+		}
+	}
+	return (1);
+}
+
 int	are_parentheses_valid(char **tokens, int token_count)
 {
 	int	i;
@@ -111,24 +135,8 @@ int	are_parentheses_valid(char **tokens, int token_count)
 	parentheses_balance = 0;
 	while (i < token_count)
 	{
-		if (strcmp(tokens[i], "(") == 0)
-		{
-			parentheses_balance++;
-			if (i + 1 < token_count && strcmp(tokens[i + 1], ")") == 0)
-			{
-				printf("syntax error near unexpected token `)'\n");
-				return (0);
-			}
-		}
-		else if (strcmp(tokens[i], ")") == 0)
-		{
-			parentheses_balance--;
-			if (parentheses_balance < 0)
-			{
-				printf("syntax error near unexpected token `)'\n");
-				return (0);
-			}
-		}
+		if (!cmp_token(tokens, i, &parentheses_balance, token_count))
+			return (0);
 		i++;
 	}
 	if (parentheses_balance != 0)
@@ -137,6 +145,43 @@ int	are_parentheses_valid(char **tokens, int token_count)
 		return (0);
 	}
 	return (1);
+}
+
+static void	clear_token_list( t_token **token_list,
+								char **tokens, int token_count)
+{
+	int	i;
+
+	*token_list = NULL;
+	i = 0;
+	while (i < token_count)
+		free(tokens[i++]);
+	free(tokens);
+	return ;
+}
+
+void	cmp_token_list(t_token **token_list, char **tokens, int i)
+{
+	if (ft_strcmp(tokens[i], "&&") == 0)
+		add_token_to_list(token_list, TOKEN_AND_OPERATOR, tokens[i]);
+	else if (ft_strcmp(tokens[i], "||") == 0)
+		add_token_to_list(token_list, TOKEN_OR_OPERATOR, tokens[i]);
+	else if (ft_strcmp(tokens[i], "<<") == 0)
+		add_token_to_list(token_list, TOKEN_HEREDOC, tokens[i]);
+	else if (ft_strcmp(tokens[i], ">>") == 0)
+		add_token_to_list(token_list, TOKEN_REDIR_OUT_APPEND, tokens[i]);
+	else if (ft_strcmp(tokens[i], ">") == 0)
+		add_token_to_list(token_list, TOKEN_REDIR_OUT, tokens[i]);
+	else if (ft_strcmp(tokens[i], "<") == 0)
+		add_token_to_list(token_list, TOKEN_REDIR_IN, tokens[i]);
+	else if (ft_strcmp(tokens[i], "|") == 0)
+		add_token_to_list(token_list, TOKEN_PIPE, tokens[i]);
+	else if (ft_strcmp(tokens[i], "(") == 0)
+		add_token_to_list(token_list, TOKEN_PARENTHESIS_OPEN, tokens[i]);
+	else if (ft_strcmp(tokens[i], ")") == 0)
+		add_token_to_list(token_list, TOKEN_PARENTHESIS_CLOSE, tokens[i]);
+	else
+		add_token_to_list(token_list, TOKEN_COMMAND, tokens[i]);
 }
 
 void	tokenize(const char *input, t_token **token_list)
@@ -149,36 +194,12 @@ void	tokenize(const char *input, t_token **token_list)
 	tokens = split_with_quotes(input, &token_count);
 	if (!are_parentheses_valid(tokens, token_count))
 	{
-		*token_list = NULL;
-		i = 0;
-		while (i < token_count)
-			free(tokens[i++]);
-		free(tokens);
-		return ;
+		return (clear_token_list(token_list, tokens, token_count));
 	}
 	i = 0;
 	while (i < token_count)
 	{
-		if (ft_strcmp(tokens[i], "&&") == 0)
-			add_token_to_list(token_list, TOKEN_AND_OPERATOR, tokens[i]);
-		else if (ft_strcmp(tokens[i], "||") == 0)
-			add_token_to_list(token_list, TOKEN_OR_OPERATOR, tokens[i]);
-		else if (ft_strcmp(tokens[i], "<<") == 0)
-			add_token_to_list(token_list, TOKEN_HEREDOC, tokens[i]);
-		else if (ft_strcmp(tokens[i], ">>") == 0)
-			add_token_to_list(token_list, TOKEN_REDIR_OUT_APPEND, tokens[i]);
-		else if (ft_strcmp(tokens[i], ">") == 0)
-			add_token_to_list(token_list, TOKEN_REDIR_OUT, tokens[i]);
-		else if (ft_strcmp(tokens[i], "<") == 0)
-			add_token_to_list(token_list, TOKEN_REDIR_IN, tokens[i]);
-		else if (ft_strcmp(tokens[i], "|") == 0)
-			add_token_to_list(token_list, TOKEN_PIPE, tokens[i]);
-		else if (ft_strcmp(tokens[i], "(") == 0)
-			add_token_to_list(token_list, TOKEN_PARENTHESIS_OPEN, tokens[i]);
-		else if (ft_strcmp(tokens[i], ")") == 0)
-			add_token_to_list(token_list, TOKEN_PARENTHESIS_CLOSE, tokens[i]);
-		else
-			add_token_to_list(token_list, TOKEN_COMMAND, tokens[i]);
+		cmp_token_list(token_list, tokens, i);
 		i++;
 	}
 	i = 0;
