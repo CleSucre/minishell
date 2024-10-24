@@ -71,3 +71,57 @@ int	check_quotes_count(char *str)
 		return (0);
 	return (1);
 }
+
+/**
+ * @brief Check and validate the input.
+ *
+ * @param t_minishell *minishell
+ * @param char *input
+ * @return char* the trimmed input or NULL if invalid
+ */
+char	*check_input_and_validate(t_minishell *minishell, char *input)
+{
+	char	*trimmed;
+
+	trimmed = check_input(input);
+	if (!input || !trimmed)
+		return (NULL);
+	if (ft_isprint(*trimmed))
+		history_add(minishell, trimmed, 1);
+	if (check_quotes_count(trimmed) == 0)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: unexpected EOF\n");
+		minishell->exit_code = 2;
+		free(trimmed);
+		return (NULL);
+	}
+	return (trimmed);
+}
+
+/**
+ * @brief Handle the token errors.
+ *
+ * @param t_minishell *minishell
+ * @param t_token *tokens
+ * @param int error
+ * @param t_ast_node *ast
+ * @return int 1 if the function succeeded, 0 otherwise.
+ */
+int	handle_token_errors(t_minishell *minishell,
+							t_token *tokens, int error, t_ast_node *ast)
+{
+	if (error == 0)
+	{
+		minishell->exit_code = 2;
+		free_tokens(tokens);
+		free_ast(ast);
+		return (0);
+	}
+	else if (error == -1)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
+		free_tokens(tokens);
+		return (0);
+	}
+	return (1);
+}

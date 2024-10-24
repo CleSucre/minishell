@@ -74,6 +74,29 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 }
 
 /**
+ * @brief Tokenize the validated input.
+ *
+ * @param t_minishell *minishell
+ * @param char *trimmed the validated and trimmed input
+ * @return t_token* the list of tokens
+ */
+static t_token	*tokenize_input(t_minishell *minishell, char *trimmed)
+{
+	t_token	*tokens;
+
+	tokens = NULL;
+	tokenize(trimmed, &tokens);
+	free(trimmed);
+	if (!tokens)
+	{
+		minishell->exit_code = 2;
+		return (NULL);
+	}
+	debug_tokens(tokens);
+	return (tokens);
+}
+
+/**
  * @brief Check the input and tokenize it.
  *
  * @param t_minishell *minishell
@@ -82,65 +105,12 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
  */
 static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 {
-	char		*trimmed;
-	t_token		*tokens;
+	char	*trimmed;
 
-	if (!input)
+	trimmed = check_input_and_validate(minishell, input);
+	if (!trimmed)
 		return (NULL);
-	trimmed = check_input(input);
-	if (trimmed == NULL || *trimmed == '\0')
-	{
-		minishell->exit_code = 0;
-		return (NULL);
-	}
-	if (ft_isprint(*trimmed))
-		history_add(minishell, trimmed, 1);
-	if (check_quotes_count(trimmed) == 0)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: syntax error: unexpected EOF\n");
-		minishell->exit_code = 2;
-		free(trimmed);
-		return (NULL);
-	}
-	tokens = NULL;
-	tokenize(trimmed, &tokens);
-	if (!tokens)
-	{
-		minishell->exit_code = 2;
-		free(trimmed);
-		return (NULL);
-	}
-	free(trimmed);
-	debug_tokens(tokens);
-	return (tokens);
-}
-
-/**
- * @brief Handle the token errors.
- *
- * @param t_minishell *minishell
- * @param t_token *tokens
- * @param int error
- * @param t_ast_node *ast
- * @return int 1 if the function succeeded, 0 otherwise.
- */
-static int	handle_token_errors(t_minishell *minishell,
-							t_token *tokens, int error, t_ast_node *ast)
-{
-	if (error == 0)
-	{
-		minishell->exit_code = 2;
-		free_tokens(tokens);
-		free_ast(ast);
-		return (0);
-	}
-	else if (error == -1)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
-		free_tokens(tokens);
-		return (0);
-	}
-	return (1);
+	return (tokenize_input(minishell, trimmed));
 }
 
 /**
@@ -162,7 +132,7 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 		return (NULL);
 	if (token_is_logic_operator(tokens))
 	{
-		ft_fprintf(STDERR_FILENO, "syntax error near unexpected token `%s'\n",
+		ft_fprintf(STDERR_FILENO, "syntax error near unexpected token '%s'\n",
 			tokens->value);
 		free_tokens(tokens);
 		minishell->exit_code = 2;

@@ -86,6 +86,9 @@ int				process_redirection(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command, int is_last);
 char			*check_input(char *input);
 int				check_quotes_count(char *str);
+char			*check_input_and_validate(t_minishell *minishell, char *input);
+int				handle_token_errors(t_minishell *minishell,
+					t_token *tokens, int error, t_ast_node *ast);
 
 // ########################################################
 // #					TOKEN_MANAGER						#
