@@ -88,9 +88,7 @@ void	tokenize(const char *input, t_token **token_list)
 	int		i;
 
 	token_count = 0;
-	ft_fprintf(2, "DEBUG: input: %s\n", input);
 	tokens = split_with_quotes(input, &token_count);
-	ft_fprintf(2, "DEBUG: input 2: %s\n", input);
 	if (!are_parentheses_valid(tokens, token_count))
 	{
 		return (clear_token_list(token_list, tokens, token_count));
