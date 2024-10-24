@@ -26,7 +26,7 @@ static t_heredoc_info	*load_heredoc_info(t_minishell *minishell,
 											int *pipes, char *delimiter)
 {
 	t_heredoc_info	*heredoc_info;
-	char 			*tmp;
+	char			*tmp;
 
 	heredoc_info = malloc(sizeof(t_heredoc_info));
 	if (!heredoc_info)

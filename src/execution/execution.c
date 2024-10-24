@@ -22,26 +22,29 @@
  * @return int 0 on success, 1 on exit request
  */
 int	execute_subshell(t_minishell *minishell, t_ast_node *ast,
-					int *pipes, int *in_out)
+				int *pipes, int *in_out)
 {
 	int		res;
-	char	**tmp_env;
-	char	**old_env;
+	char	**saved_env;
+	char	**temp_env;
 
-	tmp_env = ft_tabdup((const char **)minishell->env);
-	if (!tmp_env)
+	saved_env = minishell->env;
+	temp_env = ft_tabdup((const char **)saved_env);
+	if (!temp_env)
 	{
 		perror("Error: ft_tabdup failed");
 		return (-1);
 	}
-	old_env = minishell->env;
-	minishell->env = tmp_env;
+	minishell->env = temp_env;
 	res = execute_ast(minishell, ast->left, pipes, in_out);
-	minishell->env = old_env;
-	ft_tabfree(tmp_env);
+	ft_tabfree(minishell->env);
+	minishell->env = saved_env;
 	reload_env(minishell->env);
-	if (res != 0)
-		return (res);
+	if (minishell->exit_signal == 1)
+	{
+		minishell->exit_signal = 0;
+		res = 0;
+	}
 	wait_for_processes();
 	return (res);
 }

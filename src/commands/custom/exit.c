@@ -57,7 +57,7 @@ int	command_exit(t_cmd *cmd)
 	if (!cmd->args[1])
 	{
 		cmd->exit_signal = 1;
-        return (0);
+		return (0);
 	}
 	if (check_llong(cmd->args[1], &status) || str_is_digit(cmd->args[1]) == 0)
 	{
