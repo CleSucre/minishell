@@ -80,3 +80,30 @@ int	print_export(t_cmd *cmd)
 	ft_tabfree(tmp);
 	return (0);
 }
+
+int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
+{
+	int		is_here;
+	char	*res;
+	char	*tmp;
+
+	is_here = 0;
+	is_here = find_table_args(cmd->env, input);
+	if (is_here == -1)
+		return (-1);
+	tmp = ft_strjoin(input, "=");
+	if (!tmp)
+		return (-1);
+	res = ft_strjoin(tmp, value);
+	if (!res)
+	{
+		free(tmp);
+		return (-1);
+	}
+	clear_string(cmd->env[is_here]);
+	free(cmd->env[is_here]);
+	cmd->env[is_here] = ft_strdup(res);
+	free(tmp);
+	free(res);
+	return (0);
+}

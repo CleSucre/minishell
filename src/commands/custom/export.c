@@ -19,46 +19,46 @@
  * @return int Exit code
  */
 
-int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
-{
-	int		is_here;
-	char	*res;
-	char	*tmp;
-
-	is_here = 0;
-	is_here = find_table_args(cmd->env, input);
-	if (is_here == -1)
-		return (-1);
-	tmp = ft_strjoin(input, "=");
-	if (!tmp)
-		return (-1);
-	res = ft_strjoin(tmp, value);
-	if (!res)
-	{
-		free(tmp);
-		return (-1);
-	}
-	clear_string(cmd->env[is_here]);
-	free(cmd->env[is_here]);
-	cmd->env[is_here] = ft_strdup(res);
-	free(tmp);
-	free(res);
-	return (0);
-}
-
-int	str_is_alnum(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '=')
-			return (0);
-		i++;
-	}
-	return (1);
-}
+//int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
+//{
+//	int		is_here;
+//	char	*res;
+//	char	*tmp;
+//
+//	is_here = 0;
+//	is_here = find_table_args(cmd->env, input);
+//	if (is_here == -1)
+//		return (-1);
+//	tmp = ft_strjoin(input, "=");
+//	if (!tmp)
+//		return (-1);
+//	res = ft_strjoin(tmp, value);
+//	if (!res)
+//	{
+//		free(tmp);
+//		return (-1);
+//	}
+//	clear_string(cmd->env[is_here]);
+//	free(cmd->env[is_here]);
+//	cmd->env[is_here] = ft_strdup(res);
+//	free(tmp);
+//	free(res);
+//	return (0);
+//}
+//
+//int	str_is_alnum(char *str)
+//{
+//	int	i;
+//
+//	i = 0;
+//	while (str[i])
+//	{
+//		if (!ft_isalnum(str[i]) && str[i] != '=')
+//			return (0);
+//		i++;
+//	}
+//	return (1);
+//}
 
 static int	check_inside_args(t_cmd *cmd)
 {
@@ -86,7 +86,7 @@ static int	check_inside_args(t_cmd *cmd)
 	return (0);
 }
 
-int	export_wt_args(t_minishell *minishell, t_cmd *cmd)
+int	export_wt_args(t_minishell *minishell, t_cmd *cmd, int i)
 {
 	int		position;
 	char	*tmp;
@@ -94,44 +94,68 @@ int	export_wt_args(t_minishell *minishell, t_cmd *cmd)
 	tmp = ft_strjoin(cmd->args[1], "=");
 	position = find_table_args(cmd->env, tmp);
 	if (position == -1)
-		position = find_table_args(minishell->env, cmd->args[1]);
+		position = find_table_args(minishell->env, cmd->args[i]);
 	free(tmp);
 	check_inside_args(cmd);
 	if (position == -1)
 	{
-		minishell->env = ft_tabinsert(minishell->env, cmd->args[1],
+		minishell->env = ft_tabinsert(minishell->env, cmd->args[i],
 				ft_tablen((const char **)minishell->env));
 		ft_sort(minishell->env, 0,
 			ft_tablen((const char **)minishell->env) - 1);
 	}
 	else if (ft_is_charset('=', cmd->args[1]))
-		modify_cmd_env(cmd, cmd->args[1], "");
+		modify_cmd_env(cmd, cmd->args[i], "");
 	return (0);
+}
+
+void	update_environment(t_minishell *minishell, t_cmd *cmd,
+							char **cut_name, int i)
+{
+	if (find_table_args(minishell->env, cut_name[0]) == -1)
+	{
+		add_cmd_env(minishell, cut_name[0], cut_name[1]);
+		cmd->env = minishell->env;
+	}
+	else if (ft_is_charset('+', cmd->args[i]))
+		sum_cmd_env(cmd, cut_name[0], cut_name[1] + 1);
+	else
+		modify_cmd_env(cmd, cut_name[0], cut_name[1]);
+}
+
+void	process_export_argument(t_minishell *minishell, t_cmd *cmd, int i)
+{
+	char	**cut_name;
+
+	cut_name = NULL;
+	if (ft_is_charset('+', cmd->args[i]))
+		cut_name = ft_split_quote(cmd->args[i], "+", "\"\'");
+	else if (ft_is_charset('=', cmd->args[i]))
+		cut_name = ft_split_quote(cmd->args[i], "=", "\"\'");
+	else
+	{
+		export_wt_args(minishell, cmd, i);
+		cmd->env = minishell->env;
+		return ;
+	}
+	update_environment(minishell, cmd, cut_name, i);
+	ft_tabfree(cut_name);
+	cut_name = NULL;
 }
 
 int	command_export(t_minishell *minishell, t_cmd *cmd)
 {
-	char	**cut_name;
+	int	i;
 
 	if (!cmd->args[1])
 		return (print_export(cmd));
-	else if (ft_is_charset('+', cmd->args[1]))
-		cut_name = ft_split_quote(cmd->args[1], "+", "\"\'");
-	else if (ft_is_charset('=', cmd->args[1]))
-		cut_name = ft_split_quote(cmd->args[1], "=", "\"\'");
-	else
-		return (export_wt_args(minishell, cmd));
-	if (check_inside_args(cmd))
+	i = 1;
+	while (cmd->args[i])
 	{
-		ft_tabfree(cut_name);
-		return (1);
+		if (check_inside_args(cmd))
+			return (1);
+		process_export_argument(minishell, cmd, i);
+		i++;
 	}
-	if (find_table_args(cmd->env, cut_name[0]) == -1)
-		add_cmd_env(minishell, cut_name[0], cut_name[1]);
-	else if (ft_is_charset('+', cmd->args[1]))
-		sum_cmd_env(cmd, cut_name[0], cut_name[1] + 1);
-	else
-		modify_cmd_env(cmd, cut_name[0], cut_name[1]);
-	ft_tabfree(cut_name);
 	return (0);
 }

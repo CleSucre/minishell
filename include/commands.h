@@ -54,6 +54,8 @@ t_cmd		*create_cmd(t_ast_node *ast, t_minishell *minishell,
 int			print_export(t_cmd *cmd);
 int			sum_cmd_env(t_cmd *cmd, char *input, char *value);
 int			add_cmd_env(t_minishell *minishell, char *input, char *value);
+int			modify_cmd_env(t_cmd *cmd, char *input, char *value);
+
 // Cd
 int			cd_minus(t_cmd *cmd);
 void		invert_oldpwd(t_cmd *cmd);
