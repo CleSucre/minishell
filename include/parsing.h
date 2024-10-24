@@ -112,6 +112,21 @@ char			*handle_quotes(char *buffer, int *buffer_pos,
 					char *input, int *index);
 char			*handle_parentheses(char current_char, int *index);
 
+// ########################################################
+// #					Split_W_Quotes					#
+// ########################################################
+
+typedef struct s_tokenizer
+{
+	char	**tokens;
+	int		token_count;
+	char	*buffer;
+	int		buf_pos;
+	char	quote_char;
+}	t_tokenizer;
+
+t_tokenizer		init_tokenizer_split(const char *input);
+int				is_operator_split(const char *input, int i, char quote_char);
 char			**split_with_quotes(const char *input, int *count);
 
 // ########################################################

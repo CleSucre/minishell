@@ -40,7 +40,7 @@ SRCS_MEMORY				= memory_alloc.c memory_free.c builtins_alloc.c
 
 SRCS_PARSING			= ast_management.c parsing.c parsing_mandatory.c parsing_redirection.c parsing_bonus.c parsing_utils.c var_creation.c
 
-SRCS_PARSING_TOKENIZER	= token_extractor.c tokenizer.c token_management.c tokenizer_quote_handler.c split_with_quote.c
+SRCS_PARSING_TOKENIZER	= token_extractor.c tokenizer.c token_management.c tokenizer_quote_handler.c split_with_quote.c split_quote_utils.c
 
 SRCS_TERMINAL			= input_utils.c terminal.c terminal_action.c terminal_arrow.c terminal_cursor.c terminal_info.c terminal_prompt.c terminal_signals.c terminal_utils.c \
 							put_in_string.c
