@@ -13,24 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Get the redirection type from the token type.
- *
- * @param t_token_type type Token type.
- * @return t_ast_node_type AST node type.
- */
-static t_ast_node_type	get_redir_type(t_token_type type)
-{
-	if (type == TOKEN_REDIR_OUT)
-		return (AST_REDIR_OUT);
-	else if (type == TOKEN_REDIR_OUT_APPEND)
-		return (AST_REDIR_OUT_APPEND);
-	else if (type == TOKEN_REDIR_IN)
-		return (AST_REDIR_IN);
-	else
-		return (AST_HEREDOC);
-}
-
-/**
  * @brief Extract the command tokens from the token list.
  *
  * @param t_token **tokens Pointer to the current list of tokens.
@@ -80,11 +62,7 @@ static void	redirection_double_parsing(t_token **tokens,
 	char			**args;
 
 	if (tmp->type == TOKEN_REDIR_OUT)
-	{
-		ft_fprintf(STDERR_FILENO, "DEBUG: REDIR_OUT\n");
 		file_tokens = extract_command_tokens(tokens);
-		ft_tabprint((const char **)file_tokens, "file_tokens: ", "", STDERR_FILENO);
-	}
 	else
 	{
 		file_tokens = ft_tabnew(1);
@@ -142,23 +120,11 @@ int	process_heredoc(t_token **tokens, t_ast_node **root,
 	return (1);
 }
 
-/**
- * @brief Process a redirection token (>, >>, <)
- * 			and create an AST redirection node.
- *
- * @param t_token **tokens Pointer to the current list of tokens.
- * @param t_ast_node **root Root of the AST being constructed.
- * @return int 1 if the function succeeded, 0 otherwise.
- */
-int	process_redirection(t_token **tokens, t_ast_node **root,
-					t_ast_node **last_command, int is_last)
+static int	handle_redirection_node(t_token **tokens, t_ast_node **root,
+							t_ast_node **last_command, t_ast_node *redir_node)
 {
-	t_ast_node		*redir_node;
-	t_token			*tmp;
+	t_token	*tmp;
 
-	if (*last_command != NULL)
-		(*last_command)->is_last = is_last;
-	redir_node = new_ast_node(get_redir_type((*tokens)->type), NULL);
 	tmp = *tokens;
 	*tokens = (*tokens)->next;
 	if ((*tokens) == NULL)
@@ -176,6 +142,27 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 			"minishell: syntax error: expected file name\n");
 		return (0);
 	}
+	return (1);
+}
+
+/**
+ * @brief Process a redirection token (>, >>, <)
+ * 			and create an AST redirection node.
+ *
+ * @param t_token **tokens Pointer to the current list of tokens.
+ * @param t_ast_node **root Root of the AST being constructed.
+ * @return int 1 if the function succeeded, 0 otherwise.
+ */
+int	process_redirection(t_token **tokens, t_ast_node **root,
+						t_ast_node **last_command, int is_last)
+{
+	t_ast_node	*redir_node;
+
+	if (*last_command != NULL)
+		(*last_command)->is_last = is_last;
+	redir_node = new_ast_node(get_redir_type((*tokens)->type), NULL);
+	if (!handle_redirection_node(tokens, root, last_command, redir_node))
+		return (0);
 	*last_command = redir_node;
 	*root = redir_node;
 	return (1);

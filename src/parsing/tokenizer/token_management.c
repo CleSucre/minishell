@@ -103,3 +103,21 @@ int	token_is_logic_operator(t_token *token)
 		|| token->type == TOKEN_OR_OPERATOR
 		|| token->type == TOKEN_PIPE);
 }
+
+/**
+ * @brief Get the redirection type from the token type.
+ *
+ * @param t_token_type type Token type.
+ * @return t_ast_node_type AST node type.
+ */
+t_ast_node_type	get_redir_type(t_token_type type)
+{
+	if (type == TOKEN_REDIR_OUT)
+		return (AST_REDIR_OUT);
+	else if (type == TOKEN_REDIR_OUT_APPEND)
+		return (AST_REDIR_OUT_APPEND);
+	else if (type == TOKEN_REDIR_IN)
+		return (AST_REDIR_IN);
+	else
+		return (AST_HEREDOC);
+}

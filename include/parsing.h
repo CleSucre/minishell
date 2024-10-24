@@ -100,6 +100,7 @@ void			add_token_to_list(t_token **tokens,
 void			clear_token_list( t_token **token_list,
 					char **tokens, int token_count);
 int				token_is_logic_operator(t_token *token);
+t_ast_node_type	get_redir_type(t_token_type type);
 
 // ########################################################
 // #						TOKENIZER						#
