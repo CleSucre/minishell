@@ -37,7 +37,6 @@ char	*check_input(char *input)
 	free(input);
 	if (!trimmed)
 		return (NULL);
-	debug_execution(trimmed);
 	return (trimmed);
 }
 

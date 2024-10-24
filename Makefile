@@ -22,8 +22,6 @@ SRCS					= main.c
 
 SRCS_CONFIG				= term_config.c
 
-SRCS_DEBUG				= debug_execution.c debug_history.c debug_parsing.c debug_parsing_utils.c
-
 SRCS_ENVIRONMENT		= env_utils.c path_utils.c variable_utils.c variable_replacer.c
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
@@ -60,8 +58,6 @@ SRCS_CONFIG				:= $(addprefix config$(DIRSEP), $(SRCS_CONFIG))
 
 SRCS_ENVIRONMENT		:= $(addprefix environment$(DIRSEP), $(SRCS_ENVIRONMENT))
 
-SRCS_DEBUG				:= $(addprefix debug$(DIRSEP), $(SRCS_DEBUG))
-
 SRCS_HISTORY			:= $(addprefix history$(DIRSEP), $(SRCS_HISTORY))
 
 SRCS_EXECUTION			:= $(addprefix execution$(DIRSEP), $(SRCS_EXECUTION))
@@ -80,7 +76,7 @@ SRCS_TERMINAL			:= $(addprefix terminal$(DIRSEP), $(SRCS_TERMINAL))
 
 SRCS_WILDCARD			:= $(addprefix wildcard$(DIRSEP), $(SRCS_WILDCARD))
 
-SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_DEBUG) $(SRCS_HISTORY) \
+SRCS					+= $(SRCS_CONFIG) $(SRCS_ENVIRONMENT) $(SRCS_HISTORY) \
 							$(SRCS_COMMANDS) $(SRCS_COMMANDS_CUSTOM) $(SRCS_EXECUTION) \
 							$(SRCS_MEMORY) $(SRCS_PARSING) $(SRCS_TOKENIZER) $(SRCS_TERMINAL) $(SRCS_WILDCARD) $(SRCS_ATCP)
 
@@ -102,13 +98,7 @@ LIBFT_DIR		= libft
 
 CFLAGS			= -I $(HEAD) -MMD -MP
 
-# DEBUG
-DEBUG ?= 0
-ifeq ($(DEBUG), 0)
-	CFLAGS += -Wall -Wextra -Werror
-else
-	CFLAGS += -g -D DEBUG=$(DEBUG)
-endif
+CFLAGS += -Wall -Wextra -Werror
 
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes # --suppressions=vsupp
 
@@ -150,14 +140,4 @@ fclean: libft_fclean
 
 re: fclean all
 
-run:
-	$(MAKE) DEBUG=0
-	./minishell
-
-debug:
-	$(MAKE) DEBUG=1 && $(VALGRIND) ./minishell
-
-norm:
-	@norminette -R CheckForbiddenSourceHeader  libft src include | grep Error || echo "$(GREEN)Success"
-
-.PHONY: libft libft_clean libft_fclean all clean fclean re run debug norm
+.PHONY: libft libft_clean libft_fclean all clean fclean re
