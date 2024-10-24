@@ -64,6 +64,7 @@ int	execute_and(t_minishell *minishell, t_ast_node *ast,
 	res = minishell->exit_code;
 	if (res != 0)
 		return (0);
+	close_fds(in_out, pipes);
 	if (ast->right->type == AST_OR)
 		return (execute_or_with_and(minishell, ast, pipes, in_out));
 	else
@@ -92,7 +93,8 @@ int	execute_or(t_minishell *minishell, t_ast_node *ast,
 	res = execute_ast(minishell, ast->left, pipes, in_out);
 	if (res != 0)
 		return (0);
-	if (minishell->exit_code == 0)
+	close_fds(in_out, pipes);
+ 	if (minishell->exit_code == 0)
 		return (minishell->exit_code);
 	res = execute_ast(minishell, ast->right, pipes, in_out);
 	if (res != 0)
