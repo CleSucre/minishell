@@ -151,6 +151,14 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	tokens = check_and_tokenize_input(minishell, input);
 	if (!tokens)
 		return (NULL);
+	if (token_is_logic_operator(tokens))
+	{
+		ft_fprintf(STDERR_FILENO, "syntax error near unexpected token `%s'\n",
+			tokens->value);
+		free_tokens(tokens);
+		minishell->exit_code = 2;
+		return (NULL);
+	}
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);

@@ -42,6 +42,7 @@ void	send_to_bst(struct dirent *dir, t_dict *dict)
  * 	@param char *odir - path to open
  * 	@return int 0 if success
  */
+/*
 static int	search_in_path(t_dict *dict, char *odir)
 {
 	struct dirent	*dir;
@@ -63,6 +64,7 @@ static int	search_in_path(t_dict *dict, char *odir)
 		return (1);
 	return (0);
 }
+*/
 
 /**
  * @brief Create first BST node (root)

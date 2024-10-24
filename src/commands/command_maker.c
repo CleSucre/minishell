@@ -64,22 +64,12 @@ void	remove_quotes(char **table)
  */
 static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 {
-	int		is_var;
-	char	**tmp;
-
 	cmd->argc = (int)ft_tablen((const char **)ast->value);
 	cmd->args = ft_tabdup((const char **)ast->value);
-	is_var = ft_strncmp(cmd->args[0], "$", 1) == 0;
 	replace_variables_in_tab(minishell, cmd->args);
 	remove_quotes(cmd->args);
 	if (cmd->args[0] == NULL)
 		return ;
-	if (is_var)
-	{
-		tmp = ft_split(cmd->args[0], WHITESPACES);
-		ft_tabdel(cmd->args, 0);
-		cmd->args = ft_tabjoin(tmp, cmd->args);
-	}
 	expand_wildcards(&cmd->args);
 	if (!cmd->args[0])
 	{

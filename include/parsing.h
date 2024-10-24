@@ -31,7 +31,6 @@ typedef enum s_token_type
 	TOKEN_PARENTHESIS_OPEN,
 	TOKEN_PARENTHESIS_CLOSE,
 }	t_token_type;
-
 typedef struct s_token
 {
 	t_token_type	type;
@@ -96,6 +95,7 @@ void			add_token_to_list(t_token **tokens,
 					t_token_type type, char *value);
 void			clear_token_list( t_token **token_list,
 					char **tokens, int token_count);
+int				token_is_logic_operator(t_token *token);
 
 // ########################################################
 // #						TOKENIZER						#

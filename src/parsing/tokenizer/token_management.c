@@ -70,6 +70,13 @@ void	add_token(char ***tokens, int *token_count, char *token)
 	(*token_count)++;
 }
 
+/**
+ * @brief Clear the token list
+ *
+ * @param token_list The head of the token list
+ * @param tokens The list of tokens
+ * @param token_count The number of tokens
+ */
 void	clear_token_list( t_token **token_list,
 							char **tokens, int token_count)
 {
@@ -81,4 +88,18 @@ void	clear_token_list( t_token **token_list,
 		free(tokens[i++]);
 	free(tokens);
 	return ;
+}
+
+/**
+ * @brief Compare the token list and add the token to the list
+ *
+ * @param token_list The head of the token list
+ * @param tokens The list of tokens
+ * @param i The index of the token
+ */
+int	token_is_logic_operator(t_token *token)
+{
+	return (token->type == TOKEN_AND_OPERATOR
+		|| token->type == TOKEN_OR_OPERATOR
+		|| token->type == TOKEN_PIPE);
 }

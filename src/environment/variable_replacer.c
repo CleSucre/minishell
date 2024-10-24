@@ -44,7 +44,12 @@ static char	*handle_variable(t_minishell *minishell, char *str,
 	char	*tmp;
 
 	j = *i + 1;
-	while (ft_isalnum(str[j]))
+	if (!ft_isalnum(str[j]) && str[j] != '_')
+	{
+		*i += 1;
+		return (ft_strjoin_char(res, '$'));
+	}
+	while (ft_isalnum(str[j]) || str[j] == '_')
 		j++;
 	tmp = ft_substr(str, *i + 1, j - *i - 1);
 	res = ft_strjoin_free(res, get_var_value(minishell->env, tmp));
@@ -78,6 +83,11 @@ void	process_quotes_and_dollar(t_minishell *minishell, char *str,
 		}
 		else
 			*res = handle_variable(minishell, str, &(ctx->i), *res);
+	}
+	else if (str[ctx->i] == '$' && str[ctx->i + 1] == '\0')
+	{
+		*res = ft_strjoin_char(*res, '$');
+		ctx->i++;
 	}
 }
 
