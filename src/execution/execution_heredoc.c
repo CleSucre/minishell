@@ -77,7 +77,7 @@ void	parent_signal_handler(int sig)
 }
 
 void	handle_heredoc_child_process(t_minishell *minishell,
-									 int *tmp_pipe, char *delimiter)
+								int *tmp_pipe, char *delimiter)
 {
 	t_heredoc_info	*heredoc_info;
 

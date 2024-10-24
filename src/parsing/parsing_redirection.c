@@ -81,7 +81,9 @@ static void	redirection_double_parsing(t_token **tokens,
 
 	if (tmp->type == TOKEN_REDIR_OUT)
 	{
+		ft_fprintf(STDERR_FILENO, "DEBUG: REDIR_OUT\n");
 		file_tokens = extract_command_tokens(tokens);
+		ft_tabprint((const char **)file_tokens, "file_tokens: ", "", STDERR_FILENO);
 	}
 	else
 	{
@@ -174,6 +176,7 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 			"minishell: syntax error: expected file name\n");
 		return (0);
 	}
+	*last_command = redir_node;
 	*root = redir_node;
 	return (1);
 }

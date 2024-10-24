@@ -17,7 +17,7 @@ void	heredoc_signal_handler(int sig)
 	if (sig == SIGINT)
 	{
 		ft_putstr_fd("\nminishell: heredoc interrupted"
-					 "by Ctrl+C\n", STDERR_FILENO);
+			"by Ctrl+C\n", STDERR_FILENO);
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 	}
@@ -35,7 +35,7 @@ void	setup_heredoc_parent_signals(void)
 }
 
 int	handle_heredoc_parent_process(t_minishell *minishell, int *tmp_pipe,
-									 pid_t pid, int *output_fd)
+								pid_t pid, int *output_fd)
 {
 	int	status;
 

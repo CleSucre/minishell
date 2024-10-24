@@ -46,7 +46,7 @@ int	write_heredoc(t_heredoc_info *heredoc_info)
 			continue ;
 		}
 		if (!write_line_to_pipe(heredoc_info->pipes[1],
-								heredoc_info->texts[i]))
+				heredoc_info->texts[i]))
 			return (0);
 		i++;
 	}
@@ -77,8 +77,8 @@ int	read_heredoc(t_heredoc_info *heredoc_info)
 		if (!line)
 		{
 			ft_fprintf(STDERR_FILENO, "minishell: warning: heredoc at line %d"
-									  "delimited by end-of-file (wanted `%s`)\n",
-					   i, heredoc_info->delimiter);
+				"delimited by end-of-file (wanted `%s`)\n",
+				i, heredoc_info->delimiter);
 			return (0);
 		}
 		if (ft_strcmp(line, heredoc_info->delimiter) == 0)

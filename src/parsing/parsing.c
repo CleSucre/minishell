@@ -65,7 +65,7 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 	}
 	else if (current->type == TOKEN_REDIR_OUT
 		|| current->type == TOKEN_REDIR_OUT_APPEND)
-		return (process_redirection(&current, root, last_command, 0));
+		process_redirection(&current, root, last_command, 0);
 	else if (!build_ast_secondary(&current, root, last_command))
 		return (0);
 	if (current)
