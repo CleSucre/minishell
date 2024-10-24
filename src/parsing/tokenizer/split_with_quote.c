@@ -23,47 +23,53 @@ static void	token_buffer(t_tokenizer *tokenizer)
 	}
 }
 
-static void	handle_space(const char *input, int *i, t_tokenizer *tokenizer)
+static void	handle_quote_char(const char *input, int *i, t_tokenizer *tokenizer)
 {
-	if (ft_isspace(input[*i]) && tokenizer->quote_char == 0)
-	{
-		token_buffer(tokenizer);
-		(*i)++;
-	}
+	if (tokenizer->quote_char == 0)
+		tokenizer->quote_char = input[*i];
+	else if (tokenizer->quote_char == input[*i])
+		tokenizer->quote_char = 0;
+	tokenizer->buffer[tokenizer->buf_pos++] = input[(*i)++];
 }
 
-static void	process_quote(const char *input, int *i, t_tokenizer *tokenizer)
-{
-	if (input[*i] == '\'' || input[*i] == '"')
-	{
-		if (tokenizer->quote_char == 0)
-			tokenizer->quote_char = input[*i];
-		else if (tokenizer->quote_char == input[*i])
-			tokenizer->quote_char = 0;
-		tokenizer->buffer[tokenizer->buf_pos++] = input[*i];
-		(*i)++;
-	}
-}
-
-static void	handle_operator(const char *input, int *i, t_tokenizer *tokenizer)
+static void	handle_operator_char(const char *input,
+						int *i, t_tokenizer *tokenizer)
 {
 	int	op_len;
 
-	if (is_operator_split(input, *i, tokenizer->quote_char))
+	op_len = is_operator_split(input, *i, tokenizer->quote_char);
+	token_buffer(tokenizer);
+	ft_strncpy(tokenizer->buffer, input + *i, op_len);
+	tokenizer->buffer[op_len] = '\0';
+	add_token(&tokenizer->tokens,
+		&tokenizer->token_count, tokenizer->buffer);
+	*i += op_len;
+}
+
+static void	process_input(const char *input, int len, t_tokenizer *tokenizer)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
 	{
-		token_buffer(tokenizer);
-		op_len = is_operator_split(input, *i, tokenizer->quote_char);
-		ft_strncpy(tokenizer->buffer, input + *i, op_len);
-		tokenizer->buffer[op_len] = '\0';
-		add_token(&tokenizer->tokens,
-			&tokenizer->token_count, tokenizer->buffer);
-		*i += op_len;
+		if (ft_isspace(input[i]) && tokenizer->quote_char == 0)
+		{
+			token_buffer(tokenizer);
+			i++;
+		}
+		else if (input[i] == '\'' || input[i] == '"')
+			handle_quote_char(input, &i, tokenizer);
+		else if (is_operator_split(input, i, tokenizer->quote_char))
+			handle_operator_char(input, &i, tokenizer);
+		else
+			tokenizer->buffer[tokenizer->buf_pos++] = input[i++];
 	}
+	token_buffer(tokenizer);
 }
 
 char	**split_with_quotes(const char *input, int *count)
 {
-	int			i;
 	int			len;
 	t_tokenizer	tokenizer;
 
@@ -71,17 +77,7 @@ char	**split_with_quotes(const char *input, int *count)
 	tokenizer = init_tokenizer_split(input);
 	if (!tokenizer.buffer)
 		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		handle_space(input, &i, &tokenizer);
-		process_quote(input, &i, &tokenizer);
-		handle_operator(input, &i, &tokenizer);
-		if (!ft_isspace(input[i]) && !(input[i] == '\'' || input[i] == '"')
-			&& !is_operator_split(input, i, tokenizer.quote_char))
-			tokenizer.buffer[tokenizer.buf_pos++] = input[i++];
-	}
-	token_buffer(&tokenizer);
+	process_input(input, len, &tokenizer);
 	free(tokenizer.buffer);
 	*count = tokenizer.token_count;
 	return (tokenizer.tokens);
