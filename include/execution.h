@@ -84,6 +84,8 @@ int				execute_redirect_output_append(t_minishell *minishell,
 // ########################################################
 // #						HEREDOC							#
 // ########################################################
+
+void			parent_signal_handler(int sig);
 t_heredoc_info	*load_heredoc_info(t_minishell *minishell,
 					int *pipes, char *delimiter);
 // 					heredoc_pid.c

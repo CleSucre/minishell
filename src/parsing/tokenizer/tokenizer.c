@@ -117,7 +117,7 @@ static int	cmp_token(char **tokens, int i,
 	else if (ft_strcmp(tokens[i], ")") == 0)
 	{
 		parentheses_balance--;
-		if (parentheses_balance < 0)
+		if (*parentheses_balance < 0)
 		{
 			printf("syntax error near unexpected token `)'\n");
 			return (0);

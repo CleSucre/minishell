@@ -56,3 +56,30 @@ int	count_heredoc(t_ast_node *ast)
 	count += count_heredoc(ast->right);
 	return (count);
 }
+
+/**
+ * @brief Find the next AST_COMMAND node and update its value
+ *
+ * @param char *new_command
+ * @param t_ast_node *ast
+ */
+int	update_next_command(char *new_command, t_ast_node *ast)
+{
+	if (ast->type == AST_COMMAND)
+	{
+		ft_fprintf(STDOUT_FILENO, "ast->value[0]: %s\n", ast->value[0]);
+		ft_tabfree(ast->value);
+		ast->value = ft_tabnew(1);
+		ast->value[0] = ft_strdup(new_command);
+		ft_fprintf(STDOUT_FILENO, "ast->value[0]: %s\n", ast->value[0]);
+		return (1);
+	}
+	else
+	{
+		if (ast->left && update_next_command(new_command, ast->left))
+			return (1);
+		if (ast->right && update_next_command(new_command, ast->right))
+			return (1);
+	}
+	return (0);
+}

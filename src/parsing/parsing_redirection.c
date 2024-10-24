@@ -112,7 +112,7 @@ int	process_heredoc(t_token **tokens, t_ast_node **root,
  * @return int 1 if the function succeeded, 0 otherwise.
  */
 int	process_redirection(t_token **tokens, t_ast_node **root,
-						   t_ast_node **last_command, int is_last)
+					t_ast_node **last_command, int is_last)
 {
 	t_ast_node		*redir_node;
 	char			**file_tokens;
@@ -125,10 +125,9 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 	if ((*tokens) == NULL)
 	{
 		ft_fprintf(STDERR_FILENO,
-				   "minishell: syntax error: expected file name\n");
+			"minishell: syntax error: expected file name\n");
 		return (0);
 	}
-
 	if ((*tokens)->type == TOKEN_COMMAND)
 	{
 		file_tokens = extract_command_tokens(tokens);
@@ -138,45 +137,3 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 	*root = redir_node;
 	return (1);
 }
-
- /*
-int	process_redirection(t_token **tokens, t_ast_node **root,
-					t_ast_node **last_command, int is_last)
-{
-	t_ast_node		*last_node;
-	char			**file_tokens;
-	t_token			*tmp;
-
-	if (*last_command != NULL)
-		(*last_command)->is_last = is_last;
-	last_node = new_ast_node(get_redir_type((*tokens)->type), NULL);
-	*tokens = (*tokens)->next;
-	if ((*tokens) == NULL)
-	{
-		ft_fprintf(STDERR_FILENO,
-			"minishell: syntax error: expected file name\n");
-		return (0);
-	}
-	(void)file_tokens;
-	(void)tmp;
-
-	if ((*tokens)->type == TOKEN_COMMAND)
-	{
-		file_tokens = extract_command_tokens(tokens);
-		ft_tabprint((const char **)file_tokens, "file: ", "", STDERR_FILENO);
-		last_node->right = new_ast_node(AST_COMMAND, file_tokens);
-		if (*tokens && (*tokens)->type == TOKEN_REDIR_OUT)
-		{
-			if (!process_redirection(tokens, &last_node->right, &last_node, 1))
-				return (0);
-		}
-		else
-		{
-		}
-	}
-	//(*root)->right = last_node;
-	last_node->left = *root;
-	*root = last_node;
-	return (1);
-}
-*/

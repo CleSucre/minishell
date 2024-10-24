@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "global.h"
 
 static int	bite_heredoc(t_heredoc_info *heredoc_info, int i)
 {

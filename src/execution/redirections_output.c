@@ -43,41 +43,6 @@ static int	test_file_access(char *file)
 }
 
 /**
- * @brief Verify if the redirection is valid
- *
- * @param t_minishell *minishell
- * @param t_ast_node *ast
- * @return int 1 on success, 0 on failure
- */
-int	verify_redirection(t_minishell *minishell, t_ast_node *ast)
-{
-	char	*start;
-	char	*tmp;
-	char	**tab_tmp;
-
-	start = ft_strdup(ast->right->value[0]);
-	tmp = replace_variables(minishell, ast->right->value[0]);
-	free(ast->right->value[0]);
-	ast->right->value[0] = tmp;
-	tab_tmp = ft_split(ast->right->value[0], WHITESPACES);
-	if (!tab_tmp[0] || !ft_strlen(tab_tmp[0]))
-		return (free(start), ft_putstr_fd("Error: no file specified\n",
-				STDERR_FILENO), 0);
-	expand_wildcards(&tab_tmp);
-	if (ft_tablen((const char **)tab_tmp) > 1)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: %s: ambiguous redirect\n", start);
-		free(start);
-		ft_tabfree(tab_tmp);
-		minishell->exit_code = 1;
-		return (0);
-	}
-	free(start);
-	ft_tabfree(tab_tmp);
-	return (1);
-}
-
-/**
  * @brief Execute the ast before redirecting the output to a file
  * 				and check if the file is accessible before doing so
  *
@@ -106,6 +71,27 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 }
 
 /**
+ * @brief Open a file and print an error message if it fails
+ *
+ * @param char *file The file to open
+ * @param int flags The flags to open the file with
+ * @return int The file descriptor on success, -1 on failure
+ */
+int	open_file(char *file, int flags)
+{
+	int	fd;
+
+	fd = open(file, flags, 0644);
+	if (fd == -1)
+	{
+		ft_fprintf(STDERR_FILENO, "minishell: %s: No such file or directory\n",
+			file);
+		return (-1);
+	}
+	return (fd);
+}
+
+/**
  * @brief Redirect the output of the command to a file
  *
  * @param t_minishell *minishell
@@ -125,14 +111,9 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
 		return (0);
 	if (minishell->exit_code != 0)
 		return (0);
-	file_fd = open(ast->right->value[0],
-			O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	file_fd = open_file(ast->right->value[0], O_WRONLY | O_CREAT | O_TRUNC);
 	if (file_fd == -1)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: %s: No such file or directory\n",
-			ast->right->value[0]);
 		return (0);
-	}
 	if (!ast->is_last)
 	{
 		close(file_fd);
@@ -171,14 +152,9 @@ int	execute_redirect_output_append(t_minishell *minishell, t_ast_node *ast,
 		return (0);
 	if (minishell->exit_code != 0)
 		return (0);
-	file_fd = open(ast->right->value[0],
-			O_WRONLY | O_CREAT | O_APPEND, 0644);
+	file_fd = open_file(ast->right->value[0], O_WRONLY | O_CREAT | O_APPEND);
 	if (file_fd == -1)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: %s: No such file or directory\n",
-			ast->right->value[0]);
 		return (0);
-	}
 	if (!ast->is_last)
 	{
 		close(file_fd);

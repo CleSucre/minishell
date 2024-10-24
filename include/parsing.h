@@ -114,5 +114,6 @@ char			**split_with_quotes(const char *input, int *count);
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
 int				count_heredoc(t_ast_node *ast);
+int				update_next_command(char *new_command, t_ast_node *ast);
 
 #endif

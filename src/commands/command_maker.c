@@ -20,10 +20,10 @@ char	*parse_quotes(const char *input)
 	char	quote_type;
 
 	result = (char *)malloc(ft_strlen(input) + 1);
-	i = 0;
+	i = -1;
 	j = 0;
 	quote_type = 0;
-	while (input[i] != '\0')
+	while (input[++i] != '\0')
 	{
 		if (input[i] == '\'' || input[i] == '"')
 		{
@@ -36,7 +36,6 @@ char	*parse_quotes(const char *input)
 		}
 		else
 			result[j++] = input[i];
-		i++;
 	}
 	result[j] = '\0';
 	return (result);
@@ -85,8 +84,7 @@ static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 	if (!cmd->args[0])
 	{
 		ft_tabfree(cmd->args);
-		cmd->args = ft_calloc(1, sizeof(char *));
-		cmd->args[0] = NULL;
+		cmd->args = ft_tabnew(1);
 		return ;
 	}
 	cmd->name = ft_strdup(cmd->args[0]);

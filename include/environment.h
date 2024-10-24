@@ -13,6 +13,13 @@
 #ifndef ENVIRONMENT_H
 # define ENVIRONMENT_H
 
+typedef struct s_replace_context
+{
+	size_t	i;
+	int		inside_single_quotes;
+	int		inside_double_quotes;
+}			t_replace_context;
+
 // ########################################################
 // #						ENV_VARIABLE					#
 // ########################################################

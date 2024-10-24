@@ -11,19 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "global.h"
-
-/**
- * @brief Handle the signal in the parent process
- * 			to set the exit code to 130 on SIGINT
- *
- * @param int sig
- */
-static void	parent_signal_handler(int sig)
-{
-	if (sig == SIGINT)
-		*g_exit_code = 130;
-}
 
 void	work_pid(t_minishell *minishell, char *delimiter)
 {
