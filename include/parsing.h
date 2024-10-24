@@ -106,6 +106,8 @@ char			*handle_quotes(char *buffer, int *buffer_pos,
 					char *input, int *index);
 char			*handle_parentheses(char current_char, int *index);
 
+char			**split_with_quotes(const char *input, int *count);
+
 // ########################################################
 // #						AST									#
 // ########################################################
