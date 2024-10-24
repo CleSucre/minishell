@@ -92,6 +92,5 @@ void			heredoc_signal_handler(int sig);
 void			parent_signal_handler(int sig);
 int				write_heredoc(t_heredoc_info *heredoc_info);
 int				read_heredoc(t_heredoc_info *heredoc_info);
-char			*begin_read(void);
 
 #endif

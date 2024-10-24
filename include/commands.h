@@ -47,6 +47,7 @@ int			command_unset(t_cmd *cmd);
 // ########################################################
 
 void		destroy_cmd(t_cmd *cmd);
+char		*parse_quotes(const char *input);
 t_cmd		*create_cmd(t_ast_node *ast, t_minishell *minishell,
 				const int in_out[3]);	
 // Export

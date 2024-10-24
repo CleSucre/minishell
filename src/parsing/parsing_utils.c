@@ -121,7 +121,9 @@ int	handle_token_errors(t_minishell *minishell,
 	{
 		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
 		free_tokens(tokens);
+		free_ast(ast);
 		return (0);
 	}
+	free_tokens(tokens);
 	return (1);
 }

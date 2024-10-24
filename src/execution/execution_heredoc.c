@@ -26,12 +26,20 @@ static t_heredoc_info	*load_heredoc_info(t_minishell *minishell,
 											int *pipes, char *delimiter)
 {
 	t_heredoc_info	*heredoc_info;
+	char 			*tmp;
 
 	heredoc_info = malloc(sizeof(t_heredoc_info));
 	if (!heredoc_info)
 		return (NULL);
 	heredoc_info->minishell = minishell;
 	heredoc_info->delimiter = ft_strdup(delimiter);
+	tmp = parse_quotes(delimiter);
+	if (ft_strlen(delimiter) != ft_strlen(tmp))
+		heredoc_info->expend_var = 0;
+	else
+		heredoc_info->expend_var = 1;
+	free(heredoc_info->delimiter);
+	heredoc_info->delimiter = tmp;
 	heredoc_info->pipes = pipes;
 	heredoc_info->texts = ft_tabnew(0);
 	if (!heredoc_info->texts)

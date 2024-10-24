@@ -144,6 +144,5 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	debug_ast(ast);
 	if (!handle_token_errors(minishell, tokens, error, ast))
 		return (NULL);
-	free_tokens(tokens);
 	return (ast);
 }
