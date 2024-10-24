@@ -70,5 +70,4 @@ void	cut_node(t_dict *root, char *key)
 	}
 	else if (root->left_branch)
 		cut_node(root->left_branch, key);
-	return ;
 }

@@ -31,7 +31,6 @@ void	print_branch(t_dict *dict)
 		print_branch(dict->left_branch);
 	if (dict->right_branch)
 		print_branch(dict->right_branch);
-	return ;
 }
 
 /**

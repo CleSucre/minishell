@@ -14,12 +14,12 @@
 
 /**
  * @brief Convert a string to a long long integer
+ *
  * @param str String to convert
  * @param endptr Pointer to the character that stops the conversion
  * @param base Base of the number
  * @return long long Converted number
  */
-
 static int	check_digit(char *str, char **endptr, int base, long long *res)
 {
 	int	i;

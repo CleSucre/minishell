@@ -48,6 +48,11 @@ void	invert_oldpwd(t_cmd *cmd)
 	free(buff_name);
 }
 
+/**
+ * @brief Change the current working directory
+ *
+ * @param t_cmd *cmd
+ */
 static void	move_dir(t_cmd *cmd)
 {
 	int		pwd;

@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-/**
- * @brief Gestionnaire de signal pour SIGINT (Ctrl+C) et SIGQUIT (Ctrl+\)
- *
- * @param sig Signal capturé
- */
 void	handle_signal(int sig)
 {
 	if (sig == SIGINT)
@@ -31,11 +26,6 @@ void	handle_signal(int sig)
 	}
 }
 
-/**
- * @brief Configure les signaux pour la gestion dans les processus enfants
- *
- * @param struct sigaction *sa Structure de signal pour la configuration
- */
 void	setup_signals(struct sigaction *sa)
 {
 	sa->sa_handler = handle_signal;
@@ -48,13 +38,6 @@ void	setup_signals(struct sigaction *sa)
 	}
 }
 
-/**
- * @brief Gérer le processus enfant après fork (commande externe)
- *
- * @param t_cmd *cmd Structure de commande
- * @param t_minishell *minishell Contexte de minishell
- * @param struct sigaction *sa Structure de signal pour la gestion des signaux
- */
 static void	handle_child_process(t_cmd *cmd, t_minishell *minishell)
 {
 	int	err;
@@ -78,12 +61,6 @@ static void	handle_child_process(t_cmd *cmd, t_minishell *minishell)
 	exit(err);
 }
 
-/**
- * @brief Gérer le processus parent après fork
- *
- * @param t_cmd *cmd Structure de commande
- * @param t_minishell *minishell Contexte de minishell
- */
 static void	handle_builtins_child_process(t_cmd *cmd, t_minishell *minishell)
 {
 	int	err;
@@ -107,22 +84,6 @@ static void	handle_builtins_child_process(t_cmd *cmd, t_minishell *minishell)
 	exit(err);
 }
 
-/**
- * @brief Exécute une commande dans un processus enfant
- *        et gère la redirection des entrées/sorties.
- *
- * @param t_minishell *minishell Contexte de minishell
- * @param t_cmd *cmd Structure de commande
- * @return int Code de sortie
- */
-/**
- * @brief Exécute une commande dans un processus enfant
- *        et gère la redirection des entrées/sorties.
- *
- * @param t_minishell *minishell Contexte de minishell
- * @param t_cmd *cmd Structure de commande
- * @return int Code de sortie
- */
 int	execute_external(t_minishell *minishell, t_cmd *cmd)
 {
 	struct sigaction	sa;
