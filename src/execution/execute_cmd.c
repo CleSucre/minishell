@@ -11,11 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
-#include <sys/wait.h>
-#include <errno.h>
-#include <string.h>
-//TODO: tej les includes du haut s ils sont deja dans un .h
 
 static int	is_directory(const char *name)
 {
@@ -36,6 +31,26 @@ static int	is_directory(const char *name)
 	return (0);
 }
 
+static int	get_exit_code(t_minishell *minishell, t_cmd *cmd, t_ast_node *ast)
+{
+	int	pid;
+	int	res;
+
+	res = 0;
+	pid = execute_external(minishell, cmd);
+	if (ast->is_last)
+	{
+		res = wait_for_pid(pid, minishell->in_subshell);
+		if (res == 0)
+			res = wait_for_processes(minishell->in_subshell);
+		else
+			wait_for_processes(minishell->in_subshell);
+		if (res == 255 && ft_strcmp(cmd->name, "exit"))
+			res = 127;
+	}
+	return (res);
+}
+
 /**
  * @brief Decide whether to execute a command as a builtin
  * 			or external command and execute it
@@ -48,7 +63,6 @@ static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
 						t_ast_node *ast)
 {
 	int	res;
-	int	pid;
 
 	res = 0;
 	if (is_builtin_command(cmd) && !ast->in_pipe && !minishell->in_subshell)
@@ -58,14 +72,7 @@ static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
 		if (is_directory(cmd->args[0]))
 			res = 126;
 		else
-		{
-			pid = execute_external(minishell, cmd);
-			if (ast->is_last)
-			{
-				wait_for_pid(pid);
-				res = wait_for_processes();
-			}
-		}
+			res = get_exit_code(minishell, cmd, ast);
 	}
 	minishell->exit_code = res;
 	return (res);

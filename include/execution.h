@@ -52,8 +52,8 @@ int				execute_path(t_cmd *cmd);
 // ########################################################
 
 //void	handle_signal(int sig);
-int				wait_for_processes(void);
-int				wait_for_pid(int pid);
+int				wait_for_processes(int in_subshell);
+int				wait_for_pid(int pid, int in_subshell);
 
 // ########################################################
 // #						REDIRECTIONS					#

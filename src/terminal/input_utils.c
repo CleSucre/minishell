@@ -103,8 +103,6 @@ void	edit_input(t_minishell *minishell, char *new)
 /**
  * @brief Erase a char in a string
  *
- * TODO: replace this function by a move_cursor function
- *
  * @param size_t len
  */
 void	erase_term(size_t len)

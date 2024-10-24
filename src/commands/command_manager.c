@@ -28,7 +28,7 @@ int	execute_builtin_command(t_minishell *minishell, t_cmd *cmd)
 	else if (ft_strcmp(cmd->name, "env") == 0)
 		return (command_env(cmd));
 	else if (ft_strcmp(cmd->name, "exit") == 0)
-		return (command_exit(cmd));
+		return (command_exit(cmd, minishell));
 	else if (ft_strcmp(cmd->name, "export") == 0)
 		return (command_export(minishell, cmd));
 	else if (ft_strcmp(cmd->name, "history") == 0)

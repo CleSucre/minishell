@@ -15,8 +15,6 @@
 /**
  * @brief Allocate the t_dirinfo structure
  *
- * TODO: Remove this functiion and t_dirinfo structure
- *
  * @param t_minishell *minishell
  * @return int 0 on success, 1 on error
  */

@@ -28,7 +28,6 @@ int	process_command(t_token **tokens, t_ast_node **root,
 	char		**command_tokens;
 	t_ast_node	*command_node;
 
-	ft_fprintf(STDERR_FILENO, "process_command\n");
 	command_tokens = extract_command_tokens(tokens);
 	if (!command_tokens)
 		return (0);

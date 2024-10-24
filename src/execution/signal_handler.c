@@ -17,7 +17,7 @@
  *
  * @return int Exit status of the last child process (0 if no child process)
  */
-int	wait_for_processes(void)
+int	wait_for_processes(int in_subshell)
 {
 	int	status;
 	int	res;
@@ -30,7 +30,7 @@ int	wait_for_processes(void)
 		if (WIFEXITED(status))
 		{
 			res = WEXITSTATUS(status);
-			if (res == 255)
+			if (res == 255 && !in_subshell)
 				res = 127;
 		}
 		else if (WIFSIGNALED(status))
@@ -51,7 +51,7 @@ int	wait_for_processes(void)
  * @param int pid
  * @return int Exit status of the specific child process
  */
-int	wait_for_pid(int pid)
+int	wait_for_pid(int pid, int in_subshell)
 {
 	int	status;
 	int	res;
@@ -63,7 +63,7 @@ int	wait_for_pid(int pid)
 	if (WIFEXITED(status))
 	{
 		res = WEXITSTATUS(status);
-		if (res == 255)
+		if (res == 255 && !in_subshell)
 			res = 127;
 		return (res);
 	}

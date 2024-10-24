@@ -43,13 +43,31 @@ static int	check_llong(char *str, long long *res)
 	return (0);
 }
 
+static int	do_exit(t_cmd *cmd, t_minishell *minishell, long long status)
+{
+	if (cmd->argc > 2)
+	{
+		ft_fprintf(2, "minishell: exit: too many arguments\n");
+		return (1);
+	}
+	cmd->exit_signal = 1;
+	if (minishell->in_subshell)
+	{
+		destroy_cmd(cmd);
+		free_minishell(minishell);
+		exit(status % 256);
+	}
+	return (status % 256);
+}
+
 /**
  * @brief Exit the shell with a status code (default 0)
  *
  * @param t_cmd *cmd Command structure
+ * @param t_minishell *minishell Minishell structure
  * @return int Exit code
  */
-int	command_exit(t_cmd *cmd)
+int	command_exit(t_cmd *cmd, t_minishell *minishell)
 {
 	long long	status;
 
@@ -57,20 +75,20 @@ int	command_exit(t_cmd *cmd)
 	if (!cmd->args[1])
 	{
 		cmd->exit_signal = 1;
-		return (0);
+		return (do_exit(cmd, minishell, status));
 	}
 	if (check_llong(cmd->args[1], &status) || str_is_digit(cmd->args[1]) == 0)
 	{
 		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
 			cmd->args[1]);
 		cmd->exit_signal = 1;
-		return (2);
+		return (do_exit(cmd, minishell, 2));
 	}
 	if (cmd->argc > 2)
 	{
 		ft_fprintf(2, "minishell: exit: too many arguments\n");
-		return (1);
+		return (do_exit(cmd, minishell, 1));
 	}
 	cmd->exit_signal = 1;
-	return (status % 256);
+	return (do_exit(cmd, minishell, status % 256));
 }

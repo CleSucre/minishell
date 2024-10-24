@@ -31,23 +31,3 @@ void	move_cursor_forward(size_t n)
 {
 	ft_printf(CURSOR_RIGHT, n);
 }
-
-/**
- * @brief Move cursor up from cols to n positions
- *
- * @param size_t n
- */
-void	move_cursor_up(size_t n)
-{
-	ft_printf(CURSOR_UP, n);
-}
-
-/**
- * @brief Move cursor down from cols to n positions
- *
- * @param size_t n
- */
-void	move_cursor_down(size_t n)
-{
-	ft_printf(CURSOR_DOWN, n);
-}

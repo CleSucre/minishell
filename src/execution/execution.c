@@ -35,7 +35,6 @@ int	execute_subshell(t_minishell *minishell, t_ast_node *ast,
 		minishell->exit_signal = 0;
 		res = 0;
 	}
-	wait_for_processes();
 	return (res);
 }
 
