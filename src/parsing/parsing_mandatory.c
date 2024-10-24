@@ -28,6 +28,7 @@ int	process_command(t_token **tokens, t_ast_node **root,
 	char		**command_tokens;
 	t_ast_node	*command_node;
 
+	ft_fprintf(STDERR_FILENO, "process_command\n");
 	command_tokens = extract_command_tokens(tokens);
 	if (!command_tokens)
 		return (0);
@@ -57,7 +58,7 @@ int	process_argument(t_token **current, t_ast_node *last_command)
 		i = 0;
 		while (last_command->value[i])
 			i++;
-		last_command->value[i] = strdup((*current)->value);
+		last_command->value[i] = ft_strdup((*current)->value);
 		last_command->value[i + 1] = NULL;
 	}
 	*current = (*current)->next;

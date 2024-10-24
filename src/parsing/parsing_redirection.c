@@ -160,9 +160,12 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 
 	if (*last_command != NULL)
 		(*last_command)->is_last = is_last;
+	ft_fprintf(STDERR_FILENO, "DEBUG: process_heredoc\n");
 	redir_node = new_ast_node(get_redir_type((*tokens)->type), NULL);
 	if (!handle_redirection_node(tokens, root, last_command, redir_node))
 		return (0);
+	while (*tokens && (*tokens)->type == TOKEN_COMMAND)
+		*tokens = (*tokens)->next;
 	*last_command = redir_node;
 	*root = redir_node;
 	return (1);
