@@ -99,6 +99,14 @@ int	pre_execute_heredoc(t_minishell *minishell, t_ast_node *ast)
 	if (heredoc_valid(ast) == 0)
 		return (0);
 	ft_tabdel_empty(ast->right->value);
+	if (ast->right->value[0] == NULL)
+	{
+		ft_putstr_fd(
+			"minishell: syntax error near unexpected token 'newline'\n",
+			STDERR_FILENO);
+		minishell->exit_code = 2;
+		return (0);
+	}
 	return (run_heredoc(minishell, ast->right->value[0], &ast->heredoc_fd));
 }
 

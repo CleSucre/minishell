@@ -64,11 +64,14 @@ char	*begin_read(t_heredoc_info *heredoc_info)
 	free(tmp);
 	if (heredoc_info->expend_var)
 	{
-		tmp = replace_variables(heredoc_info->minishell, line);
-		free(line);
-		if (!tmp)
+		if (!line)
 			return (0);
-		line = tmp;
+		tmp = replace_variables(heredoc_info->minishell, line);
+		if (tmp)
+		{
+			free(line);
+			line = tmp;
+		}
 	}
 	return (line);
 }
