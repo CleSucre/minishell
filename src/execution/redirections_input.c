@@ -55,20 +55,23 @@ static int	test_file_access(char *file)
 int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 					int *pipes, int *in_out)
 {
-	if (!verify_redirection(minishell, ast))
-		return (0);
+	if (!ast->is_last || !ast->left)
+		close_fds(in_out, pipes);
 	if (ast->right->value[0] == NULL)
 	{
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
 		return (0);
 	}
-	if (!test_file_access(ast->right->value[0]))
-		return (0);
-	in_out[0] = open(ast->right->value[0], O_RDONLY);
-	setup_pipes(pipes, in_out, 0);
-	close(pipes[0]);
-	close(pipes[1]);
-	return (execute_ast(minishell, ast->left, pipes, in_out));
+	ft_fprintf(STDOUT_FILENO, "Redirect input 1\n");
+	if (test_file_access(ast->right->value[0]))
+	{
+		in_out[0] = open(ast->right->value[0], O_RDONLY);
+		setup_pipes(pipes, in_out, 0);
+		close(pipes[0]);
+		close(pipes[1]);
+		return (execute_ast(minishell, ast->left, pipes, in_out));
+	}
+	return (0);
 }
 
 /**

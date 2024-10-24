@@ -135,18 +135,19 @@ int	execute_redirect_output(t_minishell *minishell, t_ast_node *ast,
 			ast->right->value[0]);
 		return (0);
 	}
-	//TODO: if next token is redirection, dont write to file, pass file descriptor to next function
-	if (ast->right->right && ast->right->right->type == AST_REDIR_OUT)
+	if (!ast->is_last)
 	{
-		ft_fprintf(STDERR_FILENO, "value: %s\n", ast->right->right->value[0]);
-		close_fds(in_out, pipes);
-		in_out[0] = file_fd;
-		return (0);
+		close(file_fd);
+		file_fd = STDOUT_FILENO;
+		return (1);
 	}
+	ft_fprintf(STDOUT_FILENO, "Redirect output 1\n");
+	ft_fprintf(STDOUT_FILENO, "Redirect fd: %d\n", in_out[0]);
 	copy_fd_contents(in_out[0], file_fd);
-	close(file_fd);
+	ft_fprintf(STDOUT_FILENO, "Redirect output 2\n");
 	close_fds(in_out, pipes);
-	wait_for_processes();
+	ft_fprintf(STDOUT_FILENO, "Redirect output 3\n");
+	ft_fprintf(STDOUT_FILENO, "Redirect output 4\n");
 	return (0);
 }
 
