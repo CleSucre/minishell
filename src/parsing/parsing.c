@@ -63,7 +63,7 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 	}
 	else if (current->type == TOKEN_REDIR_OUT
 		|| current->type == TOKEN_REDIR_OUT_APPEND)
-		process_redirection(&current, root, last_command, 0);
+		return (process_redirection(&current, root, last_command, 0));
 	else if (!build_ast_secondary(&current, root, last_command))
 		return (0);
 	if (current)
@@ -154,9 +154,9 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);
-	debug_ast(ast);
 	if (!handle_token_errors(minishell, tokens, error, ast))
 		return (NULL);
+	debug_ast(ast);
 	free_tokens(tokens);
 	return (ast);
 }

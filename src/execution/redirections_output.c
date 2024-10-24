@@ -66,7 +66,6 @@ static int	redirect_output(t_minishell *minishell, t_ast_node *ast,
 	while (ast->right->value[i])
 		ft_tabadd(&ast->left->value, ast->right->value[i++]);
 	execute_ast(minishell, ast->left, pipes, in_out);
-	ft_fprintf(STDOUT_FILENO, "exit code: %d\n", minishell->exit_code);
 	return (0);
 }
 

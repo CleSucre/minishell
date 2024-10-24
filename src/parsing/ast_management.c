@@ -67,11 +67,9 @@ int	update_next_command(char *new_command, t_ast_node *ast)
 {
 	if (ast->type == AST_COMMAND)
 	{
-		ft_fprintf(STDOUT_FILENO, "ast->value[0]: %s\n", ast->value[0]);
 		ft_tabfree(ast->value);
 		ast->value = ft_tabnew(1);
 		ast->value[0] = ft_strdup(new_command);
-		ft_fprintf(STDOUT_FILENO, "ast->value[0]: %s\n", ast->value[0]);
 		return (1);
 	}
 	else

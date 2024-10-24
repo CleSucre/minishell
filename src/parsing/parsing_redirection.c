@@ -116,11 +116,13 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 {
 	t_ast_node		*redir_node;
 	char			**file_tokens;
+	t_token			*tmp;
 
 	if (*last_command != NULL)
 		(*last_command)->is_last = is_last;
 	redir_node = new_ast_node(get_redir_type((*tokens)->type), NULL);
 	redir_node->left = *root;
+	tmp = *tokens;
 	*tokens = (*tokens)->next;
 	if ((*tokens) == NULL)
 	{
@@ -130,10 +132,24 @@ int	process_redirection(t_token **tokens, t_ast_node **root,
 	}
 	if ((*tokens)->type == TOKEN_COMMAND)
 	{
-		file_tokens = extract_command_tokens(tokens);
+		if (tmp->type == TOKEN_REDIR_OUT)
+			file_tokens = extract_command_tokens(tokens);
+		else
+		{
+			file_tokens = ft_tabnew(1);
+			file_tokens[0] = ft_strdup((*tokens)->value);
+			*tokens = (*tokens)->next;
+			if (*tokens && (*tokens)->type == TOKEN_COMMAND)
+				build_ast(tokens, &redir_node->left, last_command);
+		}
 		redir_node->right = new_ast_node(AST_COMMAND, file_tokens);
 	}
-	*last_command = redir_node;
+	else
+	{
+		ft_fprintf(STDERR_FILENO,
+			"minishell: syntax error: expected file name\n");
+		return (0);
+	}
 	*root = redir_node;
 	return (1);
 }

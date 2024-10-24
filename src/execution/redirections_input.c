@@ -62,7 +62,6 @@ int	execute_redirect_input(t_minishell *minishell, t_ast_node *ast,
 		ft_putstr_fd("Error: no file specified\n", STDERR_FILENO);
 		return (0);
 	}
-	ft_fprintf(STDOUT_FILENO, "Redirect input 1\n");
 	if (test_file_access(ast->right->value[0]))
 	{
 		in_out[0] = open(ast->right->value[0], O_RDONLY);

@@ -94,6 +94,8 @@ char			*check_input(char *input);
 void			add_token(char ***tokens, int *token_count, char *token);
 void			add_token_to_list(t_token **tokens,
 					t_token_type type, char *value);
+void			clear_token_list( t_token **token_list,
+					char **tokens, int token_count);
 
 // ########################################################
 // #						TOKENIZER						#
