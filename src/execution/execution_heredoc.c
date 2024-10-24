@@ -89,10 +89,13 @@ void	handle_heredoc_child_process(t_minishell *minishell,
 {
 	t_heredoc_info	*heredoc_info;
 
+	setup_heredoc_child_signals();
 	heredoc_info = load_heredoc_info(minishell, tmp_pipe, delimiter);
 	if (!heredoc_info)
-		exit(1);
-	setup_heredoc_child_signals();
+	{
+		close_all_fds(minishell->opened_fds);
+		exit(2);
+	}
 	close(tmp_pipe[0]);
 	read_heredoc(heredoc_info);
 	free(heredoc_info->delimiter);

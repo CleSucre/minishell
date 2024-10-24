@@ -53,7 +53,7 @@ int	write_heredoc(t_heredoc_info *heredoc_info)
 	return (1);
 }
 
-char	*begin_read(t_heredoc_info *heredoc_info)
+static char	*begin_read(void)
 {
 	char	*tmp;
 	char	*line;
@@ -62,13 +62,23 @@ char	*begin_read(t_heredoc_info *heredoc_info)
 	tmp = get_next_line(STDIN_FILENO);
 	line = ft_strtrim(tmp, "\n");
 	free(tmp);
+	return (line);
+}
+
+static char	*expend_var(t_heredoc_info *heredoc_info, char *line)
+{
+	char	*tmp;
+
 	if (heredoc_info->expend_var)
 	{
+		if (!line)
+			return (ft_strdup(""));
 		tmp = replace_variables(heredoc_info->minishell, line);
-		free(line);
-		if (!tmp)
-			return (0);
-		line = tmp;
+		if (tmp)
+		{
+			free(line);
+			return (tmp);
+		}
 	}
 	return (line);
 }
@@ -81,7 +91,7 @@ int	read_heredoc(t_heredoc_info *heredoc_info)
 	i = 0;
 	while (1)
 	{
-		line = begin_read(heredoc_info);
+		line = begin_read();
 		if (!line)
 		{
 			ft_fprintf(STDERR_FILENO, "minishell: warning: heredoc at line %d"
@@ -94,6 +104,7 @@ int	read_heredoc(t_heredoc_info *heredoc_info)
 			free(line);
 			break ;
 		}
+		line = expend_var(heredoc_info, line);
 		ft_tabadd(&heredoc_info->texts, line);
 		free(line);
 		i++;
