@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "global.h"
+
+int	*g_exit_code;
 
 static void	heredoc_signal_handler(int sig)
 {
@@ -22,6 +23,18 @@ static void	heredoc_signal_handler(int sig)
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 	}
+}
+
+/**
+ * @brief Handle the signal in the parent process
+ * 			to set the exit code to 130 on SIGINT
+ *
+ * @param int sig
+ */
+void	parent_signal_handler(int sig)
+{
+	if (sig == SIGINT)
+		*g_exit_code = 130;
 }
 
 /**

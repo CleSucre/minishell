@@ -13,27 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Create a new token
- *
- * @param str The value of the token
- * @param type The type of the token
- * @return t_token* The new token
- */
-t_token	*new_token(char *str, int type)
-{
-	t_token	*token;
-
-	token = (t_token *)malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = ft_strdup(str);
-	token->type = type;
-	token->next = NULL;
-	token->prev = NULL;
-	return (token);
-}
-
-/**
  * @brief Add a token to the token list
  *
  * @param tokens The head of the token list
@@ -89,4 +68,38 @@ void	add_token(char ***tokens, int *token_count, char *token)
 		free(*tokens);
 	*tokens = new_tokens;
 	(*token_count)++;
+}
+
+/**
+ * @brief Clear the token list
+ *
+ * @param token_list The head of the token list
+ * @param tokens The list of tokens
+ * @param token_count The number of tokens
+ */
+void	clear_token_list( t_token **token_list,
+							char **tokens, int token_count)
+{
+	int	i;
+
+	*token_list = NULL;
+	i = 0;
+	while (i < token_count)
+		free(tokens[i++]);
+	free(tokens);
+	return ;
+}
+
+/**
+ * @brief Compare the token list and add the token to the list
+ *
+ * @param token_list The head of the token list
+ * @param tokens The list of tokens
+ * @param i The index of the token
+ */
+int	token_is_logic_operator(t_token *token)
+{
+	return (token->type == TOKEN_AND_OPERATOR
+		|| token->type == TOKEN_OR_OPERATOR
+		|| token->type == TOKEN_PIPE);
 }

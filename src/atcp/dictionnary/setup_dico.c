@@ -42,7 +42,8 @@ void	send_to_bst(struct dirent *dir, t_dict *dict)
  * 	@param char *odir - path to open
  * 	@return int 0 if success
  */
-int	search_in_path(t_dict *dict, char *odir)
+/*
+static int	search_in_path(t_dict *dict, char *odir)
 {
 	struct dirent	*dir;
 	DIR				*d;
@@ -60,12 +61,10 @@ int	search_in_path(t_dict *dict, char *odir)
 		closedir(d);
 	}
 	else
-	{
-		perror("warning: opendir bst");
 		return (1);
-	}
 	return (0);
 }
+*/
 
 /**
  * @brief Create first BST node (root)

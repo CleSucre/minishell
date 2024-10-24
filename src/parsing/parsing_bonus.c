@@ -80,28 +80,38 @@ static int	count_open_parentheses(t_token **tokens)
  */
 static int	skip_parentheses(t_token **tokens, int opened)
 {
-	int		closed;
 	t_token	*tmp;
 
-	closed = 0;
 	tmp = *tokens;
-	while (tmp != NULL)
+	while (tmp != NULL && opened > 0)
 	{
-		if (tmp->type == TOKEN_PARENTHESIS_OPEN)
-			opened++;
-		else if (tmp->type == TOKEN_PARENTHESIS_CLOSE)
-		{
-			closed++;
-			if (closed == opened)
-			{
-				*tokens = tmp->next;
-				return (1);
-			}
-		}
+		if (tmp->type == TOKEN_PARENTHESIS_CLOSE)
+			opened--;
 		tmp = tmp->next;
 	}
-	ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected ')'\n");
-	return (0);
+	if (opened > 0)
+	{
+		ft_fprintf(STDERR_FILENO,
+			"minishell: syntax error: expected ')'\n");
+		return (0);
+	}
+	*tokens = tmp;
+	return (1);
+}
+
+/**
+ * @brief Find last AST_COMMAND node and update it to is_last = 0
+ *
+ * @param t_ast_node **root Root of the AST being constructed.
+ */
+static void	update_last(t_ast_node **root)
+{
+	t_ast_node	*tmp;
+
+	tmp = *root;
+	while (tmp->right != NULL)
+		tmp = tmp->right;
+	tmp->is_last = 0;
 }
 
 /**
@@ -124,18 +134,18 @@ int	process_subshell(t_token **tokens, t_ast_node **root,
 		return (0);
 	}
 	subshell_node = new_ast_node(AST_SUBSHELL, NULL);
-	opened = count_open_parentheses(tokens);
-	*tokens = (*tokens)->next;
-	if (build_ast(tokens, &subshell_node->left, last_command) != -1)
+	if (build_ast(&(*tokens)->next, &subshell_node->left, last_command) != -1)
 	{
-		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected ')'\n");
+		ft_fprintf(STDERR_FILENO,
+			"minishell: syntax error: expected ')'\n");
 		return (0);
 	}
+	opened = count_open_parentheses(tokens);
 	if (!skip_parentheses(tokens, opened))
 		return (0);
 	if (*root == NULL)
 		*root = subshell_node;
-	else if (*last_command != NULL)
-		subshell_node->right = subshell_node;
+	if (*tokens && (*tokens)->type == TOKEN_PIPE)
+		update_last(&subshell_node->left);
 	return (1);
 }

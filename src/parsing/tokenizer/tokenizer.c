@@ -17,7 +17,7 @@ static int	cmp_token(char **tokens, int i,
 {
 	if (ft_strcmp(tokens[i], "(") == 0)
 	{
-		parentheses_balance++;
+		(*parentheses_balance)++;
 		if (i + 1 < token_count && ft_strcmp(tokens[i + 1], ")") == 0)
 		{
 			printf("syntax error near unexpected token `)'\n");
@@ -26,8 +26,8 @@ static int	cmp_token(char **tokens, int i,
 	}
 	else if (ft_strcmp(tokens[i], ")") == 0)
 	{
-		parentheses_balance--;
-		if (parentheses_balance < 0)
+		(*parentheses_balance)--;
+		if (*parentheses_balance < 0)
 		{
 			printf("syntax error near unexpected token `)'\n");
 			return (0);
@@ -36,7 +36,7 @@ static int	cmp_token(char **tokens, int i,
 	return (1);
 }
 
-int	are_parentheses_valid(char **tokens, int token_count)
+static int	are_parentheses_valid(char **tokens, int token_count)
 {
 	int	i;
 	int	parentheses_balance;
@@ -57,20 +57,7 @@ int	are_parentheses_valid(char **tokens, int token_count)
 	return (1);
 }
 
-static void	clear_token_list( t_token **token_list,
-								char **tokens, int token_count)
-{
-	int	i;
-
-	*token_list = NULL;
-	i = 0;
-	while (i < token_count)
-		free(tokens[i++]);
-	free(tokens);
-	return ;
-}
-
-void	cmp_token_list(t_token **token_list, char **tokens, int i)
+static void	cmp_token_list(t_token **token_list, char **tokens, int i)
 {
 	if (ft_strcmp(tokens[i], "&&") == 0)
 		add_token_to_list(token_list, TOKEN_AND_OPERATOR, tokens[i]);

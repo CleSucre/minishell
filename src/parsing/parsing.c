@@ -50,6 +50,8 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 	t_token		*current;
 
 	current = *tokens;
+	if (!current)
+		return (1);
 	if (current->type == TOKEN_PARENTHESIS_CLOSE)
 		return (-1);
 	else if (current->type == TOKEN_PIPE)
@@ -63,12 +65,35 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
 	}
 	else if (current->type == TOKEN_REDIR_OUT
 		|| current->type == TOKEN_REDIR_OUT_APPEND)
-		process_redirection(&current, root, last_command, 0);
+		return (process_redirection(&current, root, last_command, 0));
 	else if (!build_ast_secondary(&current, root, last_command))
 		return (0);
 	if (current)
 		return (build_ast(&current, root, last_command));
 	return (1);
+}
+
+/**
+ * @brief Tokenize the validated input.
+ *
+ * @param t_minishell *minishell
+ * @param char *trimmed the validated and trimmed input
+ * @return t_token* the list of tokens
+ */
+static t_token	*tokenize_input(t_minishell *minishell, char *trimmed)
+{
+	t_token	*tokens;
+
+	tokens = NULL;
+	tokenize(trimmed, &tokens);
+	free(trimmed);
+	if (!tokens)
+	{
+		minishell->exit_code = 2;
+		return (NULL);
+	}
+	debug_tokens(tokens);
+	return (tokens);
 }
 
 /**
@@ -80,58 +105,12 @@ int	build_ast(t_token **tokens, t_ast_node **root, t_ast_node **last_command)
  */
 static t_token	*check_and_tokenize_input(t_minishell *minishell, char *input)
 {
-	char		*trimmed;
-	t_token		*tokens;
+	char	*trimmed;
 
-	if (!input)
+	trimmed = check_input_and_validate(minishell, input);
+	if (!trimmed)
 		return (NULL);
-	trimmed = check_input(input);
-	if (trimmed == NULL || *trimmed == '\0')
-	{
-		minishell->exit_code = 0;
-		return (NULL);
-	}
-	if (ft_isprint(*trimmed))
-		history_add(minishell, trimmed, 1);
-	tokens = NULL;
-	tokenize(trimmed, &tokens);
-	if (!tokens)
-	{
-		minishell->exit_code = 2;
-		free(trimmed);
-		return (NULL);
-	}
-	free(trimmed);
-	debug_tokens(tokens);
-	return (tokens);
-}
-
-/**
- * @brief Handle the token errors.
- *
- * @param t_minishell *minishell
- * @param t_token *tokens
- * @param int error
- * @param t_ast_node *ast
- * @return int 1 if the function succeeded, 0 otherwise.
- */
-static int	handle_token_errors(t_minishell *minishell,
-							t_token *tokens, int error, t_ast_node *ast)
-{
-	if (error == 0)
-	{
-		minishell->exit_code = 2;
-		free_tokens(tokens);
-		free_ast(ast);
-		return (0);
-	}
-	else if (error == -1)
-	{
-		ft_fprintf(STDERR_FILENO, "minishell: syntax error: expected '('\n");
-		free_tokens(tokens);
-		return (0);
-	}
-	return (1);
+	return (tokenize_input(minishell, trimmed));
 }
 
 /**
@@ -151,6 +130,14 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	tokens = check_and_tokenize_input(minishell, input);
 	if (!tokens)
 		return (NULL);
+	if (token_is_logic_operator(tokens))
+	{
+		ft_fprintf(STDERR_FILENO, "syntax error near unexpected token '%s'\n",
+			tokens->value);
+		free_tokens(tokens);
+		minishell->exit_code = 2;
+		return (NULL);
+	}
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);

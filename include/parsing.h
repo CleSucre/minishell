@@ -31,7 +31,6 @@ typedef enum s_token_type
 	TOKEN_PARENTHESIS_OPEN,
 	TOKEN_PARENTHESIS_CLOSE,
 }	t_token_type;
-
 typedef struct s_token
 {
 	t_token_type	type;
@@ -86,6 +85,10 @@ int				process_heredoc(t_token **tokens, t_ast_node **root,
 int				process_redirection(t_token **tokens, t_ast_node **root,
 					t_ast_node **last_command, int is_last);
 char			*check_input(char *input);
+int				check_quotes_count(char *str);
+char			*check_input_and_validate(t_minishell *minishell, char *input);
+int				handle_token_errors(t_minishell *minishell,
+					t_token *tokens, int error, t_ast_node *ast);
 
 // ########################################################
 // #					TOKEN_MANAGER						#
@@ -94,6 +97,9 @@ char			*check_input(char *input);
 void			add_token(char ***tokens, int *token_count, char *token);
 void			add_token_to_list(t_token **tokens,
 					t_token_type type, char *value);
+void			clear_token_list( t_token **token_list,
+					char **tokens, int token_count);
+int				token_is_logic_operator(t_token *token);
 
 // ########################################################
 // #						TOKENIZER						#
@@ -129,5 +135,6 @@ char			**split_with_quotes(const char *input, int *count);
 
 t_ast_node		*new_ast_node(t_ast_node_type type, char **command);
 int				count_heredoc(t_ast_node *ast);
+int				update_next_command(char *new_command, t_ast_node *ast);
 
 #endif

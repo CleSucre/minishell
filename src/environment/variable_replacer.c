@@ -44,13 +44,51 @@ static char	*handle_variable(t_minishell *minishell, char *str,
 	char	*tmp;
 
 	j = *i + 1;
-	while (ft_isalnum(str[j]))
+	if (!ft_isalnum(str[j]) && str[j] != '_')
+	{
+		*i += 1;
+		return (ft_strjoin_char(res, '$'));
+	}
+	while (ft_isalnum(str[j]) || str[j] == '_')
 		j++;
 	tmp = ft_substr(str, *i + 1, j - *i - 1);
 	res = ft_strjoin_free(res, get_var_value(minishell->env, tmp));
 	free(tmp);
 	*i = j;
 	return (res);
+}
+
+/**
+ * @brief Process quotes and handle variables ($VARNAME or $?).
+ *
+ * @param t_minishell *minishell
+ * @param char *str
+ * @param char **res
+ * @param t_replace_context *ctx (context structure holding i and quotes status)
+ */
+void	process_quotes_and_dollar(t_minishell *minishell, char *str,
+							char **res, t_replace_context *ctx)
+{
+	if (str[ctx->i] == '\'' && !(ctx->inside_double_quotes))
+		ctx->inside_single_quotes = !(ctx->inside_single_quotes);
+	else if (str[ctx->i] == '"' && !(ctx->inside_single_quotes))
+		ctx->inside_double_quotes = !(ctx->inside_double_quotes);
+	else if (str[ctx->i] == '$' && str[ctx->i + 1] != '\0'
+		&& (!(ctx->inside_single_quotes) || ctx->inside_double_quotes))
+	{
+		if (str[ctx->i + 1] == '?')
+		{
+			*res = handle_exit_code(minishell, *res);
+			ctx->i += 2;
+		}
+		else
+			*res = handle_variable(minishell, str, &(ctx->i), *res);
+	}
+	else if (str[ctx->i] == '$' && str[ctx->i + 1] == '\0')
+	{
+		*res = ft_strjoin_char(*res, '$');
+		ctx->i++;
+	}
 }
 
 /**
@@ -63,45 +101,18 @@ static char	*handle_variable(t_minishell *minishell, char *str,
  */
 char	*replace_variables(t_minishell *minishell, char *str)
 {
-	size_t	i;
-	char	*res;
-	bool	inside_single_quotes;
-	bool	inside_double_quotes;
+	char				*res;
+	t_replace_context	ctx;
 
-	inside_single_quotes = false;
-	inside_double_quotes = false;
-	i = 0;
+	ctx.inside_single_quotes = 0;
+	ctx.inside_double_quotes = 0;
+	ctx.i = 0;
 	res = NULL;
-	while (str[i])
+	while (str[ctx.i])
 	{
-		if (str[i] == '\'' && !inside_single_quotes && !inside_double_quotes)
-		{
-			inside_single_quotes = true;
-			res = ft_strjoin_char(res, str[i++]);
-		}
-		else if (str[i] == '\'' && inside_single_quotes)
-		{
-			inside_single_quotes = false;
-			res = ft_strjoin_char(res, str[i++]);
-		}
-		else if (str[i] == '"' && !inside_single_quotes)
-		{
-			inside_double_quotes = !inside_double_quotes;
-			res = ft_strjoin_char(res, str[i++]);
-		}
-		else if (str[i] == '$' && str[i + 1] != '\0'
-			&& (!inside_single_quotes || inside_double_quotes))
-		{
-			if (str[i + 1] == '?')
-			{
-				res = handle_exit_code(minishell, res);
-				i += 2;
-			}
-			else
-				res = handle_variable(minishell, str, &i, res);
-		}
-		else
-			res = ft_strjoin_char(res, str[i++]);
+		process_quotes_and_dollar(minishell, str, &res, &ctx);
+		if (str[ctx.i] && (str[ctx.i] != '$' || ctx.inside_single_quotes))
+			res = ft_strjoin_char(res, str[ctx.i++]);
 	}
 	if (res)
 		return (res);

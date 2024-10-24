@@ -28,7 +28,7 @@ SRCS_ENVIRONMENT		= env_utils.c path_utils.c variable_utils.c variable_replacer.
 
 SRCS_HISTORY			= history_file.c history_management.c history_navigation.c
 
-SRCS_EXECUTION			= execute_cmd.c execution_or_and.c execution_types.c execute_path.c execution.c execution_fork.c \
+SRCS_EXECUTION			= execute_cmd.c execution_or_and.c execute_path.c execution.c execution_fork.c \
  						  execution_heredoc.c signal_handler.c redirections_input.c redirections_output.c execution_pipes.c pipes_utils.c \
  						  execution_heredoc_utils.c execution_heredoc_pid.c execution_verif.c
 

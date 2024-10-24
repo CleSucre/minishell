@@ -20,10 +20,10 @@ char	*parse_quotes(const char *input)
 	char	quote_type;
 
 	result = (char *)malloc(ft_strlen(input) + 1);
-	i = 0;
+	i = -1;
 	j = 0;
 	quote_type = 0;
-	while (input[i] != '\0')
+	while (input[++i] != '\0')
 	{
 		if (input[i] == '\'' || input[i] == '"')
 		{
@@ -36,7 +36,6 @@ char	*parse_quotes(const char *input)
 		}
 		else
 			result[j++] = input[i];
-		i++;
 	}
 	result[j] = '\0';
 	return (result);
@@ -65,28 +64,17 @@ void	remove_quotes(char **table)
  */
 static void	parse_cmd_args(t_cmd *cmd, t_ast_node *ast, t_minishell *minishell)
 {
-	int		is_var;
-	char	**tmp;
-
 	cmd->argc = (int)ft_tablen((const char **)ast->value);
 	cmd->args = ft_tabdup((const char **)ast->value);
-	is_var = ft_strncmp(cmd->args[0], "$", 1) == 0;
 	replace_variables_in_tab(minishell, cmd->args);
 	remove_quotes(cmd->args);
 	if (cmd->args[0] == NULL)
 		return ;
-	if (is_var)
-	{
-		tmp = ft_split(cmd->args[0], WHITESPACES);
-		ft_tabdel(cmd->args, 0);
-		cmd->args = ft_tabjoin(tmp, cmd->args);
-	}
 	expand_wildcards(&cmd->args);
 	if (!cmd->args[0])
 	{
 		ft_tabfree(cmd->args);
-		cmd->args = ft_calloc(1, sizeof(char *));
-		cmd->args[0] = NULL;
+		cmd->args = ft_tabnew(1);
 		return ;
 	}
 	cmd->name = ft_strdup(cmd->args[0]);
