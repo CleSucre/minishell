@@ -54,6 +54,11 @@ int	command_exit(t_cmd *cmd)
 	long long	status;
 
 	status = 0;
+	if (!cmd->args[1])
+	{
+		cmd->exit_signal = 1;
+        return (0);
+	}
 	if (check_llong(cmd->args[1], &status) || str_is_digit(cmd->args[1]) == 0)
 	{
 		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
