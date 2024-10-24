@@ -102,6 +102,7 @@ typedef struct s_minishell
 	unsigned int		history_pos;
 	unsigned int		history_size;
 	int					*opened_fds;
+	int					in_subshell;
 }						t_minishell;
 
 typedef struct s_heredoc_info

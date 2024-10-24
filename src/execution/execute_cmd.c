@@ -51,7 +51,7 @@ static int	decide_execution(t_cmd *cmd, t_minishell *minishell,
 	int	pid;
 
 	res = 0;
-	if (is_builtin_command(cmd) && !ast->in_pipe)
+	if (is_builtin_command(cmd) && !ast->in_pipe && !minishell->in_subshell)
 		res = execute_builtin_command(minishell, cmd);
 	else
 	{

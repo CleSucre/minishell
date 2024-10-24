@@ -25,20 +25,10 @@ int	execute_subshell(t_minishell *minishell, t_ast_node *ast,
 				int *pipes, int *in_out)
 {
 	int		res;
-	char	**saved_env;
-	char	**temp_env;
 
-	saved_env = minishell->env;
-	temp_env = ft_tabdup((const char **)saved_env);
-	if (!temp_env)
-	{
-		perror("Error: ft_tabdup failed");
-		return (-1);
-	}
-	minishell->env = temp_env;
+	minishell->in_subshell = 1;
 	res = execute_ast(minishell, ast->left, pipes, in_out);
-	ft_tabfree(minishell->env);
-	minishell->env = saved_env;
+	minishell->in_subshell = 0;
 	reload_env(minishell->env);
 	if (minishell->exit_signal == 1)
 	{

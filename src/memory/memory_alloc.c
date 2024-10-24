@@ -13,30 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Alloc cache structure
- *
- * @param t_minishell *minishell
- * @return int 0 on success, 1 on failure
- */
-static int	alloc_cache(t_minishell *minishell)
-{
-	minishell->cache = ft_calloc(1, sizeof(t_cache));
-	if (!minishell->cache)
-	{
-		free(minishell);
-		return (1);
-	}
-	minishell->cache->input = ft_calloc(1, sizeof(char *));
-	if (!minishell->cache->input)
-	{
-		free(minishell->cache);
-		free(minishell);
-		return (1);
-	}
-	return (0);
-}
-
-/**
  * @brief Alloc history structure
  *
  * @param t_minishell *minishell
@@ -103,6 +79,40 @@ static int	alloc_tab(t_minishell *minishell)
 }
 
 /**
+ * @brief Alloc cache structure
+ *
+ * @param t_minishell *minishell
+ * @return int 0 on success, 1 on failure
+ */
+static int	alloc_cache(t_minishell *minishell)
+{
+	minishell->cache = ft_calloc(1, sizeof(t_cache));
+	if (!minishell->cache)
+	{
+		free(minishell);
+		return (1);
+	}
+	minishell->cache->input = ft_calloc(1, sizeof(char *));
+	if (!minishell->cache->input)
+	{
+		free(minishell->cache);
+		free(minishell);
+		return (1);
+	}
+	if (alloc_history(minishell))
+		return (1);
+	if (alloc_term(minishell))
+		return (1);
+	if (alloc_tab(minishell))
+		return (1);
+	if (alloc_dirinfo(minishell))
+		return (1);
+	if (alloc_starting_path(minishell))
+		return (1);
+	return (0);
+}
+
+/**
  * @brief Init minishell structure
  *
  * @return t_minishell *
@@ -118,20 +128,11 @@ t_minishell	*alloc_minishell(void)
 	minishell->exit_signal = 0;
 	if (alloc_cache(minishell))
 		return (NULL);
-	if (alloc_history(minishell))
-		return (NULL);
-	if (alloc_term(minishell))
-		return (NULL);
-	if (alloc_tab(minishell))
-		return (NULL);
-	if (alloc_dirinfo(minishell))
-		return (NULL);
-	if (alloc_starting_path(minishell))
-		return (NULL);
 	minishell->input = ft_calloc(1, sizeof(char *));
 	if (minishell->input == NULL)
 		return (NULL);
 	minishell->ast = NULL;
 	minishell->opened_fds = init_to_close();
+	minishell->in_subshell = 0;
 	return (minishell);
 }
