@@ -92,7 +92,6 @@ static t_token	*tokenize_input(t_minishell *minishell, char *trimmed)
 		minishell->exit_code = 2;
 		return (NULL);
 	}
-	debug_tokens(tokens);
 	return (tokens);
 }
 
@@ -141,7 +140,6 @@ t_ast_node	*parse_input(t_minishell *minishell, char *input)
 	ast = NULL;
 	last_command = NULL;
 	error = build_ast(&tokens, &ast, &last_command);
-	debug_ast(ast);
 	if (!handle_token_errors(minishell, tokens, error, ast))
 		return (NULL);
 	return (ast);

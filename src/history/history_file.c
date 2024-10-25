@@ -79,7 +79,6 @@ int	history_load(t_minishell *minishell)
 		free(line);
 		line = get_next_line(fd);
 	}
-	debug_history_loaded(minishell->history_size);
 	close(fd);
 	return (0);
 }
