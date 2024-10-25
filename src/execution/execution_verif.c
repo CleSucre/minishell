@@ -30,7 +30,6 @@ int	pre_executed_failed(t_minishell *minishell, t_ast_node *ast)
 	free_ast(ast);
 	close_all_fds(minishell->opened_fds);
 	minishell->ast = NULL;
-	ft_fprintf(STDERR_FILENO, "Error: pre_execute_ast failed\n");
 	return (0);
 }
 
