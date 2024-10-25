@@ -55,6 +55,8 @@ int			print_export(t_cmd *cmd);
 int			sum_cmd_env(t_cmd *cmd, char *input, char *value);
 int			add_cmd_env(t_minishell *minishell, char *input, char *value);
 int			modify_cmd_env(t_cmd *cmd, char *input, char *value);
+void		update_environment(t_minishell *minishell, t_cmd *cmd,
+				char **cut_name, int i);
 
 // Cd
 int			cd_minus(t_cmd *cmd);

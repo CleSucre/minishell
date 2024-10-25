@@ -107,3 +107,17 @@ int	modify_cmd_env(t_cmd *cmd, char *input, char *value)
 	free(res);
 	return (0);
 }
+
+void	update_environment(t_minishell *minishell, t_cmd *cmd,
+							char **cut_name, int i)
+{
+	if (find_table_args(minishell->env, cut_name[0]) == -1)
+	{
+		add_cmd_env(minishell, cut_name[0], cut_name[1]);
+		cmd->env = minishell->env;
+	}
+	else if (ft_is_charset('+', cmd->args[i]))
+		sum_cmd_env(cmd, cut_name[0], cut_name[1] + 1);
+	else
+		modify_cmd_env(cmd, cut_name[0], cut_name[1]);
+}

@@ -12,6 +12,30 @@
 
 #include "minishell.h"
 
+static int	parse_export(char *str)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = ft_strlen(str);
+	while (str[i])
+	{
+		if ((str[i] == '+') && i < len - 1)
+		{
+			ft_fprintf(2, "la\n", str);
+			return (1);
+		}
+		if (!ft_isalnum(str[i]) && str[i] != '_' && str[i] != '+')
+		{
+			ft_fprintf(2, "ici\n", str);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 static int	check_inside_args(t_cmd *cmd)
 {
 	char	**cut_name;
@@ -23,7 +47,7 @@ static int	check_inside_args(t_cmd *cmd)
 	{
 		cut_name = ft_split_quote(cmd->args[i], "=", "\"\'");
 		tmp = ft_strtrim(cut_name[0], "=");
-		if (!str_is_alnum(tmp))
+		if (parse_export(tmp) == 1)
 		{
 			ft_tabfree(cut_name);
 			ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n",
@@ -59,20 +83,6 @@ int	export_wt_args(t_minishell *minishell, t_cmd *cmd, int i)
 	else if (ft_is_charset('=', cmd->args[1]))
 		modify_cmd_env(cmd, cmd->args[i], "");
 	return (0);
-}
-
-void	update_environment(t_minishell *minishell, t_cmd *cmd,
-							char **cut_name, int i)
-{
-	if (find_table_args(minishell->env, cut_name[0]) == -1)
-	{
-		add_cmd_env(minishell, cut_name[0], cut_name[1]);
-		cmd->env = minishell->env;
-	}
-	else if (ft_is_charset('+', cmd->args[i]))
-		sum_cmd_env(cmd, cut_name[0], cut_name[1] + 1);
-	else
-		modify_cmd_env(cmd, cut_name[0], cut_name[1]);
 }
 
 void	process_export_argument(t_minishell *minishell, t_cmd *cmd, int i)
