@@ -45,6 +45,8 @@ int	tab_input_protection(t_minishell *minishell, char *new)
 
 	if (new[0] == '\t')
 	{
+		if (ft_tablen((const char **)minishell->input) <= 0)
+			return (1);
 		str = ft_utf8_tab_to_str(minishell->input);
 		if (str[ft_strlen(str) - 1] == ' ')
 		{
