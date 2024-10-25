@@ -98,9 +98,9 @@ LIBFT_DIR		= libft
 
 CFLAGS			= -I $(HEAD) -MMD -MP
 
-CFLAGS += -Wall -Wextra -Werror
+CFLAGS += -Wall -Wextra -Werror -g
 
-VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes # --suppressions=vsupp
+#VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes # --suppressions=vsupp
 
 # COLORS
 DEFCOLOR = \033[0;39m

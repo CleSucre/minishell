@@ -43,6 +43,7 @@ int	tab_input_protection(t_minishell *minishell, char *new)
 	char	*str;
 	char	*tmp;
 
+	str = NULL;
 	if (new[0] == '\t')
 	{
 		str = ft_utf8_tab_to_str(minishell->input);

@@ -90,9 +90,7 @@ void	tokenize(const char *input, t_token **token_list)
 	token_count = 0;
 	tokens = split_with_quotes(input, &token_count);
 	if (!are_parentheses_valid(tokens, token_count))
-	{
 		return (clear_token_list(token_list, tokens, token_count));
-	}
 	i = 0;
 	while (i < token_count)
 	{
